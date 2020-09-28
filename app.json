@@ -1,0 +1,12 @@
+{
+  "name": "eatin",
+  "displayName": "eatin",
+  "expo": {
+    "name": "eatin",
+    "slug": "eatin",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
