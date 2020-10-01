@@ -20,9 +20,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Again Things Changed !</Text>
-      <StatusBar style="auto" />
 
+      <Text>Things Changed Again!</Text>
+      <StatusBar style="auto" />
+      <Text>Again Things Changed !</Text>
       <List restaurants={restaurants} />
     </View>
   );
