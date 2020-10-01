@@ -20,7 +20,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Things Changed Again!</Text>
+      <Text>Again Things Changed !</Text>
       <StatusBar style="auto" />
 
       <List restaurants={restaurants} />
