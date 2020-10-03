@@ -3,28 +3,28 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import List from './components/List';
 
+import Login from './components/Pages/Login'
+import Menu from './components/Pages/Menu'
+import Restaurant from './components/Pages/Restaurant'
+import RestaurantList from './components/Pages/RestaurantList'
+
 
 export default function App() {
 
-  const restaurants = [
-    {
-      name: 'Restaurant 1'
-    },
-    {
-      name: 'Restaurant 2'
-    },
-    {
-      name: 'Restaurant 3'
-    }
-  ]
-
   return (
     <View style={styles.container}>
+<<<<<<< HEAD
 
       <Text>Things Changed Again!</Text>
       <StatusBar style="auto" />
       <Text>Again Things Changed !</Text>
       <List restaurants={restaurants} />
+=======
+      {/* <Login /> */}
+      {/* <Menu /> */}
+      {/* <Restaurant /> */}
+      {/* <RestaurantList /> */}
+>>>>>>> 0c0526307c93c7712f5810914262f9981e55511d
     </View>
   );
 }
