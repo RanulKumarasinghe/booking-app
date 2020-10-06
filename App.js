@@ -13,18 +13,18 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-<<<<<<< HEAD
+
 
       <Text>Things Changed Again!</Text>
       <StatusBar style="auto" />
       <Text>Again Things Changed !</Text>
       <List restaurants={restaurants} />
-=======
+
       {/* <Login /> */}
       {/* <Menu /> */}
       {/* <Restaurant /> */}
       {/* <RestaurantList /> */}
->>>>>>> 0c0526307c93c7712f5810914262f9981e55511d
+
     </View>
   );
 }
