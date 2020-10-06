@@ -1,31 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import List from './components/List';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
 
-import Login from './components/Pages/Login'
-import Menu from './components/Pages/Menu'
-import Restaurant from './components/Pages/Restaurant'
-import RestaurantList from './components/Pages/RestaurantList'
+const HomeScreen = () => (
+  <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <Text category='h1'>HOME</Text>
+  </Layout>
+);
 
-
-export default function App() {
-
-  return (
-    <View style={styles.container}>
-      {/* <Login /> */}
-      {/* <Menu /> */}
-      {/* <Restaurant /> */}
-      {/* <RestaurantList /> */}
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default () => (
+  <ApplicationProvider {...eva} theme={eva.light}>
+    <Home />
+  </ApplicationProvider>
+);
