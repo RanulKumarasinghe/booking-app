@@ -1,15 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { SafeAreaView } from 'react-native';
+import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 
-export default function Login({ navigation }) {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Login Screen</Text>
-        <Button
-          title="Go back Home"
-          onPress={() => navigation.navigate('Home')}
-        />
-      </View>
+const data = [
+    kebab:{
+    },
+    pizza:{
+
+    },
+    hamburger:{
+        
+    }
+];
+
+const BackIcon = (props) => (
+  <Icon {...props} name='arrow-back' />
+);
+
+export const LoginScreen = ({ navigation }) => {
+
+  const navigateBack = () => {
+    navigation.goBack();
+  };
+
+  const BackAction = () => (
+    <TopNavigationAction icon={BackIcon} onPress={navigateBack}/>
   );
-}
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <TopNavigation title='MyApp' alignment='center' accessoryLeft={BackAction}/>
+      <Divider/>
+      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text category='h1'>DETAILS</Text>
+      </Layout>
+    </SafeAreaView>
+  );
+};

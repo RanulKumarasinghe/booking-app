@@ -1,15 +1,20 @@
 import React from 'react';
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
+import { SafeAreaView } from 'react-native';
+import { Button, Divider, Layout, TopNavigation } from '@ui-kitten/components';
 
-const HomeScreen = (navigate) => (
-  <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    <Text category='h1'>HOME</Text>
-  </Layout>
-);
+export const HomeScreen = ({ navigation }) => {
 
-export default () => (
-  <ApplicationProvider {...eva} theme={eva.light}>
-    <HomeScreen />
-  </ApplicationProvider>
-);
+  const navigateDetails = () => {
+    navigation.navigate('Login');
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <TopNavigation title='MyApp' alignment='center'/>
+      <Divider/>
+      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Button onPress={navigateDetails}>OPEN DETAILS</Button>
+      </Layout>
+    </SafeAreaView>
+  );
+};
