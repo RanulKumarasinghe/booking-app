@@ -2,17 +2,6 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 
-const data = [
-    kebab:{
-    },
-    pizza:{
-
-    },
-    hamburger:{
-        
-    }
-];
-
 const BackIcon = (props) => (
   <Icon {...props} name='arrow-back' />
 );
