@@ -1,39 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import List from './components/List';
-
-import Login from './components/Pages/Login'
-import Menu from './components/Pages/Menu'
-import Restaurant from './components/Pages/Restaurant'
-import RestaurantList from './components/Pages/RestaurantList'
+import * as React from 'react';
+import { View, Text, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Home from './components/Pages/Home'
 
 
-export default function App() {
+const Stack = createStackNavigator();
 
+//The stack navigator defaults to home.jsx file which uses also Kitten-UI
+//The screen that was navigated to (home.jsx) gets passed a parameter (navigator)
+//To use stack navigator and go to any other screen use this parameter
+//For example to go to login page use navigator.navigate('Name of screen')
+//Screen names can be seen in Stack.screen 'name' tag
+function App() {
   return (
-    <View style={styles.container}>
+    // <View style={styles.container}>
 
 
-      <Text>Things Changed Again!</Text>
-      <StatusBar style="auto" />
-      <Text>Again Things Changed !</Text>
-      <List restaurants={restaurants} />
+    //   <Text>Things Changed Again!</Text>
+    //   <StatusBar style="auto" />
+    //   <Text>Again Things Changed !</Text>
+    //   <List restaurants={restaurants} />
 
-      {/* <Login /> */}
-      {/* <Menu /> */}
-      {/* <Restaurant /> */}
-      {/* <RestaurantList /> */}
+    //   {/* <Login /> */}
+    //   {/* <Menu /> */}
+    //   {/* <Restaurant /> */}
+    //   {/* <RestaurantList /> */}
 
-    </View>
+    // </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={Home} options={{title:'Home'}}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
