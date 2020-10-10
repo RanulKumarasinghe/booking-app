@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "240925319711",
+    "firebase_url": "https://eatin-d731f.firebaseio.com",
+    "project_id": "eatin-d731f",
+    "storage_bucket": "eatin-d731f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240925319711:android:bd2bae19ee9a0af9c6ab2a",
+        "android_client_info": {
+          "package_name": "com.eatin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240925319711-4m4e0ssvif1454o36lmn20l3b3a34o6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEuM0mPSTH9TeBo-jgyq0qxKZOopQF2so"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240925319711-4m4e0ssvif1454o36lmn20l3b3a34o6q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
