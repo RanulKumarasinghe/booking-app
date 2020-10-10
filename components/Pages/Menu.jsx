@@ -26,7 +26,7 @@ const data = [{
   options:[{
     name:'Burger',
     desc:'Wrap with lamb doner meat, sliced and seasoned',
-    price:'4.99'
+    price:'£4.99'
   },
   {
     name:'Double burger',
@@ -50,7 +50,7 @@ const data = [{
   options:[{
     name:'Margherita ',
     desc:'Classic pizza with tomato sauce and mozzarella',
-    price:'4.99'
+    price:'£4.99'
   },
   {
     name:'American hot',

@@ -8,7 +8,7 @@ import { MenuScreen } from './components/Pages/Menu';
 const { Navigator, Screen } = createStackNavigator();
 
 const HomeNavigator = () => (
-  <Navigator headerMode='none' initialRouteName="Menu">
+  <Navigator headerMode='none' initialRouteName="Home">
     <Screen name='Home' component={HomeScreen}/>
     <Screen name='Login' component={LoginScreen}/>
     <Screen name='Menu' component={MenuScreen}/>
