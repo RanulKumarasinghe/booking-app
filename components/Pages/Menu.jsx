@@ -44,6 +44,30 @@ const data = [{
     price:'£7.99'
   }
 ]
+},
+{
+  category:'Pizza',
+  options:[{
+    name:'Margherita ',
+    desc:'Classic pizza with tomato sauce and mozzarella',
+    price:'4.99'
+  },
+  {
+    name:'American hot',
+    desc:'Hot american style pizza',
+    price:'£6.99'
+  },
+  {
+    name:'Ham and Pineapple',
+    desc:'Controversial pizza, tasty or not?',
+    price:'£5.99'
+  },
+  {
+    name:'Meat feast',
+    desc:'Pizza with beef, pork and chicken',
+    price:'£7.99'
+  }
+]
 }];
 
 const price = () => (<Text category='p2'>£7.99</Text>);
