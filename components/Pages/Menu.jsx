@@ -70,8 +70,6 @@ const data = [{
 ]
 }];
 
-const price = () => (<Text category='p2'>£7.99</Text>);
-
 const BackIcon = (props) => (
   <Icon {...props} name='arrow-back' />
 );
@@ -103,7 +101,7 @@ const drawerItemFactory = (options) => {
   const drawerItems = [];
   options.forEach(element => {
     drawerItems.push(
-      <DrawerItem title={drawerTextFactory(element.name,element.desc)} accessoryRight={price}/>
+    <DrawerItem title={drawerTextFactory(element.name,element.desc)} accessoryRight={() => <Text category='p2'>{element.price}</Text>}/>
     );
   });
   return drawerItems;
