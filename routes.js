@@ -12,6 +12,7 @@ const HomeNavigator = () => (
     <Screen name='Home' component={HomeScreen}/>
     <Screen name='Login' component={LoginScreen}/>
     <Screen name='Menu' component={MenuScreen}/>
+    <Screen name='Restaurants' component={MenuScreen}/>
   </Navigator>
 );
 
