@@ -1,6 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { Button, Divider, Layout, TopNavigation } from '@ui-kitten/components';
+import {Text ,Button, Divider, Layout, TopNavigation } from '@ui-kitten/components';
+import MenuScreen from '../scenes/Menu'
 
 const HomeScreen = ({ navigation }) => {
 
@@ -45,6 +46,7 @@ const HomeScreen = ({ navigation }) => {
         <Divider/>
         <Button onPress={navigateRestaurantList}>Restaurant List</Button>
       </Layout>
+      <MenuScreen />
     </SafeAreaView>
   );
 };

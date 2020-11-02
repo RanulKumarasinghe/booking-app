@@ -1,6 +1,5 @@
 import Restaurant from './restaurant';
 
-
 export const RESTAURANT = [
   new Restaurant('r1', 'The Pizzeria', 'Italian', 'Vegan', 3, 'https://media-cdn.tripadvisor.com/media/photo-s/04/34/f8/f0/gondolier-pizza-italian.jpg'),
   new Restaurant('r2', 'Mcdonalds', 'Quick & Easy', 'Non-Vegan', 4, 'https://www.incimages.com/uploaded_files/image/1920x1080/getty_1026535662_2000133316537670495_415913.jpg'),
@@ -13,3 +12,70 @@ export const RESTAURANT = [
   new Restaurant('r9', 'Snack on the side','French', 'Non-Vegan', 5, 'https://www.parisperfect.com/blog/wp-content/uploads/2015/01/French-Restaurant-Etiquette-How-to-Avoid-a-Faux-Pas-in-Paris-by-Paris-Perfect.jpg'),
   new Restaurant('r10', 'Handle the heat', 'Summer', 'Vegan', 3, 'https://www.spicytadka.co.uk/wp-content/uploads/2020/08/Banner-04.jpg')
 ];
+
+export const MenuData = [{
+  category:'Kebab',
+  options:[{
+    name:'Doner kebab wrap',
+    desc:'Wrap with lamb doner meat, sliced and seasoned',
+    price:'£6.99'
+  },
+  {
+    name:'Kebab meat',
+    desc:'Strips of kebab meat served with sauce',
+    price:'£5.99'
+  },
+  {
+    name:'Kebab meat with chips',
+    desc:'Strips of kebab meat served with sauce and chips',
+    price:'£6.99'
+  }
+]},
+{
+  category:'Hamburger',
+  options:[{
+    name:'Burger',
+    desc:'Wrap with lamb doner meat, sliced and seasoned',
+    price:'£4.99'
+  },
+  {
+    name:'Double burger',
+    desc:'Strips of kebab meat served with sauce',
+    price:'£6.99'
+  },
+  {
+    name:'Cheese burger',
+    desc:'Strips of kebab meat served with sauce',
+    price:'£5.99'
+  },
+  {
+    name:'Double cheese burger',
+    desc:'Strips of kebab meat served with sauce',
+    price:'£7.99'
+  }
+]
+},
+{
+  category:'Pizza',
+  options:[{
+    name:'Margherita ',
+    desc:'Classic pizza with tomato sauce and mozzarella',
+    price:'£4.99'
+  },
+  {
+    name:'American hot',
+    desc:'Hot american style pizza',
+    price:'£6.99'
+  },
+  {
+    name:'Ham and Pineapple',
+    desc:'Controversial pizza, tasty or not?',
+    price:'£5.99'
+  },
+  {
+    name:'Meat feast',
+    desc:'Pizza with beef, pork and chicken',
+    price:'£7.99'
+  }
+]
+}];

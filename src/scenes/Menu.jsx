@@ -1,107 +1,42 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { StyleSheet, View } from 'react-native';
-import {Text, Divider, TopNavigation, TopNavigationAction, Drawer, DrawerGroup, DrawerItem, Icon} from '@ui-kitten/components';
-
-const data = [{
-  category:'Kebab',
-  options:[{
-    name:'Doner kebab wrap',
-    desc:'Wrap with lamb doner meat, sliced and seasoned',
-    price:'£6.99'
-  },
-  {
-    name:'Kebab meat',
-    desc:'Strips of kebab meat served with sauce',
-    price:'£5.99'
-  },
-  {
-    name:'Kebab meat with chips',
-    desc:'Strips of kebab meat served with sauce and chips',
-    price:'£6.99'
-  }
-]},
-{
-  category:'Hamburger',
-  options:[{
-    name:'Burger',
-    desc:'Wrap with lamb doner meat, sliced and seasoned',
-    price:'£4.99'
-  },
-  {
-    name:'Double burger',
-    desc:'Strips of kebab meat served with sauce',
-    price:'£6.99'
-  },
-  {
-    name:'Cheese burger',
-    desc:'Strips of kebab meat served with sauce',
-    price:'£5.99'
-  },
-  {
-    name:'Double cheese burger',
-    desc:'Strips of kebab meat served with sauce',
-    price:'£7.99'
-  }
-]
-},
-{
-  category:'Pizza',
-  options:[{
-    name:'Margherita ',
-    desc:'Classic pizza with tomato sauce and mozzarella',
-    price:'£4.99'
-  },
-  {
-    name:'American hot',
-    desc:'Hot american style pizza',
-    price:'£6.99'
-  },
-  {
-    name:'Ham and Pineapple',
-    desc:'Controversial pizza, tasty or not?',
-    price:'£5.99'
-  },
-  {
-    name:'Meat feast',
-    desc:'Pizza with beef, pork and chicken',
-    price:'£7.99'
-  }
-]
-}];
-
-const BackIcon = (props) => (
-  <Icon {...props} name='arrow-back' />
-);
+import { View } from 'react-native';
+import {Text, Divider, Drawer, DrawerGroup, DrawerItem} from '@ui-kitten/components';
+import {MenuData} from '../other/dummy-data';
 
 //Formats text for the drawer
-const drawerTextFactory = (name,desc) => {
+const setItemText = (name, desc) => {
   return (
     <View>
       <View>
-    <Text category='s1'>{name}</Text>
+        <Text category='s1'>{name}</Text>
       </View>
       <Divider />
-      <Text category='p2'>{desc}</Text>
+      <View >
+        <Text style={{flex:1, width:300}} category='p2'>{desc + " " + desc}</Text>
+      </View>
     </View>
   );
 }
 
 //Creates a container for drawer items
-const drawerGroupFactory = (data) => {
+const createGroup = (data) => {
   return (
   <DrawerGroup title={data.category}>
-    {drawerItemFactory(data.options)}
+    {createItems(data.options)}
   </DrawerGroup>
   );
 }
 
-//Creates individual drawer items for each dish
-const drawerItemFactory = (options) => {
+//Creates group of drawer items for each category
+const createItems = (options) => {
   const drawerItems = [];
   options.forEach(element => {
     drawerItems.push(
-    <DrawerItem title={drawerTextFactory(element.name,element.desc)} accessoryRight={() => <Text category='p2'>{element.price}</Text>}/>
+    <DrawerItem 
+      title={setItemText(element.name,element.desc)} 
+      accessoryRight={() => <Text category='p2'>{element.price}</Text>}
+    />
     );
   });
   return drawerItems;
@@ -109,44 +44,24 @@ const drawerItemFactory = (options) => {
 
 const MenuScreen = ({ navigation }) => {
   //Array holding containers for each dish type, eg kebab
-  const drawerGroup = [];
-  
-  const navigateBack = () => {
-    navigation.goBack();
-  };
-
-  const BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack}/>
-  );
-
+  const drawerGroups = [];
   const [selectedIndex, setSelectedIndex] = React.useState(null);
 
-  {data.forEach(element => {
-    drawerGroup.push(drawerGroupFactory(element));
-  })}
+  MenuData.forEach(element => {
+    drawerGroups.push(createGroup(element));
+  })
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <TopNavigation title='Menu' alignment='center' accessoryLeft={BackAction}/>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <Text category='h5' style={{marginLeft:'4%'}}>Menu</Text>
       <Divider/>
       <Drawer
         selectedIndex={selectedIndex}
         onSelect={index => setSelectedIndex(index)}>
-          {drawerGroup}
+          {drawerGroups}
       </Drawer>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    maxHeight: 180,
-  },
-  card:{
-    flex: 1,
-    margin: 2,
-  }
-});
-
 
 export default MenuScreen;
