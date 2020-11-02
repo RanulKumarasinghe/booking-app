@@ -13,7 +13,11 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const navigateRestaurants = () => {
-    navigation.navigate('Restaurants');
+    navigation.navigate('Restaurant');
+  };
+
+  const navigateRestaurantList = () => {
+    navigation.navigate('RestaurantList');
   };
   
   return (
@@ -26,6 +30,8 @@ const HomeScreen = ({ navigation }) => {
         <Button onPress={navigateLogin}>Login</Button>
         <Divider/>
         <Button onPress={navigateRestaurants}>Restaurants</Button>
+        <Divider/>
+        <Button onPress={navigateRestaurantList}>Restaurant List</Button>
       </Layout>
     </SafeAreaView>
   );

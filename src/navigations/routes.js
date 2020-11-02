@@ -2,9 +2,11 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import HomeScreen from './src/scenes/Home';
-import LoginScreen from './src/scenes/Login';
-import MenuScreen from './src/scenes/Menu';
+import HomeScreen from '../scenes/Home';
+import LoginScreen from '../scenes/Login';
+import MenuScreen from '../scenes/Menu';
+import Restaurant from '../scenes/Restaurant';
+import RestaurantList from '../scenes/RestaurantList';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -13,7 +15,8 @@ const HomeNavigator = () => (
     <Screen name='Home' component={HomeScreen}/>
     <Screen name='Login' component={LoginScreen}/>
     <Screen name='Menu' component={MenuScreen}/>
-    <Screen name='Restaurants' component={MenuScreen}/>
+    <Screen name='Restaurant' component={Restaurant}/>
+    <Screen name='RestaurantList' component={RestaurantList}/>
   </Navigator>
 );
 

@@ -125,8 +125,6 @@ const MenuScreen = ({ navigation }) => {
     drawerGroup.push(drawerGroupFactory(element));
   })}
 
-  console.log(drawerGroup);
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <TopNavigation title='Menu' alignment='center' accessoryLeft={BackAction}/>

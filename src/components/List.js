@@ -7,7 +7,7 @@ import {
   ImageBackground
 } from 'react-native';
 
-const RestaurantLst = props => {
+const RestaurantList = props => {
   return (
     <View style={styles.listItem}>
       <TouchableOpacity onPress={props.onSelectRestaurant}>
@@ -26,7 +26,7 @@ const RestaurantLst = props => {
           </View>
           <View style={{ ...styles.listRow, ...styles.listDetail }}>
             <Text>{props.vegan}</Text>
-            <Text>{props.type.toUpperCase()}</Text>
+            <Text>{props.type}</Text>
             <Text>{props.rating}</Text>
           </View>
         </View>
@@ -66,11 +66,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12
   },
   title: {
-    fontFamily: 'open-sans-bold',
+    // fontFamily: 'open-sans-bold',
     fontSize: 20,
     color: 'white',
     textAlign: 'center'
   }
 });
 
-export default RestaurantLst;
+export default RestaurantList;
