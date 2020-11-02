@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function RestaurantList(props) {
+function RestaurantList(props) {
 
   const restaurants = [
     {
@@ -31,3 +31,5 @@ export default function RestaurantList(props) {
     </View>
   );
 }
+
+export default RestaurantList;

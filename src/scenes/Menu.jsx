@@ -107,7 +107,7 @@ const drawerItemFactory = (options) => {
   return drawerItems;
 }
 
-export const MenuScreen = ({ navigation }) => {
+const MenuScreen = ({ navigation }) => {
   //Array holding containers for each dish type, eg kebab
   const drawerGroup = [];
   
@@ -150,3 +150,5 @@ const styles = StyleSheet.create({
   }
 });
 
+
+export default MenuScreen;
