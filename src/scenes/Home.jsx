@@ -12,6 +12,14 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('Login');
   };
 
+  const navigateSignUp = () => {
+    navigation.navigate('SignUp');
+  };
+  
+  const navigateLoading = () => {
+    navigation.navigate('Loading');
+  };
+
   const navigateRestaurants = () => {
     navigation.navigate('Restaurant');
   };
@@ -26,6 +34,10 @@ const HomeScreen = ({ navigation }) => {
       <Divider/>
       <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Button onPress={navigateMenu}>Open Menu</Button>
+        <Divider/>
+        <Button onPress={navigateLoading}>Loading</Button>
+        <Divider/>
+        <Button onPress={navigateSignUp}>SignUp</Button>
         <Divider/>
         <Button onPress={navigateLogin}>Login</Button>
         <Divider/>
