@@ -1,45 +1,94 @@
 // SignUp.js
-import React from 'react'
+import React, {useState} from 'react'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
+import firebase from '../utils/firebase'
 
-export default class SignUp extends React.Component {
-  state = { email: '', password: '', errorMessage: null }
-  handleSignUp = () => {
-    // TODO: Firebase stuff...
-    console.log('handleSignUp')
+const SignUp = (props) => {
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+
+  const handleSignUp = () => {
+    if (password !== confirmPassword) {
+      alert("Passwords don't match.")
+      return
   }
-  render() {
+  firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((response) => {
+          const uid = response.user.uid
+          const data = {
+              id: uid,
+              email,
+              fullName,
+          };
+          const usersRef = firebase.firestore().collection('users')
+          usersRef
+              .doc(uid)
+              .set(data)
+              .then(() => {
+                  // props.navigation.navigate('Login')}
+                  props.navigation.navigate('Login', {user: data})
+              })
+              .catch((error) => {
+                  alert(error)
+              });
+      })
+      .catch((error) => {
+          alert(error)
+  });
+  
+  }
+  
+
     return (
       <View style={styles.container}>
         <Text>Sign Up</Text>
-        {this.state.errorMessage &&
+        {/* {this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
-          </Text>}
+          </Text>} */}
+        <TextInput
+          placeholder="Name"
+          autoCapitalize="words"
+          style={styles.textInput}
+          onChangeText={fullName => setFullName(fullName)}
+          value={fullName}
+        />
         <TextInput
           placeholder="Email"
           autoCapitalize="none"
           style={styles.textInput}
-          onChangeText={email => this.setState({ email })}
-          value={this.state.email}
+          onChangeText={email => setEmail(email)}
+          value={email}
         />
         <TextInput
           secureTextEntry
           placeholder="Password"
           autoCapitalize="none"
           style={styles.textInput}
-          onChangeText={password => this.setState({ password })}
-          value={this.state.password}
+          onChangeText={password => setPassword(password)}
+          value={password}
         />
-        <Button title="Sign Up" onPress={this.handleSignUp} />
+        <TextInput
+          secureTextEntry
+          placeholder="Confirm Password"
+          autoCapitalize="none"
+          style={styles.textInput}
+          onChangeText={confirmPassword => setConfirmPassword(confirmPassword)}
+          value={confirmPassword}
+        />
+        <Button title="Sign Up" onPress={handleSignUp} />
         <Button
           title="Already have an account? Login"
-          onPress={() => this.props.navigation.navigate('Login')}
+          onPress={() => props.navigation.navigate('Login')}
         />
       </View>
     )
   }
-}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -55,3 +104,6 @@ const styles = StyleSheet.create({
     marginTop: 8
   }
 })
+
+
+export default SignUp;
