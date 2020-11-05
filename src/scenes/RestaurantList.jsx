@@ -14,7 +14,7 @@ const RestaurantListScreen = props => {
         vegan={itemData.item.vegan}
         type={itemData.item.type}
         rating={itemData.item.rating}
-        onSelectRestaurant={() => this.props.navigation.navigate({
+        onSelectRestaurant={() => props.navigation.navigate({
           routeName: 'Restaurant',
           params: {
             categoryId: itemData.item.id
