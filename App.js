@@ -10,5 +10,6 @@ export default () => (
     <ApplicationProvider {...eva} theme={eva.light}>
       <AppNavigator/>
     </ApplicationProvider>
+
   </>
 );
