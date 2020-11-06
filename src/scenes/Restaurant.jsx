@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Button, Text, View, Image } from "react-native";
-import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { StyleSheet, Button, Text, Image } from "react-native";
+import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction, View } from '@ui-kitten/components';
 
 const Restaurant = props => {
   return (
@@ -11,7 +11,7 @@ const Restaurant = props => {
       </View>
       <View>
           <Image/> 
-          /**Self closing tag above, should the images be added into a constat folder? */
+          /**Self closing tag above, should the images be added into a constant folder? */
       </View> 
       <View>
           <Text>Restaurant Info</Text>
@@ -46,8 +46,6 @@ const styles = StyleSheet.create({
 
     font:{},
     button:{},
-
-
 });
 
 export default Restaurant;
