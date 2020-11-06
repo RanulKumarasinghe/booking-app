@@ -8,7 +8,7 @@ const LoadingScreen = ({navigation}) => {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          <Text>Loading...</Text>
+          <Text style={{marginTop:20}}>Loading Page</Text>
         </View>
         <View>
           <Navbar selectedIndex={1} navigation={navigation} />
