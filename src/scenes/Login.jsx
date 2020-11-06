@@ -1,7 +1,8 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { StyleSheet, TextInput, Button } from 'react-native'
+import Navbar from '../components/Navbar';
 
 import auth from "@react-native-firebase/auth"
 
@@ -12,6 +13,11 @@ const BackIcon = (props) => (
 // export const LoginScreen = ({ navigation }) => {
 export default class LoginScreen extends React.Component {
 
+  constructor({navigation}){
+    super();
+    this.navigation = navigation;
+  }
+
   state = { email: '', password: '', errorMessage: null }
   handleLogin = () => {
     // TODO: Firebase stuff...
@@ -19,7 +25,7 @@ export default class LoginScreen extends React.Component {
   }
 
   navigateBack = () => {
-    props.navigation.goBack();
+    this.navigation.goBack();
   };
 
   BackAction = () => (
@@ -58,6 +64,9 @@ export default class LoginScreen extends React.Component {
             onPress={() => this.props.navigation.navigate('SignUp')}
           />
         </Layout>
+        <View>
+          <Navbar selectedIndex={3} navigation={this.navigation} />
+        </View>
       </SafeAreaView>
     );
   }

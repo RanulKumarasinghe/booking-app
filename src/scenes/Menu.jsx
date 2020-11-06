@@ -1,19 +1,21 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { View } from 'react-native';
-import {Text, Divider, Drawer, DrawerGroup, DrawerItem} from '@ui-kitten/components';
-import {MenuData} from '../other/dummy-data';
+import { View, Image, StyleSheet } from 'react-native';
+import { Text, Divider, Drawer, DrawerGroup, DrawerItem } from '@ui-kitten/components';
+import { MenuData } from '../other/dummy-data';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 //Formats text for the drawer
-const setItemText = (name, desc) => {
+const setItemText = (name, desc, price) => {
   return (
     <View>
       <View>
-        <Text category='s1'>{name}</Text>
+        <Text category='p1'>{name}</Text>
       </View>
       <Divider />
       <View >
-        <Text style={{flex:1, width:300}} category='p2'>{desc + " " + desc}</Text>
+        <Text style={{ flex: 1, width: 300 }} category='p2'>{desc}</Text>
+        <Text style={{ flex: 1, width: 300 }} category='p2'>{price}</Text>
       </View>
     </View>
   );
@@ -22,27 +24,34 @@ const setItemText = (name, desc) => {
 //Creates a container for drawer items
 const createGroup = (data) => {
   return (
-  <DrawerGroup title={data.category}>
-    {createItems(data.options)}
-  </DrawerGroup>
+    <DrawerGroup title={data.category}>
+      {createItems(data.options)}
+    </DrawerGroup>
   );
 }
 
 //Creates group of drawer items for each category
 const createItems = (options) => {
   const drawerItems = [];
+  //
+  // Temporary link before have access to database
+  //
+  const link = "https://reactnative.dev/img/tiny_logo.png";
   options.forEach(element => {
     drawerItems.push(
-    <DrawerItem 
-      title={setItemText(element.name,element.desc)} 
-      accessoryRight={() => <Text category='p2'>{element.price}</Text>}
-    />
+      <DrawerItem
+        title={setItemText(element.name, element.desc, element.price)}
+        accessoryRight={() => <Image source={{
+          uri: link,
+        }}
+          style={styles.image} />}
+      />
     );
   });
   return drawerItems;
 }
 
-const MenuScreen = ({ navigation }) => {
+const MenuComponent = () => {
   //Array holding containers for each dish type, eg kebab
   const drawerGroups = [];
   const [selectedIndex, setSelectedIndex] = React.useState(null);
@@ -52,16 +61,23 @@ const MenuScreen = ({ navigation }) => {
   })
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-      <Text category='h5' style={{marginLeft:'4%'}}>Menu</Text>
-      <Divider/>
-      <Drawer
-        selectedIndex={selectedIndex}
-        onSelect={index => setSelectedIndex(index)}>
+    <View style={{height:'auto'}}>
+        <Text category='h5' style={{ textAlign: 'center' }}>Menu</Text>
+        <Divider />
+        <Drawer
+          selectedIndex={selectedIndex}
+          onSelect={index => setSelectedIndex(index)}>
           {drawerGroups}
-      </Drawer>
-    </SafeAreaView>
+        </Drawer>
+    </View>
   );
 }
 
-export default MenuScreen;
+const styles = StyleSheet.create({
+  image: {
+    width: 50,
+    height: 50
+  }
+});
+
+export default MenuComponent;
