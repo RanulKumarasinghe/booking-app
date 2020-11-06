@@ -75,7 +75,7 @@ const SignUp = (props) => {
         <TextInput
           secureTextEntry
           placeholder="Confirm Password"
-          autoCapitalize="none"
+          autoCapitalize="exp"
           style={styles.textInput}
           onChangeText={confirmPassword => setConfirmPassword(confirmPassword)}
           value={confirmPassword}
