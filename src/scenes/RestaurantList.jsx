@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
-
+import Navbar from '../components/Navbar';
 import { RESTAURANT } from '../other/dummy-data';
 import MealItem from '../components/List';
 
@@ -38,7 +38,11 @@ const RestaurantListScreen = props => {
         renderItem={renderRestaurantListItem}
         style={{ width: '100%' }}
       />
+      <View>
+          <Navbar selectedIndex={3} navigation={navigation} />
+      </View>
     </View>
+    
   );
 };
 
