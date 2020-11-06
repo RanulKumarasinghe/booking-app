@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import SearchBar from 'react-native-search-bar';
+import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
 import { RESTAURANT } from '../other/dummy-data';
 import MealItem from '../components/List';
+import { Button, Divider, Layout, TopNavigation } from '@ui-kitten/components';
+import { ListItem, SearchBar } from 'react-native-elements';
+
 
 const RestaurantListScreen = props => {
   const renderRestaurantListItem = itemData => {
@@ -14,24 +16,70 @@ const RestaurantListScreen = props => {
         vegan={itemData.item.vegan}
         type={itemData.item.type}
         rating={itemData.item.rating}
-        onSelectRestaurant={() => props.navigation.navigate({
-          routeName: 'Restaurant',
-          params: {
-            categoryId: itemData.item.id
-          }
-        })
+        onSelectRestaurant={() => props.navigation.navigate('Restaurant', {
+          itemID: itemData.item.id
+        }
+        //   {
+        //   routeName: 'Restaurant',
+        //   params: {
+        //     categoryId: itemData.item.id
+        //   }
+        // }
+        )
       }
       />
     );
   };
 
+  // searchFilterFunction = text => {
+  //   this.setState({
+  //     value: text,
+  //   });
+
+  //   const newData = this.arrayholder.filter(item => {
+  //     const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
+  //     const textData = text.toUpperCase();
+
+  //     return itemData.indexOf(textData) > -1;
+  //   });
+  //   this.setState({
+  //     data: newData,
+  //   });
+  // }
+
+  // renderHeader = () => {
+  //   return (
+  //     <SearchBar
+  //       placeholder="Type Here..."
+  //       lightTheme
+  //       round
+  //      // onChangeText={text => this.searchFilterFunction(text)}
+  //       autoCorrect={false}
+  //       value={this.state.value}
+  //     />
+  //   );
+  // };
+
   return (
+    <View style={styles.header}>
+    <TopNavigation title='Restaurant List' alignment='center'/>
+    <View style={styles.screen}>
+      <View style={styles.search}>
+      <Text>Search: </Text>
+      <TextInput
+      style={{ height: 20, borderColor: '#7a42f4', borderWidth: 1 }}
+      width="60%"
+      placeholder = "Restaurant"
+      />
+      </View>
       <FlatList
         data={RESTAURANT}
         keyExtractor={(item, index) => item.id}
         renderItem={renderRestaurantListItem}
         style={{ width: '100%' }}
       />
+  </View>
+  </View>
   );
 };
 
@@ -43,11 +91,15 @@ RestaurantListScreen.navigationOptions = navigationData => {
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 15,
-    paddingTop: 45
+    paddingTop: 40
+  },
+  header: {
+    paddingTop: 10
+  },
+  search: {
+    flexDirection: 'row'
   }
 });
 
