@@ -81,7 +81,7 @@ const RestaurantListScreen = props => {
         />
       </View>
       <View>
-        <Navbar selectedIndex={3} navigation={navigation} />
+        <Navbar selectedIndex={3} navigation={props.navigation} />
       </View>
     </View>
 
