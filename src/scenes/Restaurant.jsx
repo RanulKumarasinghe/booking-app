@@ -6,7 +6,7 @@ import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-k
 const Restaurant = props => {
   return (
     <View>
-          <TopNavigation title={props.name} alignment='center'/>
+          <TopNavigation title={props.name} alignment='center' style={styles.header} />
       <View>
           <Image/> 
           {/**Self closing tag above, should the images be added into a constant folder? */}
