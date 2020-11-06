@@ -1,7 +1,7 @@
 // SignUp.js
 import React, {useState} from 'react'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
-import firebase from '../utils/firebase'
+import firebase from '@/utils/firebase'
 
 const SignUp = (props) => {
   const [fullName, setFullName] = useState('')
