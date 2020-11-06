@@ -16,39 +16,47 @@ export const RESTAURANT = [
 export const MenuData = [{
   category:'Kebab',
   options:[{
+    id: 1,
     name:'Doner kebab wrap',
     desc:'Wrap with lamb doner meat, sliced and seasoned',
     price:'£6.99'
   },
   {
+    id: 2,
     name:'Kebab meat',
     desc:'Strips of kebab meat served with sauce',
     price:'£5.99'
   },
   {
+    id: 3,
     name:'Kebab meat with chips',
     desc:'Strips of kebab meat served with sauce and chips',
     price:'£6.99'
   }
 ]},
 {
+  id: 4,
   category:'Hamburger',
   options:[{
+    id: 5,
     name:'Burger',
     desc:'Wrap with lamb doner meat, sliced and seasoned',
     price:'£4.99'
   },
   {
+    id: 6,
     name:'Double burger',
     desc:'Strips of kebab meat served with sauce',
     price:'£6.99'
   },
   {
+    id: 7,
     name:'Cheese burger',
     desc:'Strips of kebab meat served with sauce',
     price:'£5.99'
   },
   {
+    id: 8,
     name:'Double cheese burger',
     desc:'Strips of kebab meat served with sauce',
     price:'£7.99'
@@ -56,23 +64,28 @@ export const MenuData = [{
 ]
 },
 {
+  id: 9,
   category:'Pizza',
   options:[{
+    id: 10,
     name:'Margherita ',
     desc:'Classic pizza with tomato sauce and mozzarella',
     price:'£4.99'
   },
   {
+    id: 11,
     name:'American hot',
     desc:'Hot american style pizza',
     price:'£6.99'
   },
   {
+    id: 12,
     name:'Ham and Pineapple',
     desc:'Controversial pizza, tasty or not?',
     price:'£5.99'
   },
   {
+    id: 13,
     name:'Meat feast',
     desc:'Pizza with beef, pork and chicken',
     price:'£7.99'

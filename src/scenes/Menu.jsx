@@ -24,7 +24,9 @@ const setItemText = (name, desc, price) => {
 //Creates a container for drawer items
 const createGroup = (data) => {
   return (
-    <DrawerGroup title={data.category}>
+    <DrawerGroup 
+      id={data.id}
+      title={data.category}>
       {createItems(data.options)}
     </DrawerGroup>
   );
@@ -39,7 +41,8 @@ const createItems = (options) => {
   const link = "https://reactnative.dev/img/tiny_logo.png";
   options.forEach(element => {
     drawerItems.push(
-      <DrawerItem
+      <DrawerItem 
+        id={element.id}
         title={setItemText(element.name, element.desc, element.price)}
         accessoryRight={() => <Image source={{
           uri: link,

@@ -8,8 +8,8 @@ import SignUpScreen from '../scenes/SignUp';
 import LoadingScreen from '../scenes/Loading';
 
 import MenuScreen from '../scenes/Menu';
-import Restaurant from '../scenes/Restaurant';
-import RestaurantList from '../scenes/RestaurantList';
+import RestaurantScreen from '../scenes/Restaurant';
+import RestaurantListScreen from '../scenes/RestaurantListScreen';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -20,8 +20,8 @@ const HomeNavigator = () => (
     <Screen name='Login' component={LoginScreen}/>
     <Screen name='SignUp' component={SignUpScreen}/>
     <Screen name='Menu' component={MenuScreen}/>
-    <Screen name='Restaurant' component={Restaurant}/>
-    <Screen name='RestaurantList' component={RestaurantList}/>
+    <Screen name='Restaurant' component={RestaurantScreen}/>
+    <Screen name='RestaurantList' component={RestaurantListScreen}/>
   </Navigator>
 );
 

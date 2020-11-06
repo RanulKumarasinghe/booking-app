@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-const RestaurantList = props => {
+const RestaurantEntry = props => {
 
 //  function getVegan () {
 //    if(props.vegan === 'Vegan') {
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RestaurantList;
+export default RestaurantEntry;

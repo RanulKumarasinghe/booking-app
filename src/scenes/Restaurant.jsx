@@ -5,12 +5,15 @@ import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-k
 import { RESTAURANT } from '../other/dummy-data';
 import Navbar from '../components/Navbar';
 
-const Restaurant = ({ navigation }) => {
+const Restaurant = (props) => {
+  const itemId = props.route.params.itemID;
+
+  const selectedRestaurant = RESTAURANT.find(restaurant => restaurant.id === itemId);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <View>
-          <TopNavigation title={props.name} alignment='center' style={styles.header} />
+          <TopNavigation title={selectedRestaurant.title} alignment='center' style={styles.header} />
           <View>
             <Image />
             {/**Self closing tag above, should the images be added into a constant folder? */}
@@ -38,7 +41,7 @@ const Restaurant = ({ navigation }) => {
         </View>
       </View>
       <View>
-        <Navbar selectedIndex={2} navigation={navigation} />
+        <Navbar selectedIndex={2} navigation={props.navigation} />
       </View>
     </SafeAreaView>
   );

@@ -2,16 +2,16 @@ import React from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
 import Navbar from '../components/Navbar';
 import { RESTAURANT } from '../other/dummy-data';
-import MealItem from '../components/List';
+import RestaurantEntry from '../components/RestaurantEntry';
 import { Button, Divider, Layout, TopNavigation } from '@ui-kitten/components';
 import { ListItem, SearchBar } from 'react-native-elements';
 
 
-const RestaurantListScreen = props => {
+const RestaurantListScreen = (props) => {
   const renderRestaurantListItem = itemData => {
     return (
-
-      <MealItem
+      <RestaurantEntry
+        id={itemData.id}
         title={itemData.item.title}
         image={itemData.item.image}
         vegan={itemData.item.vegan}
