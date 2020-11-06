@@ -4,8 +4,6 @@ import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction } from 
 import { StyleSheet, TextInput, Button } from 'react-native'
 import Navbar from '../components/Navbar';
 
-import auth from "@react-native-firebase/auth"
-
 const BackIcon = (props) => (
   <Icon {...props} name='arrow-back' />
 );

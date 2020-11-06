@@ -54,7 +54,7 @@ const createItems = (options) => {
   return drawerItems;
 }
 
-const MenuComponent = () => {
+const MenuComponent = (props) => {
   //Array holding containers for each dish type, eg kebab
   const drawerGroups = [];
   const [selectedIndex, setSelectedIndex] = React.useState(null);

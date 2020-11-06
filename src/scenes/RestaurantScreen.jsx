@@ -4,6 +4,7 @@ import { SafeAreaView,StyleSheet, Button, Text, Image, View } from "react-native
 import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { RESTAURANT } from '../other/dummy-data';
 import Navbar from '../components/Navbar';
+import MenuComponent from '@/components/Menu'
 
 const Restaurant = (props) => {
   const itemId = props.route.params.itemID;
@@ -33,7 +34,7 @@ const Restaurant = (props) => {
           </Text>
           </View>
           <View>
-            <Text>Place holder for menu</Text>
+            <MenuComponent />
           </View>
           <View>
             <Button title="Make A Booking" onPress={() => { console.log() }} />
