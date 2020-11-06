@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     button:{},
     
     header:{
-      padding:10,
+      paddingTop:10,
     },
 
 });
