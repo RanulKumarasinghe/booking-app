@@ -8,9 +8,24 @@ import Navbar from '../components/Navbar';
 const Restaurant = (props) => {
   const itemId = props.route.params.itemID;
 
+  navigateBack = () => {
+    props.navigation.goBack();
+  };
+
+  const BackIcon = (props) => (
+    <Icon {...props} name='arrow-back' />
+  );
+
+  BackAction = () => (
+    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
+  );
+  
+
   const selectedRestaurant = RESTAURANT.find(restaurant => restaurant.id === itemId);
   return (
     <SafeAreaView style={{ flex: 1 }}>
+       <TopNavigation title='Restaurant Name' alignment='center' accessoryLeft={BackAction} />
+        <Divider />
       <View style={{ flex: 1 }}>
         <View>
           <TopNavigation title={selectedRestaurant.title} alignment='center' style={styles.header} />

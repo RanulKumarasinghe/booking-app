@@ -3,11 +3,24 @@ import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
 import Navbar from '../components/Navbar';
 import { RESTAURANT } from '../other/dummy-data';
 import RestaurantEntry from '../components/RestaurantEntry';
-import { Button, Divider, Layout, TopNavigation } from '@ui-kitten/components';
+import { Button,Icon , Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { ListItem, SearchBar } from 'react-native-elements';
 
 
 const RestaurantListScreen = (props) => {
+  
+  navigateBack = () => {
+    props.navigation.goBack();
+  };
+
+  const BackIcon = (props) => (
+    <Icon {...props} name='arrow-back' />
+  );
+
+  BackAction = () => (
+    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
+  );
+  
   const renderRestaurantListItem = itemData => {
     return (
       <RestaurantEntry
@@ -63,7 +76,8 @@ const RestaurantListScreen = (props) => {
 
   return (
     <View style={styles.header}>
-      <TopNavigation title='Restaurant List' alignment='center' />
+      <TopNavigation title='Restaurant List' alignment='center' accessoryLeft={BackAction} />
+      <Divider />
       <View style={styles.screen}>
         <View style={styles.search}>
           <Text>Search: </Text>
@@ -81,7 +95,7 @@ const RestaurantListScreen = (props) => {
         />
       </View>
       <View>
-        <Navbar selectedIndex={3} navigation={props.navigation} />
+        <Navbar selectedIndex={2} navigation={props.navigation} />
       </View>
     </View>
 
