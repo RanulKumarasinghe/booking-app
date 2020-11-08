@@ -2,13 +2,13 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import HomeScreen from '../scenes/Home';
-import LoginScreen from '../scenes/Login';
-import SignUpScreen from '../scenes/SignUp';
-import LoadingScreen from '../scenes/Loading';
+import HomeScreen from '../scenes/HomeScreen';
+import LoginScreen from '../scenes/LoginScreen';
+import SignUpScreen from '../scenes/SignUpScreen';
+import LoadingScreen from '../scenes/LoadingScreen';
 
-import MenuScreen from '../scenes/Menu';
-import RestaurantScreen from '../scenes/Restaurant';
+import MenuScreen from '../components/Menu';
+import RestaurantScreen from '../scenes/RestaurantScreen';
 import RestaurantListScreen from '../scenes/RestaurantListScreen';
 
 const { Navigator, Screen } = createStackNavigator();
@@ -19,7 +19,6 @@ const HomeNavigator = () => (
     <Screen name='Loading' component={LoadingScreen}/>
     <Screen name='Login' component={LoginScreen}/>
     <Screen name='SignUp' component={SignUpScreen}/>
-    <Screen name='Menu' component={MenuScreen}/>
     <Screen name='Restaurant' component={RestaurantScreen}/>
     <Screen name='RestaurantList' component={RestaurantListScreen}/>
   </Navigator>
