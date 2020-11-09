@@ -12,13 +12,28 @@ import { FlatList } from "react-native-gesture-handler";
 const Restaurant = (props) => {
   const itemId = props.route.params.itemID;
 
+  navigateBack = () => {
+    props.navigation.goBack();
+  };
+
+  const BackIcon = (props) => (
+    <Icon {...props} name='arrow-back' />
+  );
+
+  BackAction = () => (
+    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
+  );
+  
+
   const selectedRestaurant = RESTAURANT.find(restaurant => restaurant.id === itemId);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <TopNavigation title='Restaurant Name' alignment='center' accessoryLeft={BackAction} />
+      <Divider />
       <ScrollView contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: 'space-between'
+            flexGrow: 1,
+            justifyContent: 'space-between'
       }}>
       <View style={{ flex: 1 }}>
         <View>
