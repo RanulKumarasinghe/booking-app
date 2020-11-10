@@ -31,9 +31,11 @@ const Restaurant = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
        <TopNavigation title='Restaurant Name' alignment='center' accessoryLeft={BackAction} />
         <Divider />
+      <TopNavigation title='Restaurant Name' alignment='center' accessoryLeft={BackAction} />
+      <Divider />
       <ScrollView contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: 'space-between'
+            flexGrow: 1,
+            justifyContent: 'space-between'
       }}>
       <View style={{ flex: 1 }}>
         <View>

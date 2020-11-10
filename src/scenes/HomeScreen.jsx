@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
-import { Text } from '@ui-kitten/components';
+import { Text, TopNavigation } from '@ui-kitten/components';
 import Navbar from '@/components/Navbar';
 
 const HomeScreen = ({ navigation }) => {
   
   return (
     <SafeAreaView style={{flex:1}}>
+      <TopNavigation title={"Home"} alignment='center'/>
       <View style={{flex:1}}>
-        <Text>asdasd</Text>
       </View>
       <View>
         <Navbar selectedIndex={0} navigation={navigation} />

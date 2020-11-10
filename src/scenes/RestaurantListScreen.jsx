@@ -95,10 +95,9 @@ const RestaurantListScreen = (props) => {
         />
       </View>
       <View>
-        <Navbar selectedIndex={2} navigation={props.navigation} />
+        <Navbar selectedIndex={1} navigation={props.navigation} />
       </View>
     </View>
-
   );
 };
 

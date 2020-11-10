@@ -37,9 +37,9 @@ const Navbar = ({ selectedIndex, navigation }) => {
           switch (index) {
             case 0: navigation.navigate('Home');
               break;
-            case 1: navigation.navigate('Loading');
+            case 1: navigation.navigate('RestaurantList');
               break;
-            case 2: navigation.navigate('RestaurantList');
+            case 2: navigation.navigate('ReservationPage');
               break;
             case 3: navigation.navigate('Login');
               break;
