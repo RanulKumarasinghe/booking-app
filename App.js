@@ -9,8 +9,10 @@ import { Provider } from 'react-redux'
 import restaurantReducer from '@/store/reducers/restaurants';
 
 const rootReducer = combineReducers({
-  meals: restaurantReducer,
+  restaurants: restaurantReducer,
 });
+
+const store = createStore(rootReducer);
 
 
 const App = () => (

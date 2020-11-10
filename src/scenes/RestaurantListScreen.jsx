@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
 import Navbar from '../components/Navbar';
-import { RESTAURANT } from '../other/dummy-data';
 import RestaurantEntry from '../components/RestaurantEntry';
 import { Button,Icon , Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { ListItem, SearchBar } from 'react-native-elements';
-
+import { useSelector } from 'react-redux'
 
 const RestaurantListScreen = (props) => {
-  
+  const restaurants = useSelector(state => state.restaurants.filteredRestaurant);
+
   navigateBack = () => {
     props.navigation.goBack();
   };
@@ -88,7 +88,7 @@ const RestaurantListScreen = (props) => {
           />
         </View>
         <FlatList
-          data={RESTAURANT}
+          data={restaurants}
           keyExtractor={(item, index) => item.id}
           renderItem={renderRestaurantListItem}
           style={{ width: '100%' }}

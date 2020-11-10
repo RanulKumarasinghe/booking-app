@@ -2,15 +2,20 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { SafeAreaView,StyleSheet, Button, Text, Image, View, ImageBackground, ScrollView, Dimensions } from "react-native";
 import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { RESTAURANT } from '../other/dummy-data';
 import Navbar from '../components/Navbar';
 import MenuComponent from '@/components/Menu'
 import StarRating from 'react-native-star-rating';
 import { FlatList } from "react-native-gesture-handler";
 
+import { useSelector } from 'react-redux';
+
 
 const Restaurant = (props) => {
+  const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.itemID;
+
+  const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
+
 
   navigateBack = () => {
     props.navigation.goBack();
@@ -24,9 +29,6 @@ const Restaurant = (props) => {
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
   );
   
-
-  const selectedRestaurant = RESTAURANT.find(restaurant => restaurant.id === itemId);
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <TopNavigation title='Restaurant Name' alignment='center' accessoryLeft={BackAction} />
@@ -37,10 +39,10 @@ const Restaurant = (props) => {
       }}>
       <View style={{ flex: 1 }}>
         <View>
-          <TopNavigation title={selectedRestaurant.title} alignment='center' style={styles.header} />
+          <TopNavigation title={restaurant.title} alignment='center' style={styles.header} />
           <View style={styles.listRow}>
           <Image
-              source={{ uri: selectedRestaurant.image }}
+              source={{ uri: restaurant.image }}
               style={styles.bgImage}
             />
             <Text style={styles.font}>Restaurant Info:</Text>
@@ -48,7 +50,7 @@ const Restaurant = (props) => {
             <StarRating
             disabled={true}
             maxStars={5}
-            rating={selectedRestaurant.rating}
+            rating={restaurant.rating}
             fullStarColor={'#dbeb34'}
             starSize={15}
 

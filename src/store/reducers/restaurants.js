@@ -1,21 +1,14 @@
 // import { MEALS } from ../
+import { RESTAURANT } from '@/other/dummy-data';
 
 const initialState = {
-  restaurants: [
-    {
-      id: 1,
-      name: 'MC'
-    },
-    {
-      id: 2,
-      name: 'Burger King'
-    }
-  ]
+  restaurants: RESTAURANT,
+  filteredRestaurant: RESTAURANT
 }
 
-const mealsReducer = (state = initialState, action) => {
+const restaurantReducer = (state = initialState, action) => {
 
   return state
 }
 
-export default mealsReducer;
+export default restaurantReducer;
