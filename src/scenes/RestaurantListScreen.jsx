@@ -1,26 +1,26 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
 import Navbar from '../components/Navbar';
-import { RESTAURANT } from '../other/dummy-data';
 import RestaurantEntry from '../components/RestaurantEntry';
 import { Button,Icon , Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { ListItem, SearchBar } from 'react-native-elements';
+import { useSelector, useDispatch } from 'react-redux'
 
+import {filterRestaurant} from '@/store/actions/restaurants'
 
 const RestaurantListScreen = (props) => {
-  
-  navigateBack = () => {
-    props.navigation.goBack();
-  };
+  const restaurants = useSelector(state => state.restaurants.filteredRestaurant);
+  const dispatch = useDispatch()
 
-  const BackIcon = (props) => (
-    <Icon {...props} name='arrow-back' />
-  );
+  // START name filter
+  const [searchName, setSearchName]= useState('')
 
-  BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-  );
-  
+  const filterHandler = (name) => {
+    setSearchName(name)
+    dispatch(filterRestaurant(name))
+  }
+
+
   const renderRestaurantListItem = itemData => {
     return (
       <RestaurantEntry
@@ -32,6 +32,7 @@ const RestaurantListScreen = (props) => {
         rating={itemData.item.rating}
         onSelectRestaurant={() => props.navigation.navigate('Restaurant', {
           itemID: itemData.item.id
+          //TODO: Send Page name as well 
         }
           //   {
           //   routeName: 'Restaurant',
@@ -76,19 +77,21 @@ const RestaurantListScreen = (props) => {
 
   return (
     <View style={styles.header}>
-      <TopNavigation title='Restaurant List' alignment='center' accessoryLeft={BackAction} />
+      <TopNavigation title='Restaurant List' alignment='center' />
       <Divider />
       <View style={styles.screen}>
         <View style={styles.search}>
           <Text>Search: </Text>
           <TextInput
             style={{ height: 20, borderColor: '#7a42f4', borderWidth: 1 }}
+            value={searchName}
+            onChangeText={(text)=> setSearchName(text)}
             width="60%"
             placeholder="Restaurant"
           />
         </View>
         <FlatList
-          data={RESTAURANT}
+          data={restaurants}
           keyExtractor={(item, index) => item.id}
           renderItem={renderRestaurantListItem}
           style={{ width: '100%' }}
