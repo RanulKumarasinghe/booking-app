@@ -1,26 +1,26 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
 import Navbar from '../components/Navbar';
 import RestaurantEntry from '../components/RestaurantEntry';
 import { Button,Icon , Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { ListItem, SearchBar } from 'react-native-elements';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+
+import {filterRestaurant} from '@/store/actions/restaurants'
 
 const RestaurantListScreen = (props) => {
   const restaurants = useSelector(state => state.restaurants.filteredRestaurant);
+  const dispatch = useDispatch()
 
-  navigateBack = () => {
-    props.navigation.goBack();
-  };
+  // START name filter
+  const [searchName, setSearchName]= useState('')
 
-  const BackIcon = (props) => (
-    <Icon {...props} name='arrow-back' />
-  );
+  const filterHandler = (name) => {
+    setSearchName(name)
+    dispatch(filterRestaurant(name))
+  }
 
-  BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-  );
-  
+
   const renderRestaurantListItem = itemData => {
     return (
       <RestaurantEntry
@@ -32,6 +32,7 @@ const RestaurantListScreen = (props) => {
         rating={itemData.item.rating}
         onSelectRestaurant={() => props.navigation.navigate('Restaurant', {
           itemID: itemData.item.id
+          //TODO: Send Page name as well 
         }
           //   {
           //   routeName: 'Restaurant',
@@ -76,13 +77,15 @@ const RestaurantListScreen = (props) => {
 
   return (
     <View style={styles.header}>
-      <TopNavigation title='Restaurant List' alignment='center' accessoryLeft={BackAction} />
+      <TopNavigation title='Restaurant List' alignment='center' />
       <Divider />
       <View style={styles.screen}>
         <View style={styles.search}>
           <Text>Search: </Text>
           <TextInput
             style={{ height: 20, borderColor: '#7a42f4', borderWidth: 1 }}
+            value={searchName}
+            onChangeText={(text)=> setSearchName(text)}
             width="60%"
             placeholder="Restaurant"
           />
