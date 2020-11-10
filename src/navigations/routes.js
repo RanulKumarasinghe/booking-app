@@ -6,8 +6,6 @@ import HomeScreen from '../scenes/HomeScreen';
 import LoginScreen from '../scenes/LoginScreen';
 import SignUpScreen from '../scenes/SignUpScreen';
 import LoadingScreen from '../scenes/LoadingScreen';
-
-import MenuScreen from '../components/Menu';
 import RestaurantScreen from '../scenes/RestaurantScreen';
 import RestaurantListScreen from '../scenes/RestaurantListScreen';
 
