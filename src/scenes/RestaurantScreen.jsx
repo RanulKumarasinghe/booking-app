@@ -23,13 +23,13 @@ const Restaurant = (props) => {
   BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
   );
-  
+
 
   const selectedRestaurant = RESTAURANT.find(restaurant => restaurant.id === itemId);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <TopNavigation title='Restaurant Name' alignment='center' accessoryLeft={BackAction} />
+      <TopNavigation title= {selectedRestaurant.title} alignment='center' accessoryLeft={BackAction} />
       <Divider />
       <ScrollView contentContainerStyle={{
             flexGrow: 1,
@@ -37,7 +37,6 @@ const Restaurant = (props) => {
       }}>
       <View style={{ flex: 1 }}>
         <View>
-          <TopNavigation title={selectedRestaurant.title} alignment='center' style={styles.header} />
           <View style={styles.listRow}>
           <Image
               source={{ uri: selectedRestaurant.image }}
