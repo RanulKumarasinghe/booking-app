@@ -32,7 +32,7 @@ const RestaurantListScreen = (props) => {
         rating={itemData.item.rating}
         onSelectRestaurant={() => props.navigation.navigate('Restaurant', {
           itemID: itemData.item.id
-          //TODO: Send Page name as well 
+          //TODO: Send Page name as well
         }
           //   {
           //   routeName: 'Restaurant',
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   screen: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 40,
+    paddingTop: 15,
     flex: 1
   },
   header: {

@@ -78,8 +78,9 @@ const MenuComponent = (props) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: 50,
-    height: 50
+    width: '10%',
+    height: '50%',
+    marginTop: 15
   }
 });
 
