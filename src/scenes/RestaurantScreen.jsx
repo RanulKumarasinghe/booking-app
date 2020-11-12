@@ -16,6 +16,9 @@ const Restaurant = (props) => {
 
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
+  onBooking = () => props.navigation.navigate('Booking', {
+    restaurantID: restaurant.id
+  });
 
   navigateBack = () => {
     props.navigation.goBack();
@@ -28,7 +31,7 @@ const Restaurant = (props) => {
   BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
   );
-  
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Divider />
@@ -65,13 +68,13 @@ const Restaurant = (props) => {
             <MenuComponent />
           </View>
           <View>
-            <Button title="Make A Booking" onPress={() => { console.log() }} />
+            <Button title="Make A Booking" onPress={this.onBooking} />
           </View>
         </View>
         </View>
       </View>
       <View>
-        <Navbar selectedIndex={2} navigation={props.navigation} />
+        <Navbar selectedIndex={1} navigation={props.navigation} />
       </View>
       </ScrollView>
     </SafeAreaView>

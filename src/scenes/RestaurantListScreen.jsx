@@ -34,46 +34,12 @@ const RestaurantListScreen = (props) => {
           itemID: itemData.item.id
           //TODO: Send Page name as well
         }
-          //   {
-          //   routeName: 'Restaurant',
-          //   params: {
-          //     categoryId: itemData.item.id
-          //   }
-          // }
         )
         }
       />
     );
   };
 
-  // searchFilterFunction = text => {
-  //   this.setState({
-  //     value: text,
-  //   });
-
-  //   const newData = this.arrayholder.filter(item => {
-  //     const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
-  //     const textData = text.toUpperCase();
-
-  //     return itemData.indexOf(textData) > -1;
-  //   });
-  //   this.setState({
-  //     data: newData,
-  //   });
-  // }
-
-  // renderHeader = () => {
-  //   return (
-  //     <SearchBar
-  //       placeholder="Type Here..."
-  //       lightTheme
-  //       round
-  //      // onChangeText={text => this.searchFilterFunction(text)}
-  //       autoCorrect={false}
-  //       value={this.state.value}
-  //     />
-  //   );
-  // };
 
   return (
     <View style={styles.header}>
@@ -98,18 +64,12 @@ const RestaurantListScreen = (props) => {
         />
       </View>
       <View>
-        <Navbar selectedIndex={2} navigation={props.navigation} />
+        <Navbar selectedIndex={1} navigation={props.navigation} />
       </View>
     </View>
-
   );
 };
 
-RestaurantListScreen.navigationOptions = navigationData => {
-  return {
-    headerTitle: 'Restaurant List'
-  }
-};
 
 const styles = StyleSheet.create({
   screen: {
