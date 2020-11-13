@@ -17,11 +17,41 @@ export const authenticate = (userId, token, expiryTime) => {
   };
 };
 
-export const login = (email, password) => {
+export const signUp = (email, password) => {
+  return dispatch(firebase.auth().createUserWithEmailAndPassword(email, password))
+  .then((response) => {
+    const uid = response.user.uid
+    const data = {
+        id: uid,
+        email,
+        fullName,
+    };
+    const usersRef = firebase.firestore().collection('users')
 
+    usersRef.doc(uid).set(data)
+      .then(() => {
+        dispatch(
+          authenticate(
+            email,
+            123,
+            100000
+          )
+        );
+      })
+      .catch((error) => {
+          alert(error)
+      });
+    })
+    .catch((error) => {
+        alert(error)
+    });
+}
+
+export const login = (email, password) => {
   return async dispatch => {
     //placeholder for http request
     // await timeout(1000);
+
 
     dispatch(
       authenticate(

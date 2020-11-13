@@ -6,6 +6,7 @@ import { AppNavigator } from './src/navigations/routes';
 import { Provider } from 'react-redux'
 
 import restaurantReducer from '@/store/reducers/restaurants';
+import authReducer from '@/store/reducers/auth';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import * as Font from 'expo-font';
@@ -18,6 +19,7 @@ import ReduxThunk from 'redux-thunk'
 
 const rootReducer = combineReducers({
   restaurants: restaurantReducer,
+  auth: authReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
