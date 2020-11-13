@@ -16,7 +16,6 @@ const LoadingScreen = (props) => {
 
   if (!restaurantsLoaded) {
     fetchRestaurants()
-
  
     return (
       <View>

@@ -8,9 +8,7 @@ export const filterRestaurant = (name) => {
 export const FETCH_ALL_RESTAURANTS = 'FETCH_ALL_RESTAURANTS';
 
 export const fetchAllRestaurant = () => {
-  console.log('Test')
   return async dispatch => {
-    console.log('Test')
     const restaurants = await firebase.firestore().collection('restaurants')
     restaurants.get().then((querySnapshot) => {
       const restaurantArray = querySnapshot.docs.map((doc) => {
