@@ -38,10 +38,10 @@ const Restaurant = (props) => {
       }}>
       <View style={{ flex: 1 }}>
         <View>
-          <TopNavigation title={restaurant.title} alignment='center' style={styles.header} />
+          <TopNavigation title={restaurant.name} alignment='center' style={styles.header} />
           <View style={styles.listRow}>
           <Image
-              source={{ uri: restaurant.image }}
+              source={{ uri: restaurant.imageUrl }}
               style={styles.bgImage}
             />
             <Text style={styles.font}>Restaurant Info:</Text>
@@ -49,17 +49,14 @@ const Restaurant = (props) => {
             <StarRating
             disabled={true}
             maxStars={5}
-            rating={restaurant.rating}
+            rating={restaurant.starRating}
             fullStarColor={'#dbeb34'}
             starSize={15}
 
             />
             </View>
           <View>
-            <Text>
-              Selected info about the Restaurant
-              This needs to be updated
-          </Text>
+          <Text>{restaurant.description}</Text>
           </View>
           <View style={styles.menu}>
             <MenuComponent />

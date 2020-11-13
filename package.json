@@ -32,7 +32,7 @@
     "react-native-gesture-handler": "~1.7.0",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
-    "react-native-screens": "^2.13.0",
+    "react-native-screens": "~2.10.1",
     "react-native-search-bar": "^3.5.1",
     "react-native-star-rating": "^1.1.0",
     "react-native-svg": "12.1.0",
@@ -41,7 +41,8 @@
     "react-navigation": "4.0.0",
     "react-navigation-stack": "1.5.3",
     "react-redux": "^7.2.2",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
