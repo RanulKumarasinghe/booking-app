@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Button } from 'react-native';
-import { Text } from '@ui-kitten/components';
+import { SafeAreaView, View } from 'react-native';
+import { Text, TopNavigation } from '@ui-kitten/components';
 import Navbar from '@/components/Navbar';
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -13,11 +13,8 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{flex:1}}>
+      <TopNavigation title={"Home"} alignment='center'/>
       <View style={{flex:1}}>
-        <Text>asdasd</Text>
-        </View>
-      <View>
-        <Button onPress={test} title="Debug"/> 
       </View>
       <View>
         <Navbar selectedIndex={0} navigation={navigation} />
