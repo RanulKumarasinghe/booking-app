@@ -45,10 +45,10 @@ const Navbar = ({ selectedIndex, navigation }) => {
               break;
           }
         }} >
-          <BottomNavigationTab icon={HomeIcon} />
-          <BottomNavigationTab icon={SearchIcon} />
-          <BottomNavigationTab icon={ClipboardIcon} />
-          <BottomNavigationTab icon={UserIcon} />
+          <BottomNavigationTab icon={HomeIcon} title="Home" />
+          <BottomNavigationTab icon={SearchIcon} title="Search" />
+          <BottomNavigationTab icon={ClipboardIcon} title="Reservations" />
+          <BottomNavigationTab icon={UserIcon} title="User" />
         </BottomNavigation>
       </React.Fragment>
     </View>
