@@ -1,13 +1,72 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Card, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ListItem, Toggle, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
 import Navbar from '@/components/Navbar';
 
-const data = new Array(8).fill({
-    title: 'Item',
+const data = new Array(20).fill({
+    title: 'Title for Item',
+    description: 'Description for Item',
 });
 
 export default ReservationPage = ({ navigation }) => {
+
+    const [checked, setChecked] = React.useState(false);
+
+    const onCheckedChange = (isChecked) => {
+        setChecked(isChecked);
+    };
+
+    const renderTitle = () => {
+        return (
+            <View style={styles.headerContainer}>
+                <View style={{ flex: 4 }}>
+                    <Text style={styles.headerText}>McDonalds</Text>
+                </View>
+                <View style={{ flex: 1, flexDirection: "row" }}>
+                    <Text style={styles.headerText}>Map  </Text>
+                    <TouchableOpacity>
+                        <Icon
+                            style={styles.icon}
+                            fill='white'
+                            name='map-outline'
+                        ></Icon>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
+
+    const renderDescription = () => {
+        return (
+            <View style={styles.contentContainer}>
+                <View style={{ flexDirection: "row" }}>
+                    <View style={{ flex: 1 }}>
+                        <Text>People: 5</Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        {/*empty*/}
+                    </View>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                    <View style={{ flex: 1 }}>
+                        <Text>Pending</Text>
+                    </View>
+                    <View style={styles.date}>
+                        <Text>9/12/2020, 18:00</Text>
+                    </View>
+                </View>
+            </View>
+        );
+    }
+
+    const renderItem = ({ item, index }) => (
+        <ListItem
+            title={renderTitle}
+            style={styles.listEntry}
+            description={renderDescription}
+        />
+    );
+
 
     //Top Back navigation Code
     navigateBack = () => {
@@ -23,50 +82,24 @@ export default ReservationPage = ({ navigation }) => {
     );
     //Top Back navigation Code
 
-
-    //List render code
-    const renderItemHeader = (headerProps, info) => (
-        <View {...headerProps}>
-            <Text category='h6'>
-                {info.item.title} {info.index + 1}
-            </Text>
-        </View>
-    );
-
-    const renderItemFooter = (footerProps) => (
-        <Text {...footerProps}>
-            By Wikipedia
-        </Text>
-    );
-
-    const renderItem = (info) => (
-        <Card
-            style={styles.item}
-            status='basic'
-            header={headerProps => renderItemHeader(headerProps, info)}
-            footer={renderItemFooter}>
-            <Text>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
-                a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                remaining essentially unchanged.
-            </Text>
-        </Card>
-    );
-    //List render code
-
-
     //Screen render code
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <TopNavigation title='Reservation list' alignment='center' accessoryLeft={BackAction} />
             <Divider />
-            <List
-                style={styles.container}
-                contentContainerStyle={styles.contentContainer}
-                data={data}
-                renderItem={renderItem}
-            />
+            <View style={styles.toggleContainer}>
+                <Toggle style={styles.toggleElement} checked={checked} onChange={onCheckedChange}>
+                    Display expired?
+                </Toggle>
+            </View>
+
+            <View style={{ flex: 1 }}>
+                <List
+                    style={styles.container}
+                    data={data}
+                    renderItem={renderItem}
+                />
+            </View>
             <View style={{ flex: 0 }}>
                 <Navbar selectedIndex={2} navigation={navigation} />
             </View>
@@ -76,13 +109,45 @@ export default ReservationPage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        maxHeight: '84.6%',
+        maxHeight: "100%",
+    },
+    listEntry: {
+    },
+    headerContainer: {
+        flexDirection: "row",
+        backgroundColor: "#0095C5",
+        padding: 5,
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    headerText: {
+        color: "white",
+        textAlignVertical: "center",
     },
     contentContainer: {
-        paddingHorizontal: 8,
-        paddingVertical: 4,
+        padding: 10,
+        borderBottomColor: '#0095C5',
+        borderBottomWidth: 1.5,
     },
-    item: {
-        marginVertical: 4,
+    date: {
+        textAlign: 'right',
+        alignSelf: 'stretch',
     },
+    icon: {
+        width: 32,
+        height: 32,
+        paddingRight: 5,
+    },
+    toggleContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 5,
+    },
+    toggleElement: {
+        paddingLeft: 5,
+        flex: 1,
+        textAlign: "center",
+    }
 });
