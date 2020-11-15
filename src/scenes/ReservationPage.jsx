@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { ListItem, Toggle, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
+import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
+import { ListItem, Card, Modal, Toggle, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
 import Navbar from '@/components/Navbar';
 
 const data = new Array(20).fill({
@@ -11,6 +11,7 @@ const data = new Array(20).fill({
 export default ReservationPage = ({ navigation }) => {
 
     const [checked, setChecked] = React.useState(false);
+    const [visible, setVisible] = React.useState(false);
 
     const onCheckedChange = (isChecked) => {
         setChecked(isChecked);
@@ -24,7 +25,7 @@ export default ReservationPage = ({ navigation }) => {
                 </View>
                 <View style={{ flex: 1, flexDirection: "row" }}>
                     <Text style={styles.headerText}>Map  </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => setVisible(true)}>
                         <Icon
                             style={styles.icon}
                             fill='white'
@@ -100,12 +101,26 @@ export default ReservationPage = ({ navigation }) => {
                     renderItem={renderItem}
                 />
             </View>
+
+            <Modal
+                visible={visible}
+                backdropStyle={styles.modalBackDrop}
+                onBackdropPress={() => setVisible(false)}>
+                <Card disabled={true} style={styles.modalContainer}>
+                    <Text>Map in progress...</Text>
+                </Card>
+            </Modal>
+
             <View style={{ flex: 0 }}>
                 <Navbar selectedIndex={2} navigation={navigation} />
             </View>
         </View>
     );
 };
+
+
+//Get dimensions of screen
+const {width,height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
@@ -149,5 +164,14 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         flex: 1,
         textAlign: "center",
+    },
+    modalContainer:{
+        justifyContent:"center",
+        alignItems:"center",
+        width:width-45,
+        height:height-45,
+    },
+    modalBackDrop:{
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
     }
 });
