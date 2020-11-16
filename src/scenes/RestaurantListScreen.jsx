@@ -25,11 +25,11 @@ const RestaurantListScreen = (props) => {
     return (
       <RestaurantEntry
         id={itemData.id}
-        title={itemData.item.title}
-        image={itemData.item.image}
+        name={itemData.item.name}
+        imageUrl={itemData.item.imageUrl}
         vegan={itemData.item.vegan}
         type={itemData.item.type}
-        rating={itemData.item.rating}
+        starRating={itemData.item.starRating}
         onSelectRestaurant={() => props.navigation.navigate('Restaurant', {
           itemID: itemData.item.id
           //TODO: Send Page name as well

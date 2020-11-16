@@ -57,7 +57,6 @@ const Booking = (props) => {
           style={{ height: 20, borderColor: 'black', borderWidth: 1, width: '40%'}}
           keyboardType='number-pad'
           onChangeText={text => onChangeText(text)}
-          defaultValue='Size of table'
           maxLength = {2}
         />
       </View>
