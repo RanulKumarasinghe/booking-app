@@ -15,6 +15,9 @@ const Booking = (props) => {
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
   // const onChange = time => this.setState({ time })
+  onBooking = () => props.navigation.navigate('RestaurantEdit', {
+    restaurantID: restaurant.id
+  });
 
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
@@ -100,7 +103,7 @@ const Booking = (props) => {
       </View>
       <View style={styles.buttonSpacing}>
          <Button title="Go Back" onPress={() => console.log('pressed')} />
-         <Button title="Confirm" onPress={() => console.log('pressed')} />
+         <Button title="Confirm" onPress={this.onBooking} />
       </View>
       </View>
       <View>
