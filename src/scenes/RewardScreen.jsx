@@ -10,24 +10,32 @@ const RewardScreen = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <View style={styles.container}>
-          <TopNavigation style={styles.header}/> 
-          <View>
+          <TopNavigation style={styles.header}/>
             <Image
             style={styles.userImage}
-            source={{uri:'https://thumbs.dreamstime.com/z/user-experience-vector-icon-181327250.jpg'}}
+            source={{uri:'https://thumbs.dreamstime.com/z/vector-illustration-isolated-white-background-user-profile-avatar-black-line-icon-user-profile-avatar-black-solid-icon-121102166.jpg'}}
             />
-          </View>
           <View>
-            <Text>Hello Username</Text>
+            <Text style={styles.font}>Hello Username</Text>
             {/* /manage state to get username above/ */}
           </View>
           <View style={styles.lineThrough}/>
           <View>
-            <Text>Your Points:{"\n"}360</Text>
+            <Text style={styles.font}>Points Earned:</Text>
+            <Text style={styles.font}>3560</Text>
           </View>
-          <View><Button title="Redeem Points" onPress={() => { console.log() }} /></View>
-          <View><Button title="Use Points" onPress={() => { console.log() }} /></View>
-          <View><Button title="Refresh Points" onPress={() => { console.log() }} /></View>
+          <View>
+            <Text style={styles.font}>Points Used:</Text>
+            <Text style={styles.font}>0000</Text>
+          </View>
+          <View>
+            <Text style={styles.font}>Your Points:</Text>
+            <Text style={styles.font}>3560</Text>
+          </View>
+          <View style={styles.button}><Button title="Redeem Points" onPress={() => { console.log() }} /></View>
+          <View style={styles.button}><Button title="Use Points" onPress={() => { console.log() }} /></View>
+          <View style={styles.button}><Button title="Refresh Points" onPress={() => { console.log() }} /></View>
+          <View style={styles.button}><Button title="Points History" onPress={() => { console.log() }} /></View>
           <View></View>
         </View>
       </View>
@@ -46,8 +54,8 @@ const styles = StyleSheet.create({
   },
 
   userImage:{
-    width:'80%',
-    height:'45%',
+    width:'40%',
+    height:'20%',
     alignSelf:'center',
   },
 
@@ -63,7 +71,19 @@ const styles = StyleSheet.create({
   header:{
     alignContent:'center',
     backgroundColor:'green',
-    paddingTop:30,
+    // paddingTop:30,
+  },
+
+  font:{
+    alignSelf:'center',
+    fontSize:18,
+  },
+
+  button:{
+    marginBottom:10,
+    borderRadius:50,
+    width:'80%',
+    alignSelf:'center',
   },
 });
  
