@@ -10,6 +10,9 @@ import RestaurantListScreen from '../scenes/RestaurantListScreen';
 import ReservationPage from '../scenes/ReservationPage';
 import BookingScreen from '../scenes/BookingScreen';
 import RestaurantEditScreen from '../scenes/RestaurantEditScreen';
+import RewardScreen from '@/scenes/RewardScreen';
+
+
 const { Navigator, Screen } = createStackNavigator();
 
 const HomeNavigator = () => (
@@ -22,6 +25,7 @@ const HomeNavigator = () => (
     <Screen name='RestaurantEdit' component={RestaurantEditScreen}/>
     <Screen name='ReservationPage' component={ReservationPage}/>
     <Screen name='Booking' component={BookingScreen}/>
+    <Screen name='RewardScreen' component={RewardScreen}/>
   </Navigator>
 );
 

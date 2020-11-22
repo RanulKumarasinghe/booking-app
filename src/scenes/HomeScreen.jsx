@@ -15,12 +15,20 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('RestaurantEdit');
   }
 
+  const rewards = () => {
+    navigation.navigate('RewardScreen');
+  }
+
+
   return (
     <SafeAreaView style={{flex:1}}>
       <TopNavigation title={"Home"} alignment='center'/>
       <Layout style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
         <Button onPress={navigateEditRestaurant}>Edit</Button>
         <Divider/>
+      </Layout>
+      <Layout style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+      <Button onPress={rewards}>Rewards</Button>
       </Layout>
       <View>
         <Navbar selectedIndex={0} navigation={navigation} />
