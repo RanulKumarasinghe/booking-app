@@ -1,16 +1,15 @@
 import React from "react";
 import { SafeAreaView,StyleSheet, Button, Text, Image, View } from "react-native";
 import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import Navbar from '../components/Navbar';
+import Navbar from '../../components/Navbar';
 
 
 const RewardScreen = (props) => {
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <View style={styles.container}>
-          <TopNavigation style={styles.header}/>
+          {/* <TopNavigation style={styles.header}/> */}
             <Image
             style={styles.userImage}
             source={{uri:'https://thumbs.dreamstime.com/z/vector-illustration-isolated-white-background-user-profile-avatar-black-line-icon-user-profile-avatar-black-solid-icon-121102166.jpg'}}
@@ -38,9 +37,6 @@ const RewardScreen = (props) => {
           <View style={styles.button}><Button title="Points History" onPress={() => { console.log() }} /></View>
           <View></View>
         </View>
-      </View>
-      <View>
-        <Navbar selectedIndex={2} navigation={props.navigation} />
       </View>
     </SafeAreaView>
   );

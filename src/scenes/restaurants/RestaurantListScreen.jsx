@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
-import Navbar from '../components/Navbar';
-import RestaurantEntry from '../components/RestaurantEntry';
+import Navbar from '../../components/Navbar';
+import RestaurantEntry from '../../components/RestaurantEntry';
 import { Button,Icon , Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { ListItem, SearchBar } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux'
@@ -31,10 +31,9 @@ const RestaurantListScreen = (props) => {
         type={itemData.item.type}
         starRating={itemData.item.starRating}
         onSelectRestaurant={() => props.navigation.navigate('Restaurant', {
-          itemID: itemData.item.id
-          //TODO: Send Page name as well
-        }
-        )
+            itemID: itemData.item.id
+            //TODO: Send Page name as well
+          })
         }
       />
     );
@@ -43,7 +42,7 @@ const RestaurantListScreen = (props) => {
 
   return (
     <View style={styles.header}>
-      <TopNavigation title='Restaurant List' alignment='center' />
+      {/* <TopNavigation title='Restaurant List' alignment='center' /> */}
       <Divider />
       <View style={styles.screen}>
         <View style={styles.search}>
@@ -64,7 +63,7 @@ const RestaurantListScreen = (props) => {
         />
       </View>
       <View>
-        <Navbar selectedIndex={1} navigation={props.navigation} />
+        {/* <Navbar selectedIndex={1} navigation={props.navigation} /> */}
       </View>
     </View>
   );

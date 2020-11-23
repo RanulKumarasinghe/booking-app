@@ -15,6 +15,7 @@ const MultiTextInput = (props) => {
   );
 }
 
+
 const RestaurantEdit = (props) => {
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
@@ -55,7 +56,7 @@ const RestaurantEdit = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
 
       <View id={restaurant.id}>
-      <TopNavigation title="Restaurant Edit" alignment='center' style={styles.header} />
+      {/* <TopNavigation title="Restaurant Edit" alignment='center' style={styles.header} /> */}
       <ScrollView contentContainerStyle={{
             flexGrow: 1,
             justifyContent: 'space-between'

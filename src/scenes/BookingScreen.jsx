@@ -8,14 +8,14 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-datepicker';
 
 
-const Booking = (props) => {
+const BookingScreen = (props) => {
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantID;
 
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
   // const onChange = time => this.setState({ time })
-  onBooking = () => props.navigation.navigate('RestaurantEdit', {
+  onBooking = () => props.navigation.navigate('Edit Restaurant', {
     restaurantID: restaurant.id
   });
 
@@ -50,10 +50,6 @@ const Booking = (props) => {
 
   const [value, onChangeText] = React.useState('Size of table');
 
-  navigateBack = () => {
-    props.navigation.goBack();
-  };
-
   const BackIcon = (props) => (
     <Icon {...props} name='arrow-back' />
   );
@@ -65,7 +61,7 @@ const Booking = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Divider />
-      <TopNavigation title={restaurant.name} alignment='center' style={styles.header} />
+      {/* <TopNavigation title={restaurant.name} alignment='center' style={styles.header} /> */}
       <View style={{ flex: 1 }}>
 
       <Text style={styles.sizeFont}>Restaurant Name: {restaurant.name}</Text>
@@ -105,7 +101,7 @@ const Booking = (props) => {
       </View>
       </View>
       <View>
-        <Navbar selectedIndex={1} navigation={props.navigation} />
+        {/* <Navbar selectedIndex={1} navigation={props.navigation} /> */}
       </View>
     </SafeAreaView>
 
@@ -155,4 +151,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Booking;
+export default BookingScreen;
