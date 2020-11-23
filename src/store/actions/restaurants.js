@@ -18,3 +18,32 @@ export const fetchAllRestaurant = () => {
     })
   }
 };
+
+export const UPDATE_RESTAURANT = 'UPDATE_RESTAURANT';
+
+export const updateRestaurant = (id, name, type, postCode, address, phone, description, imageUrl, open, close, monday, tuesday, wednesday, thursday, friday, saturday, sunday) => {
+  return async dispatch => {
+    const restaurant = firestore().collection('restaurants').doc(id)
+    restaurant.update({
+      name: name,
+      type: type,
+      postCode: postCode,
+      address: address,
+      phone: phone,
+      description: description,
+      imageUrl: imageUrl,
+      open: open,
+      close: close,
+      monday: monday,
+      tuesday: tuesday,
+      wednesday: wednesday,
+      thursday: thursday,
+      friday: friday,
+      saturday: saturday,
+      sunday: sunday,
+    }).then(() => {
+      console.log('User updated!');
+    })
+    dispatch({ type: UPDATE_RESTAURANT })
+  }
+};
