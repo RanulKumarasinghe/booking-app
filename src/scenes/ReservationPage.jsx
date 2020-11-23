@@ -2,16 +2,19 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 import { ListItem, Card, Modal, Toggle, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
 import Navbar from '@/components/Navbar';
-
-const data = new Array(20).fill({
-    title: 'Title for Item',
-    description: 'Description for Item',
-});
+import firebase from '@/utils/firebase'
 
 export default ReservationPage = ({ navigation }) => {
 
+    const [data, setData] = React.useState([])
     const [checked, setChecked] = React.useState(false);
     const [visible, setVisible] = React.useState(false);
+
+  firebase.firestore().collection("bookings").get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+            console.log(doc.data()) //continue
+        });
+    });
 
     const onCheckedChange = (isChecked) => {
         setChecked(isChecked);
@@ -110,7 +113,7 @@ export default ReservationPage = ({ navigation }) => {
                     <Text>Map in progress...</Text>
                 </Card>
             </Modal>
-
+            
             <View style={{ flex: 0 }}>
                 <Navbar selectedIndex={2} navigation={navigation} />
             </View>
