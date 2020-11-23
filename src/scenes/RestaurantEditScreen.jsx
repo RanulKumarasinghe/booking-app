@@ -51,6 +51,9 @@ const RestaurantEdit = (props) => {
   const [openValue, onChangeOpen] = React.useState(restaurant.open);
   const [closeValue, onChangeClose] = React.useState(restaurant.close);
 
+  editRestaurant = () => {
+    console.log('edit Restaurant');
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
 
@@ -233,7 +236,7 @@ const RestaurantEdit = (props) => {
       </View>
       <View style={styles.buttonSpacing}>
          <Button title="No Changes" onPress={() => console.log('pressed')} />
-         <Button title="Confirm Changes" onPress={() => console.log('pressed')} />
+         <Button title="Confirm Changes" onPress={this.editRestaurant} />
       </View>
       </ScrollView>
       </View>

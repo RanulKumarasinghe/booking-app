@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   dateTime: {
     borderWidth: 1,
     borderRadius: 5,
-    fontSize: 18
+    fontSize: 16
   },
   table: {
     height: 20,

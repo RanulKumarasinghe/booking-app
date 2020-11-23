@@ -2,11 +2,33 @@
 import { RESTAURANT } from '@/other/dummy-data';
 import { TOGGLE_FILTER } from '@/store/actions/restaurants'
 import { FETCH_ALL_RESTAURANTS } from '@/store/actions/restaurants'
+import { UPDATE_RESTAURANT } from '@/store/actions/restaurants';
+import { act } from 'react-test-renderer';
+
 
 const initialState = {
   restaurants: [],
   filteredRestaurant: []
 }
+
+// const editState = {
+//   name: " ",
+//   type: " ",
+//   postCode: " ",
+//   address: " ",
+//   phone: " ",
+//   description: " ",
+//   imageUrl: " ",
+//   open: " ",
+//   close: " ",
+//   monday: true,
+//   tuesday: true,
+//   wednesday: true,
+//   thursday: true,
+//   friday: true,
+//   saturday: true,
+//   sunday: true,
+// }
 
 const restaurantReducer = (state = initialState, action) => {
   switch(action.type) {
@@ -23,6 +45,24 @@ const restaurantReducer = (state = initialState, action) => {
       return {...state, restaurants: action.restaurants, filteredRestaurant: action.restaurants}
     default:
       return state;
+    case UPDATE_RESTAURANT:
+      return {
+        name: action.name,
+        type: action.type,
+        postCode: action.postCode,
+        address: action.address,
+        phone: action.phone,
+        description: action.description,
+        imageUrl: action.imageUrl,
+        open: action.open,
+        close: action.close,
+        monday: action.monday,
+        tuesday: action.tuesday,
+        wednesday: action.wednesday,
+        thursday: action.thursday,
+        friday: action.friday,
+        saturday: action.saturday,
+        sunday: action.sunday}
   }
 }
 
