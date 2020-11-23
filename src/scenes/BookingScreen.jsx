@@ -48,8 +48,6 @@ const Booking = (props) => {
     showMode('date');
   };
 
-
-
   const [value, onChangeText] = React.useState('Size of table');
 
   navigateBack = () => {
@@ -124,7 +122,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-
   header: {
     marginTop: 15
   },
