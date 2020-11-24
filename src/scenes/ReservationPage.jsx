@@ -2,23 +2,12 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 import { ListItem, Card, Modal, Toggle, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
 import Navbar from '@/components/Navbar';
-import firebase from '@/utils/firebase'
-import ReservationList from '@/components/ReservationList'
+import ReservationList from '@/components/ReservationList';
 
-export default ReservationPage = ({navigation}) => {
-
-    const data = Array(3).fill({
-        a:"",
-        })
+export default ReservationPage = ({ navigation }) => {
 
     const [checked, setChecked] = React.useState(false);
     const [visible, setVisible] = React.useState(false);
-
-  //firebase.firestore().collection("bookings").get().then((snapshot) => {
-  //      snapshot.docs.forEach(doc => {
-           // data.push(doc.data())
-   //     });
-   // });
 
     const onCheckedChange = (isChecked) => {
         setChecked(isChecked);
@@ -38,6 +27,8 @@ export default ReservationPage = ({navigation}) => {
     );
     //Top Back navigation Code
 
+console.log(ReservationList)
+
     //Screen render code
     return (
         <View style={{ flex: 1 }}>
@@ -49,7 +40,7 @@ export default ReservationPage = ({navigation}) => {
                 </Toggle>
             </View>
 
-            <ReservationList databaseData={data}></ReservationList>
+<ReservationList></ReservationList>
 
             <Modal
                 visible={visible}
@@ -59,7 +50,7 @@ export default ReservationPage = ({navigation}) => {
                     <Text>Map in progress...</Text>
                 </Card>
             </Modal>
-            
+
             <View style={{ flex: 0 }}>
                 <Navbar selectedIndex={2} navigation={navigation} />
             </View>
@@ -69,7 +60,7 @@ export default ReservationPage = ({navigation}) => {
 
 
 //Get dimensions of screen
-const {width,height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
@@ -114,13 +105,13 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: "center",
     },
-    modalContainer:{
-        justifyContent:"center",
-        alignItems:"center",
-        width:width-45,
-        height:height-45,
+    modalContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        width: width - 45,
+        height: height - 45,
     },
-    modalBackDrop:{
+    modalBackDrop: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)'
     }
 });
