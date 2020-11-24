@@ -3,74 +3,26 @@ import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 import { ListItem, Card, Modal, Toggle, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
 import Navbar from '@/components/Navbar';
 import firebase from '@/utils/firebase'
+import ReservationList from '@/components/ReservationList'
 
-export default ReservationPage = ({ navigation }) => {
+export default ReservationPage = ({navigation}) => {
 
-    const [data, setData] = React.useState([])
+    const data = Array(3).fill({
+        a:"",
+        })
+
     const [checked, setChecked] = React.useState(false);
     const [visible, setVisible] = React.useState(false);
 
-  firebase.firestore().collection("bookings").get().then((snapshot) => {
-        snapshot.docs.forEach(doc => {
-            console.log(doc.data()) //continue
-        });
-    });
+  //firebase.firestore().collection("bookings").get().then((snapshot) => {
+  //      snapshot.docs.forEach(doc => {
+           // data.push(doc.data())
+   //     });
+   // });
 
     const onCheckedChange = (isChecked) => {
         setChecked(isChecked);
     };
-
-    const renderTitle = () => {
-        return (
-            <View style={styles.headerContainer}>
-                <View style={{ flex: 4 }}>
-                    <Text style={styles.headerText}>McDonalds</Text>
-                </View>
-                <View style={{ flex: 1, flexDirection: "row" }}>
-                    <Text style={styles.headerText}>Map  </Text>
-                    <TouchableOpacity onPress={() => setVisible(true)}>
-                        <Icon
-                            style={styles.icon}
-                            fill='white'
-                            name='map-outline'
-                        ></Icon>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        );
-    }
-
-    const renderDescription = () => {
-        return (
-            <View style={styles.contentContainer}>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ flex: 1 }}>
-                        <Text>People: 5</Text>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        {/*empty*/}
-                    </View>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ flex: 1 }}>
-                        <Text>Pending</Text>
-                    </View>
-                    <View style={styles.date}>
-                        <Text>9/12/2020, 18:00</Text>
-                    </View>
-                </View>
-            </View>
-        );
-    }
-
-    const renderItem = ({ item, index }) => (
-        <ListItem
-            title={renderTitle}
-            style={styles.listEntry}
-            description={renderDescription}
-        />
-    );
-
 
     //Top Back navigation Code
     navigateBack = () => {
@@ -97,13 +49,7 @@ export default ReservationPage = ({ navigation }) => {
                 </Toggle>
             </View>
 
-            <View style={{ flex: 1 }}>
-                <List
-                    style={styles.container}
-                    data={data}
-                    renderItem={renderItem}
-                />
-            </View>
+            <ReservationList databaseData={data}></ReservationList>
 
             <Modal
                 visible={visible}

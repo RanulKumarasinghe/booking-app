@@ -20,7 +20,6 @@ const RestaurantListScreen = (props) => {
     dispatch(filterRestaurant(name))
   }
 
-
   const renderRestaurantListItem = itemData => {
     return (
       <RestaurantEntry
