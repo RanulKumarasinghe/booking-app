@@ -27,8 +27,6 @@ export default ReservationPage = ({ navigation }) => {
     );
     //Top Back navigation Code
 
-console.log(ReservationList)
-
     //Screen render code
     return (
         <View style={{ flex: 1 }}>
@@ -40,8 +38,8 @@ console.log(ReservationList)
                 </Toggle>
             </View>
 
-<ReservationList></ReservationList>
-
+            <ReservationList/>
+            
             <Modal
                 visible={visible}
                 backdropStyle={styles.modalBackDrop}

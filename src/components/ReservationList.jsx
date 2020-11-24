@@ -1,11 +1,14 @@
 import firebase from '@/utils/firebase'
+import React from 'react';
+import { StyleSheet } from 'react-native'
 import ReservationListEntry from '../components/ReservationListEntry'
+import { List } from '@ui-kitten/components';
 
 export default ReservationList = () => {
 
     const data = Array(3).fill({
-        a:'2',
-        b:'d'
+        a: '2',
+        b: 'd'
     });
 
     const getBookings = async () => {
@@ -30,3 +33,9 @@ export default ReservationList = () => {
         />
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        maxHeight: "100%",
+    },
+});
