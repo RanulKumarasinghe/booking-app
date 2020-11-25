@@ -2,7 +2,6 @@ import React from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { StyleSheet, TextInput, Button } from 'react-native'
-import Navbar from '../components/Navbar';
 
 const BackIcon = (props) => (
   <Icon {...props} name='arrow-back' />
@@ -22,9 +21,11 @@ export default class LoginScreen extends React.Component {
     console.log('handleLogin')
   }
 
-  navigateBack = () => {
-    this.navigation.goBack();
-  };
+
+  handleResetPassword = () => {
+    this.props.navigation.navigate('Reset Password')
+  }
+
 
   BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={this.navigateBack} />
@@ -33,8 +34,6 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <TopNavigation title='MyApp' alignment='center' accessoryLeft={this.BackAction} />
-        <Divider />
         <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text>Login</Text>
           {this.state.errorMessage &&
@@ -57,14 +56,14 @@ export default class LoginScreen extends React.Component {
             value={this.state.password}
           />
           <Button title="Login" onPress={this.handleLogin} />
+
+          <Text onPress={this.handleResetPassword}>Forgotten Password</Text>
+
           <Button
             title="Don't have an account? Sign Up"
             onPress={() => this.props.navigation.navigate('SignUp')}
           />
         </Layout>
-        <View>
-          <Navbar selectedIndex={3} navigation={this.navigation} />
-        </View>
       </SafeAreaView>
     );
   }

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import { AppNavigator } from './src/navigations/routes';
+import { AppNavigator } from './src/navigators/AppNavigator';
 import { Provider } from 'react-redux'
 
 import restaurantReducer from '@/store/reducers/restaurants';

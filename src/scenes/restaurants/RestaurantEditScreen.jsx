@@ -17,6 +17,7 @@ const MultiTextInput = (props) => {
   );
 }
 
+
 const RestaurantEdit = (props) => {
 
   const dispatch = useDispatch();
@@ -84,7 +85,7 @@ const RestaurantEdit = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
 
       <View id={restaurant.id}>
-      <TopNavigation title="Restaurant Edit" alignment='center' style={styles.header} />
+      {/* <TopNavigation title="Restaurant Edit" alignment='center' style={styles.header} /> */}
       <ScrollView contentContainerStyle={{
             flexGrow: 1,
             justifyContent: 'space-between'

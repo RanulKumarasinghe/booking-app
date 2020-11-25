@@ -22,7 +22,6 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{flex:1}}>
-      <TopNavigation title={"Home"} alignment='center'/>
       <Layout style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
         <Button onPress={navigateEditRestaurant}>Edit</Button>
         <Divider/>
@@ -30,9 +29,6 @@ const HomeScreen = ({ navigation }) => {
       <Layout style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
       <Button onPress={rewards}>Rewards</Button>
       </Layout>
-      <View>
-        <Navbar selectedIndex={0} navigation={navigation} />
-      </View>
     </SafeAreaView>
   );
 };

@@ -59,7 +59,7 @@ export default ReservationPage = ({ navigation }) => {
     //Screen render code
     return (
         <View>
-            <TopNavigation title='Reservation list' alignment='center' accessoryLeft={BackAction} />
+            {/* <TopNavigation title='Reservation list' alignment='center' accessoryLeft={BackAction} /> */}
             <Divider />
             <List
                 style={styles.container}
@@ -68,7 +68,7 @@ export default ReservationPage = ({ navigation }) => {
                 renderItem={renderItem}
             />
             <View style={{ flex: 0 }}>
-                <Navbar selectedIndex={2} navigation={navigation} />
+                {/* <Navbar selectedIndex={2} navigation={navigation} /> */}
             </View>
         </View>
     );
