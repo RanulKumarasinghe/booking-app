@@ -47,22 +47,8 @@ const restaurantReducer = (state = initialState, action) => {
       return state;
     case UPDATE_RESTAURANT:
       return {
-        name: action.name,
-        type: action.type,
-        postCode: action.postCode,
-        address: action.address,
-        phone: action.phone,
-        description: action.description,
-        imageUrl: action.imageUrl,
-        open: action.open,
-        close: action.close,
-        monday: action.monday,
-        tuesday: action.tuesday,
-        wednesday: action.wednesday,
-        thursday: action.thursday,
-        friday: action.friday,
-        saturday: action.saturday,
-        sunday: action.sunday}
+        ...state, restaurants: {...state.restaurants}
+      }
   }
 }
 

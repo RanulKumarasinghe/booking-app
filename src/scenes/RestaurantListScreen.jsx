@@ -57,6 +57,7 @@ const RestaurantListScreen = (props) => {
             onChangeText={(text)=> setSearchName(text)}
             width="60%"
             placeholder="Restaurant"
+
           />
         </View>
         <FlatList

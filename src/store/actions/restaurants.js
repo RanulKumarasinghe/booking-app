@@ -21,29 +21,29 @@ export const fetchAllRestaurant = () => {
 
 export const UPDATE_RESTAURANT = 'UPDATE_RESTAURANT';
 
-export const updateRestaurant = (id, name, type, postCode, address, phone, description, imageUrl, open, close, monday, tuesday, wednesday, thursday, friday, saturday, sunday) => {
-  return async dispatch => {
-    const restaurant = firestore().collection('restaurants').doc(id)
+export const updateRestaurant = (saveRestaurant) => {
+  return dispatch => {
+    const restaurant = firebase.firestore().collection('restaurants').doc(saveRestaurant.id)
     restaurant.update({
-      name: name,
-      type: type,
-      postCode: postCode,
-      address: address,
-      phone: phone,
-      description: description,
-      imageUrl: imageUrl,
-      open: open,
-      close: close,
-      monday: monday,
-      tuesday: tuesday,
-      wednesday: wednesday,
-      thursday: thursday,
-      friday: friday,
-      saturday: saturday,
-      sunday: sunday,
+      name: saveRestaurant.name,
+      type: saveRestaurant.type,
+      postCode: saveRestaurant.postCode,
+      address: saveRestaurant.address,
+      phone: saveRestaurant.phone,
+      description: saveRestaurant.description,
+      imageUrl: saveRestaurant.imageUrl,
+      open: saveRestaurant.open,
+      close: saveRestaurant.close,
+      monday: saveRestaurant.monday,
+      tuesday: saveRestaurant.tuesday,
+      wednesday: saveRestaurant.wednesday,
+      thursday: saveRestaurant.thursday,
+      friday: saveRestaurant.friday,
+      saturday: saveRestaurant.saturday,
+      sunday: saveRestaurant.sunday,
     }).then(() => {
       console.log('User updated!');
     })
-    dispatch({ type: UPDATE_RESTAURANT })
+    dispatch({ type: UPDATE_RESTAURANT, restaurant: saveRestaurant })
   }
 };

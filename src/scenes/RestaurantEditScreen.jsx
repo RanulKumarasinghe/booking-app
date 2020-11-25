@@ -4,6 +4,8 @@ import { Text, TopNavigation } from '@ui-kitten/components';
 import Navbar from '@/components/Navbar';
 import { useSelector, useDispatch } from 'react-redux';
 
+import {updateRestaurant} from '@/store/actions/restaurants';
+
 
 const MultiTextInput = (props) => {
   return (
@@ -17,6 +19,9 @@ const MultiTextInput = (props) => {
 
 const RestaurantEdit = (props) => {
 
+  const dispatch = useDispatch();
+
+
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantID;
 
@@ -27,19 +32,18 @@ const RestaurantEdit = (props) => {
   };
 
   const [monIsEnabled, setMonIsEnabled] = useState(restaurant.monday);
-  const toggleMonSwitch = () => setMonIsEnabled(previousState => !previousState);
+
   const [tuesIsEnabled, setTuesIsEnabled] = useState(restaurant.tuesday);
-  const toggleTuesSwitch = () => setTuesIsEnabled(previousState => !previousState);
+
   const [wedIsEnabled, setWedIsEnabled] = useState(restaurant.wednesday);
-  const toggleWedSwitch = () => setWedIsEnabled(previousState => !previousState);
+
   const [thursIsEnabled, setThursIsEnabled] = useState(restaurant.thursday);
-  const toggleThursSwitch = () => setThursIsEnabled(previousState => !previousState);
+
   const [friIsEnabled, setFriIsEnabled] = useState(restaurant.friday);
-  const toggleFriSwitch = () => setFriIsEnabled(previousState => !previousState);
+
   const [satIsEnabled, setSatIsEnabled] = useState(restaurant.saturday);
-  const toggleSatSwitch = () => setSatIsEnabled(previousState => !previousState);
+
   const [sunIsEnabled, setSunIsEnabled] = useState(restaurant.sunday);
-  const toggleSunSwitch = () => setSunIsEnabled(previousState => !previousState);
 
   const [nameValue, onChangeName] = React.useState(restaurant.name);
   const [typeValue, onChangeType] = React.useState(restaurant.type);
@@ -51,9 +55,31 @@ const RestaurantEdit = (props) => {
   const [openValue, onChangeOpen] = React.useState(restaurant.open);
   const [closeValue, onChangeClose] = React.useState(restaurant.close);
 
-  editRestaurant = () => {
-    console.log('edit Restaurant');
-  }
+  const editRestaurant = () => {
+    console.log('edit');
+    dispatch(updateRestaurant({
+      id: itemId,
+      name: nameValue,
+      type: typeValue,
+      postCode: postCodeValue,
+      address: addressValue,
+      phone: phoneValue,
+      description: descriptionValue,
+      imageUrl: imageUrlValue,
+      open: openValue,
+      close: closeValue,
+      monday: monIsEnabled,
+      tuesday: tuesIsEnabled,
+      wednesday: wedIsEnabled,
+      thursday: thursIsEnabled,
+      friday: friIsEnabled,
+      saturday: satIsEnabled,
+      sunday: sunIsEnabled
+    }))
+    navigation.navigate('RestaurantList');
+  };
+
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
 
@@ -149,7 +175,7 @@ const RestaurantEdit = (props) => {
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={monIsEnabled ? "#f4f3f4" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleMonSwitch}
+        onValueChange={() => setMonIsEnabled(previousState => !previousState)}
         value={monIsEnabled}
 
       />
@@ -162,7 +188,7 @@ const RestaurantEdit = (props) => {
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={tuesIsEnabled ? "#f4f3f4" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleTuesSwitch}
+        onValueChange={() => setTuesIsEnabled(previousState => !previousState)}
         value={tuesIsEnabled}
 
       />
@@ -175,7 +201,7 @@ const RestaurantEdit = (props) => {
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={wedIsEnabled ? "#f4f3f4" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleWedSwitch}
+        onValueChange={() => setWedIsEnabled(previousState => !previousState)}
         value={wedIsEnabled}
 
       />
@@ -188,7 +214,7 @@ const RestaurantEdit = (props) => {
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={thursIsEnabled ? "#f4f3f4" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleThursSwitch}
+        onValueChange={() => setThursIsEnabled(previousState => !previousState)}
         value={thursIsEnabled}
 
       />
@@ -202,7 +228,7 @@ const RestaurantEdit = (props) => {
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={friIsEnabled ? "#f4f3f4" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleFriSwitch}
+        onValueChange={() => setFriIsEnabled(previousState => !previousState)}
         value={friIsEnabled}
 
       />
@@ -215,7 +241,7 @@ const RestaurantEdit = (props) => {
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={satIsEnabled ? "#f4f3f4" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSatSwitch}
+        onValueChange={() => setSatIsEnabled(previousState => !previousState)}
         value={satIsEnabled}
 
       />
@@ -228,7 +254,7 @@ const RestaurantEdit = (props) => {
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={sunIsEnabled ? "#f4f3f4" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSunSwitch}
+        onValueChange={() => setSunIsEnabled(previousState => !previousState)}
         value={sunIsEnabled}
 
       />
@@ -236,7 +262,7 @@ const RestaurantEdit = (props) => {
       </View>
       <View style={styles.buttonSpacing}>
          <Button title="No Changes" onPress={() => console.log('pressed')} />
-         <Button title="Confirm Changes" onPress={this.editRestaurant} />
+         <Button title="Confirm Changes" onPress={editRestaurant} />
       </View>
       </ScrollView>
       </View>
@@ -283,7 +309,7 @@ const styles = StyleSheet.create({
   },
   buttonSpacing: {
     marginTop: '15%',
-    marginBottom: '10%',
+    marginBottom: '20%',
     width: '80%',
     flexDirection: 'row',
     alignSelf: 'center',
