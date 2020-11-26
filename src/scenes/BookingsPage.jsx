@@ -2,7 +2,34 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 import { ListItem, Card, Modal, Toggle, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
 import Navbar from '@/components/Navbar';
-import ReservationList from '@/components/ReservationList';
+import BookingsList from '@/components/BookingsList';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+function reducer(state, action) {
+    switch(action.type){
+        case "INCREMENT_NUMBER":
+            console.log("Increment")
+            return {
+                ...state,
+                number:state.number +1
+            }
+        case "DECREMENT_NUMBER":
+            console.log("decrement")
+        return {
+                ...state,
+                number:state.number -1
+            }
+        default:
+            return state;
+    }
+}
+
+const INITIAL_STATE = {
+    number: 99
+}
+
+store = createStore(reducer, INITIAL_STATE);
 
 export default ReservationPage = ({ navigation }) => {
 
@@ -38,8 +65,11 @@ export default ReservationPage = ({ navigation }) => {
                 </Toggle>
             </View>
 
-            <ReservationList/>
-            
+            <Provider store={store}>
+                <BookingsList />
+            </Provider>
+
+
             <Modal
                 visible={visible}
                 backdropStyle={styles.modalBackDrop}

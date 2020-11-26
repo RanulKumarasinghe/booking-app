@@ -7,7 +7,7 @@ import LoginScreen from '../scenes/LoginScreen';
 import SignUpScreen from '../scenes/SignUpScreen';
 import RestaurantScreen from '../scenes/RestaurantScreen';
 import RestaurantListScreen from '../scenes/RestaurantListScreen';
-import ReservationPage from '../scenes/ReservationPage';
+import ReservationPage from '../scenes/BookingsPage';
 import BookingScreen from '../scenes/BookingScreen';
 
 const { Navigator, Screen } = createStackNavigator();
