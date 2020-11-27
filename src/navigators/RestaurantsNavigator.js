@@ -19,6 +19,7 @@ const HomeNavigator = () => (
     <Restaurant.Screen name='Restaurant' component={RestaurantScreen}/>
     <Restaurant.Screen name='Edit Restaurant' component={RestaurantEditScreen}/>
     <Restaurant.Screen name='Reservation' component={ReservationPage}/>
+    <Restaurant.Screen name='Booking' component={BookingScreen}/>
   </Restaurant.Navigator>
 );
 

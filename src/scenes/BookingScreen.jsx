@@ -15,7 +15,7 @@ const BookingScreen = (props) => {
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
   // const onChange = time => this.setState({ time })
-  onBooking = () => props.navigation.navigate('Edit Restaurant', {
+  const onBooking = () => props.navigation.navigate('Edit Restaurant', {
     restaurantID: restaurant.id
   });
 
@@ -97,7 +97,7 @@ const BookingScreen = (props) => {
       </View>
       <View style={styles.buttonSpacing}>
          <Button title="Go Back" onPress={() => console.log('pressed')} />
-         <Button title="Confirm" onPress={this.onBooking} />
+         <Button title="Confirm" onPress={onBooking} />
       </View>
       </View>
       <View>

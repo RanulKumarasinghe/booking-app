@@ -16,7 +16,7 @@ const Restaurant = (props) => {
 
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
-  onBooking = () => props.navigation.navigate('Booking', {
+  const onBooking = () => props.navigation.navigate('Booking', {
     restaurantID: restaurant.id
   });
 
@@ -54,17 +54,41 @@ const Restaurant = (props) => {
             rating={restaurant.starRating}
             fullStarColor={'#dbeb34'}
             starSize={15}
-
             />
             </View>
-          <View>
+          <View style={styles.description}>
           <Text>{restaurant.description}</Text>
+          <Text>{restaurant.phone}</Text>
+          </View>
+          <View style={styles.openHours}>
+            <Text style={styles.font}>Opening hours:</Text>
+          </View>
+          <View>
+            <Text>Monday: {restaurant.monOpen} - {restaurant.monClose}</Text>
+          </View>
+          <View>
+            <Text>Tuesday: {restaurant.tuesOpen} - {restaurant.tuesClose}</Text>
+          </View>
+          <View>
+            <Text>Wednesday: {restaurant.wedOpen} - {restaurant.wedClose}</Text>
+          </View>
+          <View>
+            <Text>Thursday: {restaurant.thursOpen} - {restaurant.thursClose}</Text>
+          </View>
+          <View>
+            <Text>Friday: {restaurant.friOpen} - {restaurant.friClose}</Text>
+          </View>
+          <View>
+            <Text>Saturday: {restaurant.satOpen} - {restaurant.satClose}</Text>
+          </View>
+          <View>
+            <Text>Sunday: {restaurant.sunOpen} - {restaurant.sunClose}</Text>
           </View>
           <View style={styles.menu}>
             <MenuComponent />
           </View>
-          <View>
-            <Button title="Make A Booking" onPress={this.onBooking} />
+          <View style={styles.button}>
+            <Button title="Make A Booking" onPress={onBooking} />
           </View>
         </View>
         </View>
@@ -85,7 +109,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10
   },
-  button: {},
+  button: {
+    marginTop: 10,
+    marginBottom: 15
+  },
 
   header: {
     marginTop: 25,
@@ -104,6 +131,12 @@ const styles = StyleSheet.create({
   },
   menu: {
     paddingTop: 15
+  },
+  openHours: {
+    marginTop: 10
+  },
+  description: {
+    flexDirection: 'column'
   }
 });
 

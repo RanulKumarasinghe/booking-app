@@ -22,7 +22,6 @@ const RestaurantEdit = (props) => {
 
   const dispatch = useDispatch();
 
-
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantID;
 
@@ -46,6 +45,21 @@ const RestaurantEdit = (props) => {
 
   const [sunIsEnabled, setSunIsEnabled] = useState(restaurant.sunday);
 
+  const [monOpenValue, onChangeMonOpen] = React.useState(restaurant.monOpen);
+  const [monCloseValue, onChangeMonClose] = React.useState(restaurant.monClose);
+  const [tuesOpenValue, onChangeTuesOpen] = React.useState(restaurant.tuesOpen);
+  const [tuesCloseValue, onChangeTuesClose] = React.useState(restaurant.tuesClose);
+  const [wedOpenValue, onChangeWedOpen] = React.useState(restaurant.wedOpen);
+  const [wedCloseValue, onChangeWedClose] = React.useState(restaurant.wedClose);
+  const [thursOpenValue, onChangeThursOpen] = React.useState(restaurant.thursOpen);
+  const [thursCloseValue, onChangeThursClose] = React.useState(restaurant.thursClose);
+  const [friOpenValue, onChangeFriOpen] = React.useState(restaurant.friOpen);
+  const [friCloseValue, onChangeFriClose] = React.useState(restaurant.friClose);
+  const [satOpenValue, onChangeSatOpen] = React.useState(restaurant.satOpen);
+  const [satCloseValue, onChangeSatClose] = React.useState(restaurant.satClose);
+  const [sunOpenValue, onChangeSunOpen] = React.useState(restaurant.sunOpen);
+  const [sunCloseValue, onChangeSunClose] = React.useState(restaurant.sunClose);
+
   const [nameValue, onChangeName] = React.useState(restaurant.name);
   const [typeValue, onChangeType] = React.useState(restaurant.type);
   const [postCodeValue, onChangePostCode] = React.useState(restaurant.postCode);
@@ -67,15 +81,27 @@ const RestaurantEdit = (props) => {
       phone: phoneValue,
       description: descriptionValue,
       imageUrl: imageUrlValue,
-      open: openValue,
-      close: closeValue,
       monday: monIsEnabled,
+      monOpen: monOpenValue,
+      monClose: monCloseValue,
       tuesday: tuesIsEnabled,
+      tuesOpen: tuesOpenValue,
+      tuesClose: tuesCloseValue,
       wednesday: wedIsEnabled,
+      wedOpen: wedOpenValue,
+      wedClose: wedCloseValue,
       thursday: thursIsEnabled,
+      thursOpen: thursOpenValue,
+      thursClose: thursCloseValue,
       friday: friIsEnabled,
+      friOpen: friOpenValue,
+      friClose: friCloseValue,
       saturday: satIsEnabled,
-      sunday: sunIsEnabled
+      satOpen: satOpenValue,
+      satClose: satCloseValue,
+      sunday: sunIsEnabled,
+      sunOpen: sunOpenValue,
+      sunClose: sunCloseValue
     }))
     navigation.navigate('RestaurantList');
   };
@@ -150,26 +176,6 @@ const RestaurantEdit = (props) => {
          />
       </View>
       <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Open-Time: </Text>
-      <TextInput
-          style={styles.textBox}
-          keyboardType='number-pad'
-          onChangeText={text => onChangeOpen(text)}
-          maxLength = {5}
-          value = {openValue}
-          />
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Closing-Time: </Text>
-      <TextInput
-          style={styles.textBox}
-          keyboardType='number-pad'
-          onChangeText={text => onChangeClose(text)}
-          maxLength = {5}
-          value = {closeValue}
-          />
-      </View>
-      <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Monday: </Text>
       <View style={styles.switchStyle}>
       <Switch
@@ -183,6 +189,28 @@ const RestaurantEdit = (props) => {
       </View>
       </View>
       <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Mon-Open: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeMonOpen(text)}
+          maxLength = {5}
+          value = {monOpenValue}
+       />
+      </View>
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Mon-Close: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeMonClose(text)}
+          maxLength = {5}
+          value = {monCloseValue}
+          />
+      </View>
+
+
+      <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Tuesday: </Text>
       <View style={styles.switchStyle}>
       <Switch
@@ -194,6 +222,27 @@ const RestaurantEdit = (props) => {
 
       />
       </View>
+      </View>
+
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Tues-Open: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeTuesOpen(text)}
+          maxLength = {5}
+          value = {tuesOpenValue}
+       />
+      </View>
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Tues-Close: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeTuesClose(text)}
+          maxLength = {5}
+          value = {tuesCloseValue}
+          />
       </View>
       <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Wednesday: </Text>
@@ -209,6 +258,26 @@ const RestaurantEdit = (props) => {
       </View>
       </View>
       <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Wed-Open: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeWedOpen(text)}
+          maxLength = {5}
+          value = {wedOpenValue}
+       />
+      </View>
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Wed-Close: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeWedClose(text)}
+          maxLength = {5}
+          value = {wedCloseValue}
+          />
+      </View>
+      <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Thursday: </Text>
       <View style={styles.switchStyle}>
       <Switch
@@ -220,6 +289,26 @@ const RestaurantEdit = (props) => {
 
       />
       </View>
+      </View>
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Thurs-Open: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeThursOpen(text)}
+          maxLength = {5}
+          value = {thursOpenValue}
+       />
+      </View>
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Thurs-Close: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeThursClose(text)}
+          maxLength = {5}
+          value = {thursCloseValue}
+          />
       </View>
 
       <View style={styles.listRow}>
@@ -235,6 +324,28 @@ const RestaurantEdit = (props) => {
       />
       </View>
       </View>
+
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Fri-Open: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeFriOpen(text)}
+          maxLength = {5}
+          value = {friOpenValue}
+       />
+      </View>
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Fri-Close: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeFriClose(text)}
+          maxLength = {5}
+          value = {friCloseValue}
+          />
+      </View>
+
       <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Saturday: </Text>
       <View style={styles.switchStyle}>
@@ -248,6 +359,28 @@ const RestaurantEdit = (props) => {
       />
       </View>
       </View>
+
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Sat-Open: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeSatOpen(text)}
+          maxLength = {5}
+          value = {satOpenValue}
+       />
+      </View>
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Sat-Close: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeSatClose(text)}
+          maxLength = {5}
+          value = {satCloseValue}
+          />
+      </View>
+
       <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Sunday: </Text>
       <View style={styles.switchStyle}>
@@ -260,6 +393,27 @@ const RestaurantEdit = (props) => {
 
       />
       </View>
+      </View>
+
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Sun-Open: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeSunOpen(text)}
+          maxLength = {5}
+          value = {sunOpenValue}
+       />
+      </View>
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Sun-Close: </Text>
+      <TextInput
+          style={styles.textBox}
+          keyboardType='number-pad'
+          onChangeText={text => onChangeSunClose(text)}
+          maxLength = {5}
+          value = {sunCloseValue}
+          />
       </View>
       <View style={styles.buttonSpacing}>
          <Button title="No Changes" onPress={() => console.log('pressed')} />
