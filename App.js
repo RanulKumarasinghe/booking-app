@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 
 import restaurantReducer from '@/store/reducers/restaurants';
 import authReducer from '@/store/reducers/auth';
+import bookingsReducer from '@/store/reducers/bookings';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import * as Font from 'expo-font';
@@ -19,11 +20,12 @@ import ReduxThunk from 'redux-thunk'
 
 const rootReducer = combineReducers({
   restaurants: restaurantReducer,
-  auth: authReducer
+  auth: authReducer,
+  bookings: bookingsReducer,
+
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
-
 
 const App = () => {
 

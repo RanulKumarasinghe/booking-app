@@ -1,15 +1,15 @@
 import firebase from 'src/utils/firebase'
 
-export const GET_BOOKINGS = 'GET_BOOKINGS'
+const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
 
-export const getBookings = () => {
-  return async dispatch => {
-    const restaurants = await firebase.firestore().collection('bookings')
-    restaurants.get().then((snapshot) => {
-      const bookingArray = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id }
+export const fetchAllBookings = () => {
+    return async dispatch => {
+      const bookings = await firebase.firestore().collection('bookings')
+      bookings.get().then((querySnapshot) => {
+        const bookingArray = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id }
+        })
+        dispatch({ type: FETCH_ALL_BOOKINGS, bookings: bookingArray})
       })
-      dispatch({ type: GET_BOOKINGS, restaurants: bookingArray})
-    })
-  }
-};
+    }
+  };

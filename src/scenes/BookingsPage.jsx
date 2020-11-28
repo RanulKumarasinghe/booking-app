@@ -1,40 +1,24 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
-import { ListItem, Card, Modal, Toggle, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
+import { Button, Card, Modal, Toggle, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
 import Navbar from '@/components/Navbar';
 import BookingsList from '@/components/BookingsList';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-
-function reducer(state, action) {
-    switch(action.type){
-        case "INCREMENT_NUMBER":
-            console.log("Increment")
-            return {
-                ...state,
-                number:state.number +1
-            }
-        case "DECREMENT_NUMBER":
-            console.log("decrement")
-        return {
-                ...state,
-                number:state.number -1
-            }
-        default:
-            return state;
-    }
-}
-
-const INITIAL_STATE = {
-    number: 99
-}
-
-store = createStore(reducer, INITIAL_STATE);
+import {fetchAllBookings} from '@/store/actions/bookings'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default ReservationPage = ({ navigation }) => {
+    const bookings = useSelector(state => state.bookings);
+    const dispatch = useDispatch()
 
+    const [loaded, setLoaded] = React.useState(false)
     const [checked, setChecked] = React.useState(false);
     const [visible, setVisible] = React.useState(false);
+
+    
+    if(!loaded){
+        dispatch(fetchAllBookings());
+        setLoaded(true);
+    }
 
     const onCheckedChange = (isChecked) => {
         setChecked(isChecked);
@@ -64,12 +48,8 @@ export default ReservationPage = ({ navigation }) => {
                     Display expired?
                 </Toggle>
             </View>
-
-            <Provider store={store}>
-                <BookingsList />
-            </Provider>
-
-
+            <BookingsList />
+            <Button onPress={() => console.log(bookings)}></Button>
             <Modal
                 visible={visible}
                 backdropStyle={styles.modalBackDrop}
