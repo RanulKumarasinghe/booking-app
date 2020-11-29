@@ -1,34 +1,27 @@
-import firebase from '@/utils/firebase'
 import React from 'react';
 import { StyleSheet, View } from 'react-native'
 import BookingsListEntry from './BookingsListEntry'
-import { List, Button, Text } from '@ui-kitten/components';
+import { List} from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchAllBookings } from '@/store/actions/bookings'
+
 
 export default ReservationList = () => {
-    //const String = useSelector(state => state.test)
-    //const dispatch = useDispatch();
+    const store = useSelector(state => state.bookings);
+    const dispatch = useDispatch()
+    const [loaded, setLoaded] = React.useState(false)
 
-    const getBookings = async () => {
-        await firebase.firestore().collection("bookings").get().then((snapshot) => {
-            const snapshotData = [];
-            snapshot.docs.forEach(doc => {
-                snapshotData.push(doc.data())
-            });
-            data = [...snapshotData];
-        });
+    if (!loaded) {
+        dispatch(fetchAllBookings());
+        setLoaded(true);
     }
 
     return (
-        <View>
-            
-        </View>
-
-        //<List
-        //    style={styles.container}
-        //    data={data}
-        //    //renderItem={BookingsListEntry}
-        /// />
+        <List
+            style={styles.container}
+            data={store.bookings}
+            renderItem={BookingsListEntry}
+        />
     );
 }
 

@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 import { ListItem, Card, Modal, Toggle, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
-import Navbar from '@/components/Navbar';
-import firebase from '@/utils/firebase'
 
-export default ReservationListEntry = (props) => {
-
-    //const [data, setData] = React.useState([])
+export default ReservationListEntry = (data) => {
 
     const renderTitle = () => {
         return (
             <View style={styles.headerContainer}>
                 <View style={{ flex: 4 }}>
-                    <Text style={styles.headerText}>McDonalds</Text>
+                    <Text style={styles.headerText}>{data.item.restaurantID}</Text>
                 </View>
                 <View style={{ flex: 1, flexDirection: "row" }}>
                     <Text style={styles.headerText}>Map  </Text>
@@ -28,12 +24,25 @@ export default ReservationListEntry = (props) => {
         );
     }
 
+    const formatDate = (date) => {
+        let dateFormat = "";
+
+        dateFormat += (date.getDay() + 1) + "/";
+        dateFormat += (date.getMonth() + 1) + "/";
+        dateFormat += (date.getYear() + 1900);
+        dateFormat += "  Time"
+        dateFormat += (date.getHours() + 1) + ":";
+        dateFormat += (date.getMinutes() + 1);
+
+        return dateFormat;
+    }
+
     const renderDescription = () => {
         return (
             <View style={styles.contentContainer}>
                 <View style={{ flexDirection: "row" }}>
                     <View style={{ flex: 1 }}>
-                        <Text>People: 5</Text>
+                        <Text>Tables: {data.item.tableNum}</Text>
                     </View>
                     <View style={{ flex: 1 }}>
                         {/*empty*/}
@@ -41,18 +50,17 @@ export default ReservationListEntry = (props) => {
                 </View>
                 <View style={{ flexDirection: "row" }}>
                     <View style={{ flex: 1 }}>
-                        <Text>Pending</Text>
+                        <Text>{data.item.status == true ? "Confirmed" : "Pending"}</Text>
                     </View>
                     <View style={styles.date}>
-                        <Text>9/12/2020, 18:00</Text>
+                        <Text>
+                            {formatDate(data.item.time.toDate())}
+                        </Text>
                     </View>
                 </View>
             </View>
         );
     }
-
-    console.log("--> Props here <--")
-    console.log(props)
 
     return (
         <ListItem

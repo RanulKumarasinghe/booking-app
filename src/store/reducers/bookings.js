@@ -6,10 +6,9 @@ export const initialState = {
 const bookingsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_ALL_BOOKINGS':
-    console.log("Something is happening");
     return {
         ...state, 
-        bookings:action.bookings,
+        bookings:action.payload,
       }
     default:
       return state;

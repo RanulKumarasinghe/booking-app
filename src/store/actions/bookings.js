@@ -9,7 +9,7 @@ export const fetchAllBookings = () => {
         const bookingArray = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), id: doc.id }
         })
-        dispatch({ type: FETCH_ALL_BOOKINGS, bookings: bookingArray})
+        dispatch({ type: FETCH_ALL_BOOKINGS, payload: bookingArray})
       })
     }
   };
