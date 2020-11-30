@@ -38,7 +38,7 @@ const restaurantReducer = (state = initialState, action) => {
       if (action.restaurantName.length == 0) {
         return {...state, filteredRestaurant: state.restaurants}
       } else {
-        filteredRestaurant = state.restaurants.filter(restaurant => restaurant.title.toLowerCase().includes(action.restaurantName.toLowerCase()));
+        filteredRestaurant = state.restaurants.filter(restaurant => restaurant.name.toLowerCase().includes(action.restaurantName.toLowerCase()));
         return {...state, filteredRestaurant: filteredRestaurant}
       }
     case FETCH_ALL_RESTAURANTS:

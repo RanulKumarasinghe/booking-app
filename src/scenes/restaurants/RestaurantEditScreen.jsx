@@ -103,7 +103,7 @@ const RestaurantEdit = (props) => {
       sunOpen: sunOpenValue,
       sunClose: sunCloseValue
     }))
-    navigation.navigate('RestaurantList');
+    navigation.navigate('Reward');
   };
 
 
