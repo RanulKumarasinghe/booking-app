@@ -25,6 +25,7 @@ const defaultNavOptions = {
 const HomeNavigator = () => {
   return (
     <HomeStackNavigator.Navigator 
+      initialRouteName="Rewards"
       screenOptions={defaultNavOptions}>
       <HomeStackNavigator.Screen
         name="Home"

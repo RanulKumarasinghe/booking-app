@@ -17,7 +17,7 @@ const Restaurant = (props) => {
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
   const onBooking = () => props.navigation.navigate('Booking', {
-    restaurantID: restaurant.id
+    restaurantId: restaurant.id
   });
 
   navigateBack = () => {

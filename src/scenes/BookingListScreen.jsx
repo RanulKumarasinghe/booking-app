@@ -45,10 +45,6 @@ export default BookingListScreen = ({ navigation }) => {
                     <Text>Map in progress...</Text>
                 </Card>
             </Modal>
-
-            <View style={{ flex: 0 }}>
-                <Navbar selectedIndex={2} navigation={navigation} />
-            </View>
         </View>
     );
 };

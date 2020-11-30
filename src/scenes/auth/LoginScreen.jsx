@@ -61,7 +61,7 @@ export default class LoginScreen extends React.Component {
 
           <Button
             title="Don't have an account? Sign Up"
-            onPress={() => this.props.navigation.navigate('SignUp')}
+            onPress={() => this.props.navigation.navigate('Sign Up')}
           />
         </Layout>
       </SafeAreaView>

@@ -8,39 +8,10 @@ import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/componen
 // import 
 import HomeNavigator from 'src/navigators/HomeNavigator'
 import RestaurantsNavigator from 'src/navigators/RestaurantsNavigator'
-import BookingScreen from 'src/scenes/BookingScreen';
+import BookingListScreen from 'src/scenes/BookingListScreen';
 import AuthNavigator from 'src/navigators/AuthNavigator';
 
 const Tab = createBottomTabNavigator();
-
-
-const Navbar = ({ navigation, state }) => {
-  return (
-    <View>
-      <React.Fragment>
-        <BottomNavigation 
-            selectedIndex={state.index}
-            onSelect={index => navigation.navigate(state.routeNames[index])}>
-
-          <BottomNavigationTab icon={(e) => (<Icon {...e} name='home-outline' />)} />
-          <BottomNavigationTab icon={(e) => (<Icon {...e} name='search-outline' />)} />
-          <BottomNavigationTab icon={(e) => (<Icon {...e} name='clipboard-outline' />)} />
-          <BottomNavigationTab icon={(e) => (<Icon {...e} name='person-outline' />)} />
-        </BottomNavigation>
-      </React.Fragment>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  bottomNavigation: {
-    position: 'relative',
-    bottom: 0,
-    left: 0
-  },
-});
-
-
 
 const TabNavigator = (props) => {
   //Hide tab navigation is outside products page
@@ -59,7 +30,7 @@ const TabNavigator = (props) => {
         component={RestaurantsNavigator} 
         options={({ route }) => ({
           tabBarVisible: getTabBarVisible(route, 'Restaurants') })} />
-      <Tab.Screen name='Bookings' component={BookingScreen}/>
+      <Tab.Screen name='Bookings' component={BookingListScreen}/>
       <Tab.Screen 
         name="User" 
         component={AuthNavigator} 
@@ -68,5 +39,40 @@ const TabNavigator = (props) => {
     </Tab.Navigator>
   );
 }
+
+
+const Navbar = ({ navigation, state }) => {
+  return (
+    <View>
+      <React.Fragment>
+        <BottomNavigation 
+            selectedIndex={state.index}
+            onSelect={index => navigation.navigate(state.routeNames[index])}>
+          <BottomNavigationTab 
+            icon={(e) => (<Icon {...e} name='home-outline' />)} 
+            title="Home" />
+          <BottomNavigationTab 
+            icon={(e) => (<Icon {...e} name='search-outline' />)} 
+            title="Search" />
+          <BottomNavigationTab 
+            icon={(e) => (<Icon {...e} name='clipboard-outline' />)} 
+            title="Bookings" />
+          <BottomNavigationTab 
+            icon={(e) => (<Icon {...e} name='person-outline' />)}
+            title="User" />
+        </BottomNavigation>
+      </React.Fragment>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  bottomNavigation: {
+    position: 'relative',
+    bottom: 0,
+    left: 0
+  },
+});
+
 
 export default TabNavigator
