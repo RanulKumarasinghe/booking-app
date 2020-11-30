@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchAllBookings } from '@/store/actions/bookings'
 
 
-export default ReservationList = () => {
+const BookingsList = () => {
     const store = useSelector(state => state.bookings);
     const dispatch = useDispatch()
     const [loaded, setLoaded] = React.useState(false)
@@ -30,3 +30,5 @@ const styles = StyleSheet.create({
         maxHeight: "100%",
     },
 });
+
+export default BookingsList;

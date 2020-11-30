@@ -25,7 +25,7 @@ const RestaurantEntry = props => {
         <View>
           <View style={{ ...styles.listRow, ...styles.listHeader }}>
             <ImageBackground
-              source={{ uri: props.image }}
+              source={{ uri: props.imageUrl }}
               style={styles.bgImage}
             >
 
@@ -34,12 +34,12 @@ const RestaurantEntry = props => {
           <View style={styles.titleContainer}>
           <View style={styles.listDetail }>
           <View style={styles.listRow}>
-            <Text style={styles.list}>{props.title}</Text>
+            <Text style={styles.list}>{props.name}</Text>
             <View style={styles.starrating}>
             <StarRating
             disabled={true}
             maxStars={5}
-            rating={props.rating}
+            rating={props.starRating}
             fullStarColor={'#dbeb34'}
             starSize={15}
 

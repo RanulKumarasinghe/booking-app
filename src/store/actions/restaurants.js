@@ -18,3 +18,44 @@ export const fetchAllRestaurant = () => {
     })
   }
 };
+
+export const UPDATE_RESTAURANT = 'UPDATE_RESTAURANT';
+
+export const updateRestaurant = (saveRestaurant) => {
+  return dispatch => {
+    const restaurant = firebase.firestore().collection('restaurants').doc(saveRestaurant.id)
+    restaurant.update({
+      name: saveRestaurant.name,
+      type: saveRestaurant.type,
+      postCode: saveRestaurant.postCode,
+      address: saveRestaurant.address,
+      phone: saveRestaurant.phone,
+      description: saveRestaurant.description,
+      imageUrl: saveRestaurant.imageUrl,
+      monday: saveRestaurant.monday,
+      monOpen: saveRestaurant.monOpen,
+      monClose: saveRestaurant.monClose,
+      tuesday: saveRestaurant.tuesday,
+      tuesOpen: saveRestaurant.tuesOpen,
+      tuesClose: saveRestaurant.tuesClose,
+      wednesday: saveRestaurant.wednesday,
+      wedOpen: saveRestaurant.wedOpen,
+      wedClose: saveRestaurant.wedClose,
+      thursday: saveRestaurant.thursday,
+      thursOpen: saveRestaurant.thursOpen,
+      thursClose: saveRestaurant.thursClose,
+      friday: saveRestaurant.friday,
+      friOpen: saveRestaurant.friOpen,
+      friClose: saveRestaurant.friClose,
+      saturday: saveRestaurant.saturday,
+      satOpen: saveRestaurant.satOpen,
+      satClose: saveRestaurant.satClose,
+      sunday: saveRestaurant.sunday,
+      sunOpen: saveRestaurant.sunOpen,
+      sunClose: saveRestaurant.sunClose
+    }).then(() => {
+      console.log('User updated!');
+    })
+    dispatch({ type: UPDATE_RESTAURANT, restaurant: saveRestaurant })
+  }
+};

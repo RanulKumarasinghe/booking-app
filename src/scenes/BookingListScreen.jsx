@@ -4,7 +4,7 @@ import { Button, Card, Modal, Toggle, Text, TopNavigation, TopNavigationAction, 
 import Navbar from '@/components/Navbar';
 import BookingsList from '@/components/BookingsList';
 
-export default ReservationPage = ({ navigation }) => {
+export default BookingListScreen = ({ navigation }) => {
     const [checked, setChecked] = React.useState(false);
     const [visible, setVisible] = React.useState(false);
 

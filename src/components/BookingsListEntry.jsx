@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 import { ListItem, Card, Modal, Toggle, List, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
 
-export default ReservationListEntry = (data) => {
+const BookingsListEntry = (data) => {
 
     const renderTitle = () => {
         return (
@@ -105,3 +105,5 @@ const styles = StyleSheet.create({
         paddingRight: 5,
     },
 })
+
+export default BookingsListEntry;
