@@ -5,8 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
 
-import HomeScreen from 'src/scenes/HomeScreen'
 // import 
+import HomeNavigator from 'src/navigators/HomeNavigator'
 import RestaurantsNavigator from 'src/navigators/RestaurantsNavigator'
 import BookingScreen from 'src/scenes/BookingScreen';
 import AuthNavigator from 'src/navigators/AuthNavigator';
@@ -53,7 +53,7 @@ const TabNavigator = (props) => {
 
   return (
     <Tab.Navigator tabBar={props => <Navbar {...props} />}>
-      <Tab.Screen name='Home' component={HomeScreen}/>
+      <Tab.Screen name='Home' component={HomeNavigator}/>
       <Tab.Screen 
         name="Restaurants" 
         component={RestaurantsNavigator} 
