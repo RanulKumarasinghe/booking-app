@@ -15,7 +15,9 @@ import RewardScreen from '@/scenes/rewards/RewardScreen';
 const Restaurant = createStackNavigator();
 
 const HomeNavigator = () => (
-  <Restaurant.Navigator headerMode='none' initialRouteName="Restaurants">
+  <Restaurant.Navigator 
+    // headerMode='none' 
+    initialRouteName="Restaurants">
     <Restaurant.Screen name='Reward' component={RewardScreen}/>
     <Restaurant.Screen name='Restaurants' component={RestaurantListScreen}/>
     <Restaurant.Screen name='Restaurant' component={RestaurantScreen}/>
