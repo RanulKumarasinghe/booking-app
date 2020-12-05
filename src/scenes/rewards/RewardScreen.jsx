@@ -2,9 +2,12 @@ import React from "react";
 import { SafeAreaView,StyleSheet, Button, Text, Image, View } from "react-native";
 import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import Navbar from '../../components/Navbar';
-
+import { useSelector } from 'react-redux';
 
 const RewardScreen = (props) => {
+  
+  const currentReward = useSelector(state => state.rewards);
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
