@@ -1,0 +1,12 @@
+import { FETCH_REWARD_POINTS } from '../actions/rewards';
+
+const initialState ={
+    
+};
+
+const rewardsReducer = (state = initialState, action) => {
+    switch (action.type){
+        default: 
+            return state;
+    }
+}
