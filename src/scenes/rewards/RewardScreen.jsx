@@ -5,7 +5,8 @@ import Navbar from '../../components/Navbar';
 import { useSelector } from 'react-redux';
 
 const RewardScreen = (props) => {
-  
+  //This needs additional logic for example  useSelector(state => state.rewards.points);
+  //points come from the initial state in the reducer
   const currentReward = useSelector(state => state.rewards);
   
   return (
