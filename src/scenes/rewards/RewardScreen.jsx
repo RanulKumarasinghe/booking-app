@@ -15,11 +15,14 @@ const RewardScreen = (props) => {
   const [code, setCode] = useState('')
 
   const generateCode = async () => {
+    // Identify the inputs - money, restaurant_id
+
     console.log(money)
     // Should return a code
   }
 
   const redeemCode = async () => {
+    // Identify the inputs - code
 
     console.log(code)
     //Should say it's okay when points are added
