@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { Text, Button, TopNavigation, Layout, Divider } from '@ui-kitten/components';
-import Navbar from '@/components/Navbar';
+// import Navbar from '@/components/Navbar';
 import { useSelector, useDispatch } from 'react-redux'
 
 const HomeScreen = ({ navigation }) => {

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { SafeAreaView,StyleSheet, Button, Text, Image, View, ImageBackground, ScrollView, Dimensions, TouchableOpacity } from "react-native";
 import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import Navbar from '../components/Navbar';
+// import Navbar from '../components/Navbar';
 import { useSelector } from 'react-redux';
 import { TextInput } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';

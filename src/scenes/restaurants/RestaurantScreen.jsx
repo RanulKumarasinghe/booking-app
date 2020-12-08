@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { SafeAreaView,StyleSheet, Button, Text, Image, View, ImageBackground, ScrollView, Dimensions } from "react-native";
 import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import Navbar from '../../components/Navbar';
+// import Navbar from '../../components/Navbar';
 import MenuComponent from '@/components/Menu'
 import StarRating from 'react-native-star-rating';
 import { FlatList } from "react-native-gesture-handler";

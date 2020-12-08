@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaView,StyleSheet, Button, Text, Image, View } from "react-native";
 import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import Navbar from '../../components/Navbar';
+// import Navbar from '../../components/Navbar';
 
 
 const RewardScreen = (props) => {
