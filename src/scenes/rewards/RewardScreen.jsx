@@ -1,5 +1,5 @@
-import React from "react";
-import { SafeAreaView,StyleSheet, Button, Text, Image, View } from "react-native";
+import React, {useState} from "react";
+import { SafeAreaView,StyleSheet, Button, Text, TextInput, Image, View } from "react-native";
 import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import Navbar from '../../components/Navbar';
 import { useSelector } from 'react-redux';
@@ -9,7 +9,21 @@ const RewardScreen = (props) => {
   //points come from the initial state in the reducer
   const currentReward = useSelector(state => state.rewards);
 
-  
+  //generating
+  const [money, setMoney] = useState(0)
+  //redeem
+  const [code, setCode] = useState('')
+
+  const generateCode = async () => {
+    console.log(money)
+    // Should return a code
+  }
+
+  const redeemCode = async () => {
+
+    console.log(code)
+    //Should say it's okay when points are added
+  }
   
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -41,8 +55,28 @@ const RewardScreen = (props) => {
           <View style={styles.button}><Button title="Use Points" onPress={() => { console.log() }} /></View>
           <View style={styles.button}><Button title="Refresh Points" onPress={() => { console.log() }} /></View>
           <View style={styles.button}><Button title="Points History" onPress={() => { console.log() }} /></View>
-          <View></View>
         </View>
+
+        <View>
+          <TextInput
+            onChangeText={money => setMoney(money)}
+            value={money}
+          />        
+          <Button
+            title="Generate Code"
+            onPress={generateCode}
+          />
+
+          <TextInput
+            onChangeText={code => setCode(code)}
+            value={code}
+          />
+          <Button
+            title="Redeem Code"
+            onPress={redeemCode}
+          />
+        </View>
+
       </View>
     </SafeAreaView>
   );
