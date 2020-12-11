@@ -1,32 +1,49 @@
 import React, {useState} from "react";
-import { SafeAreaView,StyleSheet, Button, Text, TextInput, Image, View } from "react-native";
+import { SafeAreaView, StyleSheet, Button, Text, TextInput, Image, View } from "react-native";
 import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import Navbar from '../../components/Navbar';
 import { useSelector } from 'react-redux';
 
 const RewardScreen = (props) => {
-  //This needs additional logic for example  useSelector(state => state.rewards.points);
-  //points come from the initial state in the reducer
-  const currentReward = useSelector(state => state.rewards);
+//This needs additional logic for example  useSelector(state => state.rewards.points);
+//points come from the initial state in the reducer
+//const currentReward = useSelector(state => state.rewards);
 
-  //generating
-  const [money, setMoney] = useState(0)
-  //redeem
-  const [code, setCode] = useState('')
+//generating
+const [money, setMoney] = useState(0);
+//redeem
+const [code, setCode] = useState('');
+  //   return (
+  //     <TextInput
+  //       style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+  //       setMoney={price => setMoney(price)}
+  //       value={money}
+  //     />
+  //   );
+  
 
-  const generateCode = async () => {
-    // Identify the inputs - money, restaurant_id
+ 
 
-    console.log(money)
-    // Should return a code
-  }
+  // const generateCode = async () => {
+  //   // Identify the inputs - money, restaurant_id
+  //   if(money >= 0 && restaurant_id === !null ){
+  //     function getRandomArbitrary(min, max) {
+  //       return Math.random() * (max - min) + min;
+  //     }
+  //     getRandomArbitrary = setCode;
+      
+  //     //Put setcode in a callBack so it do it doesnt reload
+  //   }
 
-  const redeemCode = async () => {
-    // Identify the inputs - code
+  //   console.log(money)
+  //   // Should return a code
+  // }
 
-    console.log(code)
-    //Should say it's okay when points are added
-  }
+  // const redeemCode = async (code) => {
+  //   // Identify the inputs - code
+
+  //   console.log(code)
+  //   //Should say it's okay when points are added
+  // }
   
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -44,7 +61,7 @@ const RewardScreen = (props) => {
           <View style={styles.lineThrough}/>
           <View>
             <Text style={styles.font}>Points Earned:</Text>
-            <Text style={styles.font}>3560</Text>
+            <Text style={styles.font}>2000</Text>
           </View>
           <View>
             <Text style={styles.font}>Points Used:</Text>
@@ -62,22 +79,12 @@ const RewardScreen = (props) => {
 
         <View>
           <TextInput
-            onChangeText={money => setMoney(money)}
+            style={{ height: 40, borderColor: 'gray', borderWidth: 1, width:'80%', alignSelf:'center'}}
+            setMoney={price => setMoney(price)}
             value={money}
-          />        
-          <Button
-            title="Generate Code"
-            onPress={generateCode}
-          />
-
-          <TextInput
-            onChangeText={code => setCode(code)}
-            value={code}
-          />
-          <Button
-            title="Redeem Code"
-            onPress={redeemCode}
-          />
+            keyboardType={'numeric'}
+            placeholder='Price of meal here'
+          /> 
         </View>
 
       </View>
