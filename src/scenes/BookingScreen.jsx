@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { Divider, Icon, Button, Layout, TopNavigation, TopNavigationAction, Datepicker } from '@ui-kitten/components';
+import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitten/components';
 import { useSelector } from 'react-redux';
 import { TextInput } from 'react-native';
 
@@ -36,7 +36,7 @@ const BookingScreen = (props) => {
       timeArray.push({
         id: id,
         element:
-          <Button key={id} size='small'>
+          <Button key={id} size='small' style={{margin:1}}>
             <Text>{elem}</Text>
           </Button>
       }
@@ -52,20 +52,21 @@ const BookingScreen = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
       <Divider />
       <View style={{ flex: 1 }}>
-        <View style={{padding:'2%'}}>
+        <View style={{ padding: '2%', alignItems: "center" }}>
           <Text> Restaurant Name: {restaurant.name}</Text>
         </View>
-        <Divider/>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Text>Pick Day and Time: </Text>
-          <Datepicker
-            date={date}
-            onSelect={(e) => {
-              console.log(date);
-            }}
-          />
-          <View>
-            <Text>Choose size of table: </Text>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Text>Pick a date: </Text>
+            <Datepicker
+              date={date}
+              onSelect={(e) => {
+                console.log(date);
+              }}
+            />
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Text>Table number:</Text>
             <TextInput
               style={styles.table}
               keyboardType='number-pad'
@@ -74,8 +75,12 @@ const BookingScreen = (props) => {
             />
           </View>
         </View>
-        <View style={{ paddingTop: 10, paddingBottom: 10 }}>
-          <Button>Search</Button>
+        <View style={{
+          alignItems: 'center',
+          paddingTop: 10,
+          paddingBottom: 10,
+        }}>
+          <Button size="medium">Check availability</Button>
         </View>
         <Divider />
         <View style={styles.timeButtonContainer}>
@@ -125,6 +130,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   timeButtonContainer: {
+    marginTop:'2%',
     paddingLeft: '8.3%',
     flexDirection: 'row',
     alignItems: 'center',
