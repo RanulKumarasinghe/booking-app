@@ -1,54 +1,23 @@
-import React, {useState} from "react";
-import { SafeAreaView,StyleSheet, Button, Text, Image, View, ImageBackground, ScrollView, Dimensions, TouchableOpacity } from "react-native";
-import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import Navbar from '../components/Navbar';
+import React, { useState } from "react";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Divider, Icon, Button, Layout, TopNavigation, TopNavigationAction, Datepicker } from '@ui-kitten/components';
 import { useSelector } from 'react-redux';
 import { TextInput } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import DatePicker from 'react-native-datepicker';
-
 
 const BookingScreen = (props) => {
+
+  const times = ["10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30"];
+
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantId;
-
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
+  const [tables, setTables] = React.useState();
+  const [time, setTime] = React.useState()
 
-  // const onChange = time => this.setState({ time })
+  //Head of page
   const onBooking = () => props.navigation.navigate('Edit Restaurant', {
     restaurantID: restaurant.id
   });
-
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-
-  const onChange = (event, selectedValue) => {
-    setShow(Platform.OS === 'ios');
-    if (mode == 'date') {
-      const currentDate = selectedValue || new Date();
-      setDate(currentDate);
-      setMode('time');
-      setShow(Platform.OS !== 'ios');
-    } else {
-      const selectedTime = selectedValue || new Date();
-      setTime(selectedTime);
-      setShow(Platform.OS === 'ios');
-      setMode('date');
-    }
-  };
-
-  const showMode = currentMode => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const [value, onChangeText] = React.useState('Size of table');
 
   const BackIcon = (props) => (
     <Icon {...props} name='arrow-back' />
@@ -58,58 +27,67 @@ const BookingScreen = (props) => {
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
   );
 
-  // return (<Text> Something Bookings</Text>)
+  //Body of page
+
+  const generateTimeBoxes = () => {
+    const timeArray = [];
+    let id = 0
+    times.forEach((elem) => {
+      timeArray.push({
+        id: id,
+        element:
+          <Button key={id} size='small'>
+            <Text>{elem}</Text>
+          </Button>
+      }
+      )
+      id++;
+    })
+    return timeArray;
+  }
+
+  let date;
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Divider />
-      {/* <TopNavigation title={restaurant.name} alignment='center' style={styles.header} /> */}
       <View style={{ flex: 1 }}>
-
-      <Text style={styles.sizeFont}>Restaurant Name: {restaurant.name}</Text>
-
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Pick Day and Time: </Text>
-      <TouchableOpacity onPress={showDatepicker}>
-        <Text style={styles.dateTime}>{formatDate(date, time)}</Text>
-      </TouchableOpacity>
-      {show && (
-        <DateTimePicker
-          testID='dateTimePicker'
-          timeZoneOffsetInMinutes={0}
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          display='default'
-          onChange={onChange}
-
-        />
-      )}
-
-
-      </View>
-      <View style={styles.listRow}>
-        <Text style={styles.sizeFont}>Choose size of table: </Text>
-        <TextInput
-          style={styles.table}
-          keyboardType='number-pad'
-          onChangeText={text => onChangeText(text)}
-          maxLength = {2}
-        />
-      </View>
-      <View style={styles.buttonSpacing}>
-         <Button title="Go Back" onPress={() => console.log('pressed')} />
-         <Button title="Confirm" onPress={onBooking} />
-      </View>
+        <View style={{padding:'2%'}}>
+          <Text> Restaurant Name: {restaurant.name}</Text>
+        </View>
+        <Divider/>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <Text>Pick Day and Time: </Text>
+          <Datepicker
+            date={date}
+            onSelect={(e) => {
+              console.log(date);
+            }}
+          />
+          <View>
+            <Text>Choose size of table: </Text>
+            <TextInput
+              style={styles.table}
+              keyboardType='number-pad'
+              onChangeText={text => onChangeText(text)}
+              maxLength={2}
+            />
+          </View>
+        </View>
+        <View style={{ paddingTop: 10, paddingBottom: 10 }}>
+          <Button>Search</Button>
+        </View>
+        <Divider />
+        <View style={styles.timeButtonContainer}>
+          {generateTimeBoxes().map((elem) => {
+            return elem.element;
+          })}
+        </View>
       </View>
     </SafeAreaView>
 
   );
 }
-
-const formatDate = (date, time) => {
-  return `${date.getDate()}/${date.getMonth() +
-    1}/${date.getFullYear()} ${time.getHours()}:${time.getMinutes()}`;
-};
 
 const styles = StyleSheet.create({
   screen: {
@@ -145,7 +123,13 @@ const styles = StyleSheet.create({
   },
   sizeFont: {
     fontSize: 16
-  }
+  },
+  timeButtonContainer: {
+    paddingLeft: '8.3%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
 });
 
 
