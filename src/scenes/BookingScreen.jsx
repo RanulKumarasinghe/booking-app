@@ -3,6 +3,8 @@ import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitten/components';
 import { useSelector } from 'react-redux';
 import { TextInput } from 'react-native';
+import DatePicker from 'react-native-datepicker'
+
 
 const BookingScreen = (props) => {
 
@@ -11,7 +13,9 @@ const BookingScreen = (props) => {
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
+
   const [tables, setTables] = React.useState();
+  const [date, setDate] = React.useState();
   const [time, setTime] = React.useState()
 
   //Head of page
@@ -36,7 +40,7 @@ const BookingScreen = (props) => {
       timeArray.push({
         id: id,
         element:
-          <Button key={id} size='small' style={{margin:1}}>
+          <Button key={id} size='small' style={{ margin: 1 }} onPress={(button) => { console.log(elem) }}>
             <Text>{elem}</Text>
           </Button>
       }
@@ -46,8 +50,6 @@ const BookingScreen = (props) => {
     return timeArray;
   }
 
-  let date;
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Divider />
@@ -55,30 +57,36 @@ const BookingScreen = (props) => {
         <View style={{ padding: '2%', alignItems: "center" }}>
           <Text> Restaurant Name: {restaurant.name}</Text>
         </View>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flex: 1, alignItems: "center" }}>
-            <Text>Pick a date: </Text>
-            <Datepicker
-              date={date}
-              onSelect={(e) => {
-                console.log(date);
-              }}
-            />
-          </View>
-          <View style={{ flex: 1, alignItems: "center" }}>
-            <Text>Table number:</Text>
-            <TextInput
-              style={styles.table}
-              keyboardType='number-pad'
-              onChangeText={text => onChangeText(text)}
-              maxLength={2}
-            />
-          </View>
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <DatePicker
+            style={{ width: 200 }}
+            date={date}
+            mode="date"
+            placeholder="select date"
+            format="YYYY-MM-DD"
+            minDate={new Date()}
+            maxDate="2021-12-31"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            showIcon={false}
+            onDateChange={(date) => { this.setDate({ date }) }}
+          />
         </View>
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text>Table number:</Text>
+          <TextInput
+            style={styles.table}
+            keyboardType='number-pad'
+            onChangeText={text => onChangeText(text)}
+            maxLength={2}
+          />
+        </View>
+
         <View style={{
           alignItems: 'center',
           paddingTop: 10,
           paddingBottom: 10,
+          flex:1,
         }}>
           <Button size="medium">Check availability</Button>
         </View>
@@ -130,11 +138,12 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   timeButtonContainer: {
-    marginTop:'2%',
+    marginTop: '2%',
     paddingLeft: '8.3%',
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
+    flex:7,
   },
 });
 
