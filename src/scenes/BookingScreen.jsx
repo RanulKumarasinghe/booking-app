@@ -62,22 +62,28 @@ const BookingScreen = (props) => {
             style={{ width: 200 }}
             date={date}
             mode="date"
-            placeholder="select date"
+            placeholder="Select a date"
             format="YYYY-MM-DD"
             minDate={new Date()}
             maxDate="2021-12-31"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             showIcon={false}
-            onDateChange={(date) => { this.setDate({ date }) }}
+            onDateChange={(event, date) => {
+              setDate(date);
+            }}
           />
         </View>
+
         <View style={{ flex: 1, alignItems: "center" }}>
-          <Text>Table number:</Text>
+          <Text>Number of tables</Text>
           <TextInput
             style={styles.table}
             keyboardType='number-pad'
-            onChangeText={text => onChangeText(text)}
+            textAlign="center"
+            onChangeText={(value) => {
+              setTables(value);
+            }}
             maxLength={2}
           />
         </View>
@@ -86,9 +92,15 @@ const BookingScreen = (props) => {
           alignItems: 'center',
           paddingTop: 10,
           paddingBottom: 10,
-          flex:1,
+          flex: 1,
         }}>
-          <Button size="medium">Check availability</Button>
+
+          <Button size="medium" onPress={() => {
+            console.log("Debug: table no " + tables);
+            console.log("Debug: " + date);
+          }}>
+            Check availability
+          </Button>
         </View>
         <Divider />
         <View style={styles.timeButtonContainer}>
@@ -143,7 +155,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    flex:7,
+    flex: 7,
   },
 });
 
