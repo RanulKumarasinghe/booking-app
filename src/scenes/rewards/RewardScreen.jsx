@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Button, Text, TextInput, Image, View } from "react-native";
 import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { useSelector } from 'react-redux';
@@ -8,28 +8,27 @@ const RewardScreen = (props) => {
 //points come from the initial state in the reducer
 //const currentReward = useSelector(state => state.rewards);
 
-//generating
-const [money, setMoney] = useState(0);
-//redeem
-const [code, setCode] = useState('');
-  //   return (
-  //     <TextInput
-  //       style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-  //       setMoney={price => setMoney(price)}
-  //       value={money}
-  //     />
-  //   );
-  
+//
+  const [money, setMoney] = useState();
+//The code genrated to update points
+  const [code, setCode] = useState('');
+//Holds points and adds
+  const [points, updatePoints] = useState(0);
 
- 
+  function addPoints(){  
+   updatePoints(points + 1000);
+  }
 
+  function addMoney(){
+    setMoney();
+  }
   // const generateCode = async () => {
   //   // Identify the inputs - money, restaurant_id
   //   if(money >= 0 && restaurant_id === !null ){
   //     function getRandomArbitrary(min, max) {
   //       return Math.random() * (max - min) + min;
   //     }
-  //     getRandomArbitrary = setCode;
+  //     getRandomArbitrary = callBack(setCode);
       
   //     //Put setcode in a callBack so it do it doesnt reload
   //   }
@@ -44,7 +43,14 @@ const [code, setCode] = useState('');
   //   console.log(code)
   //   //Should say it's okay when points are added
   // }
-  
+//   const saveFilters = useCallback(() => {
+//     const appliedFilters = {
+       
+//     };
+
+//   dispatch(setFilters(appliedFilters));
+// }, []);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
@@ -69,22 +75,25 @@ const [code, setCode] = useState('');
           </View>
           <View>
             <Text style={styles.font}>Your Points:</Text>
-            <Text style={styles.font}>3560</Text>
+            <Text style={styles.font}>{points}</Text>
           </View>
-          <View style={styles.button}><Button title="Redeem Points" onPress={() => { console.log() }} /></View>
-          <View style={styles.button}><Button title="Use Points" onPress={() => { console.log() }} /></View>
-          <View style={styles.button}><Button title="Refresh Points" onPress={() => { console.log() }} /></View>
-          <View style={styles.button}><Button title="Points History" onPress={() => { console.log() }} /></View>
+          
+          <View style={styles.button}><Button title="Use Points" onPress={() => { console.log('Use Points') }} /></View>
+          <View style={styles.button}><Button title="Refresh Points" onPress={() => { console.log('Refresh points') }} /></View>
+          <View style={styles.button}><Button title="Points History" onPress={() => { console.log('Loading History') }} /></View>
         </View>
 
-        <View>
+        <View style={styles.input}>
           <TextInput
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, width:'80%', alignSelf:'center'}}
             setMoney={price => setMoney(price)}
             value={money}
             keyboardType={'numeric'}
             placeholder='Price of meal here'
-          /> 
+          />
+          <View style={styles.inputButton}>
+            <Button title="Redeem Points" onPress={addPoints} />
+          </View>
         </View>
 
       </View>
@@ -130,6 +139,22 @@ const styles = StyleSheet.create({
     borderRadius:50,
     width:'80%',
     alignSelf:'center',
+  },
+
+  input:{
+    flex:1,
+    flexDirection:'row',
+    width:'50%',
+    height:25,
+    paddingLeft:'10%',
+  },
+
+  inputButton:{
+    marginBottom:10,
+    borderRadius:50,
+    width:'80%',
+    alignSelf:'center',
+    height:'50%',
   },
 });
  

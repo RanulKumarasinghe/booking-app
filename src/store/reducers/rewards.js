@@ -1,7 +1,7 @@
 import { FETCH_REWARD_POINTS } from '../actions/rewards';
 
 const initialState ={
-    points: points
+    // points: points
 };
 
 const rewardsReducer = (state = initialState, action) => {
