@@ -1,22 +1,41 @@
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitten/components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker'
+import { fetchAllRestaurantTimes } from '@/store/actions/bookings'
 
 
 const BookingScreen = (props) => {
-
-  const times = ["10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30"];
+  const store = useSelector(state => state.bookings);
+  const dispatch = useDispatch()
+  const [loaded, setLoaded] = React.useState(false)
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
+  if (!loaded) {
+    dispatch(fetchAllRestaurantTimes(itemId));
+    setLoaded(true);
+    console.log(store.bookings);
+  }
+
   const [tables, setTables] = React.useState();
   const [date, setDate] = React.useState();
   const [time, setTime] = React.useState()
+  let times = [];
+
+ // if (loaded) {
+    //times = store.bookings[0].available;
+    //console.log(store.bookings[0].restaurantId.id);
+    //const reference = async () => {
+    //  await store.bookings[0].restaurantId.get().then(res => {
+    //    console.log(res.data());
+    //  });
+ //   }
+//  }
 
   //Head of page
   const onBooking = () => props.navigation.navigate('Edit Restaurant', {

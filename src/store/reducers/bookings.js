@@ -10,6 +10,11 @@ const bookingsReducer = (state = initialState, action) => {
         ...state, 
         bookings:action.payload,
       }
+      case 'FETCH_ALL_RESTAURANT_TIMES':
+        return {
+          ...state,
+          bookings:action.payload,
+        }
     default:
       return state;
   }
