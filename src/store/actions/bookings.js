@@ -17,9 +17,8 @@ export const fetchAllBookings = () => {
 
 export const fetchAllRestaurantTimes = (resID) => {
   return async dispatch => {
-    const bookings = await firebase.firestore().collection('times').where('restaurantId', '==' ,'0oSOVkl4hMwsxHtexFJT').get().then((querySnapshot) => {
+    const bookings = await firebase.firestore().collection('times').where('restaurantID', '==' , resID).get().then((querySnapshot) => {
       const timesArray = querySnapshot.docs.map((doc) => {
-        console.log(doc.data())
         return { ...doc.data(), id: doc.id }
       })
       dispatch({ type: FETCH_ALL_RESTAURANT_TIMES, payload: timesArray })

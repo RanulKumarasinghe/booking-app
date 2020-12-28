@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,31 +11,32 @@ const BookingScreen = (props) => {
   const store = useSelector(state => state.bookings);
   const dispatch = useDispatch()
   const [loaded, setLoaded] = React.useState(false)
+  const [hide, setHide] = React.useState(true)
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
-  if (!loaded) {
-    dispatch(fetchAllRestaurantTimes(itemId));
-    setLoaded(true);
-    console.log(store.bookings);
+  let times = [];
+
+  useEffect(() => {
+    if(!loaded){
+      dispatch(fetchAllRestaurantTimes(itemId));
+      setLoaded(true);
+    }
+  });
+
+  if(loaded){
+    times = store.bookings[0].times;
   }
 
   const [tables, setTables] = React.useState();
   const [date, setDate] = React.useState();
   const [time, setTime] = React.useState()
-  let times = [];
 
- // if (loaded) {
-    //times = store.bookings[0].available;
-    //console.log(store.bookings[0].restaurantId.id);
-    //const reference = async () => {
-    //  await store.bookings[0].restaurantId.get().then(res => {
-    //    console.log(res.data());
-    //  });
- //   }
-//  }
+  const checkBooked = (time) => {
+    return !store.bookings[0].available.includes(time);
+  }
 
   //Head of page
   const onBooking = () => props.navigation.navigate('Edit Restaurant', {
@@ -59,7 +60,7 @@ const BookingScreen = (props) => {
       timeArray.push({
         id: id,
         element:
-          <Button key={id} size='small' style={{ margin: 1 }} onPress={(button) => { console.log(elem) }}>
+          <Button key={id} size='small' style={{ margin: 1 }} disabled={checkBooked(elem)} onPress={(button) => { console.log(elem) }}>
             <Text>{elem}</Text>
           </Button>
       }
@@ -107,21 +108,8 @@ const BookingScreen = (props) => {
           />
         </View>
 
-        <View style={{
-          alignItems: 'center',
-          paddingTop: 10,
-          paddingBottom: 10,
-          flex: 1,
-        }}>
-
-          <Button size="medium" onPress={() => {
-            console.log("Debug: table no " + tables);
-            console.log("Debug: " + date);
-          }}>
-            Check availability
-          </Button>
-        </View>
         <Divider />
+
         <View style={styles.timeButtonContainer}>
           {generateTimeBoxes().map((elem) => {
             return elem.element;
@@ -129,7 +117,6 @@ const BookingScreen = (props) => {
         </View>
       </View>
     </SafeAreaView>
-
   );
 }
 
