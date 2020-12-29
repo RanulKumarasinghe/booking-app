@@ -11,13 +11,12 @@ export const fetchRewardPoints = () =>{
           dispatch({ type: FETCH_REWARD_POINTS, payload: rewardsArray})
         });
     } 
-    // ({ type:'FETCH_REWARD_POINTS', rewardId: id});
 };
 
 // firestore()
 //   .collection('Users')
 //   // Filter results
-//   .where('age', '>=', 18)
+//   .where('points', '>=', 10)
 //   .get()
 //   .then(querySnapshot => {
 //     /* ... */
@@ -28,8 +27,8 @@ export const fetchRewardPoints = () =>{
 //   .collection('Users')
 //   .doc('ABC')
 //   .update({
-//     age: 31,
+//     points: 200,
 //   })
 //   .then(() => {
-//     console.log('User updated!');
+//     console.log('points updated!');
 //   });
