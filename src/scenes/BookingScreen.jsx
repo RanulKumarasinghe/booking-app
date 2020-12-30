@@ -3,9 +3,8 @@ import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { TextInput } from 'react-native';
-import DatePicker from 'react-native-datepicker'
-import { fetchAllRestaurantTimes } from '@/store/actions/bookings'
-
+import DatePicker from 'react-native-datepicker';
+import { fetchUnavailableFromRestaurant } from '@/store/actions/bookings';
 
 const BookingScreen = (props) => {
   const store = useSelector(state => state.bookings);
@@ -27,20 +26,26 @@ const BookingScreen = (props) => {
     }
   }
 
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(fetchAllRestaurantTimes(itemId));
-      setLoaded(true);
-    }
-  });
-
-  console.log(store.bookings);
-
-  const checkBooked = (time) => {
-    return true;
-    //return store.bookings[0].unavailable.includes(time);
+  const getTimes = (dateFormat) => {
+    dispatch(fetchUnavailableFromRestaurant(itemId, dateFormat));
+    setLoaded(true);
   }
 
+  const formatDate = (date) => {
+    const day = date.getDate()
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return (day + '/' + month + '/' + year)
+  }
+
+  const checkBooked = (time) => {
+    return false;
+    //return store.bookings[0].unavailable.includes(time);
+  }
+  const bookAction = () => {
+    console.log(store.bookings)
+  }
   const BackIcon = (props) => (
     <Icon {...props} name='arrow-back' />
   );
@@ -58,7 +63,7 @@ const BookingScreen = (props) => {
       timeArray.push({
         id: id,
         element:
-          <Button key={id} size='small' style={styles.timeButton} disabled={checkBooked(elem)} onPress={(button) => { console.log(elem) }}>
+          <Button key={id} size='small' style={styles.timeButton} disabled={checkBooked(elem)} onPress={bookAction}>
             <Text>{elem}</Text>
           </Button>
       }
@@ -81,13 +86,14 @@ const BookingScreen = (props) => {
             date={date}
             mode="date"
             placeholder="Select a date"
-            format="YYYY-MM-DD"
+            format="DD-MM-YYYY"
             minDate={new Date()}
             maxDate="2021-12-31"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             showIcon={false}
             onDateChange={(event, date) => {
+              getTimes(formatDate(date));
               setDate(date);
             }}
           />

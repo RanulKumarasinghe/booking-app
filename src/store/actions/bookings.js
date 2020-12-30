@@ -1,7 +1,7 @@
 import firebase from 'src/utils/firebase'
 
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
-const FETCH_ALL_RESTAURANT_TIMES = 'FETCH_ALL_RESTAURANT_TIMES';
+const FETCH_UNAVAILABLE_RESTAURANT_TIMES = 'FETCH_UNAVAILABLE_RESTAURANT_TIMES';
 
 export const fetchAllBookings = () => {
   return async dispatch => {
@@ -15,13 +15,14 @@ export const fetchAllBookings = () => {
   }
 };
 
-export const fetchAllRestaurantTimes = (resID) => {
+export const fetchUnavailableFromRestaurant = (resID, date) => {
   return async dispatch => {
     const bookings = await firebase.firestore().collection('times').where('restId', '==' , resID).get().then((querySnapshot) => {
       const timesArray = querySnapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id }
+        return { ...doc.data()}
       })
-      dispatch({ type: FETCH_ALL_RESTAURANT_TIMES, payload: timesArray })
+      console.log(timesArray[0].unavailable[date])
+      dispatch({ type: FETCH_UNAVAILABLE_RESTAURANT_TIMES, payload: timesArray[0].unavailable[date] })
     })
   }
 };
