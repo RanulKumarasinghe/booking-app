@@ -10,8 +10,10 @@ import { fetchAllRestaurantTimes } from '@/store/actions/bookings'
 const BookingScreen = (props) => {
   const store = useSelector(state => state.bookings);
   const dispatch = useDispatch()
+
   const [loaded, setLoaded] = React.useState(false)
-  const [hide, setHide] = React.useState(true)
+  const [tables, setTables] = React.useState();
+  const [date, setDate] = React.useState();
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantId;
@@ -19,29 +21,25 @@ const BookingScreen = (props) => {
 
   let times = [];
 
+  for (let i = 10; i < 10 + 11; i++) {
+    for (let j = 0; j < 60; j += 15) {
+      times.push(i + ":" + (j == 0 ? "00" : j))
+    }
+  }
+
   useEffect(() => {
-    if(!loaded){
+    if (!loaded) {
       dispatch(fetchAllRestaurantTimes(itemId));
       setLoaded(true);
     }
   });
 
-  if(loaded){
-    times = store.bookings[0].times;
-  }
-
-  const [tables, setTables] = React.useState();
-  const [date, setDate] = React.useState();
-  const [time, setTime] = React.useState()
+  console.log(store.bookings);
 
   const checkBooked = (time) => {
-    return !store.bookings[0].available.includes(time);
+    return true;
+    //return store.bookings[0].unavailable.includes(time);
   }
-
-  //Head of page
-  const onBooking = () => props.navigation.navigate('Edit Restaurant', {
-    restaurantID: restaurant.id
-  });
 
   const BackIcon = (props) => (
     <Icon {...props} name='arrow-back' />
@@ -60,7 +58,7 @@ const BookingScreen = (props) => {
       timeArray.push({
         id: id,
         element:
-          <Button key={id} size='small' style={{ margin: 1 }} disabled={checkBooked(elem)} onPress={(button) => { console.log(elem) }}>
+          <Button key={id} size='small' style={styles.timeButton} disabled={checkBooked(elem)} onPress={(button) => { console.log(elem) }}>
             <Text>{elem}</Text>
           </Button>
       }
@@ -155,9 +153,12 @@ const styles = StyleSheet.create({
   sizeFont: {
     fontSize: 16
   },
+  timeButton: {
+    width: "20%",
+    margin: 1,
+  },
   timeButtonContainer: {
-    marginTop: '2%',
-    paddingLeft: '8.3%',
+    paddingLeft: '15%',
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
