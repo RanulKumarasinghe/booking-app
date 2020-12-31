@@ -59,3 +59,48 @@ export const updateRestaurant = (saveRestaurant) => {
     dispatch({ type: UPDATE_RESTAURANT, restaurant: saveRestaurant })
   }
 };
+
+export const ADD_RESTAURANT = 'ADD_RESTAURANT';
+
+export const createRestaurant = (addRestaurant) => {
+  // if(!context.auth) {
+  //   return functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
+  // }
+  return dispatch => {
+    const restaurant = firebase.firestore().collection('restaurants')
+    restaurant.add({
+      name: addRestaurant.name,
+      type: addRestaurant.type,
+      postCode: addRestaurant.postCode,
+      address: addRestaurant.address,
+      phone: addRestaurant.phone,
+      description: addRestaurant.description,
+      imageUrl: addRestaurant.imageUrl,
+      monday: addRestaurant.monday,
+      monOpen: addRestaurant.monOpen,
+      monClose: addRestaurant.monClose,
+      tuesday: addRestaurant.tuesday,
+      tuesOpen: addRestaurant.tuesOpen,
+      tuesClose: addRestaurant.tuesClose,
+      wednesday: addRestaurant.wednesday,
+      wedOpen: addRestaurant.wedOpen,
+      wedClose: addRestaurant.wedClose,
+      thursday: addRestaurant.thursday,
+      thursOpen: addRestaurant.thursOpen,
+      thursClose: addRestaurant.thursClose,
+      friday: addRestaurant.friday,
+      friOpen: addRestaurant.friOpen,
+      friClose: addRestaurant.friClose,
+      saturday: addRestaurant.saturday,
+      satOpen: addRestaurant.satOpen,
+      satClose: addRestaurant.satClose,
+      sunday: addRestaurant.sunday,
+      sunOpen: addRestaurant.sunOpen,
+      sunClose: addRestaurant.sunClose
+    }).then(() => {
+      console.log('Restaurant Added!');
+    })
+    dispatch({ type: ADD_RESTAURANT, restaurant: addRestaurant })
+  }
+};
+

@@ -5,6 +5,7 @@ import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-k
 
 
 const RewardScreen = (props) => {
+  const onAddRestaurant = () => props.navigation.navigate('Add Restaurant');
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
@@ -35,6 +36,8 @@ const RewardScreen = (props) => {
           <View style={styles.button}><Button title="Use Points" onPress={() => { console.log() }} /></View>
           <View style={styles.button}><Button title="Refresh Points" onPress={() => { console.log() }} /></View>
           <View style={styles.button}><Button title="Points History" onPress={() => { console.log() }} /></View>
+          {/* Add restaurant button since I don't know where to place this yet */}
+          <View style={styles.button}><Button title="Add Restaurant" onPress={onAddRestaurant} /></View>
           <View></View>
         </View>
       </View>
@@ -82,5 +85,5 @@ const styles = StyleSheet.create({
     alignSelf:'center',
   },
 });
- 
+
 export default RewardScreen;

@@ -3,6 +3,7 @@ import React from 'react'
 
 import RewardScreen from 'src/scenes/rewards/RewardScreen'
 import HomeScreen from 'src/scenes/HomeScreen'
+import RestaurantAddScreen from 'src/scenes/restaurants/RestaurantAddScreen';
 
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -24,7 +25,7 @@ const defaultNavOptions = {
 
 const HomeNavigator = () => {
   return (
-    <HomeStackNavigator.Navigator 
+    <HomeStackNavigator.Navigator
       initialRouteName="Rewards"
       screenOptions={defaultNavOptions}>
       <HomeStackNavigator.Screen
@@ -37,7 +38,12 @@ const HomeNavigator = () => {
         component={RewardScreen}
         // options={authScreenOptions}
       />
-      
+
+      <HomeStackNavigator.Screen
+      name='Add Restaurant'
+      component={RestaurantAddScreen}
+      />
+
     </HomeStackNavigator.Navigator>
   );
 };
