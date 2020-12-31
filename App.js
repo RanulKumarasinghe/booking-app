@@ -8,6 +8,8 @@ import { Provider } from 'react-redux'
 import restaurantReducer from '@/store/reducers/restaurants';
 import authReducer from '@/store/reducers/auth';
 import bookingsReducer from '@/store/reducers/bookings';
+import rewardsReducer from '@/store/reducers/rewards';
+
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import * as Font from 'expo-font';
@@ -22,7 +24,7 @@ const rootReducer = combineReducers({
   restaurants: restaurantReducer,
   auth: authReducer,
   bookings: bookingsReducer,
-
+  rewards: rewardsReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
