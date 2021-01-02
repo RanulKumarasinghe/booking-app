@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View} from "react-native";
 import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { TextInput } from 'react-native';
@@ -27,8 +27,8 @@ const BookingScreen = (props) => {
     }
   }
 
-  const getTimes = () => {
-    dispatch(fetchUnavailableFromRestaurant(itemId, date));
+  const getTimes = (formattedDate) => {
+    dispatch(fetchUnavailableFromRestaurant(itemId, formattedDate));
     setTimeout(() => {
       setLoaded(true);
     }, 1000)
@@ -43,10 +43,11 @@ const BookingScreen = (props) => {
   }
 
   const checkBooked = (time) => {
+
     if (store.bookings.times === undefined) {
       return false;
     }
-    return store.bookings.times.includes(time);
+    return store.bookings.times.unavailable.includes(time);
   }
 
   const bookAction = (time) => {
@@ -70,7 +71,6 @@ const BookingScreen = (props) => {
     if (!loaded) {
       return [];
     }
-
     const timeArray = [];
     times.forEach((time) => {
       timeArray.push({
@@ -105,8 +105,8 @@ const BookingScreen = (props) => {
             showIcon={false}
             onDateChange={(event, date) => {
               const formattedDate = formatDate(date)
-              getTimes(formattedDate);
               setDate(formattedDate);
+              getTimes(formattedDate);
             }}
           />
         </View>

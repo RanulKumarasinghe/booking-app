@@ -42,23 +42,24 @@ export const postBooking = (restaurantId, date, time) => {
         })();
         //If document already exists
       } else {
+        const newUnavailable = {};
         const id = querySnapshot.docs[0].id;
         const queryData = querySnapshot.docs.map((doc) => {
           return { ...doc.data() }
         })
 
-        //If no bookings on selected date then
-        if ((dateMap[date] = queryData[0].unavailable[date]) === undefined) {
-          dateMap[date] = [];
+        //If no bookings on the day chosen
+        if ((queryData[0].unavailable[date]) === undefined) {
+          queryData[0].unavailable[date] = [time];
+        }else{
+          queryData[0].unavailable[date].push(time)
         }
-        console.log(dateMap);
-        dateMap[date].push(time);
-        (async function () {
-          const res = firebase.firestore().collection('times').doc(id).set({
-            restId: restaurantId,
-            unavailable: dateMap,
-          })
-        })();
+         (async function () {
+           const res = firebase.firestore().collection('times').doc(id).set({
+             restId: restaurantId,
+             unavailable: queryData[0].unavailable,
+           })
+         })();
       }
       dispatch({ type: POST_BOOKING, payload: time })
     })
