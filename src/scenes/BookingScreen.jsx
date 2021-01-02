@@ -4,7 +4,8 @@ import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitt
 import { useSelector, useDispatch } from 'react-redux';
 import { TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import { fetchUnavailableFromRestaurant } from '@/store/actions/bookings';
+import { fetchUnavailableFromRestaurant, postBooking } from '@/store/actions/bookings';
+import firebase from 'src/utils/firebase'
 
 const BookingScreen = (props) => {
   const store = useSelector(state => state.bookings);
@@ -26,9 +27,11 @@ const BookingScreen = (props) => {
     }
   }
 
-  const getTimes = (dateFormat) => {
-    dispatch(fetchUnavailableFromRestaurant(itemId, dateFormat));
-    setLoaded(true);
+  const getTimes = () => {
+    dispatch(fetchUnavailableFromRestaurant(itemId, date));
+    setTimeout(() => {
+      setLoaded(true);
+    }, 1000)
   }
 
   const formatDate = (date) => {
@@ -40,12 +43,19 @@ const BookingScreen = (props) => {
   }
 
   const checkBooked = (time) => {
-    return false;
-    //return store.bookings[0].unavailable.includes(time);
+    if (store.bookings.times === undefined) {
+      return false;
+    }
+    return store.bookings.times.includes(time);
   }
-  const bookAction = () => {
-    console.log(store.bookings)
+
+  const bookAction = (time) => {
+    dispatch(postBooking(itemId, date, time))
+    setTimeout(() => {
+      setLoaded(true);
+    }, 1000)
   }
+
   const BackIcon = (props) => (
     <Icon {...props} name='arrow-back' />
   );
@@ -57,18 +67,19 @@ const BookingScreen = (props) => {
   //Body of page
 
   const generateTimeBoxes = () => {
+    if (!loaded) {
+      return [];
+    }
+
     const timeArray = [];
-    let id = 0
-    times.forEach((elem) => {
+    times.forEach((time) => {
       timeArray.push({
-        id: id,
         element:
-          <Button key={id} size='small' style={styles.timeButton} disabled={checkBooked(elem)} onPress={bookAction}>
-            <Text>{elem}</Text>
+          <Button key={time} size='small' style={styles.timeButton} disabled={checkBooked(time)} onPress={() => { bookAction(time) }}>
+            <Text>{time}</Text>
           </Button>
       }
       )
-      id++;
     })
     return timeArray;
   }
@@ -93,8 +104,9 @@ const BookingScreen = (props) => {
             cancelBtnText="Cancel"
             showIcon={false}
             onDateChange={(event, date) => {
-              getTimes(formatDate(date));
-              setDate(date);
+              const formattedDate = formatDate(date)
+              getTimes(formattedDate);
+              setDate(formattedDate);
             }}
           />
         </View>
@@ -113,11 +125,12 @@ const BookingScreen = (props) => {
         </View>
 
         <Divider />
-
         <View style={styles.timeButtonContainer}>
-          {generateTimeBoxes().map((elem) => {
-            return elem.element;
-          })}
+          {
+            generateTimeBoxes().map((elem) => {
+              return elem.element;
+            })
+          }
         </View>
       </View>
     </SafeAreaView>
