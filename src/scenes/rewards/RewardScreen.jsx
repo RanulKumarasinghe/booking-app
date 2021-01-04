@@ -10,7 +10,7 @@ const RewardScreen = (props) => {
 //const currentReward = useSelector(state => state.rewards);
 
 //
-  const [money, setMoney] = useState();
+  const [money, setMoney] = useState('');
 //The code genrated to update points
   const [code, setCode] = useState('');
 //Holds points and adds

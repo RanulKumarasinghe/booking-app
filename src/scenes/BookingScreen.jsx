@@ -1,15 +1,7 @@
-<<<<<<< HEAD
-import React, {useState} from "react";
-import { SafeAreaView,StyleSheet, Button, Text, Image, View, ImageBackground, ScrollView, Dimensions, TouchableOpacity } from "react-native";
-import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-// import Navbar from '../components/Navbar';
-import { useSelector } from 'react-redux';
-=======
-import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
->>>>>>> a1db9223ae83b2f437c07d08121b265d4510c6c2
 import { TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker'
 import { fetchAllRestaurantTimes } from '@/store/actions/bookings'
