@@ -10,9 +10,10 @@ const BookingsList = () => {
     const store = useSelector(state => state.bookings);
     const dispatch = useDispatch()
     const [loaded, setLoaded] = React.useState(false)
+    const userid = 'test';
 
     if (!loaded) {
-        dispatch(fetchAllBookings());
+        dispatch(fetchAllBookings(userid));
         setLoaded(true);
     }
 

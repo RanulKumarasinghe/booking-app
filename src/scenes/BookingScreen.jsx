@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Text, View} from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import { fetchUnavailableFromRestaurant, postBooking } from '@/store/actions/bookings';
+import { fetchUnavailableFromRestaurant, postBooking, postBookingTime } from '@/store/actions/bookings';
 import firebase from 'src/utils/firebase'
 
 const BookingScreen = (props) => {
@@ -14,6 +14,7 @@ const BookingScreen = (props) => {
   const [loaded, setLoaded] = React.useState(false)
   const [tables, setTables] = React.useState();
   const [date, setDate] = React.useState();
+  const user = 'test';
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantId;
@@ -43,18 +44,20 @@ const BookingScreen = (props) => {
   }
 
   const checkBooked = (time) => {
-
-    if (store.bookings.times === undefined) {
+    if (store.bookings.times.unavailable === undefined) {
       return false;
     }
     return store.bookings.times.unavailable.includes(time);
   }
 
   const bookAction = (time) => {
-    dispatch(postBooking(itemId, date, time))
-    setTimeout(() => {
+    dispatch(postBookingTime(itemId, date, time));
+    dispatch(postBooking(itemId, date, time, user, tables));
+    setLoaded(false);
+    setTimeout(()=>{
+      getTimes(date);
       setLoaded(true);
-    }, 1000)
+    },1000)
   }
 
   const BackIcon = (props) => (

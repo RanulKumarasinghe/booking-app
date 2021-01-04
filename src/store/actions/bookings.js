@@ -2,11 +2,12 @@ import firebase from 'src/utils/firebase'
 
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
 const FETCH_UNAVAILABLE_RESTAURANT_TIMES = 'FETCH_UNAVAILABLE_RESTAURANT_TIMES';
+const POST_BOOKING_TIME = 'POST_BOOKING_TIME';
 const POST_BOOKING = 'POST_BOOKING';
 
-export const fetchAllBookings = () => {
+export const fetchAllBookings = (userId) => {
   return async dispatch => {
-    const bookings = await firebase.firestore().collection('bookings')
+    const bookings = await firebase.firestore().collection('bookings').where('cusId', '==', userId);
     bookings.get().then((querySnapshot) => {
       const bookingArray = querySnapshot.docs.map((doc) => {
         return { ...doc.data(), id: doc.id }
@@ -27,7 +28,7 @@ export const fetchUnavailableFromRestaurant = (resID, date) => {
   }
 };
 
-export const postBooking = (restaurantId, date, time) => {
+export const postBookingTime = (restaurantId, date, time) => {
   const dateMap = {}
   return async dispatch => {
     const query = await firebase.firestore().collection('times').where('restId', '==', restaurantId).get().then((querySnapshot) => {
@@ -51,17 +52,35 @@ export const postBooking = (restaurantId, date, time) => {
         //If no bookings on the day chosen
         if ((queryData[0].unavailable[date]) === undefined) {
           queryData[0].unavailable[date] = [time];
-        }else{
+        } else {
           queryData[0].unavailable[date].push(time)
         }
-         (async function () {
-           const res = firebase.firestore().collection('times').doc(id).set({
-             restId: restaurantId,
-             unavailable: queryData[0].unavailable,
-           })
-         })();
+        (async function () {
+          const res = firebase.firestore().collection('times').doc(id).set({
+            restId: restaurantId,
+            unavailable: queryData[0].unavailable,
+          })
+        })();
       }
-      dispatch({ type: POST_BOOKING, payload: time })
+      //needs to be connected to reducer
+      dispatch({ type: POST_BOOKING_TIME, payload: undefined})
     })
+  }
+}
+
+/**Need to check if already exists such booking */
+export const postBooking = (restaurantId, date, time, user, tableNum) => {
+  return async dispatch => {
+    (async function () {
+      const res = firebase.firestore().collection('bookings').add({
+        confirmed: false,
+        cusId: user,
+        date: date,
+        resId: restaurantId,
+        tables: tableNum,
+        time: time
+      })
+    })();
+    dispatch({type: POST_BOOKING, payload: undefined})
   }
 }
