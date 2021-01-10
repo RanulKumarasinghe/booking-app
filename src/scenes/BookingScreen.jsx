@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { SafeAreaView, StyleSheet, Text, View} from "react-native";
 import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { TextInput } from 'react-native';
-import DatePicker from 'react-native-datepicker'
-import { fetchAllRestaurantTimes } from '@/store/actions/bookings'
-
+import DatePicker from 'react-native-datepicker';
+import { fetchUnavailableFromRestaurant, postBooking } from '@/store/actions/bookings';
+import firebase from 'src/utils/firebase'
 
 const BookingScreen = (props) => {
   const store = useSelector(state => state.bookings);
   const dispatch = useDispatch()
+
   const [loaded, setLoaded] = React.useState(false)
-  const [hide, setHide] = React.useState(true)
+  const [tables, setTables] = React.useState();
+  const [date, setDate] = React.useState();
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantId;
@@ -19,29 +21,41 @@ const BookingScreen = (props) => {
 
   let times = [];
 
-  useEffect(() => {
-    if(!loaded){
-      dispatch(fetchAllRestaurantTimes(itemId));
-      setLoaded(true);
+  for (let i = 10; i < 10 + 11; i++) {
+    for (let j = 0; j < 60; j += 15) {
+      times.push(i + ":" + (j == 0 ? "00" : j))
     }
-  });
-
-  if(loaded){
-    times = store.bookings[0].times;
   }
 
-  const [tables, setTables] = React.useState();
-  const [date, setDate] = React.useState();
-  const [time, setTime] = React.useState()
+  const getTimes = (formattedDate) => {
+    dispatch(fetchUnavailableFromRestaurant(itemId, formattedDate));
+    setTimeout(() => {
+      setLoaded(true);
+    }, 1000)
+  }
+
+  const formatDate = (date) => {
+    const day = date.getDate()
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return (day + '/' + month + '/' + year)
+  }
 
   const checkBooked = (time) => {
-    return !store.bookings[0].available.includes(time);
+
+    if (store.bookings.times === undefined) {
+      return false;
+    }
+    return store.bookings.times.unavailable.includes(time);
   }
 
-  //Head of page
-  const onBooking = () => props.navigation.navigate('Edit Restaurant', {
-    restaurantID: restaurant.id
-  });
+  const bookAction = (time) => {
+    dispatch(postBooking(itemId, date, time))
+    setTimeout(() => {
+      setLoaded(true);
+    }, 1000)
+  }
 
   const BackIcon = (props) => (
     <Icon {...props} name='arrow-back' />
@@ -54,18 +68,18 @@ const BookingScreen = (props) => {
   //Body of page
 
   const generateTimeBoxes = () => {
+    if (!loaded) {
+      return [];
+    }
     const timeArray = [];
-    let id = 0
-    times.forEach((elem) => {
+    times.forEach((time) => {
       timeArray.push({
-        id: id,
         element:
-          <Button key={id} size='small' style={{ margin: 1 }} disabled={checkBooked(elem)} onPress={(button) => { console.log(elem) }}>
-            <Text>{elem}</Text>
+          <Button key={time} size='small' style={styles.timeButton} disabled={checkBooked(time)} onPress={() => { bookAction(time) }}>
+            <Text>{time}</Text>
           </Button>
       }
       )
-      id++;
     })
     return timeArray;
   }
@@ -83,14 +97,16 @@ const BookingScreen = (props) => {
             date={date}
             mode="date"
             placeholder="Select a date"
-            format="YYYY-MM-DD"
+            format="DD-MM-YYYY"
             minDate={new Date()}
             maxDate="2021-12-31"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             showIcon={false}
             onDateChange={(event, date) => {
-              setDate(date);
+              const formattedDate = formatDate(date)
+              setDate(formattedDate);
+              getTimes(formattedDate);
             }}
           />
         </View>
@@ -109,11 +125,12 @@ const BookingScreen = (props) => {
         </View>
 
         <Divider />
-
         <View style={styles.timeButtonContainer}>
-          {generateTimeBoxes().map((elem) => {
-            return elem.element;
-          })}
+          {
+            generateTimeBoxes().map((elem) => {
+              return elem.element;
+            })
+          }
         </View>
       </View>
     </SafeAreaView>
@@ -155,9 +172,12 @@ const styles = StyleSheet.create({
   sizeFont: {
     fontSize: 16
   },
+  timeButton: {
+    width: "20%",
+    margin: 1,
+  },
   timeButtonContainer: {
-    marginTop: '2%',
-    paddingLeft: '8.3%',
+    paddingLeft: '15%',
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
