@@ -2,11 +2,25 @@ import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Button, Text, TextInput, Image, View } from "react-native";
 import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { useSelector } from 'react-redux';
+//import firestore from '@react-native-firebase/firestore';
+import RewardsGen from '@/components/RewardsGen';
+
+import { State } from "react-native-gesture-handler";
 
 const RewardScreen = (props) => {
 //This needs additional logic for example  useSelector(state => state.rewards.points);
 //points come from the initial state in the reducer
 //const currentReward = useSelector(state => state.rewards);
+
+state = {
+  points: [],
+  currentPoints: [],
+  pointsUsed: [],
+}
+
+onPointsAdded =  (points, currentPoints, pointsUsed) =>{
+// should update the fields 
+}
 
 //
   const [money, setMoney] = useState();
@@ -15,44 +29,65 @@ const RewardScreen = (props) => {
 //Holds points and adds
   const [points, updatePoints] = useState(0);
 
+  const  pointsFromState = useSelector(state => state.points)
+  // const usersCollection = firestore().collection('rewards');
+
+  // const userDocument = firestore()
+  // .collection('rewards')
+  // .doc('0h2ypiz5X94hzGqGBp0e');
+
   function addPoints(){  
    updatePoints(points + 1000);
   }
+  // update(field:  | FieldPath, value: any, moreFieldsAndValues: any[]): Promise<void>;
+
+  //One time read
+  // const user = await firestore()
+  // .collection('Users')
+  // .doc('ABC')
+  // .get();
 
   function addMoney(){
     setMoney();
   }
   // const generateCode = async () => {
-  //   // Identify the inputs - money, restaurant_id
-  //   if(money >= 0 && restaurant_id === !null ){
-  //     function getRandomArbitrary(min, max) {
-  //       return Math.random() * (max - min) + min;
-  //     }
-  //     getRandomArbitrary = callBack(setCode);
-      
-  //     //Put setcode in a callBack so it do it doesnt reload
+    // function makeid() {
+    //   var text = "";
+    //   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    
+    //   for (var i = 0; i < 5; i++)
+    //     text += possible.charAt(Math.floor(Math.random() * possible.length));
+    
+    //   return text;
+    // }
+    //Math.random().toString(36).substr(2, 5);
+    // console.log(makeid());
   //   }
 
   //   console.log(money)
-  //   // Should return a code
+  // Should return a code
   // }
 
   // const redeemCode = async (code) => {
   //   // Identify the inputs - code
 
   //   console.log(code)
-  //   //Should say it's okay when points are added
+   //Should say it's okay when points are added
   // }
-//   const saveFilters = useCallback(() => {
-//     const appliedFilters = {
-       
-//     };
 
-//   dispatch(setFilters(appliedFilters));
-// }, []);
+  // firestore()
+  // .collection('Users')
+  // .get()
+  // .then(querySnapshot => {
+  //   console.log('Total users: ', querySnapshot.size);
+
+  //   querySnapshot.forEach(documentSnapshot => {
+  //     console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+  //   });
+  // });
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView>
       <View style={{ flex: 1 }}>
         <View style={styles.container}>
           {/* <TopNavigation style={styles.header}/> */}
@@ -75,7 +110,7 @@ const RewardScreen = (props) => {
           </View>
           <View>
             <Text style={styles.font}>Your Points:</Text>
-            <Text style={styles.font}>{points}</Text>
+            <Text style={styles.font}>{points} {pointsFromState}</Text>
           </View>
           
           <View style={styles.button}><Button title="Use Points" onPress={() => { console.log('Use Points') }} /></View>
@@ -83,9 +118,9 @@ const RewardScreen = (props) => {
           <View style={styles.button}><Button title="Points History" onPress={() => { console.log('Loading History') }} /></View>
         </View>
 
-        <View style={styles.input}>
+        <View>
           <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, width:'80%', alignSelf:'center'}}
+            style={{ height: 40, borderColor: 'gray', borderWidth: 1, width:'80%', alignSelf:'center', alignContent:'center'}}
             setMoney={price => setMoney(price)}
             value={money}
             keyboardType={'numeric'}
@@ -95,7 +130,9 @@ const RewardScreen = (props) => {
             <Button title="Redeem Points" onPress={addPoints} />
           </View>
         </View>
-
+    
+        
+        
       </View>
     </SafeAreaView>
   );
