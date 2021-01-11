@@ -4,11 +4,22 @@ import { ListItem, Card, Modal, Toggle, List, Text, TopNavigation, TopNavigation
 
 const BookingsListEntry = (data) => {
 
+    /*"index": 1,
+    "item": Object {
+      "confirmed": false,
+      "cusId": "test",
+      "date": "1/12/2021",
+      "id": "yFT9gMqoWiTqhcz9FuLU",
+      "restId": "0oSOVkl4hMwsxHtexFJT",
+      "tables": "5",
+      "time": "11:00",
+    },*/
+
     const renderTitle = () => {
         return (
             <View style={styles.headerContainer}>
                 <View style={{ flex: 4 }}>
-                    <Text style={styles.headerText}>{data.item.restaurantID}</Text>
+                    <Text style={styles.headerText}>{data.item.resId}</Text>
                 </View>
                 <View style={{ flex: 1, flexDirection: "row" }}>
                     <Text style={styles.headerText}>Map  </Text>
@@ -24,25 +35,12 @@ const BookingsListEntry = (data) => {
         );
     }
 
-    const formatDate = (date) => {
-        let dateFormat = "";
-
-        dateFormat += (date.getDay() + 1) + "/";
-        dateFormat += (date.getMonth() + 1) + "/";
-        dateFormat += (date.getYear() + 1900);
-        dateFormat += "  Time"
-        dateFormat += (date.getHours() + 1) + ":";
-        dateFormat += (date.getMinutes() + 1);
-
-        return dateFormat;
-    }
-
     const renderDescription = () => {
         return (
             <View style={styles.contentContainer}>
                 <View style={{ flexDirection: "row" }}>
                     <View style={{ flex: 1 }}>
-                        <Text>Tables: {data.item.tableNum}</Text>
+                        <Text>Tables: {data.item.tables}</Text>
                     </View>
                     <View style={{ flex: 1 }}>
                         {/*empty*/}
@@ -50,11 +48,11 @@ const BookingsListEntry = (data) => {
                 </View>
                 <View style={{ flexDirection: "row" }}>
                     <View style={{ flex: 1 }}>
-                        <Text>{data.item.status == true ? "Confirmed" : "Pending"}</Text>
+                        <Text>{data.item.confirmed == true ? "Confirmed" : "Pending"}</Text>
                     </View>
                     <View style={styles.date}>
                         <Text>
-                            {formatDate(data.item.time.toDate())}
+                            {`${data.item.date} : ${data.item.time}`}
                         </Text>
                     </View>
                 </View>

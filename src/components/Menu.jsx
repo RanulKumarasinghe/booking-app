@@ -25,7 +25,7 @@ const setItemText = (name, desc, price) => {
 const createGroup = (data) => {
   return (
     <DrawerGroup
-      id={data.id}
+      key={data.id}
       title={data.category}>
       {createItems(data.options)}
     </DrawerGroup>
@@ -42,7 +42,7 @@ const createItems = (options) => {
   options.forEach(element => {
     drawerItems.push(
       <DrawerItem
-        id={element.id}
+        key={element.id}
         title={setItemText(element.name, element.desc, element.price)}
         accessoryRight={() => <Image source={{
           uri: link,
@@ -63,15 +63,22 @@ const MenuComponent = (props) => {
     drawerGroups.push(createGroup(element));
   })
 
+  drawerGroups.map((group, index) =>
+    <li key={group.index}>
+        {group}
+    </li>
+  );
+
+
   return (
-    <View style={{height:'auto'}}>
-        <Text category='h5' style={{ textAlign: 'center' }}>Menu</Text>
-        <Divider />
-        <Drawer
-          selectedIndex={selectedIndex}
-          onSelect={index => setSelectedIndex(index)}>
-          {drawerGroups}
-        </Drawer>
+    <View style={{ height: 'auto' }}>
+      <Text category='h5' style={{ textAlign: 'center' }}>Menu</Text>
+      <Divider />
+      <Drawer
+        selectedIndex={selectedIndex}
+        onSelect={index => setSelectedIndex(index)}>
+        {drawerGroups}
+      </Drawer>
     </View>
   );
 }

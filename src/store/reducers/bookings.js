@@ -10,6 +10,12 @@ const bookingsReducer = (state = initialState, action) => {
         ...state, 
         bookings:action.payload,
       }
+      case 'FETCH_UNAVAILABLE_RESTAURANT_TIMES':
+      const times = {times:{unavailable:action.payload}}
+      return {
+          ...state,
+          bookings:times,
+        }
     default:
       return state;
   }
