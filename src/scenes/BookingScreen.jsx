@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitten/components';
+import { SafeAreaView, StyleSheet, Button, Text, Image, View } from "react-native";
+import { Divider, Icon, Button, Layout, TopNavigationAction } from '@ui-kitten/components';
+// import Navbar from '../components/Navbar';
 import { useSelector, useDispatch } from 'react-redux';
 import { TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker'
@@ -43,13 +44,6 @@ const BookingScreen = (props) => {
     restaurantID: restaurant.id
   });
 
-  const BackIcon = (props) => (
-    <Icon {...props} name='arrow-back' />
-  );
-
-  BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-  );
 
   //Body of page
 

@@ -1,7 +1,7 @@
 import React, { useState, setState } from 'react';
 import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button} from 'react-native';
 import { Text, TopNavigation } from '@ui-kitten/components';
-import Navbar from '@/components/Navbar';
+// import Navbar from '@/components/Navbar';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {updateRestaurant} from '@/store/actions/restaurants';
