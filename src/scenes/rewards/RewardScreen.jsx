@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, Button, Text, TextInput, Image, View } from "react-native";
-import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { SafeAreaView, StyleSheet, Button, Text, TextInput, Image, View, StatusBar} from "react-native";
+import { Divider, Icon, Layout } from '@ui-kitten/components';
 import { useSelector } from 'react-redux';
 //import firestore from '@react-native-firebase/firestore';
-import RewardsGen from '@/components/RewardsGen';
 
 import { State } from "react-native-gesture-handler";
 
@@ -38,7 +37,19 @@ onPointsAdded =  (points, currentPoints, pointsUsed) =>{
 
   function addPoints(){  
    updatePoints(points + 1000);
+  //  firebase.firestore().collection('rewards')
+  //   usersRef
+  //       .doc(uid)
+  //       .set({user_id: something, points: points + 1000, code: '12341', status: 'good'})
+  //       .then(() => {
+  //           // props.navigation.navigate('Login')}
+  //           props.navigation.navigate('Login', {user: data})
+  //       })
+  //       .catch((error) => {
+  //           alert(error)
+  //       });
   }
+
   // update(field:  | FieldPath, value: any, moreFieldsAndValues: any[]): Promise<void>;
 
   //One time read
@@ -87,10 +98,8 @@ onPointsAdded =  (points, currentPoints, pointsUsed) =>{
   // });
 
   return (
-    <SafeAreaView>
-      <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
-          {/* <TopNavigation style={styles.header}/> */}
             <Image
             style={styles.userImage}
             source={{uri:'https://thumbs.dreamstime.com/z/vector-illustration-isolated-white-background-user-profile-avatar-black-line-icon-user-profile-avatar-black-solid-icon-121102166.jpg'}}
@@ -133,7 +142,6 @@ onPointsAdded =  (points, currentPoints, pointsUsed) =>{
     
         
         
-      </View>
     </SafeAreaView>
   );
 }
@@ -157,7 +165,9 @@ const styles = StyleSheet.create({
   },
 
   container:{
-    paddingTop:'12%'
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+
+    // paddingTop:'12%'
   },
 
   header:{
