@@ -2,7 +2,7 @@ import React, { useState, setState } from 'react';
 import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button} from 'react-native';
 import { Text, TopNavigation } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
-
+import RestaurantDayInput from './RestaurantDayInput'
 import {createRestaurant} from '@/store/actions/restaurants';
 
 const MultiTextInput = (props) => {
@@ -166,17 +166,26 @@ const RestaurantAdd = (props) => {
           value = {imageUrlValue}
          />
       </View>
+
+      
+      <RestaurantDayInput 
+        dayName="Monday"
+        dayShortName='Mon'
+        dayIsEnabled={monIsEnabled}
+        onChangeEnable={() => setMonIsEnabled(previousState => !previousState)}
+        dayOpenValue={monOpenValue}
+        onChangeOpen={text => onChangeMonOpen(text)}
+        dayCloseValue={monCloseValue}
+        onChangeClose={text => onChangeMonClose(text)}
+      />
+
+
+
+
       <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Monday: </Text>
       <View style={styles.switchStyle}>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={monIsEnabled ? "#f4f3f4" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={() => setMonIsEnabled(previousState => !previousState)}
-        value={monIsEnabled}
 
-      />
       </View>
       </View>
       <View style={styles.listRow}>
