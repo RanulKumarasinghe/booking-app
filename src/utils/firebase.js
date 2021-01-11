@@ -19,5 +19,14 @@ const firebaseConfig = {
   measurementId: "G-XFJYZHEKDB"
 };
 
-let initFirebase = firebase.initializeApp(firebaseConfig);
-export default initFirebase;
+// Initialize Firebase
+let Firebase = firebase.initializeApp(firebaseConfig)
+
+export const db = firebase.firestore()
+
+// avoid deprecated warnings
+db.settings({
+	timestampsInSnapshots: true
+})
+
+export default Firebase
