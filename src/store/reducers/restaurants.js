@@ -1,6 +1,6 @@
 // import { MEALS } from ../
 import { RESTAURANT } from '@/other/dummy-data';
-import { TOGGLE_FILTER } from '@/store/actions/restaurants'
+import { ADD_RESTAURANT, TOGGLE_FILTER } from '@/store/actions/restaurants'
 import { FETCH_ALL_RESTAURANTS } from '@/store/actions/restaurants'
 import { UPDATE_RESTAURANT } from '@/store/actions/restaurants';
 import { act } from 'react-test-renderer';
@@ -38,7 +38,7 @@ const restaurantReducer = (state = initialState, action) => {
       if (action.restaurantName.length == 0) {
         return {...state, filteredRestaurant: state.restaurants}
       } else {
-        filteredRestaurant = state.restaurants.filter(restaurant => restaurant.title.toLowerCase().includes(action.restaurantName.toLowerCase()));
+        filteredRestaurant = state.restaurants.filter(restaurant => restaurant.name.toLowerCase().includes(action.restaurantName.toLowerCase()));
         return {...state, filteredRestaurant: filteredRestaurant}
       }
     case FETCH_ALL_RESTAURANTS:
@@ -46,6 +46,10 @@ const restaurantReducer = (state = initialState, action) => {
     default:
       return state;
     case UPDATE_RESTAURANT:
+      return {
+        ...state, restaurants: {...state.restaurants}
+      }
+    case ADD_RESTAURANT:
       return {
         ...state, restaurants: {...state.restaurants}
       }

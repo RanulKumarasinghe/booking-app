@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { Divider, Icon, Button, TopNavigationAction, Datepicker } from '@ui-kitten/components';
+import { SafeAreaView, StyleSheet, Text, View, TextInput} from "react-native";
+import { Divider, Icon, Button, Layout, Datepicker } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
-import { TextInput } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import { fetchUnavailableFromRestaurant, postBooking, postBookingTime } from '@/store/actions/bookings';
 import firebase from 'src/utils/firebase'
@@ -60,13 +59,6 @@ const BookingScreen = (props) => {
     },1000)
   }
 
-  const BackIcon = (props) => (
-    <Icon {...props} name='arrow-back' />
-  );
-
-  BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-  );
 
   //Body of page
 

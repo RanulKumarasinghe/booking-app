@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
-import Navbar from '../../components/Navbar';
+// import Navbar from '../../components/Navbar';
 import RestaurantEntry from '../../components/RestaurantEntry';
 import { Button,Icon , Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux'

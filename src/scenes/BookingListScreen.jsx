@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { Button, Card, Modal, Toggle, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
-import Navbar from '@/components/Navbar';
 import BookingsList from '@/components/BookingsList';
 
 export default BookingListScreen = ({ navigation }) => {
