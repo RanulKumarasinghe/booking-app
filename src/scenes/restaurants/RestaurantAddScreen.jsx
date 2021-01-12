@@ -167,8 +167,8 @@ const RestaurantAdd = (props) => {
          />
       </View>
 
-      
-      <RestaurantDayInput 
+
+      <RestaurantDayInput
         dayName="Monday"
         dayShortName='Mon'
         dayIsEnabled={monIsEnabled}
@@ -179,228 +179,72 @@ const RestaurantAdd = (props) => {
         onChangeClose={text => onChangeMonClose(text)}
       />
 
-
-
-
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Monday: </Text>
-      <View style={styles.switchStyle}>
-
-      </View>
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Mon-Open: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeMonOpen(text)}
-          maxLength = {5}
-          value = {monOpenValue}
-       />
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Mon-Close: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeMonClose(text)}
-          maxLength = {5}
-          value = {monCloseValue}
-          />
-      </View>
-
-
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Tuesday: </Text>
-      <View style={styles.switchStyle}>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={tuesIsEnabled ? "#f4f3f4" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={() => setTuesIsEnabled(previousState => !previousState)}
-        value={tuesIsEnabled}
-
+      <RestaurantDayInput
+        dayName="Tuesday"
+        dayShortName='Tues'
+        dayIsEnabled={tuesIsEnabled}
+        onChangeEnable={() => setTuesIsEnabled(previousState => !previousState)}
+        dayOpenValue={tuesOpenValue}
+        onChangeOpen={text => onChangeTuesOpen(text)}
+        dayCloseValue={tuesCloseValue}
+        onChangeClose={text => onChangeTuesClose(text)}
       />
-      </View>
-      </View>
 
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Tues-Open: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeTuesOpen(text)}
-          maxLength = {5}
-          value = {tuesOpenValue}
-       />
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Tues-Close: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeTuesClose(text)}
-          maxLength = {5}
-          value = {tuesCloseValue}
-          />
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Wednesday: </Text>
-      <View style={styles.switchStyle}>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={wedIsEnabled ? "#f4f3f4" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={() => setWedIsEnabled(previousState => !previousState)}
-        value={wedIsEnabled}
-
+      <RestaurantDayInput
+        dayName="Wednesday"
+        dayShortName='Wed'
+        dayIsEnabled={wedIsEnabled}
+        onChangeEnable={() => setWedsIsEnabled(previousState => !previousState)}
+        dayOpenValue={wedOpenValue}
+        onChangeOpen={text => onChangeWedsOpen(text)}
+        dayCloseValue={wedCloseValue}
+        onChangeClose={text => onChangeWedsClose(text)}
       />
-      </View>
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Wed-Open: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeWedOpen(text)}
-          maxLength = {5}
-          value = {wedOpenValue}
-       />
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Wed-Close: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeWedClose(text)}
-          maxLength = {5}
-          value = {wedCloseValue}
-          />
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Thursday: </Text>
-      <View style={styles.switchStyle}>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={thursIsEnabled ? "#f4f3f4" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={() => setThursIsEnabled(previousState => !previousState)}
-        value={thursIsEnabled}
 
+      <RestaurantDayInput
+        dayName="Thursday"
+        dayShortName='Thurs'
+        dayIsEnabled={thursIsEnabled}
+        onChangeEnable={() => setThursIsEnabled(previousState => !previousState)}
+        dayOpenValue={thursOpenValue}
+        onChangeOpen={text => onChangeThursOpen(text)}
+        dayCloseValue={thursCloseValue}
+        onChangeClose={text => onChangeThursClose(text)}
       />
-      </View>
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Thurs-Open: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeThursOpen(text)}
-          maxLength = {5}
-          value = {thursOpenValue}
-       />
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Thurs-Close: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeThursClose(text)}
-          maxLength = {5}
-          value = {thursCloseValue}
-          />
-      </View>
 
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Friday: </Text>
-      <View style={styles.switchStyle}>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={friIsEnabled ? "#f4f3f4" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={() => setFriIsEnabled(previousState => !previousState)}
-        value={friIsEnabled}
-
+      <RestaurantDayInput
+        dayName="Friday"
+        dayShortName='Fri'
+        dayIsEnabled={friIsEnabled}
+        onChangeEnable={() => setFriIsEnabled(previousState => !previousState)}
+        dayOpenValue={friOpenValue}
+        onChangeOpen={text => onChangeFriOpen(text)}
+        dayCloseValue={friCloseValue}
+        onChangeClose={text => onChangeFriClose(text)}
       />
-      </View>
-      </View>
 
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Fri-Open: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeFriOpen(text)}
-          maxLength = {5}
-          value = {friOpenValue}
-       />
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Fri-Close: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeFriClose(text)}
-          maxLength = {5}
-          value = {friCloseValue}
-          />
-      </View>
-
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Saturday: </Text>
-      <View style={styles.switchStyle}>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={satIsEnabled ? "#f4f3f4" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={() => setSatIsEnabled(previousState => !previousState)}
-        value={satIsEnabled}
-
+      <RestaurantDayInput
+        dayName="Saturday"
+        dayShortName='Sat'
+        dayIsEnabled={satIsEnabled}
+        onChangeEnable={() => setSatIsEnabled(previousState => !previousState)}
+        dayOpenValue={satOpenValue}
+        onChangeOpen={text => onChangeSatOpen(text)}
+        dayCloseValue={satCloseValue}
+        onChangeClose={text => onChangeSatClose(text)}
       />
-      </View>
-      </View>
 
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Sat-Open: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeSatOpen(text)}
-          maxLength = {5}
-          value = {satOpenValue}
-       />
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Sat-Close: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeSatClose(text)}
-          maxLength = {5}
-          value = {satCloseValue}
-          />
-      </View>
-
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Sunday: </Text>
-      <View style={styles.switchStyle}>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={sunIsEnabled ? "#f4f3f4" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={() => setSunIsEnabled(previousState => !previousState)}
-        value={sunIsEnabled}
-
+      <RestaurantDayInput
+        dayName="Sunday"
+        dayShortName='Sun'
+        dayIsEnabled={sunIsEnabled}
+        onChangeEnable={() => setSunIsEnabled(previousState => !previousState)}
+        dayOpenValue={sunOpenValue}
+        onChangeOpen={text => onChangeSunOpen(text)}
+        dayCloseValue={sunCloseValue}
+        onChangeClose={text => onChangeSunClose(text)}
       />
-      </View>
-      </View>
 
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Sun-Open: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeSunOpen(text)}
-          maxLength = {5}
-          value = {sunOpenValue}
-       />
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Sun-Close: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeSunClose(text)}
-          maxLength = {5}
-          value = {sunCloseValue}
-          />
-      </View>
       <View style={styles.buttonSpacing}>
          <Button title="Not yet" onPress={navigateBack} />
          <Button title="Add Restaurant" onPress={addRestaurant} />

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { State } from "react-native-gesture-handler";
 
 const RewardScreen = (props) => {
-  const onAddRestaurant = () => props.navigation.navigate('Add Restaurant');
+
 //This needs additional logic for example  useSelector(state => state.rewards.points);
 //points come from the initial state in the reducer
 //const currentReward = useSelector(state => state.rewards);
@@ -19,7 +19,7 @@ state = {
 }
 
 onPointsAdded =  (points, currentPoints, pointsUsed) =>{
-// should update the fields 
+// should update the fields
 }
 
 //
@@ -36,7 +36,7 @@ onPointsAdded =  (points, currentPoints, pointsUsed) =>{
   // .collection('rewards')
   // .doc('0h2ypiz5X94hzGqGBp0e');
 
-  function addPoints(){  
+  function addPoints(){
    updatePoints(points + 1000);
   //  firebase.firestore().collection('rewards')
   //   usersRef
@@ -66,10 +66,10 @@ onPointsAdded =  (points, currentPoints, pointsUsed) =>{
     // function makeid() {
     //   var text = "";
     //   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    
+
     //   for (var i = 0; i < 5; i++)
     //     text += possible.charAt(Math.floor(Math.random() * possible.length));
-    
+
     //   return text;
     // }
     //Math.random().toString(36).substr(2, 5);
@@ -126,7 +126,7 @@ onPointsAdded =  (points, currentPoints, pointsUsed) =>{
           <View style={styles.button}><Button title="Use Points" onPress={() => { console.log('Use Points') }} /></View>
           <View style={styles.button}><Button title="Refresh Points" onPress={() => { console.log('Refresh points') }} /></View>
           <View style={styles.button}><Button title="Points History" onPress={() => { console.log('Loading History') }} /></View>
-          <View style={styles.button}><Button title="Add Restaurant" onPress={onAddRestaurant} /></View>
+
         </View>
 
         <View>
@@ -141,9 +141,9 @@ onPointsAdded =  (points, currentPoints, pointsUsed) =>{
             <Button title="Redeem Points" onPress={addPoints} />
           </View>
         </View>
-    
-        
-        
+
+
+
     </SafeAreaView>
   );
 }

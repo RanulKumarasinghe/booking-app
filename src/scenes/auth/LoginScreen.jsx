@@ -7,6 +7,7 @@ import Firebase from '@/utils/firebase'
 // export const LoginScreen = ({ navigation }) => {
 const LoginScreen = (props) => {
 
+  const onAddRestaurant = () => props.navigation.navigate('Add Restaurant');
   // useEffect(() => {
 	// 	Firebase.auth().onAuthStateChanged(user => {
 	// 		if (user) {
@@ -64,6 +65,10 @@ const LoginScreen = (props) => {
         <Button onPress={() => props.navigation.navigate('Sign Up')}>
           Don't have an account? Sign Up
         </Button>
+
+        <Button style={styles.button} onPress={onAddRestaurant} >
+          Add Restaurant
+        </Button>
       </Layout>
     </SafeAreaView>
   );
@@ -83,6 +88,9 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     marginTop: 8
+  },
+  button: {
+    marginTop: 15
   }
 })
 
