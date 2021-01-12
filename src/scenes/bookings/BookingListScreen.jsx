@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { Button, Card, Modal, Toggle, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
 import BookingsList from '@/components/BookingsList';
+import ConfirmBookingsList from '@/scenes/bookings/components/ConfirmBookingList';
 
 export default BookingListScreen = ({ navigation }) => {
     const [checked, setChecked] = React.useState(false);
@@ -36,6 +37,8 @@ export default BookingListScreen = ({ navigation }) => {
                 </Toggle>
             </View>
             <BookingsList />
+            <Text style={{textAlign: "center"}}>Confirmation Screen (for testing purposes)</Text>
+            <ConfirmBookingsList />
             <Modal
                 visible={visible}
                 backdropStyle={styles.modalBackDrop}

@@ -5,8 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import RestaurantScreen from '../scenes/restaurants/RestaurantScreen';
 import RestaurantListScreen from '../scenes/restaurants/RestaurantListScreen';
-import BookingScreen from 'src/scenes/BookingScreen';
-import BookingListScreen from 'src/scenes/BookingListScreen';
+import BookingScreen from 'src/scenes/bookings/BookingScreen';
+import BookingListScreen from 'src/scenes/bookings/BookingListScreen';
 
 import RestaurantEditScreen from '../scenes/restaurants/RestaurantEditScreen';
 import RestaurantAddScreen from '../scenes/restaurants/RestaurantAddScreen';

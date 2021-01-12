@@ -10,7 +10,7 @@ const BookingsListEntry = (data) => {
       "cusId": "test",
       "date": "1/12/2021",
       "id": "yFT9gMqoWiTqhcz9FuLU",
-      "restId": "0oSOVkl4hMwsxHtexFJT",
+      "resName": "Hello World",
       "tables": "5",
       "time": "11:00",
     },*/
@@ -19,7 +19,7 @@ const BookingsListEntry = (data) => {
         return (
             <View style={styles.headerContainer}>
                 <View style={{ flex: 4 }}>
-                    <Text style={styles.headerText}>{data.item.resId}</Text>
+                    <Text style={styles.headerText}>{data.item.resName}</Text>
                 </View>
                 <View style={{ flex: 1, flexDirection: "row" }}>
                     <Text style={styles.headerText}>Map  </Text>
