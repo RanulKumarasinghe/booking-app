@@ -1,9 +1,13 @@
 import { AsyncStorage } from 'react-native';
+import Firebase, { db } from '@/utils/firebase'
 
 // export const SIGNUP = 'SIGNUP';
 // export const LOGIN = 'LOGIN';
-export const AUTHENTICATE = 'AUTHENTICATE';
+export const LOGIN = 'LOGIN';
+export const SIGNUP = 'SIGNUP';
 export const LOGOUT = 'LOGOUT';
+
+// const db = Firebase.firestore()
 
 let timer;
 
@@ -11,57 +15,55 @@ export const setDidTryAL = () => {
   return { type: SET_DID_TRY_AL };
 };
 
-export const authenticate = (userId, token, expiryTime) => {
-  return dispatch => {
-    dispatch({ type: AUTHENTICATE, userId: userId, token: token });
-  };
-};
+export const signUp = (name, email, password) => {
+	return async (dispatch) => {
+    try {
+      const response = await Firebase.auth().createUserWithEmailAndPassword(email, password)
+			if (response.user.uid) {
+				const user = {
+          uid: response.user.uid,
+          name: name,
+					email: email
+        }
 
-export const signUp = (email, password) => {
-  return dispatch(firebase.auth().createUserWithEmailAndPassword(email, password))
-  .then((response) => {
-    const uid = response.user.uid
-    const data = {
-        id: uid,
-        email,
-        fullName,
-    };
-    const usersRef = firebase.firestore().collection('users')
+				db.collection('users')
+					.doc(response.user.uid)
+					.set(user)
+				dispatch({ type: SIGNUP, payload: user })
+			}
+		} catch (e) {
+      console.log('Fuck')
+			alert(e)
+		}
+  }
+}
 
-    usersRef.doc(uid).set(data)
-      .then(() => {
-        dispatch(
-          authenticate(
-            email,
-            123,
-            100000
-          )
-        );
-      })
-      .catch((error) => {
-          alert(error)
-      });
-    })
-    .catch((error) => {
-        alert(error)
-    });
+export const getUser = uid => {
+	return async (dispatch) => {
+		try {
+			const user = await db
+				.collection('users')
+				.doc(uid)
+				.get()
+
+			dispatch({ type: LOGIN, payload: user.data() })
+		} catch (e) {
+			alert(e)
+		}
+	}
 }
 
 export const login = (email, password) => {
-  return async dispatch => {
-    //placeholder for http request
-    // await timeout(1000);
+	return async (dispatch) => {
+		try {
+			const response = await Firebase.auth().signInWithEmailAndPassword(email, password)
 
-
-    dispatch(
-      authenticate(
-        email,
-        123,
-        100000
-      )
-    );
-  };
-};
+			dispatch(getUser(response.user.uid))
+		} catch (e) {
+			alert(e)
+		}
+	}
+}
 
 export const logout = () => {
   clearLogoutTimer();

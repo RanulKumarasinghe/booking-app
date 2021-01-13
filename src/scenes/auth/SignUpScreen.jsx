@@ -1,7 +1,10 @@
 // SignUp.js
 import React, {useState} from 'react'
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
-import firebase from '@/utils/firebase'
+import { StyleSheet, SafeAreaView, View } from 'react-native'
+import Firebase from '@/utils/firebase'
+import { Input, Text, Button, Layout } from '@ui-kitten/components';
+import { useDispatch } from 'react-redux'
+import { signUp } from '@/store/actions/auth'
 
 const SignUp = (props) => {
   const [fullName, setFullName] = useState('')
@@ -9,85 +12,73 @@ const SignUp = (props) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
+  const dispatch = useDispatch()
+
   const handleSignUp = () => {
     if (password !== confirmPassword) {
       alert("Passwords don't match.")
       return
   }
-  firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((response) => {
-          const uid = response.user.uid
-          const data = {
-              id: uid,
-              email,
-              fullName,
-          };
-          const usersRef = firebase.firestore().collection('users')
-          usersRef
-              .doc(uid)
-              .set(data)
-              .then(() => {
-                  // props.navigation.navigate('Login')}
-                  props.navigation.navigate('Login', {user: data})
-              })
-              .catch((error) => {
-                  alert(error)
-              });
-      })
-      .catch((error) => {
-          alert(error)
-  });
-  
-  }
-  
 
-    return (
-      <View style={styles.container}>
+  dispatch(signUp(fullName, email, password));
+  // props.navigation.navigate('Login')
+
+  }
+
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
         <Text>Sign Up</Text>
         {/* {this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
           </Text>} */}
-        <TextInput
-          placeholder="Name"
-          autoCapitalize="words"
-          style={styles.textInput}
+        <Input
+          // textStyle={{ ... }}
           onChangeText={fullName => setFullName(fullName)}
           value={fullName}
+          label={evaProps => <Text {...evaProps}>Name</Text>}
+          // caption={evaProps => <Text {...evaProps}>Caption</Text>}
         />
-        <TextInput
-          placeholder="Email"
-          autoCapitalize="none"
-          style={styles.textInput}
-          onChangeText={email => setEmail(email)}
+
+        <Input
+          // textStyle={{ ... }}
           value={email}
+          onChangeText={email => setEmail(email)}
+          label={evaProps => <Text {...evaProps}>Email</Text>}
+          // caption={evaProps => <Text {...evaProps}>Caption</Text>}
         />
-        <TextInput
+
+        <Input
+          // textStyle={{ ... }}
           secureTextEntry
-          placeholder="Password"
-          autoCapitalize="none"
-          style={styles.textInput}
           onChangeText={password => setPassword(password)}
           value={password}
+          label={evaProps => <Text {...evaProps}>Password</Text>}
+          // caption={evaProps => <Text {...evaProps}>Caption</Text>}
         />
-        <TextInput
+
+        <Input
+          // textStyle={{ ... }}
           secureTextEntry
-          placeholder="Confirm Password"
-          autoCapitalize="exp"
-          style={styles.textInput}
           onChangeText={confirmPassword => setConfirmPassword(confirmPassword)}
           value={confirmPassword}
+          label={evaProps => <Text {...evaProps}>Confirm Password</Text>}
+          // caption={evaProps => <Text {...evaProps}>Caption</Text>}
         />
-        <Button title="Sign Up" onPress={handleSignUp} />
-        <Button
-          title="Already have an account? Login"
-          onPress={() => props.navigation.navigate('Login')}
-        />
-      </View>
-    )
-  }
+        <Button onPress={handleSignUp}>
+          {evaProps => <Text {...evaProps}>Sign Up</Text>}
+        </Button>
+        {/* <Button title="Sign Up" onPress={handleSignUp} /> */}
+        <Text onPress={() => props.navigation.navigate('Login')}>
+          Already have an account? Login
+        </Text>
+      </Layout>
+    </SafeAreaView>
+  )
+}
 
 
 const styles = StyleSheet.create({

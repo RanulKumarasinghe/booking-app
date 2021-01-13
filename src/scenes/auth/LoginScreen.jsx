@@ -1,72 +1,73 @@
-import React from 'react';
-import { SafeAreaView, View } from 'react-native';
-import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { StyleSheet, TextInput, Button } from 'react-native'
+import React, {useState, useEffect} from 'react';
+import { SafeAreaView, View, StyleSheet } from 'react-native';
+import { Input, Text, Button, Layout } from '@ui-kitten/components';
+import Firebase from '@/utils/firebase'
 
-const BackIcon = (props) => (
-  <Icon {...props} name='arrow-back' />
-);
 
 // export const LoginScreen = ({ navigation }) => {
-export default class LoginScreen extends React.Component {
+const LoginScreen = (props) => {
 
-  constructor({navigation}){
-    super();
-    this.navigation = navigation;
-  }
+  // useEffect(() => {
+	// 	Firebase.auth().onAuthStateChanged(user => {
+	// 		if (user) {
+	// 			this.props.getUser(user.uid)
+	// 			if (this.props.user != null) {
+	// 				this.props.navigation.navigate('Profile')
+	// 			}
+	// 		}
+	// 	})
+  // }, [])
 
-  state = { email: '', password: '', errorMessage: null }
-  handleLogin = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleLogin = () => {
     // TODO: Firebase stuff...
     console.log('handleLogin')
   }
 
 
-  handleResetPassword = () => {
-    this.props.navigation.navigate('Reset Password')
+  const handleResetPassword = () => {
+    props.navigation.navigate('Reset Password')
   }
 
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Login</Text>
+        {/* {this.state.errorMessage &&
+          <Text style={{ color: 'red' }}>
+            {this.state.errorMessage}
+          </Text>} */}
 
-  BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={this.navigateBack} />
+        <Input
+          // textStyle={{ ... }}
+          value={email}
+          onChangeText={email => setEmail(email)}
+          label={evaProps => <Text {...evaProps}>Email</Text>}
+          // caption={evaProps => <Text {...evaProps}>Caption</Text>}
+        />
+        <Input
+          // textStyle={{ ... }}
+          secureTextEntry
+          onChangeText={password => setPassword(password)}
+          value={password}
+          label={evaProps => <Text {...evaProps}>Password</Text>}
+          // caption={evaProps => <Text {...evaProps}>Caption</Text>}
+        />
+        <Button onPress={handleLogin}>
+          Login
+        </Button>
+
+        <Text onPress={handleResetPassword}>Forgotten Password</Text>
+
+        <Button onPress={() => props.navigation.navigate('Sign Up')}>
+          Don't have an account? Sign Up
+        </Button>
+      </Layout>
+    </SafeAreaView>
   );
 
-  render() {
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Login</Text>
-          {this.state.errorMessage &&
-            <Text style={{ color: 'red' }}>
-              {this.state.errorMessage}
-            </Text>}
-          <TextInput
-            style={styles.textInput}
-            autoCapitalize="none"
-            placeholder="Email"
-            onChangeText={email => this.setState({ email })}
-            value={this.state.email}
-          />
-          <TextInput
-            secureTextEntry
-            style={styles.textInput}
-            autoCapitalize="none"
-            placeholder="Password"
-            onChangeText={password => this.setState({ password })}
-            value={this.state.password}
-          />
-          <Button title="Login" onPress={this.handleLogin} />
-
-          <Text onPress={this.handleResetPassword}>Forgotten Password</Text>
-
-          <Button
-            title="Don't have an account? Sign Up"
-            onPress={() => this.props.navigation.navigate('Sign Up')}
-          />
-        </Layout>
-      </SafeAreaView>
-    );
-  }
 };
 
 
@@ -84,3 +85,5 @@ const styles = StyleSheet.create({
     marginTop: 8
   }
 })
+
+export default LoginScreen;
