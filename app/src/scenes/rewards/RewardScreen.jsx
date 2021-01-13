@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Button, Text, TextInput, Image, View, StatusBar} from "react-native";
 import { Divider, Icon, Layout } from '@ui-kitten/components';
 import { useSelector } from 'react-redux';
-//import firestore from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 
 import { State } from "react-native-gesture-handler";
 
@@ -13,28 +13,34 @@ const RewardScreen = (props) => {
   //3. A code is generated
   //4. Code is submited 
   //5. Points redeemed
-  const [money, setMoney] = useState(0);
+
+  //The mechanism for convrting money to points need to be added
+  const [moneySpent, UpdateMoneySpent] = useState(0);
 
   //Current points
   const [points, updatePoints] = useState(0);
-  
   //All points earned never decreases 
   const [pointsEarned, updatePointsEarned] = useState(0);
-
   //Points that have been used
+  //Need a system that uses points
   const [pointsUsed, updatePointsUsed] = useState(0);
 
-
-  const genCode = () =>{
-    //Using Divides by a number and generates a code
-    inPutMoney = inPutMoney  
-  };
-
-  
+    const generateCode = () => {
+      function makeid() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      
+        for (var i = 0; i < 5; i++)
+          text += possible.charAt(Math.floor(Math.random() * possible.length));
+      
+        return text;
+      }
+    };
 
   function addPoints(){
     //Money is converted into points  
    updatePoints(points + 1000);
+   updatePointsEarned(points + 1000);
   //  firebase.firestore().collection('rewards')
   //   usersRef
   //       .doc(uid)
@@ -50,9 +56,6 @@ const RewardScreen = (props) => {
 
   // update(field:  | FieldPath, value: any, moreFieldsAndValues: any[]): Promise<void>;
 
-
- 
-  
   return (
     <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
@@ -67,15 +70,19 @@ const RewardScreen = (props) => {
           <View style={styles.lineThrough}/>
           <View>
             <Text style={styles.font}>Points Earned:</Text>
-            <Text style={styles.font}>2000</Text>
+            <Text style={styles.font}>{pointsEarned}</Text>
           </View>
           <View>
             <Text style={styles.font}>Points Used:</Text>
-            <Text style={styles.font}>0000</Text>
+            <Text style={styles.font}>{pointsUsed}</Text>
           </View>
           <View>
             <Text style={styles.font}>Your Points:</Text>
             <Text style={styles.font}>{points}</Text>
+          </View>
+          <View>
+            <Text style={styles.font}>Money Spent:</Text>
+            <Text style={styles.font}>{moneySpent}</Text>
           </View>
 
           <View style={styles.button}>
@@ -102,17 +109,15 @@ const RewardScreen = (props) => {
               alignContent:'center'
             }}
             setMoney={price => setMoney(price)}
-            value={money}
+            value={moneySpent}
             keyboardType={'numeric'}
             placeholder='Price of meal here'
           />
           <View style={styles.inputButton}>
-            <Button title="Redeem Points" onPress={addPoints} />
+            <Button title="Redeem Points" onPress={() => addPoints()} />
+            <Button title="Code" onPress={() => generateCode()} />
           </View>
         </View>
-    
-        
-        
     </SafeAreaView>
   );
 }
@@ -137,7 +142,6 @@ const styles = StyleSheet.create({
 
   container:{
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
-
     // paddingTop:'12%'
   },
 

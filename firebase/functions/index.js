@@ -1,5 +1,5 @@
 // functions/index.js
-const functions = require('firebase-functions');
+//const functions = require('firebase-functions');
 
 
 //Were creating a cloud function called request number
