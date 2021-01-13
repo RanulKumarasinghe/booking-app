@@ -3,8 +3,6 @@ import { RESTAURANT } from '@/other/dummy-data';
 import { ADD_RESTAURANT, TOGGLE_FILTER } from '@/store/actions/restaurants'
 import { FETCH_ALL_RESTAURANTS } from '@/store/actions/restaurants'
 import { UPDATE_RESTAURANT } from '@/store/actions/restaurants';
-import { act } from 'react-test-renderer';
-
 
 const initialState = {
   restaurants: [],
