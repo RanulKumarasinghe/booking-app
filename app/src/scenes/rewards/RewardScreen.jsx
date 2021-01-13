@@ -15,21 +15,26 @@ const RewardScreen = (props) => {
   //5. Points redeemed
   const [money, setMoney] = useState(0);
 
-//Holds points and adds
+  //Current points
   const [points, updatePoints] = useState(0);
+  
+  //All points earned never decreases 
+  const [pointsEarned, updatePointsEarned] = useState(0);
 
-  const inPutMoney = 0;
-  const codeGen = '';
+  //Points that have been used
+  const [pointsUsed, updatePointsUsed] = useState(0);
+
 
   const genCode = () =>{
     //Using Divides by a number and generates a code
     inPutMoney = inPutMoney  
   };
 
+  
 
   function addPoints(){
     //Money is converted into points  
-   updatePoints(points + placeholder);
+   updatePoints(points + 1000);
   //  firebase.firestore().collection('rewards')
   //   usersRef
   //       .doc(uid)
