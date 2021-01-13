@@ -25,14 +25,12 @@ export const signUp = (name, email, password) => {
           name: name,
 					email: email
         }
-
 				db.collection('users')
 					.doc(response.user.uid)
-					.set(user)
+          .set(user)
 				dispatch({ type: SIGNUP, payload: user })
 			}
 		} catch (e) {
-      console.log('Fuck')
 			alert(e)
 		}
   }
@@ -66,7 +64,6 @@ export const login = (email, password) => {
 }
 
 export const logout = () => {
-  clearLogoutTimer();
   // AsyncStorage.removeItem('userData');
   return { type: LOGOUT };
 };
