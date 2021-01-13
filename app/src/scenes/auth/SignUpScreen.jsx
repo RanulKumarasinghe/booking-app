@@ -1,7 +1,6 @@
 // SignUp.js
 import React, {useState} from 'react'
 import { StyleSheet, SafeAreaView, View } from 'react-native'
-import Firebase from '@/utils/firebase'
 import { Input, Text, Button, Layout } from '@ui-kitten/components';
 import { useDispatch } from 'react-redux'
 import { signUp } from '@/store/actions/auth'
@@ -18,13 +17,9 @@ const SignUp = (props) => {
     if (password !== confirmPassword) {
       alert("Passwords don't match.")
       return
+    }
+    dispatch(signUp(fullName, email, password));
   }
-
-  dispatch(signUp(fullName, email, password));
-  // props.navigation.navigate('Login')
-
-  }
-
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -71,6 +66,7 @@ const SignUp = (props) => {
         <Button onPress={handleSignUp}>
           {evaProps => <Text {...evaProps}>Sign Up</Text>}
         </Button>
+
         {/* <Button title="Sign Up" onPress={handleSignUp} /> */}
         <Text onPress={() => props.navigation.navigate('Login')}>
           Already have an account? Login
