@@ -2,59 +2,31 @@ import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Button, Text, TextInput, Image, View, StatusBar} from "react-native";
 import { Divider, Icon, Layout } from '@ui-kitten/components';
 import { useSelector } from 'react-redux';
-import firestore from '@react-native-firebase/firestore';
-
 import { State } from "react-native-gesture-handler";
+import firebase from 'src/utils/firebase';
 
 const RewardScreen = (props) => {
-
+ 
   //1. User inputs amount
-  //2. Submit amount
-  //3. A code is generated
-  //4. Code is submited 
-  //5. Points redeemed
-
+  //2. Submit amount to DB
+ 
   //The mechanism for convrting money to points need to be added
-  const [moneySpent, UpdateMoneySpent] = useState(0);
-
-  //Current points
-  const [points, updatePoints] = useState(0);
-  //All points earned never decreases 
-  const [pointsEarned, updatePointsEarned] = useState(0);
-  //Points that have been used
-  //Need a system that uses points
-  const [pointsUsed, updatePointsUsed] = useState(0);
-
-    const generateCode = () => {
-      function makeid() {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      
-        for (var i = 0; i < 5; i++)
-          text += possible.charAt(Math.floor(Math.random() * possible.length));
-      
-        return text;
-      }
-    };
+  const [money, updateMoneys] = useState(0);
+  const [points, updateMoney] = useState(0);
 
   function addPoints(){
-    //Money is converted into points  
-   updatePoints(points + 1000);
-   updatePointsEarned(points + 1000);
-  //  firebase.firestore().collection('rewards')
-  //   usersRef
-  //       .doc(uid)
-  //       .set({user_id: something, points: points + placeholder, code: '12341', status: 'good'})
-  //       .then(() => {
-  //           // props.navigation.navigate('Login')}
-  //           props.navigation.navigate('Login', {user: data})
-  //       })
-  //       .catch((error) => {
-  //           alert(error)
-  //       });
+    //Money should be sent directly to the DB  
+   updateMoney(points + 1000);
+    firebase
+    .firestore()
+    .collection('rewards')
+    .add({
+    points: points
+    })
+    .then(() => { 
+      console.log('User added!');
+    });
   }
-
-  // update(field:  | FieldPath, value: any, moreFieldsAndValues: any[]): Promise<void>;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -70,11 +42,11 @@ const RewardScreen = (props) => {
           <View style={styles.lineThrough}/>
           <View>
             <Text style={styles.font}>Points Earned:</Text>
-            <Text style={styles.font}>{pointsEarned}</Text>
+            <Text style={styles.font}>0000</Text>
           </View>
           <View>
             <Text style={styles.font}>Points Used:</Text>
-            <Text style={styles.font}>{pointsUsed}</Text>
+            <Text style={styles.font}>0000</Text>
           </View>
           <View>
             <Text style={styles.font}>Your Points:</Text>
@@ -82,21 +54,13 @@ const RewardScreen = (props) => {
           </View>
           <View>
             <Text style={styles.font}>Money Spent:</Text>
-            <Text style={styles.font}>{moneySpent}</Text>
+            <Text style={styles.font}>0000</Text>
           </View>
-
-          <View style={styles.button}>
-            <Button title="Use Points" 
-                    onPress={() => { console.log('Use Points') }} />
-            </View>
-            <View style={styles.button}>
-              <Button title="Refresh Points" 
-                    onPress={() => { console.log('Refresh points') }} />
-            </View>
-            <View style={styles.button}>
-              <Button title="Points History" 
-                    onPress={() => { console.log('Loading History') }} />
-            </View>
+          <View>
+            <Text style={styles.font}>Code:</Text>
+            <Text style={styles.font}>xnbahs</Text>
+          </View>
+         
           </View>
 
         <View>
@@ -109,13 +73,12 @@ const RewardScreen = (props) => {
               alignContent:'center'
             }}
             setMoney={price => setMoney(price)}
-            value={moneySpent}
+            value={money}
             keyboardType={'numeric'}
             placeholder='Price of meal here'
           />
           <View style={styles.inputButton}>
-            <Button title="Redeem Points" onPress={() => addPoints()} />
-            <Button title="Code" onPress={() => generateCode()} />
+            <Button title="Redeem Points" onPress={(money) => addPoints()} />
           </View>
         </View>
     </SafeAreaView>
