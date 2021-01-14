@@ -48,7 +48,7 @@ const BookingsListEntry = (data) => {
                 </View>
                 <View style={{ flexDirection: "row" }}>
                     <View style={{ flex: 1 }}>
-                        <Text>{data.item.confirmed == true ? "Confirmed" : "Pending"}</Text>
+                    <Text>{data.item.confirmed === null ? "Pending" : data.item.confirmed === true ? "Confirmed" : "Rejected"}</Text>
                     </View>
                     <View style={styles.date}>
                         <Text>

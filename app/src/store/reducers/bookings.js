@@ -1,7 +1,8 @@
 
 export const initialState = {
   bookings: [],
-  myBookings:[]
+  bookingTimes: [],
+  myBookings: []
 }
 
 const bookingsReducer = (state = initialState, action) => {
@@ -12,16 +13,21 @@ const bookingsReducer = (state = initialState, action) => {
         bookings: action.payload,
       }
     case 'FETCH_UNAVAILABLE_RESTAURANT_TIMES':
-      const times = { times: { unavailable: action.payload } }
+      const times = { unavailable: action.payload }
       return {
         ...state,
-        bookings: times,
+        bookingTimes: times,
       }
     case 'FETCH_MY_BOOKINGS':
       return {
         ...state,
         myBookings: action.payload,
       }
+      case 'ADD_NEW_BOOKING_TIME_DOCUMENT':
+        return{
+          ...state,
+          bookingTimes: action.payload
+        }
     default:
       return state;
   }

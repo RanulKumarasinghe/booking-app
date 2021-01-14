@@ -14,7 +14,7 @@ const ConfirmBookingsListEntry = (data) => {
     const date = data.item.item.date;
 
     const confirmButtons = (confirmation) => {
-        if (!confirmation) {
+        if (confirmation === null) {
             return (
                 <View style={{ flex: 4, flexDirection: 'row' }}>
                     <View style={{ flex: 6, alignItems: 'center' }}>
@@ -24,70 +24,73 @@ const ConfirmBookingsListEntry = (data) => {
                         }}>
                             <Icon
                                 style={styles.icon}
-                                fill='white'
+                                fill='black'
                                 name='checkmark'
                             ></Icon>
                         </TouchableOpacity>
                     </View>
-                    <View style={{ flex: 6, alignItems: 'center', width: '100%' }}>
-                        <TouchableOpacity onPress={() => dispatch(respondToBooking(data.item.item.id, false))}>
+                    <View style={{ flex: 6, alignItems: 'center', width: '100%'}}>
+                    <TouchableOpacity onPress={() => {
+                            dispatch(respondToBooking(data.item.item.id, false));
+                            setConfirmation(false)
+                        }}>
                             <Icon
                                 style={styles.icon}
-                                fill='white'
+                                fill='black'
                                 name='close'
                             ></Icon>
                         </TouchableOpacity>
-                    </View>
-                </View>
+                    </View >
+                </View >
             );
         }
-        return <View></View>
+return <View></View>
     }
 
-    const renderTitle = () => {
-        const confirmButtonsComponent = confirmButtons(confirmation);
-        return (
-            <View style={confirmation === false ? styles.pendingHeaderContainer : styles.confirmedHeaderContainer}>
-                <View style={{ flex: 4 }}>
-                    <Text style={styles.headerText}>{resName}</Text>
-                </View>
-                {confirmButtonsComponent}
-            </View>
-        );
-    }
-
-    const renderDescription = () => {
-        return (
-            <View style={styles.contentContainer}>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ flex: 1 }}>
-                        <Text>People: {tables}</Text>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        {/*empty*/}
-                    </View>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ flex: 1 }}>
-                        <Text>{confirmation == true ? "Confirmed" : "Pending"}</Text>
-                    </View>
-                    <View style={styles.date}>
-                        <Text>
-                            {`${date} : ${time}`}
-                        </Text>
-                    </View>
-                </View>
-            </View>
-        );
-    }
-
+const renderTitle = () => {
+    const confirmButtonsComponent = confirmButtons(confirmation);
     return (
-        <ListItem
-            title={renderTitle}
-            style={styles.listEntry}
-            description={renderDescription}
-        />
+        <View style={confirmation === null ? styles.pendingHeaderContainer : confirmation === true ? styles.confirmedHeaderContainer : styles.rejectedHeaderContainer}>
+            <View style={{ flex: 4 }}>
+                <Text style={styles.headerText}>{resName}</Text>
+            </View>
+            {confirmButtonsComponent}
+        </View>
     );
+}
+
+const renderDescription = () => {
+    return (
+        <View style={styles.contentContainer}>
+            <View style={{ flexDirection: "row" }}>
+                <View style={{ flex: 1 }}>
+                    <Text>People: {tables}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                    {/*empty*/}
+                </View>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+                <View style={{ flex: 1 }}>
+                    <Text>{confirmation === null ? "Pending" : confirmation === true ? "Confirmed" : "Rejected"}</Text>
+                </View>
+                <View style={styles.date}>
+                    <Text>
+                        {`${date} : ${time}`}
+                    </Text>
+                </View>
+            </View>
+        </View>
+    );
+}
+
+return (
+    <ListItem
+        title={renderTitle}
+        style={styles.listEntry}
+        description={renderDescription}
+    />
+);
 }
 
 //Get dimensions of screen
@@ -99,7 +102,7 @@ const styles = StyleSheet.create({
     },
     pendingHeaderContainer: {
         flexDirection: "row",
-        backgroundColor: '#13c5ff',
+        backgroundColor: '#66FFFF',
         padding: 5,
         flex: 1,
         alignItems: "center",
@@ -107,14 +110,22 @@ const styles = StyleSheet.create({
     },
     confirmedHeaderContainer: {
         flexDirection: "row",
-        backgroundColor: "#0095C5",
+        backgroundColor: "#B3FF66",
+        padding: 5,
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    rejectedHeaderContainer: {
+        flexDirection: "row",
+        backgroundColor: "#FFFF66",
         padding: 5,
         flex: 1,
         alignItems: "center",
         justifyContent: "center"
     },
     headerText: {
-        color: "white",
+        color: "black",
         textAlignVertical: "center",
     },
     contentContainer: {

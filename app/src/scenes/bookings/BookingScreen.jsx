@@ -43,10 +43,10 @@ const BookingScreen = (props) => {
   }
 
   const checkBooked = (time) => {
-    if (store.bookings.times.unavailable === undefined) {
+    if (store.bookingTimes.unavailable === undefined) {
       return false;
     }
-    return store.bookings.times.unavailable.includes(time);
+    return store.bookingTimes.unavailable.includes(time);
   }
 
   const bookAction = (time) => {
