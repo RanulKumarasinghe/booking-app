@@ -8,7 +8,7 @@ import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/componen
 // import 
 import HomeNavigator from 'src/navigators/HomeNavigator'
 import RestaurantsNavigator from 'src/navigators/RestaurantsNavigator'
-import BookingListScreen from 'src/scenes/BookingListScreen';
+import BookingListScreen from 'src/scenes/bookings/BookingListScreen';
 import AuthNavigator from 'src/navigators/AuthNavigator';
 
 const Tab = createBottomTabNavigator();

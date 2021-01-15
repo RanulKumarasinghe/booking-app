@@ -51,7 +51,7 @@ const BookingScreen = (props) => {
 
   const bookAction = (time) => {
     dispatch(postBookingTime(itemId, date, time));
-    dispatch(postBooking(itemId, date, time, user, tables));
+    dispatch(postBooking(restaurant.name, date, time, user, tables));
     setLoaded(false);
     setTimeout(()=>{
       getTimes(date);

@@ -1,9 +1,12 @@
 import firebase from 'src/utils/firebase'
 
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
+const FETCH_MY_BOOKINGS = 'FETCH_MY_BOOKINGS';
 const FETCH_UNAVAILABLE_RESTAURANT_TIMES = 'FETCH_UNAVAILABLE_RESTAURANT_TIMES';
 const POST_BOOKING_TIME = 'POST_BOOKING_TIME';
 const POST_BOOKING = 'POST_BOOKING';
+const RESPOND_TO_BOOKING = 'RESPOND_TO_BOOKING';
+const ADD_NEW_BOOKING_TIME_DOCUMENT = 'ADD_NEW_BOOKING_TIME_DOCUMENT';
 
 export const fetchAllBookings = (userId) => {
   return async dispatch => {
@@ -17,13 +20,56 @@ export const fetchAllBookings = (userId) => {
   }
 };
 
+export const fetchMyBookings = (restName) => {
+  return async dispatch => {
+    const bookings = await firebase.firestore().collection('bookings').where('resName', '==', restName);
+    bookings.get().then((querySnapshot) => {
+      const bookingArray = querySnapshot.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id }
+      });
+      dispatch({ type: FETCH_MY_BOOKINGS, payload: bookingArray })
+    })
+  }
+};
+
+export const respondToBooking = (docId, response) => {
+  return async dispatch => {
+    (async function () {
+      const res = firebase.firestore().collection('bookings').doc(docId).update({
+        confirmed: response,
+      });
+    })();
+    dispatch({ type: RESPOND_TO_BOOKING, payload: undefined });
+  }
+};
+
+export const addNewBookingTimeDocument = (resID) => {
+
+  const newDocument = {
+    restId: resID,
+    unavailable: [],
+  }
+
+  return async dispatch => {
+    (async function () {
+      firebase.firestore().collection('times').add(newDocument);
+    })();
+  }
+  dispatch({ type: ADD_NEW_BOOKING_TIME_DOCUMENT, payload: newDocument })
+}
+
 export const fetchUnavailableFromRestaurant = (resID, date) => {
   return async dispatch => {
     const bookings = await firebase.firestore().collection('times').where('restId', '==', resID).get().then((querySnapshot) => {
       const timesArray = querySnapshot.docs.map((doc) => {
         return { ...doc.data() }
       })
-      dispatch({ type: FETCH_UNAVAILABLE_RESTAURANT_TIMES, payload: timesArray[0].unavailable[date] })
+
+      if (timesArray.length === 0) {
+        addNewBookingTimeDocument(resID);
+      } else {
+        dispatch({ type: FETCH_UNAVAILABLE_RESTAURANT_TIMES, payload: timesArray[0].unavailable[date] })
+      }
     })
   }
 };
@@ -63,24 +109,24 @@ export const postBookingTime = (restaurantId, date, time) => {
         })();
       }
       //needs to be connected to reducer
-      dispatch({ type: POST_BOOKING_TIME, payload: undefined})
+      dispatch({ type: POST_BOOKING_TIME, payload: undefined })
     })
   }
 }
 
 /**Need to check if already exists such booking */
-export const postBooking = (restaurantId, date, time, user, tableNum) => {
+export const postBooking = (restaurantName, date, time, user, tableNum) => {
   return async dispatch => {
     (async function () {
       const res = firebase.firestore().collection('bookings').add({
-        confirmed: false,
+        confirmed: null,
         cusId: user,
         date: date,
-        resId: restaurantId,
+        resName: restaurantName,
         tables: tableNum,
         time: time
       })
     })();
-    dispatch({type: POST_BOOKING, payload: undefined})
+    dispatch({ type: POST_BOOKING, payload: undefined })
   }
 }
