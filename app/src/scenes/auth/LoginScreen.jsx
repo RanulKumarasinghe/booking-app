@@ -2,31 +2,20 @@ import React, {useState, useEffect} from 'react';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Text, Button, Layout } from '@ui-kitten/components';
 import Firebase from '@/utils/firebase'
+import { useDispatch } from 'react-redux'
+import { login } from '@/store/actions/auth'
 
 
 // export const LoginScreen = ({ navigation }) => {
 const LoginScreen = (props) => {
-
-  const onAddRestaurant = () => props.navigation.navigate('Add Restaurant');
-  // useEffect(() => {
-	// 	Firebase.auth().onAuthStateChanged(user => {
-	// 		if (user) {
-	// 			this.props.getUser(user.uid)
-	// 			if (this.props.user != null) {
-	// 				this.props.navigation.navigate('Profile')
-	// 			}
-	// 		}
-	// 	})
-  // }, [])
-
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleLogin = () => {
-    // TODO: Firebase stuff...
-    console.log('handleLogin')
-  }
+  const dispatch = useDispatch()
 
+  const handleLogin = () => {
+    dispatch(login(email, password));
+  }
 
   const handleResetPassword = () => {
     props.navigation.navigate('Reset Password')
@@ -66,9 +55,6 @@ const LoginScreen = (props) => {
           Don't have an account? Sign Up
         </Button>
 
-        <Button style={styles.button} onPress={onAddRestaurant} >
-          Add Restaurant
-        </Button>
       </Layout>
     </SafeAreaView>
   );
