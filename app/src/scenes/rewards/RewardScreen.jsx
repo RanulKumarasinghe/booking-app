@@ -5,13 +5,10 @@ import firebase from 'src/utils/firebase';
 
 const RewardScreen = (props) => {
  
-  //1. User inputs amount
-  //2. Submit amount to DB
- 
-  //The mechanism for convrting money to points need to be added
-  const [money, updateMoney] = useState(0);
-  const [points, updatePoints] = useState(0);
+  //State holds the money input by user
+  const [money, setMoney] = useState(0);
 
+  //The connection to the DB
   const rewards = firebase.firestore().collection('rewards');
 
   function addPoints(){
@@ -19,8 +16,8 @@ const RewardScreen = (props) => {
     //The field is set by the state 
     
     rewards.add({
-           money: null,
-           point: null,
+           money: money,
+          points: null,
      restrauntId: null,
       customerId: null,
       employeeId: null,
@@ -30,11 +27,9 @@ const RewardScreen = (props) => {
     })
     .then(() => { 
       console.log('Points added!');
-    });
-  }
-
-  function getPoints(){
-
+    }).catch(function(error) {
+      console.error("There was an error, please try again: ", error);
+  });
   }
 
   return (
@@ -51,7 +46,7 @@ const RewardScreen = (props) => {
             <View style={styles.lineThrough}/>
             <View>
               <Text style={styles.font}>Your Points:</Text>
-              <Text style={styles.font}>{points}</Text>
+              <Text style={styles.font}></Text>
             </View>
           </View>
 
@@ -62,15 +57,16 @@ const RewardScreen = (props) => {
               borderColor: 'gray', 
               borderWidth: 1, width:'80%', 
               alignSelf:'center', 
-              alignContent:'center'
+              alignContent:'center' 
             }}
             value={money}
-            keyboardType={'numeric'}
+            keyboardType="numeric"
             placeholder='Price of meal here'
-            onChangeText={() => {}}
+            onChangeText={(money)=>setMoney(money)}
+            maxLength={4}
           />
           <View style={styles.inputButton}>
-            <Button title="Redeem Points" onPress={() => addPoints()} />
+            <Button title="Redeem Points" onPress={addPoints} />
           </View>
         </View>
     </SafeAreaView>
