@@ -17,7 +17,7 @@ export const fetchAllMenu = (restaurantId) => {
 
 export const UPDATE_MENU = 'UPDATE_MENU';
 
-export const updateRestaurant = (saveRestaurant, saveMenu) => {
+export const updateMenu = (saveRestaurant, saveMenu) => {
   return dispatch => {
     const menu = firebase.firestore().collection('restaurants').doc(saveRestaurant.id).collection('menu').doc(saveMenu.id)
     menu.update({
@@ -29,5 +29,13 @@ export const updateRestaurant = (saveRestaurant, saveMenu) => {
       console.log('User updated!');
     })
     dispatch({ type: UPDATE_MENU, menu: saveMenu })
+  }
+}
+
+export const ADD_ITEM_TO_MENU = 'ADD_ITEM_TO_MENU';
+
+export const createItem = (saveRestaurant, addItem) => {
+  return dispatch => {
+
   }
 }
