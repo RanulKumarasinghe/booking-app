@@ -1,102 +1,36 @@
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Button, Text, TextInput, Image, View, StatusBar} from "react-native";
 import { Divider, Icon, Layout } from '@ui-kitten/components';
-import { useSelector } from 'react-redux';
-//import firestore from '@react-native-firebase/firestore';
-
-import { State } from "react-native-gesture-handler";
+import firebase from 'src/utils/firebase';
 
 const RewardScreen = (props) => {
-  const onAddRestaurant = () => props.navigation.navigate('Add Restaurant');
-//This needs additional logic for example  useSelector(state => state.rewards.points);
-//points come from the initial state in the reducer
-//const currentReward = useSelector(state => state.rewards);
+ 
+  //State holds the money input by user
+  const [money, setMoney] = useState(0);
 
-state = {
-  points: [],
-  currentPoints: [],
-  pointsUsed: [],
-}
+  //The connection to the DB
+  const rewards = firebase.firestore().collection('rewards');
 
-onPointsAdded =  (points, currentPoints, pointsUsed) =>{
-// should update the fields 
-}
-
-//
-  const [money, setMoney] = useState('');
-//The code genrated to update points
-  const [code, setCode] = useState('');
-//Holds points and adds
-  const [points, updatePoints] = useState(0);
-
-  const  pointsFromState = useSelector(state => state.points)
-  // const usersCollection = firestore().collection('rewards');
-
-  // const userDocument = firestore()
-  // .collection('rewards')
-  // .doc('0h2ypiz5X94hzGqGBp0e');
-
-  function addPoints(){  
-   updatePoints(points + 1000);
-  //  firebase.firestore().collection('rewards')
-  //   usersRef
-  //       .doc(uid)
-  //       .set({user_id: something, points: points + 1000, code: '12341', status: 'good'})
-  //       .then(() => {
-  //           // props.navigation.navigate('Login')}
-  //           props.navigation.navigate('Login', {user: data})
-  //       })
-  //       .catch((error) => {
-  //           alert(error)
-  //       });
-  }
-
-  // update(field:  | FieldPath, value: any, moreFieldsAndValues: any[]): Promise<void>;
-
-  //One time read
-  // const user = await firestore()
-  // .collection('Users')
-  // .doc('ABC')
-  // .get();
-
-  function addMoney(){
-    setMoney();
-  }
-  // const generateCode = async () => {
-    // function makeid() {
-    //   var text = "";
-    //   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  function addPoints(){
+    //Money should be sent directly to the DB  
+    //The field is set by the state 
     
-    //   for (var i = 0; i < 5; i++)
-    //     text += possible.charAt(Math.floor(Math.random() * possible.length));
-    
-    //   return text;
-    // }
-    //Math.random().toString(36).substr(2, 5);
-    // console.log(makeid());
-  //   }
-
-  //   console.log(money)
-  // Should return a code
-  // }
-
-  // const redeemCode = async (code) => {
-  //   // Identify the inputs - code
-
-  //   console.log(code)
-   //Should say it's okay when points are added
-  // }
-
-  // firestore()
-  // .collection('Users')
-  // .get()
-  // .then(querySnapshot => {
-  //   console.log('Total users: ', querySnapshot.size);
-
-  //   querySnapshot.forEach(documentSnapshot => {
-  //     console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
-  //   });
-  // });
+    rewards.add({
+           money: money,
+          points: null,
+     restrauntId: null,
+      customerId: null,
+      employeeId: null,
+       createdAt: new Date(),
+            code: null,
+        codeUsed: null,
+    })
+    .then(() => { 
+      console.log('Points added!');
+    }).catch(function(error) {
+      console.error("There was an error, please try again: ", error);
+  });
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -106,44 +40,35 @@ onPointsAdded =  (points, currentPoints, pointsUsed) =>{
             source={{uri:'https://thumbs.dreamstime.com/z/vector-illustration-isolated-white-background-user-profile-avatar-black-line-icon-user-profile-avatar-black-solid-icon-121102166.jpg'}}
             />
           <View>
-            <Text style={styles.font}>Hello Username</Text>
-            {/* /manage state to get username above/ */}
+              <Text style={styles.font}>Hello Username</Text>
+              {/* /manage state to get username above/ */}
+            </View>
+            <View style={styles.lineThrough}/>
+            <View>
+              <Text style={styles.font}>Your Points:</Text>
+              <Text style={styles.font}></Text>
+            </View>
           </View>
-          <View style={styles.lineThrough}/>
-          <View>
-            <Text style={styles.font}>Points Earned:</Text>
-            <Text style={styles.font}>2000</Text>
-          </View>
-          <View>
-            <Text style={styles.font}>Points Used:</Text>
-            <Text style={styles.font}>0000</Text>
-          </View>
-          <View>
-            <Text style={styles.font}>Your Points:</Text>
-            <Text style={styles.font}>{points} {pointsFromState}</Text>
-          </View>
-
-          <View style={styles.button}><Button title="Use Points" onPress={() => { console.log('Use Points') }} /></View>
-          <View style={styles.button}><Button title="Refresh Points" onPress={() => { console.log('Refresh points') }} /></View>
-          <View style={styles.button}><Button title="Points History" onPress={() => { console.log('Loading History') }} /></View>
-          <View style={styles.button}><Button title="Add Restaurant" onPress={onAddRestaurant} /></View>
-        </View>
 
         <View>
           <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, width:'80%', alignSelf:'center', alignContent:'center'}}
-            setMoney={price => setMoney(price)}
+            style={{ 
+              height: 40, 
+              borderColor: 'gray', 
+              borderWidth: 1, width:'80%', 
+              alignSelf:'center', 
+              alignContent:'center' 
+            }}
             value={money}
-            keyboardType={'numeric'}
+            keyboardType="numeric"
             placeholder='Price of meal here'
+            onChangeText={(money)=>setMoney(money)}
+            maxLength={4}
           />
           <View style={styles.inputButton}>
             <Button title="Redeem Points" onPress={addPoints} />
           </View>
         </View>
-    
-        
-        
     </SafeAreaView>
   );
 }
@@ -168,7 +93,6 @@ const styles = StyleSheet.create({
 
   container:{
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
-
     // paddingTop:'12%'
   },
 
