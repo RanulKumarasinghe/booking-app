@@ -3,33 +3,24 @@ import { StyleSheet, View, Dimensions } from 'react-native';
 import { Button, Card, Modal, Toggle, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
 import BookingsList from '@/components/BookingsList';
 import ConfirmBookingsList from '@/scenes/bookings/components/ConfirmBookingList';
+import { fetchAllBookings } from '@/store/actions/bookings'
+import { useSelector, useDispatch } from 'react-redux';
 
-export default BookingListScreen = ({ navigation }) => {
+export default BookingListScreen = () => {
     const [checked, setChecked] = React.useState(false);
     const [visible, setVisible] = React.useState(false);
 
     const onCheckedChange = (isChecked) => {
         setChecked(isChecked);
     };
-
-    //Top Back navigation Code
-    navigateBack = () => {
-        navigation.goBack();
-    };
-
-    const BackIcon = (props) => (
-        <Icon {...props} name='arrow-back' />
-    );
-
-    BackAction = () => (
-        <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-    );
-    //Top Back navigation Code
+    
+    const auth = useSelector(state => state.auth);
+    const dispatch = useDispatch();
+    dispatch(fetchAllBookings(auth.uid));
 
     //Screen render code
     return (
         <View style={{ flex: 1 }}>
-            <TopNavigation title='Reservation list' alignment='center' accessoryLeft={BackAction} />
             <Divider />
             <View style={styles.toggleContainer}>
                 <Toggle style={styles.toggleElement} checked={checked} onChange={onCheckedChange}>
@@ -37,8 +28,6 @@ export default BookingListScreen = ({ navigation }) => {
                 </Toggle>
             </View>
             <BookingsList />
-            <Text style={{textAlign: "center"}}>Confirmation Screen (for testing purposes)</Text>
-            <ConfirmBookingsList />
             <Modal
                 visible={visible}
                 backdropStyle={styles.modalBackDrop}
