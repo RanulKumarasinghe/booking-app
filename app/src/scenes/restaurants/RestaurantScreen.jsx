@@ -20,6 +20,12 @@ const Restaurant = (props) => {
     restaurantId: restaurant.id
   });
 
+  const onEditRestaurant = () => props.navigation.navigate('Edit Restaurant', {
+    restaurantID: restaurant.id
+  });
+
+  const auth = useSelector(state => state.auth);
+
   navigateBack = () => {
     props.navigation.goBack();
   };
@@ -90,6 +96,9 @@ const Restaurant = (props) => {
           <View style={styles.button}>
             <Button title="Make A Booking" onPress={onBooking} />
           </View>
+          {auth.uid == restaurant.staffId ? <View style={styles.editButton}>
+            <Button title="Edit Restaurant" onPress={onEditRestaurant} />
+          </View> : <View></View>}
         </View>
         </View>
       </View>
@@ -137,6 +146,9 @@ const styles = StyleSheet.create({
   },
   description: {
     flexDirection: 'column'
+  },
+  editButton: {
+    marginBottom: 10
   }
 });
 
