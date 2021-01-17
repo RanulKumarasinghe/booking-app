@@ -4,23 +4,16 @@ import { Text, TopNavigation } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import RestaurantDayInput from './RestaurantDayInput'
 import {createRestaurant} from '@/store/actions/restaurants';
-
-const MultiTextInput = (props) => {
-  return (
-    <TextInput
-      {...props}
-      editable
-      maxLength={200}
-    />
-  );
-}
+import RestaurantInput from '../../components/RestaurantInput';
 
 const RestaurantAdd = (props) => {
   const dispatch = useDispatch();
 
-  const navigateBack = () => {
+  navigateBack = () => {
     props.navigation.goBack();
   };
+  const userId = props.route.params.userID;
+
   const [monIsEnabled, setMonIsEnabled] = useState(false);
 
   const [tuesIsEnabled, setTuesIsEnabled] = useState(false);
@@ -36,28 +29,28 @@ const RestaurantAdd = (props) => {
   const [sunIsEnabled, setSunIsEnabled] = useState(false);
 
 
-  const [monOpenValue, onChangeMonOpen] = React.useState('Enter Monday Opening time');
-  const [monCloseValue, onChangeMonClose] = React.useState('Enter Monday Closing time');
-  const [tuesOpenValue, onChangeTuesOpen] = React.useState('Enter Tuesday Opening time');
-  const [tuesCloseValue, onChangeTuesClose] = React.useState('Enter Tuesday Closing time');
-  const [wedOpenValue, onChangeWedOpen] = React.useState('Enter Wednesday Opening time');
-  const [wedCloseValue, onChangeWedClose] = React.useState('Enter Wednesday Closing time');
-  const [thursOpenValue, onChangeThursOpen] = React.useState('Enter Thursday Opening time');
-  const [thursCloseValue, onChangeThursClose] = React.useState('Enter Thursday Closing time');
-  const [friOpenValue, onChangeFriOpen] = React.useState('Enter Friday Opening time');
-  const [friCloseValue, onChangeFriClose] = React.useState('Enter Friday Closing time');
-  const [satOpenValue, onChangeSatOpen] = React.useState('Enter Saturday Opening time');
-  const [satCloseValue, onChangeSatClose] = React.useState('Enter Saturday Closing time');
-  const [sunOpenValue, onChangeSunOpen] = React.useState('Enter Sunday Opening time');
-  const [sunCloseValue, onChangeSunClose] = React.useState('Enter Sunday Closing time');
+  const [monOpenValue, onChangeMonOpen] = React.useState('');
+  const [monCloseValue, onChangeMonClose] = React.useState('');
+  const [tuesOpenValue, onChangeTuesOpen] = React.useState('');
+  const [tuesCloseValue, onChangeTuesClose] = React.useState('');
+  const [wedOpenValue, onChangeWedOpen] = React.useState('');
+  const [wedCloseValue, onChangeWedClose] = React.useState('');
+  const [thursOpenValue, onChangeThursOpen] = React.useState('');
+  const [thursCloseValue, onChangeThursClose] = React.useState('');
+  const [friOpenValue, onChangeFriOpen] = React.useState('');
+  const [friCloseValue, onChangeFriClose] = React.useState('');
+  const [satOpenValue, onChangeSatOpen] = React.useState('');
+  const [satCloseValue, onChangeSatClose] = React.useState('');
+  const [sunOpenValue, onChangeSunOpen] = React.useState('');
+  const [sunCloseValue, onChangeSunClose] = React.useState('');
 
-  const [nameValue, onChangeName] = React.useState('Enter name of Restaurant');
-  const [typeValue, onChangeType] = React.useState('Enter type');
-  const [postCodeValue, onChangePostCode] = React.useState('Enter postCode');
-  const [addressValue, onChangeAddress] = React.useState('Enter address of Restaurant');
-  const [phoneValue, onChangePhone] = React.useState('Enter phone number');
-  const [descriptionValue, onChangeDescription] = React.useState('Enter description of Restaurant');
-  const [imageUrlValue, onChangeImageUrl] = React.useState('Enter the imageUrl of Restaurant');
+  const [nameValue, onChangeName] = React.useState('');
+  const [typeValue, onChangeType] = React.useState('');
+  const [postCodeValue, onChangePostCode] = React.useState('');
+  const [addressValue, onChangeAddress] = React.useState('');
+  const [phoneValue, onChangePhone] = React.useState('');
+  const [descriptionValue, onChangeDescription] = React.useState('');
+  const [imageUrlValue, onChangeImageUrl] = React.useState('');
 
 
   const addRestaurant = () => {
@@ -90,159 +83,77 @@ const RestaurantAdd = (props) => {
       satClose: satCloseValue,
       sunday: sunIsEnabled,
       sunOpen: sunOpenValue,
-      sunClose: sunCloseValue
+      sunClose: sunCloseValue,
+      staffId: userId
     }))
-    navigation.navigate('Reward');
+    navigation.navigate('Profile');
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
 
       <View>
-      {/* <TopNavigation title="Restaurant Edit" alignment='center' style={styles.header} /> */}
       <ScrollView contentContainerStyle={{
             flexGrow: 1,
             justifyContent: 'space-between'
       }}>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Name: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeName(text)}
-          maxLength = {25}
-          value = {nameValue}/>
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Type: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeType(text)}
-          maxLength = {25}
-          value = {typeValue}/>
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>PostCode: </Text>
-      <TextInput
-          style={styles.textBox}
-          autoCompleteType='postal-code'
-          onChangeText={text => onChangePostCode(text)}
-          maxLength = {25}
-          value = {postCodeValue}/>
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Address: </Text>
-      <TextInput
-          style={styles.textBox}
-          autoCompleteType='street-address'
-          onChangeText={text => onChangeAddress(text)}
-          maxLength = {40}
-          value = {addressValue}/>
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Phone: </Text>
-      <TextInput
-          style={styles.textBox}
-          keyboardType='phone-pad'
-          autoCompleteType='tel'
-          onChangeText={text => onChangePhone(text)}
-          maxLength = {25}
-          value = {phoneValue}/>
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Description: </Text>
-      <MultiTextInput
-          multiline
-          numberOfLines={5}
-          style={styles.bigTextBox}
-          onChangeText={text => onChangeDescription(text)}
-          value = {descriptionValue}
-          />
-      </View>
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Image URL: </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={text => onChangeImageUrl(text)}
-          value = {imageUrlValue}
-         />
-      </View>
-
-
-      <RestaurantDayInput
-        dayName="Monday"
-        dayShortName='Mon'
-        dayIsEnabled={monIsEnabled}
-        onChangeEnable={() => setMonIsEnabled(previousState => !previousState)}
-        dayOpenValue={monOpenValue}
-        onChangeOpen={text => onChangeMonOpen(text)}
-        dayCloseValue={monCloseValue}
-        onChangeClose={text => onChangeMonClose(text)}
-      />
-
-      <RestaurantDayInput
-        dayName="Tuesday"
-        dayShortName='Tues'
-        dayIsEnabled={tuesIsEnabled}
-        onChangeEnable={() => setTuesIsEnabled(previousState => !previousState)}
-        dayOpenValue={tuesOpenValue}
-        onChangeOpen={text => onChangeTuesOpen(text)}
-        dayCloseValue={tuesCloseValue}
-        onChangeClose={text => onChangeTuesClose(text)}
-      />
-
-      <RestaurantDayInput
-        dayName="Wednesday"
-        dayShortName='Wed'
-        dayIsEnabled={wedIsEnabled}
-        onChangeEnable={() => setWedsIsEnabled(previousState => !previousState)}
-        dayOpenValue={wedOpenValue}
-        onChangeOpen={text => onChangeWedsOpen(text)}
-        dayCloseValue={wedCloseValue}
-        onChangeClose={text => onChangeWedsClose(text)}
-      />
-
-      <RestaurantDayInput
-        dayName="Thursday"
-        dayShortName='Thurs'
-        dayIsEnabled={thursIsEnabled}
-        onChangeEnable={() => setThursIsEnabled(previousState => !previousState)}
-        dayOpenValue={thursOpenValue}
-        onChangeOpen={text => onChangeThursOpen(text)}
-        dayCloseValue={thursCloseValue}
-        onChangeClose={text => onChangeThursClose(text)}
-      />
-
-      <RestaurantDayInput
-        dayName="Friday"
-        dayShortName='Fri'
-        dayIsEnabled={friIsEnabled}
-        onChangeEnable={() => setFriIsEnabled(previousState => !previousState)}
-        dayOpenValue={friOpenValue}
-        onChangeOpen={text => onChangeFriOpen(text)}
-        dayCloseValue={friCloseValue}
-        onChangeClose={text => onChangeFriClose(text)}
-      />
-
-      <RestaurantDayInput
-        dayName="Saturday"
-        dayShortName='Sat'
-        dayIsEnabled={satIsEnabled}
-        onChangeEnable={() => setSatIsEnabled(previousState => !previousState)}
-        dayOpenValue={satOpenValue}
-        onChangeOpen={text => onChangeSatOpen(text)}
-        dayCloseValue={satCloseValue}
-        onChangeClose={text => onChangeSatClose(text)}
-      />
-
-      <RestaurantDayInput
-        dayName="Sunday"
-        dayShortName='Sun'
-        dayIsEnabled={sunIsEnabled}
-        onChangeEnable={() => setSunIsEnabled(previousState => !previousState)}
-        dayOpenValue={sunOpenValue}
-        onChangeOpen={text => onChangeSunOpen(text)}
-        dayCloseValue={sunCloseValue}
-        onChangeClose={text => onChangeSunClose(text)}
+      <RestaurantInput
+        onName={text => onChangeName(text)}
+        name={nameValue}
+        onType={text => onChangeType(text)}
+        type={typeValue}
+        onPostCode={text => onChangePostCode(text)}
+        postCode={postCodeValue}
+        onAddress={text => onChangeAddress(text)}
+        address={addressValue}
+        onPhone={text => onChangePhone(text)}
+        phone={phoneValue}
+        onDescription={text => onChangeDescription(text)}
+        description={descriptionValue}
+        onImageUrl={text => onChangeImageUrl(text)}
+        imageUrl={imageUrlValue}
+        monEnabled={monIsEnabled}
+        setMonEnabled={() => setMonIsEnabled(previousState => !previousState)}
+        monOpen={monOpenValue}
+        changeMonOpen={text => onChangeMonOpen(text)}
+        monClose={monCloseValue}
+        changeMonClose={text => onChangeMonClose(text)}
+        tuesEnabled={tuesIsEnabled}
+        setTuesEnabled={() => setTuesIsEnabled(previousState => !previousState)}
+        tuesOpen={tuesOpenValue}
+        changeTuesOpen={text => onChangeTuesOpen(text)}
+        tuesClose={tuesCloseValue}
+        changeTuesClose={text => onChangeTuesClose(text)}
+        wedEnabled={wedIsEnabled}
+        setWedEnabled={() => setWedIsEnabled(previousState => !previousState)}
+        wedOpen={wedOpenValue}
+        changeWedOpen={text => onChangeWedOpen(text)}
+        wedClose={wedCloseValue}
+        changeWedClose={text => onChangeWedClose(text)}
+        thursEnabled={thursIsEnabled}
+        setThursEnabled={() => setThursIsEnabled(previousState => !previousState)}
+        thursOpen={thursOpenValue}
+        changeThursOpen={text => onChangeThursOpen(text)}
+        thursClose={thursCloseValue}
+        changeThursClose={text => onChangeThursClose(text)}
+        friEnabled={friIsEnabled}
+        setFriEnabled={() => setFriIsEnabled(previousState => !previousState)}
+        friOpen={friOpenValue}
+        changeFriOpen={text => onChangeFriOpen(text)}
+        friClose={friCloseValue}
+        changeFriClose={text => onChangeFriClose(text)}
+        satEnabled={satIsEnabled}
+        setSatEnabled={() => setSatIsEnabled(previousState => !previousState)}
+        satOpen={satOpenValue}
+        changeSatOpen={text => onChangeSatOpen(text)}
+        satClose={satCloseValue}
+        changeSatClose={text => onChangeSatClose(text)}
+        sunEnabled={sunIsEnabled}
+        setSunEnabled={() => setSunIsEnabled(previousState => !previousState)}
+        sunOpen={sunOpenValue}
+        changeSunOpen={text => onChangeSunOpen(text)}
+        sunClose={sunCloseValue}
+        changeSunClose={text => onChangeSunClose(text)}
       />
 
       <View style={styles.buttonSpacing}>
@@ -261,37 +172,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     flex: 1
   },
-  listRow: {
-    flexDirection: 'row',
-    marginTop: 20,
-    justifyContent: 'center'
-  },
-  sizeFont: {
-    fontSize: 16,
-    width: '28%'
-  },
-  textBox: {
-    height: 25,
-    alignContent: 'space-around',
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginRight: 4,
-    width: '60%',
-    fontSize: 16
-  },
-  bigTextBox: {
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginRight: 4,
-    width: '60%',
-    textAlignVertical: 'top'
-  },
-  switchStyle: {
-    width: '60%',
-    alignItems: 'flex-start'
-  },
+
   buttonSpacing: {
     marginTop: '15%',
     marginBottom: '20%',
