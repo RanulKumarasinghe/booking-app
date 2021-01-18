@@ -5,8 +5,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import RestaurantScreen from '../scenes/restaurants/RestaurantScreen';
 import RestaurantListScreen from '../scenes/restaurants/RestaurantListScreen';
-import BookingScreen from 'src/scenes/BookingScreen';
-import BookingListScreen from 'src/scenes/BookingListScreen';
+import BookingScreen from 'src/scenes/bookings/BookingScreen';
+import BookingListScreen from 'src/scenes/bookings/BookingListScreen';
+import PendingBookingScreen from 'src/scenes/bookings/PendingBookingScreen'
 
 import RestaurantEditScreen from '../scenes/restaurants/RestaurantEditScreen';
 import RestaurantAddScreen from '../scenes/restaurants/RestaurantAddScreen';
@@ -26,6 +27,7 @@ const HomeNavigator = () => (
     <Restaurant.Screen name='Add Restaurant' component={RestaurantAddScreen}/>
     <Restaurant.Screen name='BookingListScreen' component={BookingListScreen}/>
     <Restaurant.Screen name='Booking' component={BookingScreen}/>
+    <Restaurant.Screen name='PendingBookingScreen' component={PendingBookingScreen}/>
   </Restaurant.Navigator>
 );
 
