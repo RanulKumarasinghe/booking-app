@@ -9,9 +9,7 @@ import RestaurantInput from '../../components/RestaurantInput';
 const RestaurantAdd = (props) => {
   const dispatch = useDispatch();
 
-  navigateBack = () => {
-    props.navigation.goBack();
-  };
+
   const userId = props.route.params.userID;
 
   const [monIsEnabled, setMonIsEnabled] = useState(false);
