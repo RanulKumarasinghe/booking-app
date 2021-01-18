@@ -28,9 +28,7 @@ const RestaurantEditMenu = (props) => {
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
   const r_id = restaurant.id;
-  navigateBack = () => {
-    props.navigation.goBack();
-  };
+
 
   const [nameValue, onChangeName] = React.useState(item.name);
   const [priceValue, onChangePrice] = React.useState(item.price);

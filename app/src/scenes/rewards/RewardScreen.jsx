@@ -4,7 +4,7 @@ import { Divider, Icon, Layout } from '@ui-kitten/components';
 import firebase from 'src/utils/firebase';
 
 const RewardScreen = (props) => {
- 
+
   //State holds the money input by user
   const [money, setMoney] = useState(0);
 
@@ -12,9 +12,9 @@ const RewardScreen = (props) => {
   const rewards = firebase.firestore().collection('rewards');
 
   function addPoints(){
-    //Money should be sent directly to the DB  
-    //The field is set by the state 
-    
+    //Money should be sent directly to the DB
+    //The field is set by the state
+
     rewards.add({
            money: money,
           points: null,
@@ -25,7 +25,7 @@ const RewardScreen = (props) => {
             code: null,
         codeUsed: null,
     })
-    .then(() => { 
+    .then(() => {
       console.log('Points added!');
     }).catch(function(error) {
       console.error("There was an error, please try again: ", error);
@@ -52,12 +52,12 @@ const RewardScreen = (props) => {
 
         <View>
           <TextInput
-            style={{ 
-              height: 40, 
-              borderColor: 'gray', 
-              borderWidth: 1, width:'80%', 
-              alignSelf:'center', 
-              alignContent:'center' 
+            style={{
+              height: 40,
+              borderColor: 'gray',
+              borderWidth: 1, width:'80%',
+              alignSelf:'center',
+              alignContent:'center'
             }}
             value={money}
             keyboardType="numeric"
