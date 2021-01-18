@@ -15,7 +15,7 @@ const RewardScreen = (props) => {
   function makeid() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (var i = 0; i < 5; i++)
+    for (var i = 0; i < 6; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
     setCode(text);
       };
@@ -43,7 +43,7 @@ const RewardScreen = (props) => {
         codeUsed: false,
     })
     .then(() => { 
-      console.log('Points added!', code);
+      console.log('Points added!');
       
     }).catch(function(error) {
       console.error("There was an error, please try again: ", error);
