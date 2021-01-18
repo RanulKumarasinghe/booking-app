@@ -16,6 +16,10 @@ const menuReducer = (state = initialState, action) => {
       return {
         ...state, menu: {...state.menu}
       }
+    case ADD_ITEM_TO_MENU:
+      return {
+        ...state, menu: {...state.menu}
+      }
   }
 }
 
