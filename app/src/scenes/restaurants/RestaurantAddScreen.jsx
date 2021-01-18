@@ -155,7 +155,6 @@ const RestaurantAdd = (props) => {
       />
 
       <View style={styles.buttonSpacing}>
-         <Button title="Not yet" onPress={navigateBack} />
          <Button title="Add Restaurant" onPress={addRestaurant} />
       </View>
       </ScrollView>
