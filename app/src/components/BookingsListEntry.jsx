@@ -19,7 +19,7 @@ const BookingsListEntry = (data) => {
         return (
             <View style={styles.headerContainer}>
                 <View style={{ flex: 4 }}>
-                    <Text style={styles.headerText}>{data.item.resName}</Text>
+                    <Text style={styles.headerText}>{data.item.restName}</Text>
                 </View>
                 <View style={{ flex: 1, flexDirection: "row" }}>
                     <Text style={styles.headerText}>Map  </Text>

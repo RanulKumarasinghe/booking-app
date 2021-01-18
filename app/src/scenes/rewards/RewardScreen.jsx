@@ -8,13 +8,26 @@ const RewardScreen = (props) => {
   //State holds the money input by user
   const [money, setMoney] = useState(0);
 
+  //This func generates the code
+  function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < 6; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+      return text;
+  };
+
   //The connection to the DB
   const rewards = firebase.firestore().collection('rewards');
 
+  //Converts value from String to Int
+  const onTextChange = (money) => {
+    var number = parseFloat(money)
+    setMoney(number);
+  }
+ 
+  //The info sent to the DB
   function addPoints(){
-    //Money should be sent directly to the DB
-    //The field is set by the state
-
     rewards.add({
            money: money,
           points: null,
@@ -22,14 +35,15 @@ const RewardScreen = (props) => {
       customerId: null,
       employeeId: null,
        createdAt: new Date(),
-            code: null,
-        codeUsed: null,
+            code: makeid(),
+        codeUsed: false,
     })
     .then(() => {
       console.log('Points added!');
+      
     }).catch(function(error) {
       console.error("There was an error, please try again: ", error);
-  });
+       });
   }
 
   return (
@@ -62,7 +76,8 @@ const RewardScreen = (props) => {
             value={money}
             keyboardType="numeric"
             placeholder='Price of meal here'
-            onChangeText={(money)=>setMoney(money)}
+            //onChangeText={onTextChange}
+            onChangeText={(money)=>onTextChange(money)}
             maxLength={4}
           />
           <View style={styles.inputButton}>
