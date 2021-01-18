@@ -42,7 +42,6 @@ const Restaurant = (props) => {
     restaurantID: restaurant.id
   });
 
-  const auth = useSelector(state => state.auth);
 
 
   return (
