@@ -13,11 +13,12 @@ const BookingScreen = (props) => {
   const [loaded, setLoaded] = React.useState(false)
   const [tables, setTables] = React.useState();
   const [date, setDate] = React.useState();
-  const user = 'test';
+
+  const user = firebase.auth().currentUser.uid;
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
-  const itemId = props.route.params.restaurantId;
-  const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
+  const restId = props.route.params.restaurantId;
+  const restaurant = restaurants.find(restaurant => restaurant.id === restId);
 
   let times = [];
 
@@ -28,7 +29,7 @@ const BookingScreen = (props) => {
   }
 
   const getTimes = (formattedDate) => {
-    dispatch(fetchUnavailableFromRestaurant(itemId, formattedDate));
+    dispatch(fetchUnavailableFromRestaurant(restId, formattedDate));
     setTimeout(() => {
       setLoaded(true);
     }, 1000)
@@ -43,15 +44,15 @@ const BookingScreen = (props) => {
   }
 
   const checkBooked = (time) => {
-    if (store.bookings.times.unavailable === undefined) {
+    if (store.bookingTimes.unavailable === undefined) {
       return false;
     }
-    return store.bookings.times.unavailable.includes(time);
+    return store.bookingTimes.unavailable.includes(time);
   }
 
   const bookAction = (time) => {
-    dispatch(postBookingTime(itemId, date, time));
-    dispatch(postBooking(itemId, date, time, user, tables));
+    dispatch(postBookingTime(restId, date, time));
+    dispatch(postBooking(restId, restaurant.name, date, time, user, tables));
     setLoaded(false);
     setTimeout(()=>{
       getTimes(date);

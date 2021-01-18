@@ -13,7 +13,9 @@ const ProfileScreen = (props) => {
   const handleLogout = () => {
     dispatch(logout());
   }
-
+  const onAddRestaurant = () => props.navigation.navigate('Add Restaurant', {
+    userID: auth.uid
+  });
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -24,6 +26,10 @@ const ProfileScreen = (props) => {
         <Button onPress={handleLogout}>
           Logout
         </Button>
+        <Button style={styles.button} onPress={onAddRestaurant}>
+          Add Restaurant
+        </Button>
+
       </Layout>
     </SafeAreaView>
   );
@@ -41,6 +47,9 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     marginTop: 8
+  },
+  button: {
+    marginTop: 15
   }
 })
 

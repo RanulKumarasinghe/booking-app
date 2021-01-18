@@ -8,17 +8,14 @@ const RewardScreen = (props) => {
   //State holds the money input by user
   const [money, setMoney] = useState(0);
 
-  //State holds the code generated
-  const [code, setCode] = useState("");
-
   //This func generates the code
   function makeid() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     for (var i = 0; i < 6; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
-    setCode(text);
-      };
+      return text;
+  };
 
   //The connection to the DB
   const rewards = firebase.firestore().collection('rewards');
@@ -31,7 +28,6 @@ const RewardScreen = (props) => {
  
   //The info sent to the DB
   function addPoints(){
-    makeid();
     rewards.add({
            money: money,
           points: null,
@@ -39,10 +35,10 @@ const RewardScreen = (props) => {
       customerId: null,
       employeeId: null,
        createdAt: new Date(),
-            code: code,
+            code: makeid(),
         codeUsed: false,
     })
-    .then(() => { 
+    .then(() => {
       console.log('Points added!');
       
     }).catch(function(error) {
@@ -70,12 +66,12 @@ const RewardScreen = (props) => {
 
         <View>
           <TextInput
-            style={{ 
-              height: 40, 
-              borderColor: 'gray', 
-              borderWidth: 1, width:'80%', 
-              alignSelf:'center', 
-              alignContent:'center' 
+            style={{
+              height: 40,
+              borderColor: 'gray',
+              borderWidth: 1, width:'80%',
+              alignSelf:'center',
+              alignContent:'center'
             }}
             value={money}
             keyboardType="numeric"
