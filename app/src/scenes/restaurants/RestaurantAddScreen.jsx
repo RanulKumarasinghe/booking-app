@@ -84,7 +84,7 @@ const RestaurantAdd = (props) => {
       sunClose: sunCloseValue,
       staffId: userId
     }))
-    navigation.navigate('Profile');
+    props.navigation.navigate('Profile');
   };
 
   return (

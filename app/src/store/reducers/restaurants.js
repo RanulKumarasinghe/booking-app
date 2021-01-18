@@ -9,25 +9,6 @@ const initialState = {
   filteredRestaurant: []
 }
 
-// const editState = {
-//   name: " ",
-//   type: " ",
-//   postCode: " ",
-//   address: " ",
-//   phone: " ",
-//   description: " ",
-//   imageUrl: " ",
-//   open: " ",
-//   close: " ",
-//   monday: true,
-//   tuesday: true,
-//   wednesday: true,
-//   thursday: true,
-//   friday: true,
-//   saturday: true,
-//   sunday: true,
-// }
-
 const restaurantReducer = (state = initialState, action) => {
   switch(action.type) {
     //Filters restaurant by name
@@ -41,16 +22,18 @@ const restaurantReducer = (state = initialState, action) => {
       }
     case FETCH_ALL_RESTAURANTS:
       return {...state, restaurants: action.restaurants, filteredRestaurant: action.restaurants}
-    default:
-      return state;
     case UPDATE_RESTAURANT:
+      let newRestaurant = state.restaurants.filter(restaurant => restaurant.id != action.restaurant.id)
+      newRestaurant.push(action.restaurant)
       return {
-        ...state, restaurants: {...state.restaurants}
+        ...state, restaurants: newRestaurant
       }
     case ADD_RESTAURANT:
       return {
         ...state, restaurants: {...state.restaurants}
       }
+     default:
+      return state;
   }
 }
 
