@@ -20,9 +20,23 @@ export const fetchAllBookings = (userId) => {
   }
 };
 
-export const fetchMyBookings = (restName) => {
+export const fetchMyBookings = (restId) => {
   return async dispatch => {
-    const bookings = await firebase.firestore().collection('bookings').where('resName', '==', restName);
+    const bookings = await firebase.firestore().collection('bookings').where('restId', '==', restId);
+    bookings.get().then((querySnapshot) => {
+      const bookingArray = querySnapshot.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id }
+      });
+      dispatch({ type: FETCH_MY_BOOKINGS, payload: bookingArray })
+    })
+  }
+};
+
+//Not IMPLEMENTED YET
+export const fetchMyBookingsByDate = (restId, timestamp) => {
+  const futureTimestamp = addDays(new Date(timestamp), 7);
+  return async dispatch => {
+    const bookings = await firebase.firestore().collection('bookings').where('restId', '==', restName).where('timestamp', '>=', timestamp).where('timestamp', '<=', futureTimestamp);
     bookings.get().then((querySnapshot) => {
       const bookingArray = querySnapshot.docs.map((doc) => {
         return { ...doc.data(), id: doc.id }
@@ -115,18 +129,30 @@ export const postBookingTime = (restaurantId, date, time) => {
 }
 
 /**Need to check if already exists such booking */
-export const postBooking = (restaurantName, date, time, user, tableNum) => {
+export const postBooking = (restaurantId, restaurantName, date, time, user, tableNum) => {
+
+  const substring = date.split('/');
+  const reformDate = substring[2] + "/" + substring[1] + "/" + substring[0];
+
   return async dispatch => {
     (async function () {
       const res = firebase.firestore().collection('bookings').add({
         confirmed: null,
         cusId: user,
         date: date,
-        resName: restaurantName,
+        restId: restaurantId,
+        restName: restaurantName,
         tables: tableNum,
-        time: time
+        time: time,
+        timeStamp: new Date(reformDate).getTime()
       })
     })();
     dispatch({ type: POST_BOOKING, payload: undefined })
   }
+}
+
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
 }

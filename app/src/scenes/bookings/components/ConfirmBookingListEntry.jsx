@@ -9,7 +9,7 @@ const ConfirmBookingsListEntry = (data) => {
     const [confirmation, setConfirmation] = useState(data.item.item.confirmed)
 
     const tables = data.item.item.tables;
-    const resName = data.item.item.resName;
+    const restName = data.item.item.restName;
     const time = data.item.item.time;
     const date = data.item.item.date;
 
@@ -52,7 +52,7 @@ const renderTitle = () => {
     return (
         <View style={confirmation === null ? styles.pendingHeaderContainer : confirmation === true ? styles.confirmedHeaderContainer : styles.rejectedHeaderContainer}>
             <View style={{ flex: 4 }}>
-                <Text style={styles.headerText}>{resName}</Text>
+                <Text style={styles.headerText}>{restName}</Text>
             </View>
             {confirmButtonsComponent}
         </View>

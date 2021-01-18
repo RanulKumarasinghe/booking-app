@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { Button, Card, Modal, Toggle, Text, TopNavigation, TopNavigationAction, Divider, Icon } from '@ui-kitten/components';
-import BookingsList from '@/components/BookingsList';
 import ConfirmBookingsList from '@/scenes/bookings/components/ConfirmBookingList';
 import { fetchAllBookings } from '@/store/actions/bookings'
 import { useSelector, useDispatch } from 'react-redux';
 
-export default BookingListScreen = () => {
+export default PendingBookingScreen = (props) => {
     const [checked, setChecked] = React.useState(false);
-    const [visible, setVisible] = React.useState(false);
 
     const onCheckedChange = (isChecked) => {
         setChecked(isChecked);
@@ -27,15 +25,7 @@ export default BookingListScreen = () => {
                     Display expired?
                 </Toggle>
             </View>
-            <BookingsList />
-            <Modal
-                visible={visible}
-                backdropStyle={styles.modalBackDrop}
-                onBackdropPress={() => setVisible(false)}>
-                <Card disabled={true} style={styles.modalContainer}>
-                    <Text>Map in progress...</Text>
-                </Card>
-            </Modal>
+            <ConfirmBookingsList restId={props.route.params.restaurantId}/>
         </View>
     );
 };

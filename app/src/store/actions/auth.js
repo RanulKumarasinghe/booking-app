@@ -64,7 +64,13 @@ export const login = (email, password) => {
 }
 
 export const logout = () => {
+  return async (dispatch) => {
+    Firebase.auth().signOut().then(() => {
+      dispatch({ type: LOGOUT });
+    }).catch((error) => {
+      alert(error)
+    });
+  }
   // AsyncStorage.removeItem('userData');
-  return { type: LOGOUT };
 };
 

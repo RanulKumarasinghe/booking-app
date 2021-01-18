@@ -1,31 +1,35 @@
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Button, Text, TextInput, Image, View, StatusBar} from "react-native";
 import { Divider, Icon, Layout } from '@ui-kitten/components';
-import { useSelector } from 'react-redux';
-import { State } from "react-native-gesture-handler";
 import firebase from 'src/utils/firebase';
 
 const RewardScreen = (props) => {
 
-  //1. User inputs amount
-  //2. Submit amount to DB
+  //State holds the money input by user
+  const [money, setMoney] = useState(0);
 
-  //The mechanism for convrting money to points need to be added
-  const [money, updateMoneys] = useState(0);
-  const [points, updateMoney] = useState(0);
+  //The connection to the DB
+  const rewards = firebase.firestore().collection('rewards');
 
   function addPoints(){
     //Money should be sent directly to the DB
-   updateMoney(points + 1000);
-    firebase
-    .firestore()
-    .collection('rewards')
-    .add({
-    points: points
+    //The field is set by the state
+
+    rewards.add({
+           money: money,
+          points: null,
+     restrauntId: null,
+      customerId: null,
+      employeeId: null,
+       createdAt: new Date(),
+            code: null,
+        codeUsed: null,
     })
     .then(() => {
-      console.log('User added!');
-    });
+      console.log('Points added!');
+    }).catch(function(error) {
+      console.error("There was an error, please try again: ", error);
+  });
   }
 
   return (
@@ -36,31 +40,14 @@ const RewardScreen = (props) => {
             source={{uri:'https://thumbs.dreamstime.com/z/vector-illustration-isolated-white-background-user-profile-avatar-black-line-icon-user-profile-avatar-black-solid-icon-121102166.jpg'}}
             />
           <View>
-            <Text style={styles.font}>Hello Username</Text>
-            {/* /manage state to get username above/ */}
-          </View>
-          <View style={styles.lineThrough}/>
-          <View>
-            <Text style={styles.font}>Points Earned:</Text>
-            <Text style={styles.font}>0000</Text>
-          </View>
-          <View>
-            <Text style={styles.font}>Points Used:</Text>
-            <Text style={styles.font}>0000</Text>
-          </View>
-          <View>
-            <Text style={styles.font}>Your Points:</Text>
-            <Text style={styles.font}>{points}</Text>
-          </View>
-          <View>
-            <Text style={styles.font}>Money Spent:</Text>
-            <Text style={styles.font}>0000</Text>
-          </View>
-          <View>
-            <Text style={styles.font}>Code:</Text>
-            <Text style={styles.font}>xnbahs</Text>
-          </View>
-
+              <Text style={styles.font}>Hello Username</Text>
+              {/* /manage state to get username above/ */}
+            </View>
+            <View style={styles.lineThrough}/>
+            <View>
+              <Text style={styles.font}>Your Points:</Text>
+              <Text style={styles.font}></Text>
+            </View>
           </View>
 
         <View>
@@ -72,13 +59,14 @@ const RewardScreen = (props) => {
               alignSelf:'center',
               alignContent:'center'
             }}
-            setMoney={price => setMoney(price)}
             value={money}
-            keyboardType={'numeric'}
+            keyboardType="numeric"
             placeholder='Price of meal here'
+            onChangeText={(money)=>setMoney(money)}
+            maxLength={4}
           />
           <View style={styles.inputButton}>
-            <Button title="Redeem Points" onPress={(money) => addPoints()} />
+            <Button title="Redeem Points" onPress={addPoints} />
           </View>
         </View>
     </SafeAreaView>
