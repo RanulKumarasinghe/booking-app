@@ -4,21 +4,34 @@ import { Divider, Icon, Layout } from '@ui-kitten/components';
 import firebase from 'src/utils/firebase';
 
 const RewardScreen = (props) => {
- 
+
   //State holds the money input by user
   const [money, setMoney] = useState(0);
+
+  //State holds the code generated
+  const [code, setCode] = useState("");
+
+  //This func generates the code
+  function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < 5; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+    setCode(text);
+      };
 
   //The connection to the DB
   const rewards = firebase.firestore().collection('rewards');
 
   //Converts value from String to Int
   const onTextChange = (money) => {
-    var number = parseInt(money)
+    var number = parseFloat(money)
     setMoney(number);
   }
  
   //The info sent to the DB
   function addPoints(){
+    makeid();
     rewards.add({
            money: money,
           points: null,
@@ -26,19 +39,16 @@ const RewardScreen = (props) => {
       customerId: null,
       employeeId: null,
        createdAt: new Date(),
-            code: null,
+            code: code,
         codeUsed: false,
     })
     .then(() => { 
-      console.log('Points added!');
+      console.log('Points added!', code);
+      
     }).catch(function(error) {
       console.error("There was an error, please try again: ", error);
        });
   }
-
-  
-
-  
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
