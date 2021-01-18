@@ -15,9 +15,7 @@ const RestaurantEdit = (props) => {
 
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
-  navigateBack = () => {
-    props.navigation.goBack();
-  };
+  const auth = useSelector(state => state.auth);
 
   const [monIsEnabled, setMonIsEnabled] = useState(restaurant.monday);
 
@@ -60,6 +58,7 @@ const RestaurantEdit = (props) => {
 
   const editRestaurant = () => {
     console.log('edit');
+    setTimeout(() => {
     dispatch(updateRestaurant({
       id: itemId,
       name: nameValue,
@@ -89,11 +88,11 @@ const RestaurantEdit = (props) => {
       satClose: satCloseValue,
       sunday: sunIsEnabled,
       sunOpen: sunOpenValue,
-      sunClose: sunCloseValue
+      sunClose: sunCloseValue,
+      staffId: auth.uid
     }))
-    navigation.navigate('Rewards');
+  }, 4000)
   };
-
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

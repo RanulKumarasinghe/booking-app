@@ -52,11 +52,12 @@ export const updateRestaurant = (saveRestaurant) => {
       satClose: saveRestaurant.satClose,
       sunday: saveRestaurant.sunday,
       sunOpen: saveRestaurant.sunOpen,
-      sunClose: saveRestaurant.sunClose
+      sunClose: saveRestaurant.sunClose,
+      staffId:saveRestaurant.staffId
     }).then(() => {
-      console.log('User updated!');
+      console.log('Restaurant Updated!');
     })
-    dispatch({ type: UPDATE_RESTAURANT, restaurant: saveRestaurant })
+    dispatch({ type: UPDATE_RESTAURANT, restaurant: saveRestaurant})
   }
 };
 
