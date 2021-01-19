@@ -14,8 +14,9 @@ export const RESTAURANT = [
 ];
 
 export const MenuData = [{
+  id: 20,
   category:'Kebab',
-  options:[{
+  items:[{
     id: 1,
     name:'Doner kebab wrap',
     desc:'Wrap with lamb doner meat, sliced and seasoned',
@@ -37,7 +38,8 @@ export const MenuData = [{
 {
   id: 4,
   category:'Hamburger',
-  options:[{
+  items:[
+  {
     id: 5,
     name:'Burger',
     desc:'Wrap with lamb doner meat, sliced and seasoned',
@@ -66,7 +68,7 @@ export const MenuData = [{
 {
   id: 9,
   category:'Pizza',
-  options:[{
+  items:[{
     id: 10,
     name:'Margherita ',
     desc:'Classic pizza with tomato sauce and mozzarella',

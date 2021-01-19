@@ -1,30 +1,57 @@
 import React, {useState, useEffect} from 'react';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
-import { Input, Text, Button, Layout } from '@ui-kitten/components';
+import { Input, Divider, Text, Button, Layout } from '@ui-kitten/components';
 import Firebase from '@/utils/firebase'
 import { useDispatch } from 'react-redux'
-import { login } from '@/store/actions/auth'
+import { setItem } from '@/store/actions/order'
+import { MenuData } from '../../other/dummy-data';
 
 
 const MenuItemScreen = (props) => {
 
+  const params = props.route.params
+
   const dispatch = useDispatch()
 
-  const handleAddItemToCard = () => {
-    props.navigation.navigate('MenuItemScreen')
+
+  const getCategory = () => {
+    return MenuData.find(category => category.id == params.categoryId);
   }
 
+  const category = getCategory();
+
+  const getItem = () => {
+    return category.items.find(item => item.id == params.itemId);
+  }
+
+  const item = getItem();
+
+  const handleAddItemToCard = () => {
+    dispatch(setItem(item));
+    props.navigation.navigate('Menu')
+  }
+ 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>CheckOut</Text>
+        <View>
+          <Text category='p1'>{item.name}</Text>
+        </View>
+        <Divider />
 
-        <Button onPress={handleAddItemToCard}>
-          Add Item to Cart
-        </Button>
-        <Button onPress={() => {props.navigation.navigate('MenuScreen')}}>
-          Cancel
-        </Button>
+        <View >
+          <Text style={{width: 300 }} category='p2'>{item.desc}</Text>
+          <Text style={{width: 300 }} category='p2'>{item.price}</Text>
+        </View>
+        {params.order && (
+          <View>
+          <Button onPress={handleAddItemToCard}>
+            Add Item to Cart
+          </Button>
+          <Button onPress={() => {props.navigation.navigate('MenuScreen')}}>
+            Cancel
+          </Button>
+        </View> ) }
       </Layout>
     </SafeAreaView>
   );

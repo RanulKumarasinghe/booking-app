@@ -38,12 +38,6 @@ const HomeNavigator = () => {
         component={RewardScreen}
         // options={authScreenOptions}
       />
-
-      <HomeStackNavigator.Screen
-      name='Add Restaurant'
-      component={RestaurantAddScreen}
-      />
-
     </HomeStackNavigator.Navigator>
   );
 };

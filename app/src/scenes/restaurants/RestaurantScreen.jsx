@@ -1,12 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { SafeAreaView, StyleSheet, Button, Text, Image, View, ImageBackground, ScrollView, Dimensions } from "react-native";
-import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { SafeAreaView, StyleSheet, Image, View, ImageBackground, ScrollView, Dimensions } from "react-native";
+import { Divider, Icon, Layout, Text, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 // import Navbar from '../../components/Navbar';
-import MenuComponent from '@/components/Menu'
+import Menu from '@/components/Menu/Menu'
 import StarRating from 'react-native-star-rating';
 import { FlatList } from "react-native-gesture-handler";
 import { useSelector } from 'react-redux';
+import { setOrderType } from '@/store/actions/order'
 
 
 const Restaurant = (props) => {
@@ -19,27 +20,21 @@ const Restaurant = (props) => {
     restaurantId: restaurant.id
   });
 
-  const onPending = () => props.navigation.navigate('PendingBookingScreen', {
+  const onPending = () => props.navigation.navigate('Bookings Pending', {
     restaurantId: restaurant.id
   });
 
+  const onOrder = () => {
+    props.navigation.navigate('Order Type', {
+      restaurantId: restaurant.id
+    })
+  };
+
   const auth = useSelector(state => state.auth);
 
-  const PendingBookingButton = () => {
-    if (auth.uid !== undefined) {
-      return (
-        <View>
-          <Divider />
-          <Button title="View pending bookings" onPress={onPending}/>
-        </View>
-      );
-    } else {
-      return null;
-    }
-  }
 
   const onEditRestaurant = () => props.navigation.navigate('Edit Restaurant', {
-    restaurantID: restaurant.id
+    restaurantId: restaurant.id
   });
 
 
@@ -97,17 +92,26 @@ const Restaurant = (props) => {
                 <Text>Sunday: {restaurant.sunOpen} - {restaurant.sunClose}</Text>
               </View>
               <View style={styles.menu}>
-                <MenuComponent />
+                <Menu navigation={props.navigation}/>
               </View>
-              <View style={styles.button}>
-                <Button title="Make A Booking" onPress={onBooking} />
-                <PendingBookingButton />
-              </View>
+                <Button onPress={onBooking}>Make A Booking</Button>
+                { auth.uid !== undefined && (
+                  <>
+                    <Divider />
+                    <Button onPress={onPending}>Pending bookings</Button> 
+                  </>
+                  ) }
             </View>
           </View>
-          {auth.uid == restaurant.staffId ? <View style={styles.editButton}>
-            <Button title="Edit Restaurant" onPress={onEditRestaurant} />
-          </View> : <View></View>}
+
+          {auth.uid == restaurant.staffId ?
+          <>
+            <Divider />
+            <Button onPress={onEditRestaurant}>Edit Restaurant</Button>
+          </>
+          : null}
+          <Divider />
+          <Button onPress={onOrder}>Order</Button>
         </View>
       </ScrollView>
     </SafeAreaView>

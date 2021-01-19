@@ -2,25 +2,35 @@ import React, {useState, useEffect} from 'react';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Text, Button, Layout } from '@ui-kitten/components';
 import Firebase from '@/utils/firebase'
-import { useDispatch } from 'react-redux'
-import { login } from '@/store/actions/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { setOrderType } from '@/store/actions/order'
 
 
 const OrderTypeScreen = (props) => {
+  const restaurantId = props.route.params.restaurantId;
+
+  const restaurants = useSelector(state => state.restaurants.restaurants);
+  const restaurant = restaurants.find(restaurant => restaurant.id === restaurantId);
+
 
   const dispatch = useDispatch()
-
+  
   const handleInRestaurant = () => {
-    props.navigation.navigate('MenuScreen')
+    dispatch(setOrderType('Eat In'));
+    props.navigation.navigate('Menu')
   }
+  
   const handleTakeAway = () => {
-    props.navigation.navigate('MenuScreen')
+    dispatch(setOrderType('Take Away'));
+    props.navigation.navigate('Menu')
   }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>CheckOut</Text>
+
+        <Text>{restaurant.name}</Text>
+
 
         <Button onPress={handleInRestaurant}>
           Add Item to Cart

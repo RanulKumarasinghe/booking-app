@@ -17,7 +17,7 @@ export const setOrderType = (type) =>{
 
 export const SET_ITEM = 'SET_ITEM';
 
-export const setOrderType = (item) =>{
+export const setItem = (item) =>{
   return async dispatch => {
     dispatch({ type: SET_ITEM, item: item })
   } 
@@ -26,7 +26,7 @@ export const setOrderType = (item) =>{
 
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 
-export const setOrderType = (item) =>{
+export const remoteItem = (item) =>{
   return async dispatch => {
     dispatch({ type: REMOVE_ITEM, item: item })
   } 

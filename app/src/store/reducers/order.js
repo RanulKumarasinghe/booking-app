@@ -10,14 +10,15 @@ const orderReducer = (state = initialState, action) => {
           //this action
           return {restaurantId: action.restaurantId, cart: []};
         case SET_ORDER_TYPE:
+          console.log(action)
           return {...state, type: action.type};
         case SET_ITEM:
           let newCart = state.cart.filter(cartItem => cartItem.id != action.item.id)
           newCart.push(action.item)
           return {...state, cart: newCart};
         case REMOVE_ITEM:
-          let newCart = state.cart.filter(cartItem => cartItem.id != action.item.id)
-          return {...state, cart: newCart};
+          let newCartRm = state.cart.filter(cartItem => cartItem.id != action.item.id)
+          return {...state, cart: newCartRm};
         default:
           return state;
     }

@@ -9,6 +9,7 @@ import restaurantReducer from '@/store/reducers/restaurants';
 import authReducer from '@/store/reducers/auth';
 import bookingsReducer from '@/store/reducers/bookings';
 import rewardsReducer from '@/store/reducers/rewards';
+import orderReducer from '@/store/reducers/order';
 
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   bookings: bookingsReducer,
   rewards: rewardsReducer,
+  order: orderReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

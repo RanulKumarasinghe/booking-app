@@ -3,26 +3,17 @@ import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Text, Button, Layout } from '@ui-kitten/components';
 import Firebase from '@/utils/firebase'
 import { useDispatch } from 'react-redux'
-import { login } from '@/store/actions/auth'
-
-
+import Menu from '@/components/Menu/Menu'
 const MenuScreen = (props) => {
 
   const dispatch = useDispatch()
 
-  const goTo = () => {
-    props.navigation.navigate('MenuItemScreen')
-  }
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>CheckOut</Text>
+      <Layout style={{ flex: 1}}>
+      <Menu navigation={props.navigation} order={true}/>
 
-        <Button onPress={goTo}>
-          Item1
-        </Button>
-        <Button onPress={() => {props.navigation.navigate('CheckOutScreen')}}>
+        <Button onPress={() => {props.navigation.navigate('Checkout')}}>
           CheckOut
         </Button>
       </Layout>

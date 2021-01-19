@@ -37,12 +37,12 @@ const HomeNavigator = () => (
     <Restaurant.Screen name='EditMenuScreen' component={RestaurantEditMenuScreen}/>
 
     {/* Order */}
-    <Restaurant.Screen name='CheckOutScreen' component={CheckOutScreen}/>
-    <Restaurant.Screen name='MenuItemScreen' component={MenuItemScreen}/>
-    <Restaurant.Screen name='MenuScreen' component={MenuScreen}/>
-    <Restaurant.Screen name='OrderType' component={OrderTypeScreen}/>
+    <Restaurant.Screen name='Checkout' component={CheckOutScreen}/>
+    <Restaurant.Screen name='Menu Item' component={MenuItemScreen}/>
+    <Restaurant.Screen name='Menu' component={MenuScreen}/>
+    <Restaurant.Screen name='Order Type' component={OrderTypeScreen}/>
 
-    <Restaurant.Screen name='PendingBookingScreen' component={PendingBookingScreen}/>
+    <Restaurant.Screen name='Bookings Pending' component={PendingBookingScreen}/>
   </Restaurant.Navigator>
 );
 

@@ -1,4 +1,4 @@
-// SignUp.js
+
 import React, {useState} from 'react'
 import { StyleSheet, SafeAreaView, View } from 'react-native'
 import { Input, Text, Button, Layout } from '@ui-kitten/components';

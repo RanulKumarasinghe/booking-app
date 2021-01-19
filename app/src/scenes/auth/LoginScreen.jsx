@@ -5,8 +5,6 @@ import Firebase from '@/utils/firebase'
 import { useDispatch } from 'react-redux'
 import { login } from '@/store/actions/auth'
 
-
-// export const LoginScreen = ({ navigation }) => {
 const LoginScreen = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -25,6 +23,7 @@ const LoginScreen = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
       <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Login</Text>
+
         {/* {this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
