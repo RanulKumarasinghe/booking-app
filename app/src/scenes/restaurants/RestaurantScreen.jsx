@@ -18,7 +18,7 @@ const Restaurant = (props) => {
   const onBooking = () => props.navigation.navigate('Booking', {
     restaurantId: restaurant.id
   });
-  
+
   const onPending = () => props.navigation.navigate('PendingBookingScreen', {
     restaurantId: restaurant.id
   });
@@ -38,17 +38,11 @@ const Restaurant = (props) => {
     }
   }
 
-  /*navigateBack = () => {
-    props.navigation.goBack();
-  };
+  const onEditRestaurant = () => props.navigation.navigate('Edit Restaurant', {
+    restaurantID: restaurant.id
+  });
 
-  const BackIcon = (props) => (
-    <Icon {...props} name='arrow-back' />
-  );
 
-  BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-  );*/
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -111,6 +105,9 @@ const Restaurant = (props) => {
               </View>
             </View>
           </View>
+          {auth.uid == restaurant.staffId ? <View style={styles.editButton}>
+            <Button title="Edit Restaurant" onPress={onEditRestaurant} />
+          </View> : <View></View>}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -156,6 +153,9 @@ const styles = StyleSheet.create({
   },
   description: {
     flexDirection: 'column'
+  },
+  editButton: {
+    marginBottom: 10
   }
 });
 

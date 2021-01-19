@@ -54,6 +54,7 @@ const LoginScreen = (props) => {
         <Button onPress={() => props.navigation.navigate('Sign Up')}>
           Don't have an account? Sign Up
         </Button>
+
       </Layout>
     </SafeAreaView>
   );
@@ -73,6 +74,9 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     marginTop: 8
+  },
+  button: {
+    marginTop: 15
   }
 })
 

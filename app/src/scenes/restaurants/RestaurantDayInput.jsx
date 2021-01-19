@@ -1,23 +1,15 @@
 import React, { useState, setState } from 'react';
 import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button} from 'react-native';
+import { Divider } from 'react-native-elements';
 import { Text, TopNavigation } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {createRestaurant} from '@/store/actions/restaurants';
 
-const MultiTextInput = (props) => {
-  return (
-    <TextInput
-      {...props}
-      editable
-      maxLength={200}
-    />
-  );
-}
-
 const RestaurantDayInput = (props) => {
   return (
     <>
+    <Divider style={styles.dividerSpacing} />
       <View style={styles.listRow}>
       <Text style={styles.sizeFont}>{props.dayName}</Text>
       <View style={styles.switchStyle}>
@@ -97,5 +89,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-between'
   },
+  dividerSpacing: {
+    height: 1.5,
+    backgroundColor: 'black',
+    marginTop: 15
+  }
 })
 export default RestaurantDayInput;
