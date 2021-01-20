@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Button, Text, TextInput, Image, View, StatusBar} from "react-native";
-import { Divider, Icon, Layout } from '@ui-kitten/components';
+import { Divider, Icon } from '@ui-kitten/components';
 import firebase from 'src/utils/firebase';
+import Layout from '@/components/atoms/Layout'
 
 const RewardScreen = (props) => {
 
@@ -47,8 +48,8 @@ const RewardScreen = (props) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.container}>
+    <Layout>
+        <View>
             <Image
             style={styles.userImage}
             source={{uri:'https://thumbs.dreamstime.com/z/vector-illustration-isolated-white-background-user-profile-avatar-black-line-icon-user-profile-avatar-black-solid-icon-121102166.jpg'}}
@@ -84,7 +85,7 @@ const RewardScreen = (props) => {
             <Button title="Redeem Points" onPress={addPoints} />
           </View>
         </View>
-    </SafeAreaView>
+    </Layout>
   );
 }
 
