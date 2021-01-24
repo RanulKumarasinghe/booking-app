@@ -18,10 +18,12 @@ const MultiTextInput = (props) => {
 
 const RestaurantInput = (props) => {
 
+  const [shouldShow, setShouldShow] = useState(false);
+
   return (
     <View>
     <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Name: </Text>
+      <Text style={styles.sizeFont}>Name* </Text>
       <TextInput
           style={styles.textBox}
           onChangeText={props.onName}
@@ -30,7 +32,7 @@ const RestaurantInput = (props) => {
       </View>
 
       <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Type: </Text>
+      <Text style={styles.sizeFont}>Type* </Text>
       <TextInput
           style={styles.textBox}
           onChangeText={props.onType}
@@ -39,7 +41,7 @@ const RestaurantInput = (props) => {
       </View>
 
       <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>PostCode: </Text>
+      <Text style={styles.sizeFont}>PostCode* </Text>
       <TextInput
           style={styles.textBox}
           autoCompleteType='postal-code'
@@ -48,7 +50,7 @@ const RestaurantInput = (props) => {
           value = {props.postCode}/>
       </View>
       <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Address: </Text>
+      <Text style={styles.sizeFont}>Address* </Text>
       <TextInput
           style={styles.textBox}
           autoCompleteType='street-address'
@@ -57,7 +59,7 @@ const RestaurantInput = (props) => {
           value = {props.address}/>
       </View>
       <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Phone: </Text>
+      <Text style={styles.sizeFont}>Phone* </Text>
       <TextInput
           style={styles.textBox}
           keyboardType='phone-pad'
@@ -67,7 +69,7 @@ const RestaurantInput = (props) => {
           value = {props.phone}/>
       </View>
       <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Description: </Text>
+      <Text style={styles.sizeFont}>Description* </Text>
       <MultiTextInput
           multiline
           numberOfLines={5}
@@ -77,14 +79,21 @@ const RestaurantInput = (props) => {
           />
       </View>
       <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Image URL: </Text>
+      <Text style={styles.sizeFont}>Image URL* </Text>
       <TextInput
           style={styles.textBox}
           onChangeText={props.onImageUrl}
           value = {props.imageUrl}
          />
       </View>
-
+      <View style={styles.buttonShow}>
+      <Button
+          title="Hide/Show Opening times"
+          onPress={() => setShouldShow(!shouldShow)}
+        />
+        </View>
+      {shouldShow ? (
+      <View>
       <RestaurantDayInput
         dayName="Monday"
         dayShortName='Mon'
@@ -161,6 +170,7 @@ const RestaurantInput = (props) => {
         dayCloseValue={props.sunClose}
         onChangeClose={props.changeSunClose}
       />
+      </View> ) : <View></View> }
       </View>
 
   );
@@ -171,13 +181,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   listRow: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginTop: 20,
+    marginHorizontal: '10%',
     justifyContent: 'center'
   },
   sizeFont: {
-    fontSize: 16,
-    width: '28%'
+    fontSize: 16
   },
   textBox: {
     height: 25,
@@ -186,15 +196,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     marginRight: 4,
-    width: '60%',
-    fontSize: 16
+    width: '100%',
+    fontSize: 16,
+    textAlign: 'center'
   },
   bigTextBox: {
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 5,
     marginRight: 4,
-    width: '60%',
+    width: '100%',
     textAlignVertical: 'top'
   },
   switchStyle: {
@@ -208,6 +219,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     justifyContent: 'space-between'
+  },
+  buttonShow: {
+    marginTop: '5%',
+    marginBottom: '5%',
+    width: '80%',
+    alignSelf: 'center',
   },
   dividerSpacing: {
     height: 1.5,

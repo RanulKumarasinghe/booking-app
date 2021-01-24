@@ -3,7 +3,7 @@ import React from "react";
 import { SafeAreaView, StyleSheet, Image, View, ImageBackground, ScrollView, Dimensions } from "react-native";
 import { Divider, Icon, Layout, Text, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 // import Navbar from '../../components/Navbar';
-import Menu from '@/components/Menu/Menu'
+import Menu from '../../components/Menu/Menu';
 import StarRating from 'react-native-star-rating';
 import { FlatList } from "react-native-gesture-handler";
 import { useSelector } from 'react-redux';
@@ -98,7 +98,7 @@ const Restaurant = (props) => {
                 { auth.uid !== undefined && (
                   <>
                     <Divider />
-                    <Button onPress={onPending}>Pending bookings</Button> 
+                    <Button onPress={onPending}>Pending bookings</Button>
                   </>
                   ) }
             </View>

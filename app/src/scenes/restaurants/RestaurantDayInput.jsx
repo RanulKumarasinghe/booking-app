@@ -11,7 +11,7 @@ const RestaurantDayInput = (props) => {
     <>
     <Divider style={styles.dividerSpacing} />
       <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>{props.dayName}</Text>
+      <Text style={styles.sizeFont}>{props.dayName}*</Text>
       <View style={styles.switchStyle}>
       <Switch
         trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -24,7 +24,7 @@ const RestaurantDayInput = (props) => {
       </View>
       </View>
       <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>{props.dayShortName}-Open: </Text>
+      <Text style={styles.sizeFont}>{props.dayShortName}-Open* </Text>
       <TextInput
           style={styles.textBox}
           onChangeText={props.onChangeOpen}
@@ -33,7 +33,7 @@ const RestaurantDayInput = (props) => {
        />
       </View>
       <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>{props.dayShortName}-Close: </Text>
+      <Text style={styles.sizeFont}>{props.dayShortName}-Close* </Text>
       <TextInput
           style={styles.textBox}
           onChangeText={props.onChangeClose}
@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   listRow: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginTop: 20,
+    marginHorizontal: '10%',
     justifyContent: 'center'
   },
   sizeFont: {
-    fontSize: 16,
-    width: '28%'
+    fontSize: 16
   },
   textBox: {
     height: 25,
@@ -66,8 +66,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     marginRight: 4,
-    width: '60%',
-    fontSize: 16
+    width: '100%',
+    fontSize: 16,
+    textAlign: 'center'
   },
   bigTextBox: {
     borderColor: 'black',
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top'
   },
   switchStyle: {
-    width: '60%',
+    width: '100%',
     alignItems: 'flex-start'
   },
   buttonSpacing: {
