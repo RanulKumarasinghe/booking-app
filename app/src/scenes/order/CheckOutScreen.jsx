@@ -15,7 +15,6 @@ const CheckOutScreen = (props) => {
     // props.navigation.navigate('Reset Password')
   }
 
-  console.log(order)
   const totalCost = () => {
 
   }

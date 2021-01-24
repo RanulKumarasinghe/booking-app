@@ -17,7 +17,7 @@ const Menu = (props) => {
 
   return (
     <View style={{ height: 'auto' }}>
-      <Text category='h5' style={{ textAlign: 'center' }}>Menu</Text>
+      <Text category='h2' style={{ textAlign: 'center' }}>Menu</Text>
       <Divider />
       {MenuData.map(category => (
             <View key={category.id}>
