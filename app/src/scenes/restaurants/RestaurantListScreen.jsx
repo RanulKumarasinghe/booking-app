@@ -59,7 +59,7 @@ const RestaurantListScreen = props => {
         </View>
         <FlatList
           data={restaurants}
-          keyExtractor={(item, index) => console.log(item.id)}
+          keyExtractor={(item, index) => item.id}
           renderItem={renderRestaurantListItem}
           style={{ width: '95%' }}
           removeClippedSubviews= {true}

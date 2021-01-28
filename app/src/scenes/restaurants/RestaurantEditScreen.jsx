@@ -17,44 +17,11 @@ const RestaurantEdit = (props) => {
 
   const auth = useSelector(state => state.auth);
 
-  const [monIsEnabled, setMonIsEnabled] = useState(restaurant.monday);
-
-  const [tuesIsEnabled, setTuesIsEnabled] = useState(restaurant.tuesday);
-
-  const [wedIsEnabled, setWedIsEnabled] = useState(restaurant.wednesday);
-
-  const [thursIsEnabled, setThursIsEnabled] = useState(restaurant.thursday);
-
-  const [friIsEnabled, setFriIsEnabled] = useState(restaurant.friday);
-
-  const [satIsEnabled, setSatIsEnabled] = useState(restaurant.saturday);
-
-  const [sunIsEnabled, setSunIsEnabled] = useState(restaurant.sunday);
-
-  const [monOpenValue, onChangeMonOpen] = React.useState(restaurant.monOpen);
-  const [monCloseValue, onChangeMonClose] = React.useState(restaurant.monClose);
-  const [tuesOpenValue, onChangeTuesOpen] = React.useState(restaurant.tuesOpen);
-  const [tuesCloseValue, onChangeTuesClose] = React.useState(restaurant.tuesClose);
-  const [wedOpenValue, onChangeWedOpen] = React.useState(restaurant.wedOpen);
-  const [wedCloseValue, onChangeWedClose] = React.useState(restaurant.wedClose);
-  const [thursOpenValue, onChangeThursOpen] = React.useState(restaurant.thursOpen);
-  const [thursCloseValue, onChangeThursClose] = React.useState(restaurant.thursClose);
-  const [friOpenValue, onChangeFriOpen] = React.useState(restaurant.friOpen);
-  const [friCloseValue, onChangeFriClose] = React.useState(restaurant.friClose);
-  const [satOpenValue, onChangeSatOpen] = React.useState(restaurant.satOpen);
-  const [satCloseValue, onChangeSatClose] = React.useState(restaurant.satClose);
-  const [sunOpenValue, onChangeSunOpen] = React.useState(restaurant.sunOpen);
-  const [sunCloseValue, onChangeSunClose] = React.useState(restaurant.sunClose);
 
   const [nameValue, onChangeName] = React.useState(restaurant.name);
   const [typeValue, onChangeType] = React.useState(restaurant.type);
-  const [postCodeValue, onChangePostCode] = React.useState(restaurant.postCode);
-  const [addressValue, onChangeAddress] = React.useState(restaurant.address);
-  const [phoneValue, onChangePhone] = React.useState(restaurant.phone);
   const [descriptionValue, onChangeDescription] = React.useState(restaurant.description);
   const [imageUrlValue, onChangeImageUrl] = React.useState(restaurant.imageUrl);
-  const [openValue, onChangeOpen] = React.useState(restaurant.open);
-  const [closeValue, onChangeClose] = React.useState(restaurant.close);
 
   const editRestaurant = () => {
     console.log('edit');
@@ -63,32 +30,9 @@ const RestaurantEdit = (props) => {
       id: itemId,
       name: nameValue,
       type: typeValue,
-      postCode: postCodeValue,
-      address: addressValue,
-      phone: phoneValue,
       description: descriptionValue,
       imageUrl: imageUrlValue,
-      monday: monIsEnabled,
-      monOpen: monOpenValue,
-      monClose: monCloseValue,
-      tuesday: tuesIsEnabled,
-      tuesOpen: tuesOpenValue,
-      tuesClose: tuesCloseValue,
-      wednesday: wedIsEnabled,
-      wedOpen: wedOpenValue,
-      wedClose: wedCloseValue,
-      thursday: thursIsEnabled,
-      thursOpen: thursOpenValue,
-      thursClose: thursCloseValue,
-      friday: friIsEnabled,
-      friOpen: friOpenValue,
-      friClose: friCloseValue,
-      saturday: satIsEnabled,
-      satOpen: satOpenValue,
-      satClose: satCloseValue,
-      sunday: sunIsEnabled,
-      sunOpen: sunOpenValue,
-      sunClose: sunCloseValue,
+      google_id: restaurant.google_id,
       staffId: auth.uid
     }))
   }, 4000)
@@ -108,58 +52,10 @@ const RestaurantEdit = (props) => {
         name={nameValue}
         onType={text => onChangeType(text)}
         type={typeValue}
-        onPostCode={text => onChangePostCode(text)}
-        postCode={postCodeValue}
-        onAddress={text => onChangeAddress(text)}
-        address={addressValue}
-        onPhone={text => onChangePhone(text)}
-        phone={phoneValue}
         onDescription={text => onChangeDescription(text)}
         description={descriptionValue}
         onImageUrl={text => onChangeImageUrl(text)}
         imageUrl={imageUrlValue}
-        monEnabled={monIsEnabled}
-        setMonEnabled={() => setMonIsEnabled(previousState => !previousState)}
-        monOpen={monOpenValue}
-        changeMonOpen={text => onChangeMonOpen(text)}
-        monClose={monCloseValue}
-        changeMonClose={text => onChangeMonClose(text)}
-        tuesEnabled={tuesIsEnabled}
-        setTuesEnabled={() => setTuesIsEnabled(previousState => !previousState)}
-        tuesOpen={tuesOpenValue}
-        changeTuesOpen={text => onChangeTuesOpen(text)}
-        tuesClose={tuesCloseValue}
-        changeTuesClose={text => onChangeTuesClose(text)}
-        wedEnabled={wedIsEnabled}
-        setWedEnabled={() => setWedIsEnabled(previousState => !previousState)}
-        wedOpen={wedOpenValue}
-        changeWedOpen={text => onChangeWedOpen(text)}
-        wedClose={wedCloseValue}
-        changeWedClose={text => onChangeWedClose(text)}
-        thursEnabled={thursIsEnabled}
-        setThursEnabled={() => setThursIsEnabled(previousState => !previousState)}
-        thursOpen={thursOpenValue}
-        changeThursOpen={text => onChangeThursOpen(text)}
-        thursClose={thursCloseValue}
-        changeThursClose={text => onChangeThursClose(text)}
-        friEnabled={friIsEnabled}
-        setFriEnabled={() => setFriIsEnabled(previousState => !previousState)}
-        friOpen={friOpenValue}
-        changeFriOpen={text => onChangeFriOpen(text)}
-        friClose={friCloseValue}
-        changeFriClose={text => onChangeFriClose(text)}
-        satEnabled={satIsEnabled}
-        setSatEnabled={() => setSatIsEnabled(previousState => !previousState)}
-        satOpen={satOpenValue}
-        changeSatOpen={text => onChangeSatOpen(text)}
-        satClose={satCloseValue}
-        changeSatClose={text => onChangeSatClose(text)}
-        sunEnabled={sunIsEnabled}
-        setSunEnabled={() => setSunIsEnabled(previousState => !previousState)}
-        sunOpen={sunOpenValue}
-        changeSunOpen={text => onChangeSunOpen(text)}
-        sunClose={sunCloseValue}
-        changeSunClose={text => onChangeSunClose(text)}
       />
       <View style={styles.buttonSpacing}>
          <Button title="No Changes" onPress={() => console.log('pressed')} />

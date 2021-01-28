@@ -10,7 +10,7 @@ import {
 import { Icon } from 'react-native-elements';
 
 
-const RestaurantEntry = React.memo(props => {
+const RestaurantEntry = props => {
   // const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState({});
   // console.log(data.result?.rating);
@@ -67,7 +67,7 @@ const RestaurantEntry = React.memo(props => {
       </TouchableOpacity>
     </View>
   );
-});
+};
 
 const styles = StyleSheet.create({
   listItem: {
