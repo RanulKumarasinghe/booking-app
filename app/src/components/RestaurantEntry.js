@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import StarRating from 'react-native-star-rating';
 import {
   View,
@@ -9,15 +9,25 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-const RestaurantEntry = props => {
 
-//  function getVegan () {
-//    if(props.vegan === 'Vegan') {
-//     return <Icon name='eco' />
-//    } else {
-//     return null;
-//    }
-//  }
+const RestaurantEntry = React.memo(props => {
+  // const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState({});
+  // console.log(data.result?.rating);
+  // console.log(props.name);
+  useEffect(() => {
+  const url  = 'https://maps.googleapis.com/maps/api/place/details/json?'
+  const place = `place_id=${props.google_id}`;
+  const fields = '&fields=rating';
+  const key = '&key=AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc';
+  const restaurantSearchUrl = url + place + fields + key;
+  fetch(restaurantSearchUrl)
+  .then(response => response.json())
+  .then(result => setData(result))
+  .catch((error) => console.error(error))
+  });
+
+
   return (
 
     <View style={styles.listItem}>
@@ -37,9 +47,10 @@ const RestaurantEntry = props => {
             <Text style={styles.list}>{props.name}</Text>
             <View style={styles.starrating}>
             <StarRating
+
             disabled={true}
             maxStars={5}
-            rating={props.starRating}
+            rating={data.result?.rating}
             fullStarColor={'#dbeb34'}
             starSize={15}
 
@@ -56,16 +67,19 @@ const RestaurantEntry = props => {
       </TouchableOpacity>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   listItem: {
     height: 300,
     width: '100%',
     backgroundColor: '#f5f5f5',
-    borderRadius: 10,
     overflow: 'hidden',
-    marginTop: 20
+    marginTop: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5
   },
   bgImage: {
     width: '100%',
@@ -86,12 +100,12 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     backgroundColor: '#d9d9d9',
-    paddingVertical: 6
+    paddingVertical: 4
   },
   list: {
     fontWeight: 'bold',
     fontSize: 20,
-    width: '60%'
+    width: '65%'
   },
   list1: {
     fontWeight: 'bold',
@@ -100,7 +114,7 @@ const styles = StyleSheet.create({
   },
   starrating: {
     alignSelf: 'flex-end',
-    paddingHorizontal: '18%'
+    paddingHorizontal: '15%'
   },
   title: {
     // fontFamily: 'open-sans-bold',
