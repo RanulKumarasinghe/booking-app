@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState }from "react";
-import { SafeAreaView, StyleSheet, Image, View, ImageBackground, ScrollView, Dimensions } from "react-native";
+import { SafeAreaView, StyleSheet, Image, View, ImageBackground, ScrollView, Dimensions, ActivityIndicator } from "react-native";
 import { Divider, Icon, Layout, Text, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 // import Navbar from '../../components/Navbar';
 import Menu from '../../components/Menu/Menu';
@@ -17,6 +17,7 @@ const Restaurant = (props) => {
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
   const [data, setData] = useState({});
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const url  = 'https://maps.googleapis.com/maps/api/place/details/json?'
@@ -28,6 +29,7 @@ const Restaurant = (props) => {
     .then(response => response.json())
     .then(result => setData(result))
     .catch((error) => console.error(error))
+    .finally(() => setLoading(false));
     });
 
   const onBooking = () => props.navigation.navigate('Booking', {
@@ -55,7 +57,9 @@ const Restaurant = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+
       <Divider />
+
       <ScrollView contentContainerStyle={{
         flexGrow: 1,
         justifyContent: 'space-between'

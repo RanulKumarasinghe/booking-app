@@ -5,7 +5,8 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
+  ActivityIndicator
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 
@@ -13,6 +14,7 @@ import { Icon } from 'react-native-elements';
 const RestaurantEntry = props => {
   // const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState({});
+  const [isLoading, setLoading] = useState(true);
   // console.log(data.result?.rating);
   // console.log(props.name);
   useEffect(() => {
@@ -25,12 +27,14 @@ const RestaurantEntry = props => {
   .then(response => response.json())
   .then(result => setData(result))
   .catch((error) => console.error(error))
+  .finally(() => setLoading(false));
   });
 
 
   return (
 
     <View style={styles.listItem}>
+      {isLoading ? <ActivityIndicator/> : (
       <TouchableOpacity onPress={props.onSelectRestaurant}>
         <View>
           <View style={{ ...styles.listRow, ...styles.listHeader }}>
@@ -65,6 +69,7 @@ const RestaurantEntry = props => {
 
         </View>
       </TouchableOpacity>
+      )}
     </View>
   );
 };
