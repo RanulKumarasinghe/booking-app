@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   userNameText: {
-    fontSize: 24,
+    fontSize: 18,
     flexShrink: 1,
   },
   tenantText: {
