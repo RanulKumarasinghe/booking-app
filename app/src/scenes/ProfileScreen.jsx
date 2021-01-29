@@ -1,56 +1,133 @@
-import React, {useState, useEffect} from 'react';
-import { SafeAreaView, View, StyleSheet } from 'react-native';
-import { Input, Text, Button, Layout } from '@ui-kitten/components';
-import Firebase from '@/utils/firebase'
-import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '@/store/actions/auth'
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  FlatList,
+  StatusBar,
+  TouchableOpacity,
+  Text,
+} from "react-native";
+import { useDispatch } from "react-redux";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { logout } from "@/store/actions/auth";
+import { Avatar } from "react-native-elements";
 
-const ProfileScreen = (props) => {
-  const dispatch = useDispatch()
+//import { Text } from "@/components/index";
 
-  const auth = useSelector(state => state.auth);
-
+function ProfileScreen() {
   const handleLogout = () => {
     dispatch(logout());
-  }
-  const onAddRestaurant = () => props.navigation.navigate('Add Restaurant', {
-    userID: auth.uid
-  });
+  };
+
+  const dispatch = useDispatch();
+
+  const list = [
+    { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
+    {
+      icon: "question-circle",
+      name: "Help",
+      description: "Chat with our lovely team",
+      onPress: () => {},
+    },
+  ];
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>{auth.uid}</Text>
-        <Text>{auth.name}</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.userCard}>
+        <Avatar
+          size="large"
+          rounded
+          source={{
+            uri:
+              "https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg",
+          }}
+        />
+        <View style={styles.nameBox}>
+          {/* Name needs to be dynamic */}
+          <Text style={styles.userNameText}>Test Testington</Text>
 
-        <Button onPress={handleLogout}>
-          Logout
-        </Button>
-        <Button style={styles.button} onPress={onAddRestaurant}>
-          Add Restaurant
-        </Button>
-
-      </Layout>
+          <Text style={styles.tenantText}> </Text>
+        </View>
+      </View>
+      <FlatList
+        style={styles.list}
+        data={list}
+        renderItem={(entry) => (
+          <TouchableOpacity
+            style={styles.listEntry}
+            onPress={entry.item.onPress}
+          >
+            <Icon
+              style={styles.icon}
+              name={entry.item.icon}
+              size={30}
+              color="#000000"
+            />
+            <Text style={styles.nameText}>{entry.item.name}</Text>
+            <Text style={styles.descriptionText}>
+              {" "}
+              {entry.item.description}
+            </Text>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.name}
+      />
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: "#C4C4C4",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
-  textInput: {
-    height: 40,
-    width: '90%',
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginTop: 8
+  userCard: {
+    flexDirection: "row",
+    backgroundColor: "#C4C4C4",
+    padding: 20,
+    paddingLeft: 30,
+    height: 120,
+    alignItems: "center",
   },
-  button: {
-    marginTop: 15
-  }
-})
+  nameBox: {
+    paddingLeft: 20,
+  },
+  userNameText: {
+    fontSize: 24,
+  },
+  tenantText: {
+    fontWeight: "bold",
+
+    fontSize: 18,
+  },
+
+  //Settings Entry
+  list: {
+    backgroundColor: "white",
+    flex: 1,
+  },
+  listEntry: {
+    height: 60,
+    alignItems: "center",
+    flexDirection: "row",
+    backgroundColor: "#f542f5",
+    flex: 1,
+  },
+  icon: {
+    paddingLeft: 15,
+  },
+  nameText: {
+    fontWeight: "bold",
+    paddingLeft: 15,
+    fontSize: 18,
+  },
+  descriptionText: {
+    paddingLeft: 18,
+  },
+});
 
 export default ProfileScreen;
