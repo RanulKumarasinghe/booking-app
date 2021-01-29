@@ -7,17 +7,24 @@ import {
   StatusBar,
   TouchableOpacity,
   Text,
+  Button,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { logout } from "@/store/actions/auth";
 import { Avatar } from "react-native-elements";
 
-function ProfileScreen() {
+function ProfileScreen(props) {
   const handleLogout = () => {
     dispatch(logout());
   };
 
+  const onAddRestaurant = () =>
+    props.navigation.navigate("Add Restaurant", {
+      userID: auth.uid,
+    });
+
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const list = [
@@ -42,10 +49,10 @@ function ProfileScreen() {
           }}
         />
         <View style={styles.nameBox}>
-          {/* Name needs to be dynamic */}
-          <Text style={styles.userNameText}>Test Testington</Text>
+          {/* A text wrap need to be applied to the name */}
+          <Text style={styles.userNameText}>{auth.name}</Text>
 
-          <Text style={styles.tenantText}> </Text>
+          {/* <Text style={styles.tenantText}>{auth.uid}</Text> */}
         </View>
       </View>
       <FlatList
@@ -71,6 +78,7 @@ function ProfileScreen() {
         )}
         keyExtractor={(item) => item.name}
       />
+      <Button title="Add Restaurant" onPress={onAddRestaurant} />
     </SafeAreaView>
   );
 }
@@ -96,6 +104,7 @@ const styles = StyleSheet.create({
   },
   userNameText: {
     fontSize: 24,
+    flexShrink: 1,
   },
   tenantText: {
     fontWeight: "bold",
