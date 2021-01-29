@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -12,8 +12,6 @@ import { useDispatch } from "react-redux";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { logout } from "@/store/actions/auth";
 import { Avatar } from "react-native-elements";
-
-//import { Text } from "@/components/index";
 
 function ProfileScreen() {
   const handleLogout = () => {
@@ -80,7 +78,7 @@ function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#C4C4C4",
+    backgroundColor: "white",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     // alignItems: 'center',
     // justifyContent: 'center',
