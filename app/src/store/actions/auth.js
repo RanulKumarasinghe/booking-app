@@ -36,6 +36,22 @@ export const signUp = (name, email, password) => {
   }
 }
 
+export const isManager = uid => {
+	return async (dispatch) => {
+		try {
+      const user = await db
+        .collection('users')
+        .where("staffId", "array-contains", {uid})
+				// .get()
+
+
+			// dispatch({ type: LOGIN, payload: user.data() })
+		} catch (e) {
+			alert(e)
+		}
+	}
+}
+
 export const getUser = uid => {
 	return async (dispatch) => {
 		try {
@@ -43,6 +59,8 @@ export const getUser = uid => {
 				.collection('users')
 				.doc(uid)
 				.get()
+
+      // db.collection('users').where("staffId", "array-contains", {name: "John Travolta"})
 
 			dispatch({ type: LOGIN, payload: user.data() })
 		} catch (e) {
