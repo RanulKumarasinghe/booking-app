@@ -19,10 +19,10 @@ function ProfileScreen(props) {
     dispatch(logout());
   };
 
-  const onAddRestaurant = () =>
-    props.navigation.navigate("Add Restaurant", {
-      userID: auth.uid,
-    });
+  // const onAddRestaurant = () =>
+  //   props.navigation.navigate("Add Restaurant", {
+  //     userID: auth.uid,
+  //   });
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -78,7 +78,7 @@ function ProfileScreen(props) {
         )}
         keyExtractor={(item) => item.name}
       />
-      <Button title="Add Restaurant" onPress={onAddRestaurant} />
+      {/* <Button title="Add Restaurant" onPress={onAddRestaurant} /> */}
     </SafeAreaView>
   );
 }
@@ -88,8 +88,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   userCard: {
     flexDirection: "row",
