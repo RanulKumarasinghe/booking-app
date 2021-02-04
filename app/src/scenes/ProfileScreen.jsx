@@ -14,27 +14,22 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { logout } from "@/store/actions/auth";
 import { Avatar } from "react-native-elements";
 
-function ProfileScreen(props) {
+const ProfileScreen = (props) => {
   const handleLogout = () => {
     dispatch(logout());
   };
 
-  // const onAddRestaurant = () =>
-  //   props.navigation.navigate("Add Restaurant", {
-  //     userID: auth.uid,
-  //   });
+  const handleResetPassword = () => {
+    props.navigation.navigate("Reset Password");
+  };
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const list = [
+    { icon: "cog", name: "Change Password", onPress: handleResetPassword },
+    { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
     { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
-    {
-      icon: "question-circle",
-      name: "Help",
-      description: "Chat with our lovely team",
-      onPress: () => {},
-    },
   ];
 
   return (
@@ -49,7 +44,6 @@ function ProfileScreen(props) {
           }}
         />
         <View style={styles.nameBox}>
-          {/* A text wrap need to be applied to the name */}
           <Text style={styles.userNameText}>{auth.name}</Text>
 
           {/* <Text style={styles.tenantText}>{auth.uid}</Text> */}
@@ -78,10 +72,9 @@ function ProfileScreen(props) {
         )}
         keyExtractor={(item) => item.name}
       />
-      {/* <Button title="Add Restaurant" onPress={onAddRestaurant} /> */}
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -119,8 +112,10 @@ const styles = StyleSheet.create({
     height: 60,
     alignItems: "center",
     flexDirection: "row",
-    backgroundColor: "#f542f5",
+    backgroundColor: "white",
     flex: 1,
+    borderBottomColor: "#C4C4C4",
+    borderBottomWidth: 2,
   },
   icon: {
     paddingLeft: 15,
