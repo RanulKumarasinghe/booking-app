@@ -20,7 +20,7 @@ const ProfileScreen = (props) => {
   };
 
   const handleResetPassword = () => {
-    props.navigation.navigate("Reset Password");
+    //props.navigation.navigate("Reset Password");
   };
 
   const auth = useSelector((state) => state.auth);
