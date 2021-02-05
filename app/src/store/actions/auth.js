@@ -38,17 +38,21 @@ export const signUp = (name, email, password) => {
 
 export const isManager = uid => {
 	return async (dispatch) => {
-		try {
-      const user = await db
-        .collection('users')
-        .where("staffId", "array-contains", {uid})
-				// .get()
+		// try {
+      // const restaurant = await 
+      db.collection('restaurants')
+        .where("staffIds", "array-contains", {id: uid})
+				.get().then(e => {
+          console.log(e)
+        }).catch(e=> {
+          console.log(e)
+        })
 
 
-			// dispatch({ type: LOGIN, payload: user.data() })
-		} catch (e) {
-			alert(e)
-		}
+		// 	// dispatch({ type: LOGIN, payload: user.data() })
+		// } catch (e) {
+		// 	alert(e)
+		// }
 	}
 }
 
@@ -74,7 +78,15 @@ export const login = (email, password) => {
 		try {
 			const response = await Firebase.auth().signInWithEmailAndPassword(email, password)
 
-			dispatch(getUser(response.user.uid))
+      // db.collection('restaurants')
+      // .where("staffIds", "array-contains", {id: response.user.uid})
+      // .get().then(e => {
+      //   console.log(e)
+      // }).catch(e=> {
+      //   console.log(e)
+      // })
+
+      dispatch(getUser(response.user.uid))
 		} catch (e) {
 			alert(e)
 		}

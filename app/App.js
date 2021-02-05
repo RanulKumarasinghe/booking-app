@@ -5,6 +5,7 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { AppNavigator } from './src/navigators/AppNavigator';
 import { Provider } from 'react-redux'
 
+import staffRestaurantReducer from '@/store/reducers/staffRestaurant';
 import restaurantReducer from '@/store/reducers/restaurants';
 import authReducer from '@/store/reducers/auth';
 import bookingsReducer from '@/store/reducers/bookings';
@@ -22,6 +23,7 @@ import LoadingScreen from 'src/scenes/LoadingScreen'
 import ReduxThunk from 'redux-thunk'
 
 const rootReducer = combineReducers({
+  staffRestaurant: staffRestaurantReducer,
   restaurants: restaurantReducer,
   auth: authReducer,
   bookings: bookingsReducer,
