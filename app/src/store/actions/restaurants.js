@@ -75,7 +75,6 @@ export const createRestaurant = (addRestaurant) => {
       sunday: addRestaurant.sunday,
       sunOpen: addRestaurant.sunOpen,
       sunClose: addRestaurant.sunClose,
-      staffId: addRestaurant.staffId
     }).then(() => {
       console.log('Restaurant Added!');
     })
