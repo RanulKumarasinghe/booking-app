@@ -40,7 +40,7 @@ const RestaurantInput = (props) => {
           value = {props.type}/>
       </View>
 
-      <View style={styles.listRow}>
+      {/* <View style={styles.listRow}>
       <Text style={styles.sizeFont}>PostCode* </Text>
       <TextInput
           style={styles.textBox}
@@ -67,7 +67,7 @@ const RestaurantInput = (props) => {
           onChangeText={props.onPhone}
           maxLength = {25}
           value = {props.phone}/>
-      </View>
+      </View> */}
       <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Description* </Text>
       <MultiTextInput
@@ -86,7 +86,7 @@ const RestaurantInput = (props) => {
           value = {props.imageUrl}
          />
       </View>
-      <View style={styles.buttonShow}>
+      {/* <View style={styles.buttonShow}>
       <Button
           title="Hide/Show Opening times"
           onPress={() => setShouldShow(!shouldShow)}
@@ -170,7 +170,7 @@ const RestaurantInput = (props) => {
         dayCloseValue={props.sunClose}
         onChangeClose={props.changeSunClose}
       />
-      </View> ) : <View></View> }
+      </View> ) : <View></View> } */}
       </View>
 
   );

@@ -7,7 +7,8 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import {filterRestaurant} from '@/store/actions/restaurants'
 
-const RestaurantListScreen = (props) => {
+
+const RestaurantListScreen = props => {
   const restaurants = useSelector(state => state.restaurants.filteredRestaurant);
   const dispatch = useDispatch()
 
@@ -20,6 +21,7 @@ const RestaurantListScreen = (props) => {
   }
 
   const renderRestaurantListItem = itemData => {
+
     return (
       <RestaurantEntry
         id={itemData.id}
@@ -27,6 +29,7 @@ const RestaurantListScreen = (props) => {
         imageUrl={itemData.item.imageUrl}
         vegan={itemData.item.vegan}
         type={itemData.item.type}
+        google_id={itemData.item.google_id}
         starRating={itemData.item.starRating}
         onSelectRestaurant={() => props.navigation.navigate('Restaurant', {
             itemID: itemData.item.id
@@ -58,7 +61,9 @@ const RestaurantListScreen = (props) => {
           data={restaurants}
           keyExtractor={(item, index) => item.id}
           renderItem={renderRestaurantListItem}
-          style={{ width: '100%' }}
+          style={{ width: '95%' }}
+          removeClippedSubviews= {true}
+          onEndReachedThreshold={0.5}
         />
       </View>
       <View>
@@ -81,7 +86,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   search: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    paddingBottom: 15
   },
   searchText: {
     fontSize: 20
@@ -93,4 +99,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RestaurantListScreen;
+export default RestaurantListScreen

@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { SafeAreaView, StyleSheet, Image, View, ImageBackground, ScrollView, Dimensions } from "react-native";
+import React, { useEffect, useState }from "react";
+import { SafeAreaView, StyleSheet, Image, View, ImageBackground, ScrollView, Dimensions, ActivityIndicator } from "react-native";
 import { Divider, Icon, Layout, Text, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 // import Navbar from '../../components/Navbar';
 import Menu from '../../components/Menu/Menu';
@@ -15,6 +15,22 @@ const Restaurant = (props) => {
   const itemId = props.route.params.itemID;
 
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
+
+  const [data, setData] = useState({});
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const url  = 'https://maps.googleapis.com/maps/api/place/details/json?'
+    const place = `place_id=${restaurant.google_id}`;
+    const fields = '&fields=name,rating,formatted_phone_number,opening_hours,vicinity';
+    const key = '&key=AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc';
+    const restaurantSearchUrl = url + place + fields + key;
+    fetch(restaurantSearchUrl)
+    .then(response => response.json())
+    .then(result => setData(result))
+    .catch((error) => console.error(error))
+    .finally(() => setLoading(false));
+    });
 
   const onBooking = () => props.navigation.navigate('Booking', {
     restaurantId: restaurant.id
@@ -41,7 +57,9 @@ const Restaurant = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+
       <Divider />
+
       <ScrollView contentContainerStyle={{
         flexGrow: 1,
         justifyContent: 'space-between'
@@ -53,43 +71,45 @@ const Restaurant = (props) => {
                 source={{ uri: restaurant.imageUrl }}
                 style={styles.bgImage}
               />
+               <Text style={styles.font1}>{restaurant.name}</Text>
               <Text style={styles.font}>Restaurant Info:</Text>
               <View style={styles.starrating}>
                 <StarRating
                   disabled={true}
                   maxStars={5}
-                  rating={restaurant.starRating}
+                  rating={data.result?.rating}
                   fullStarColor={'#dbeb34'}
                   starSize={15}
                 />
               </View>
               <View style={styles.description}>
                 <Text>{restaurant.description}</Text>
-                <Text>{restaurant.phone}</Text>
+                <Text>{data.result?.formatted_phone_number}</Text>
+                <Text>{data.result?.vicinity}</Text>
               </View>
               <View style={styles.openHours}>
                 <Text style={styles.font}>Opening hours:</Text>
               </View>
               <View>
-                <Text>Monday: {restaurant.monOpen} - {restaurant.monClose}</Text>
+                <Text>{data.result?.opening_hours.weekday_text[0]}</Text>
               </View>
               <View>
-                <Text>Tuesday: {restaurant.tuesOpen} - {restaurant.tuesClose}</Text>
+                <Text>{data.result?.opening_hours.weekday_text[1]}</Text>
               </View>
               <View>
-                <Text>Wednesday: {restaurant.wedOpen} - {restaurant.wedClose}</Text>
+                <Text>{data.result?.opening_hours.weekday_text[2]}</Text>
               </View>
               <View>
-                <Text>Thursday: {restaurant.thursOpen} - {restaurant.thursClose}</Text>
+                <Text>{data.result?.opening_hours.weekday_text[3]}</Text>
               </View>
               <View>
-                <Text>Friday: {restaurant.friOpen} - {restaurant.friClose}</Text>
+                <Text>{data.result?.opening_hours.weekday_text[4]}</Text>
               </View>
               <View>
-                <Text>Saturday: {restaurant.satOpen} - {restaurant.satClose}</Text>
+                <Text>{data.result?.opening_hours.weekday_text[5]}</Text>
               </View>
               <View>
-                <Text>Sunday: {restaurant.sunOpen} - {restaurant.sunClose}</Text>
+                <Text>{data.result?.opening_hours.weekday_text[6]}</Text>
               </View>
               <View style={styles.menu}>
                 <Menu navigation={props.navigation}/>
@@ -128,6 +148,11 @@ const styles = StyleSheet.create({
   font: {
     fontWeight: 'bold',
     marginTop: 10
+  },
+  font1: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    marginTop: 1
   },
   button: {
     marginTop: 10,
