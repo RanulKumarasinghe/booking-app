@@ -53,7 +53,6 @@ export const updateRestaurant = (saveRestaurant) => {
       sunday: saveRestaurant.sunday,
       sunOpen: saveRestaurant.sunOpen,
       sunClose: saveRestaurant.sunClose,
-      staffId:saveRestaurant.staffId
     }).then(() => {
       console.log('Restaurant Updated!');
     })
@@ -98,7 +97,6 @@ export const createRestaurant = (addRestaurant) => {
       sunday: addRestaurant.sunday,
       sunOpen: addRestaurant.sunOpen,
       sunClose: addRestaurant.sunClose,
-      staffId: addRestaurant.staffId
     }).then(() => {
       console.log('Restaurant Added!');
     })
