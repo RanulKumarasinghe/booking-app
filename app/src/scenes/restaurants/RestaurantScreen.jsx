@@ -6,16 +6,40 @@ import { Divider, Icon, Layout, Text, Button, TopNavigation, TopNavigationAction
 import Menu from '../../components/Menu/Menu';
 import StarRating from 'react-native-star-rating';
 import { FlatList } from "react-native-gesture-handler";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setOrderType } from '@/store/actions/order'
+import {fetchAllMenu} from '@/store/actions/menu';
+
 
 
 const Restaurant = (props) => {
+
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.itemID;
 
-  const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
+  const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
+  const [menu, setMenu] = useState();
+  const dispatch = useDispatch();
+
+  const getMenu = async () => {
+  const menuItems = await fetchAllMenu({
+    id: itemId
+  })
+    setMenu(menuItems)
+  }
+
+  useEffect(() => {
+    getMenu();
+  }, [])
+
+
+
+  // const menu = useSelector(state => state.menu.menu);
+  // console.log(getMenu());
+
+
+  // console.log(menu);
   const [data, setData] = useState({});
   const [isLoading, setLoading] = useState(true);
 
@@ -123,7 +147,6 @@ const Restaurant = (props) => {
                   ) }
             </View>
           </View>
-
           {auth.uid == restaurant.staffId ?
           <>
             <Divider />
