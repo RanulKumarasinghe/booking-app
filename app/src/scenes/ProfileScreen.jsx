@@ -32,6 +32,21 @@ const ProfileScreen = (props) => {
     { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
   ];
 
+  const test = () => {
+
+    db.collection('restaurants').where("staffIds", "array-contains", auth.uid).get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, " => ", doc.data());
+        });
+    })
+
+    // console.log(auth.uid)
+    // .get().then(e => {
+    //   console.log(e)
+    // }).catch(console.warn)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.userCard}>

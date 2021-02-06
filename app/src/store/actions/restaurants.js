@@ -27,32 +27,9 @@ export const updateRestaurant = (saveRestaurant) => {
     restaurant.update({
       name: saveRestaurant.name,
       type: saveRestaurant.type,
-      postCode: saveRestaurant.postCode,
-      address: saveRestaurant.address,
-      phone: saveRestaurant.phone,
       description: saveRestaurant.description,
       imageUrl: saveRestaurant.imageUrl,
-      monday: saveRestaurant.monday,
-      monOpen: saveRestaurant.monOpen,
-      monClose: saveRestaurant.monClose,
-      tuesday: saveRestaurant.tuesday,
-      tuesOpen: saveRestaurant.tuesOpen,
-      tuesClose: saveRestaurant.tuesClose,
-      wednesday: saveRestaurant.wednesday,
-      wedOpen: saveRestaurant.wedOpen,
-      wedClose: saveRestaurant.wedClose,
-      thursday: saveRestaurant.thursday,
-      thursOpen: saveRestaurant.thursOpen,
-      thursClose: saveRestaurant.thursClose,
-      friday: saveRestaurant.friday,
-      friOpen: saveRestaurant.friOpen,
-      friClose: saveRestaurant.friClose,
-      saturday: saveRestaurant.saturday,
-      satOpen: saveRestaurant.satOpen,
-      satClose: saveRestaurant.satClose,
-      sunday: saveRestaurant.sunday,
-      sunOpen: saveRestaurant.sunOpen,
-      sunClose: saveRestaurant.sunClose,
+      google_id: saveRestaurant.google_id,
       staffId:saveRestaurant.staffId
     }).then(() => {
       console.log('Restaurant Updated!');
@@ -98,7 +75,6 @@ export const createRestaurant = (addRestaurant) => {
       sunday: addRestaurant.sunday,
       sunOpen: addRestaurant.sunOpen,
       sunClose: addRestaurant.sunClose,
-      staffId: addRestaurant.staffId
     }).then(() => {
       console.log('Restaurant Added!');
     })

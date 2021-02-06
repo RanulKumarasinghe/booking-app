@@ -15,6 +15,15 @@ const LoginScreen = (props) => {
     dispatch(login(email, password));
   }
 
+  const LoginAdmin = () => {
+    dispatch(login('admin@admin.com', '123456'));
+
+  }
+
+  const LoginUser = () => {
+    dispatch(login('user@user.com', '123456'));
+  }
+
   const handleResetPassword = () => {
     props.navigation.navigate('Reset Password')
   }
@@ -52,6 +61,13 @@ const LoginScreen = (props) => {
 
         <Button onPress={() => props.navigation.navigate('Sign Up')}>
           Don't have an account? Sign Up
+        </Button>
+
+        <Button onPress={LoginAdmin}>
+          Admin Login
+        </Button>
+        <Button onPress={LoginUser}>
+          User Login
         </Button>
 
       </Layout>
