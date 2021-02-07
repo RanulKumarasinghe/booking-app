@@ -1,5 +1,8 @@
 import firebase from 'src/utils/firebase'
 
+const FETCH_RESERVATIONS = 'FETCH_RESERVATIONS';
+const FETCH_AVAILABLE_TABLES = 'FETCH_AVAILABLE_TABLES';
+
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
 const FETCH_MY_BOOKINGS = 'FETCH_MY_BOOKINGS';
 const FETCH_UNAVAILABLE_RESTAURANT_TIMES = 'FETCH_UNAVAILABLE_RESTAURANT_TIMES';
@@ -7,6 +10,82 @@ const POST_BOOKING_TIME = 'POST_BOOKING_TIME';
 const POST_BOOKING = 'POST_BOOKING';
 const RESPOND_TO_BOOKING = 'RESPOND_TO_BOOKING';
 const ADD_NEW_BOOKING_TIME_DOCUMENT = 'ADD_NEW_BOOKING_TIME_DOCUMENT';
+
+//Date is integer range [date-1]
+export const fetchReservations = (size, restid, day, month, year) => {
+  //Placeholder
+
+  year = 2021;
+  month = 1;
+  day = 0;
+
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('reservations').where('restid', '==', restid).where('size', '==', parseInt(size)).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data()[`Y${year}`][`M${month}`][`D${day}`], id: doc.id }
+        });
+        console.log(response);
+        dispatch({ type: FETCH_RESERVATIONS, payload: response })
+      })
+    } catch (error) {
+
+    }
+  }
+}
+
+export const fetchAvailableTables = (size, restid, day, month, year, start, end) => {
+  return async dispatch => {
+    year = 2021;
+    month = 1;
+    day = 0;
+    start = '1500';
+    end = '1700';
+    availableTables = [];
+    restid = '0oSOVkl4hMwsxHtexFJT';
+    try {
+
+      firebase.firestore().collection('reservations').where('restid', '==', restid).where('size', '==', parseInt(size)).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data()[`Y${year}`][`M${month}`][`D${day}`], id: doc.id }
+        });
+
+        response.forEach(object => {
+          const values = Object.values(object);
+          if (object[`${start}`] === undefined) {
+            if (!values.includes(end)) {
+              availableTables.push(object);
+            }
+          }
+        });
+        dispatch({ type: FETCH_AVAILABLE_TABLES, payload: availableTables })
+      });
+    } catch (error) {
+
+    }
+  }
+}
+
+export const postRReservation = (tableId, day, month, year, start, end) => {
+  year = 2021;
+  month = 0;
+  day = 0;
+  tableId = 'eAqeEjHCpurWVVILadtT';
+  start = 1400;
+  end = 1500;
+  const nestedQuery = `Y${year}.M${month}.D${day}.${start}`;
+  (async function () {
+    const res = await firebase.firestore().collection('reservations').doc('eAqeEjHCpurWVVILadtT').update({
+      [nestedQuery]: end
+    })
+  })();
+
+  return async dispatch => {
+    dispatch({ type: POST_BOOKING, payload: undefined })
+  }
+}
+
+//Past this is discontinued
 
 export const fetchAllBookings = (userId) => {
   return async dispatch => {

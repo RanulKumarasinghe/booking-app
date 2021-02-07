@@ -115,12 +115,6 @@ const Restaurant = (props) => {
                 <Menu navigation={props.navigation}/>
               </View>
                 <Button onPress={onBooking}>Make A Booking</Button>
-                { auth.uid !== undefined && (
-                  <>
-                    <Divider />
-                    <Button onPress={onPending}>Pending bookings</Button>
-                  </>
-                  ) }
             </View>
           </View>
 

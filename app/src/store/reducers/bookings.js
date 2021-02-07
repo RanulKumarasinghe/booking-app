@@ -1,5 +1,7 @@
 
 export const initialState = {
+  reservations: [],
+  tables:[],
   bookings: [],
   bookingTimes: [],
   myBookings: []
@@ -7,6 +9,18 @@ export const initialState = {
 
 const bookingsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'FETCH_RESERVATIONS':
+      return {
+        ...state,
+        reservations: action.payload
+      }
+      case 'FETCH_AVAILABLE_TABLES':{
+        console.log(action.payload);
+        return {
+          ...state,
+          tables: action.payload,
+        }
+      }
     case 'FETCH_ALL_BOOKINGS':
       return {
         ...state,
@@ -23,11 +37,11 @@ const bookingsReducer = (state = initialState, action) => {
         ...state,
         myBookings: action.payload,
       }
-      case 'ADD_NEW_BOOKING_TIME_DOCUMENT':
-        return{
-          ...state,
-          bookingTimes: action.payload
-        }
+    case 'ADD_NEW_BOOKING_TIME_DOCUMENT':
+      return {
+        ...state,
+        bookingTimes: action.payload
+      }
     default:
       return state;
   }

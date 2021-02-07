@@ -7,7 +7,6 @@ import RestaurantScreen from '../scenes/restaurants/RestaurantScreen';
 import RestaurantListScreen from '../scenes/restaurants/RestaurantListScreen';
 import BookingScreen from 'src/scenes/bookings/BookingScreen';
 import BookingListScreen from 'src/scenes/bookings/BookingListScreen';
-import PendingBookingScreen from 'src/scenes/bookings/PendingBookingScreen'
 
 import RestaurantEditScreen from '../scenes/restaurants/RestaurantEditScreen';
 import RestaurantAddScreen from '../scenes/restaurants/RestaurantAddScreen';
@@ -18,7 +17,6 @@ import MenuScreen from '@/scenes/order/MenuScreen'
 import OrderTypeScreen from '@/scenes/order/OrderTypeScreen'
 import RestaurantEditMenuScreen from '@/scenes/order/RestaurantEditMenuScreen'
 import MenuItemScreen from '@/scenes/order/MenuItemScreen'
-
 
 const Restaurant = createStackNavigator();
 
@@ -41,8 +39,6 @@ const HomeNavigator = () => (
     <Restaurant.Screen name='Menu Item' component={MenuItemScreen}/>
     <Restaurant.Screen name='Menu' component={MenuScreen}/>
     <Restaurant.Screen name='Order Type' component={OrderTypeScreen}/>
-
-    <Restaurant.Screen name='Bookings Pending' component={PendingBookingScreen}/>
   </Restaurant.Navigator>
 );
 

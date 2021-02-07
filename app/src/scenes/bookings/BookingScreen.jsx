@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Text, View, TextInput} from "react-native";
+import { SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
 import { Divider, Icon, Button, Layout, Datepicker } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
-import { fetchUnavailableFromRestaurant, postBooking, postBookingTime } from '@/store/actions/bookings';
-import firebase from 'src/utils/firebase'
+import { fetchReservations, fetchAvailableTables, postRReservation } from '@/store/actions/bookings';
+import firebase from 'src/utils/firebase';
 
 const BookingScreen = (props) => {
-  const store = useSelector(state => state.bookings);
+  const store = useSelector(state => state.bookings.tables);
   const dispatch = useDispatch()
 
-  const [loaded, setLoaded] = React.useState(false)
-  const [tables, setTables] = React.useState();
+  const [guests, setGuests] = React.useState();
+
   const [date, setDate] = React.useState();
+  const [dateString, setDateString] = React.useState();
+
+  const [start, setStart] = React.useState(0);
+  const [end, setEnd] = React.useState(0);
 
   const user = firebase.auth().currentUser.uid;
 
@@ -20,64 +24,35 @@ const BookingScreen = (props) => {
   const restId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === restId);
 
-  let times = [];
-
-  for (let i = 10; i < 10 + 11; i++) {
-    for (let j = 0; j < 60; j += 15) {
-      times.push(i + ":" + (j == 0 ? "00" : j))
-    }
+  const getDay = (date) => {
+    return date.getDate();
   }
 
-  const getTimes = (formattedDate) => {
-    dispatch(fetchUnavailableFromRestaurant(restId, formattedDate));
-    setTimeout(() => {
-      setLoaded(true);
-    }, 1000)
+  const getMonth = (date) => {
+    return date.getMonth() + 1;
   }
 
-  const formatDate = (date) => {
-    const day = date.getDate()
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    return (day + '/' + month + '/' + year)
+  const getYear = (date) => {
+    return date.getFullYear();
   }
 
-  const checkBooked = (time) => {
-    if (store.bookingTimes.unavailable === undefined) {
-      return false;
-    }
-    return store.bookingTimes.unavailable.includes(time);
-  }
+  const UnavailableTimes = () => {
+    const opening = 1000;
+    const closing = 2000;
+    const newStore = store;
 
-  const bookAction = (time) => {
-    dispatch(postBookingTime(restId, date, time));
-    dispatch(postBooking(restId, restaurant.name, date, time, user, tables));
-    setLoaded(false);
-    setTimeout(()=>{
-      getTimes(date);
-      setLoaded(true);
-    },1000)
-  }
-
-
-  //Body of page
-
-  const generateTimeBoxes = () => {
-    if (!loaded) {
-      return [];
-    }
-    const timeArray = [];
-    times.forEach((time) => {
-      timeArray.push({
-        element:
-          <Button key={time} size='small' style={styles.timeButton} disabled={checkBooked(time)} onPress={() => { bookAction(time) }}>
-            <Text>{time}</Text>
-          </Button>
-      }
-      )
-    })
-    return timeArray;
+    return (
+      <View>
+        {newStore.forEach((object) => {
+          delete object.id;
+          const keys = Object.keys(newStore);
+          const values = Object.values(newStore);
+          for(let i = 0; i < keys.length; i++){
+            
+          }
+        })}
+      </View>
+    );
   }
 
   return (
@@ -90,7 +65,7 @@ const BookingScreen = (props) => {
         <View style={{ flex: 1, alignItems: "center" }}>
           <DatePicker
             style={{ width: 200 }}
-            date={date}
+            date={dateString}
             mode="date"
             placeholder="Select a date"
             format="DD-MM-YYYY"
@@ -100,33 +75,62 @@ const BookingScreen = (props) => {
             cancelBtnText="Cancel"
             showIcon={false}
             onDateChange={(event, date) => {
-              const formattedDate = formatDate(date)
-              setDate(formattedDate);
-              getTimes(formattedDate);
+              setDate(date);
+              setDateString(`${getDay(date)}-${getMonth(date)}-${getYear(date)}`);
             }}
           />
         </View>
 
         <View style={{ flex: 1, alignItems: "center" }}>
-          <Text>Number of tables</Text>
+          <Text>Number of guests</Text>
           <TextInput
             style={styles.table}
             keyboardType='number-pad'
             textAlign="center"
             onChangeText={(value) => {
-              setTables(value);
+              setGuests(value);
             }}
             maxLength={2}
           />
         </View>
 
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text>Start (Military time)</Text>
+          <TextInput
+            style={styles.table}
+            keyboardType='number-pad'
+            textAlign="center"
+            onChangeText={(value) => {
+              setStart(value);
+            }}
+            maxLength={4}
+          />
+        </View>
+
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text>End (Military time)</Text>
+          <TextInput
+            style={styles.table}
+            keyboardType='number-pad'
+            textAlign="center"
+            onChangeText={(value) => {
+              setEnd(value);
+            }}
+            maxLength={4}
+          />
+        </View>
+
         <Divider />
-        <View style={styles.timeButtonContainer}>
-          {
-            generateTimeBoxes().map((elem) => {
-              return elem.element;
-            })
-          }
+        <View style={styles.submitButton}>
+          <Button onPress={() => {
+            dispatch(fetchReservations(guests, restId, getDay(date), getMonth(date), getYear(date)));
+          }}>Search</Button>
+          <Button onPress={() => {
+            dispatch(fetchAvailableTables(guests, restId, getDay(date), getMonth(date), getYear(date), start, end));
+          }}>Post</Button>
+          <Button onPress={() => {
+            availableTimes();
+          }}>Debug</Button>
         </View>
       </View>
     </SafeAreaView>
@@ -168,14 +172,10 @@ const styles = StyleSheet.create({
   sizeFont: {
     fontSize: 16
   },
-  timeButton: {
-    width: "20%",
-    margin: 1,
-  },
-  timeButtonContainer: {
-    paddingLeft: '15%',
+  submitButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     flexWrap: 'wrap',
     flex: 7,
   },
