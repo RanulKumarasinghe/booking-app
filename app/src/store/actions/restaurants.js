@@ -29,8 +29,7 @@ export const updateRestaurant = (saveRestaurant) => {
       type: saveRestaurant.type,
       description: saveRestaurant.description,
       imageUrl: saveRestaurant.imageUrl,
-      google_id: saveRestaurant.google_id,
-      staffId:saveRestaurant.staffId
+      google_id: saveRestaurant.google_id
     }).then(() => {
       console.log('Restaurant Updated!');
     })
