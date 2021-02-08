@@ -2,29 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, StyleSheet, TextInput } from 'react-native';
 import { Text, Button, Layout, ListItem, List, Divider } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTable } from '../../store/actions/bookings';
+import { addTable, fetchTables, postTable } from '../../store/actions/bookings';
 
 const AddTableScreen = (props) => {
-  const dispatch = useDispatch()
-  const [tables, setTables] = React.useState([
-    { id: '0', guests: 4 },
-    { id: '1', guests: 2 },
-    { id: '2', guests: 4 },
-    { id: '3', guests: 6 },
-    { id: '4', guests: 2 },
-    { id: '5', guests: 2 },
-    { id: '6', guests: 2 }
-  ])
+  const dispatch = useDispatch();
+  const store = useSelector(state => state.bookings.tables);
+
+  //placeholder
   const resid = '0oSOVkl4hMwsxHtexFJT';
-  const table = {};
-  const newTables = [];
+  const [newTables, setNewTables] = React.useState([]);
+
+  let tableInput;
+  let guestsInput;
+
+  if (store.length === 0) {
+    dispatch(fetchTables(resid));
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Divider />
 
-        <ListComponent props={tables} />
+        {store.length !== 0 ? <ListComponent props={store} /> : null}
 
         <View style={styles.inputcontainer}>
           <Text>Table id:</Text>
@@ -33,7 +33,7 @@ const AddTableScreen = (props) => {
             textAlign="center"
             maxLength={20}
             onChangeText={(text) => {
-              table.id = text;
+              tableInput = text;
             }}
           />
 
@@ -44,19 +44,21 @@ const AddTableScreen = (props) => {
             textAlign="center"
             maxLength={1}
             onChangeText={(text) => {
-              table.guests = text;
+              guestsInput = text;
             }}
           />
 
           <View style={{ flexDirection: 'row' }}>
             <Button style={styles.button} onPress={() => {
-              setTables([...tables, table]);
-              newTables.push({id:table.id, guests:table.guests});
-              
+              const newTable = { id: tableInput, size: guestsInput };
+              setNewTables([...newTables, newTable]);
+              dispatch(addTable(newTable));
             }
             }>Add</Button>
             <Button style={styles.button} onPress={() => {
-
+              newTables.forEach((table) => {
+                dispatch(postTable(resid, table));
+              });
             }}>Publish</Button>
           </View>
 
@@ -71,7 +73,7 @@ const ListComponent = (data) => {
     return (
       <ListItem
         title={'Table_id: ' + entry.item.id}
-        description={'Table_guests: ' + entry.item.guests}
+        description={'Table_guests: ' + entry.item.size}
       />
     )
   }

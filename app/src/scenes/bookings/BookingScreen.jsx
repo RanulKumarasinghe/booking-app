@@ -7,14 +7,12 @@ import { fetchReservations, fetchAvailableTables, postRReservation } from '@/sto
 import firebase from 'src/utils/firebase';
 
 const BookingScreen = (props) => {
-  const store = useSelector(state => state.bookings.tables);
+  const store = useSelector(state => state.bookings.reservations);
   const dispatch = useDispatch()
 
   const [guests, setGuests] = React.useState();
-
   const [date, setDate] = React.useState();
   const [dateString, setDateString] = React.useState();
-
   const [start, setStart] = React.useState(0);
   const [end, setEnd] = React.useState(0);
 
@@ -37,22 +35,25 @@ const BookingScreen = (props) => {
   }
 
   const UnavailableTimes = () => {
-    const opening = 1000;
-    const closing = 2000;
     const newStore = store;
+    const compArray = [];
+    let count = 1;
+    newStore.forEach((object) => {
+      delete object.id;
+    });
 
-    return (
-      <View>
-        {newStore.forEach((object) => {
-          delete object.id;
-          const keys = Object.keys(newStore);
-          const values = Object.values(newStore);
-          for(let i = 0; i < keys.length; i++){
-            
-          }
-        })}
-      </View>
-    );
+    const timePairs = Object.values(newStore);
+    for (let j = 0; j < timePairs.length; j++) {
+      compArray.push(<Text>{`*Table ${count++}`}</Text>)
+      const keys = Object.keys(timePairs[j]);
+      const values = Object.values(timePairs[j]);
+
+      for (let i = 0; i < keys.length; i++) {
+        compArray.push(<Text>{`${keys[i]} - ${values[i]}`}</Text>);
+      }
+    }
+
+    return <>{compArray}</>
   }
 
   return (
@@ -121,16 +122,21 @@ const BookingScreen = (props) => {
         </View>
 
         <Divider />
+        
+        <View style={styles.times}>
+          <Text style={{ justifyContent: 'center' }}>Hours reserved:</Text>
+          {store.length !== 0 ?
+            <UnavailableTimes />
+            : undefined}
+        </View>
+
         <View style={styles.submitButton}>
-          <Button onPress={() => {
-            dispatch(fetchReservations(guests, restId, getDay(date), getMonth(date), getYear(date)));
-          }}>Search</Button>
-          <Button onPress={() => {
+          <Button style={styles.button} onPress={() => {
             dispatch(fetchAvailableTables(guests, restId, getDay(date), getMonth(date), getYear(date), start, end));
-          }}>Post</Button>
-          <Button onPress={() => {
-            availableTimes();
-          }}>Debug</Button>
+          }}>Search</Button>
+          <Button style={styles.button} onPress={() => {
+            console.log('VIP')
+          }}>Reserve</Button>
         </View>
       </View>
     </SafeAreaView>
@@ -149,12 +155,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 15
   },
-  buttonSpacing: {
-    marginTop: '40%',
-    width: '60%',
-    flexDirection: 'row',
-    alignSelf: 'center',
-    justifyContent: 'space-between'
+  button: {
+    margin: 2.5
   },
   dateTime: {
     borderWidth: 1,
@@ -177,8 +179,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    flex: 7,
+    marginBottom: '2%',
   },
+  times: {
+    margin: '2.5%',
+    padding: '2.5%',
+    flex: 6,
+    width: '95%',
+    backgroundColor: '#C4C4C4',
+    borderRadius:5
+  }
 });
 
 

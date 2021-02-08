@@ -1,47 +1,27 @@
 
 export const initialState = {
   reservations: [],
-  tables:[],
-  bookings: [],
-  bookingTimes: [],
-  myBookings: []
+  tables: [],
 }
 
 const bookingsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'FETCH_RESERVATIONS':
+    case 'FETCH_TABLES':
       return {
         ...state,
-        reservations: action.payload
+        tables: action.payload
       }
-      case 'FETCH_AVAILABLE_TABLES':{
-        console.log(action.payload);
-        return {
-          ...state,
-          tables: action.payload,
-        }
+    case 'ADD_TABLE':
+    return {
+        ...state,
+        tables: [...state.tables, action.payload]
       }
-    case 'FETCH_ALL_BOOKINGS':
+    case 'FETCH_AVAILABLE_TABLES': {
       return {
         ...state,
-        bookings: action.payload,
+        reservations: action.payload,
       }
-    case 'FETCH_UNAVAILABLE_RESTAURANT_TIMES':
-      const times = { unavailable: action.payload }
-      return {
-        ...state,
-        bookingTimes: times,
-      }
-    case 'FETCH_MY_BOOKINGS':
-      return {
-        ...state,
-        myBookings: action.payload,
-      }
-    case 'ADD_NEW_BOOKING_TIME_DOCUMENT':
-      return {
-        ...state,
-        bookingTimes: action.payload
-      }
+    }
     default:
       return state;
   }
