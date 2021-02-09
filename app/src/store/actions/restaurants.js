@@ -9,13 +9,17 @@ export const FETCH_ALL_RESTAURANTS = 'FETCH_ALL_RESTAURANTS';
 
 export const fetchAllRestaurant = () => {
   return async dispatch => {
-    const restaurants = await firebase.firestore().collection('restaurants')
-    restaurants.get().then((querySnapshot) => {
-      const restaurantArray = querySnapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id }
+    try { 
+      const restaurants = await firebase.firestore().collection('restaurants')
+      restaurants.get().then((querySnapshot) => {
+        const restaurantArray = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id }
+        })
+        dispatch({ type: FETCH_ALL_RESTAURANTS, restaurants: restaurantArray})
       })
-      dispatch({ type: FETCH_ALL_RESTAURANTS, restaurants: restaurantArray})
-    })
+    } catch (e) {
+      console.log(e)
+    }
   }
 };
 
@@ -23,20 +27,23 @@ export const UPDATE_RESTAURANT = 'UPDATE_RESTAURANT';
 
 export const updateRestaurant = (saveRestaurant) => {
   return dispatch => {
-    const restaurant = firebase.firestore().collection('restaurants').doc(saveRestaurant.id)
-    restaurant.update({
+    firebase.firestore().collection('restaurants').doc(saveRestaurant.id).update({
       name: saveRestaurant.name,
       type: saveRestaurant.type,
       description: saveRestaurant.description,
       imageUrl: saveRestaurant.imageUrl,
       google_id: saveRestaurant.google_id,
       staffId:saveRestaurant.staffId
-    }).then(() => {
+    }).then(newRestaurant => {
+      // TODO
+      // dispatch({ type: UPDATE_RESTAURANT, restaurant: newRestaurant})
+      dispatch({ type: UPDATE_RESTAURANT, restaurant: saveRestaurant})
       console.log('Restaurant Updated!');
+    }).catch(e => {
+      console.log(e)
     })
-    dispatch({ type: UPDATE_RESTAURANT, restaurant: saveRestaurant})
   }
-};
+}
 
 export const ADD_RESTAURANT = 'ADD_RESTAURANT';
 
