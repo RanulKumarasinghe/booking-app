@@ -19,22 +19,22 @@ const Restaurant = (props) => {
 
 
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
-  const [menu, setMenu] = useState();
-  const dispatch = useDispatch();
 
-  const getMenu = async () => {
-  const menuItems = await fetchAllMenu({
-    id: itemId
-  })
-    setMenu(menuItems)
-  }
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    getMenu();
-  }, [])
+  // const getMenu = () => {
+  //  dispatch(fetchAllMenu({
+  //   id: restaurant.id
+  // }))
+  // }
 
+  // useEffect(() => {
+  //   getMenu()
+  // }, [])
 
+  // const menuItems = useSelector(state => state.menu.menu);
 
+  // console.log(menuItems);
   // const menu = useSelector(state => state.menu.menu);
   // console.log(getMenu());
 
@@ -147,13 +147,13 @@ const Restaurant = (props) => {
                   ) }
             </View>
           </View>
-          {auth.uid == restaurant.staffId ?
+          {/* {auth.uid == restaurant.staffId ?
           <>
             <Divider />
             <Button onPress={onEditRestaurant}>Edit Restaurant</Button>
           </>
           : null}
-          <Divider />
+          <Divider /> */}
           <Button onPress={onOrder}>Order</Button>
         </View>
       </ScrollView>
