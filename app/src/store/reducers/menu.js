@@ -1,4 +1,4 @@
-import { FETCH_ALL_MENU, UPDATE_MENU, ADD_ITEM_TO_MENU } from '@/store/actions/menu'
+import { FETCH_ALL_MENU, UPDATE_MENU, ADD_ITEM_TO_MENU, DELETE_ITEM_FROM_MENU } from '@/store/actions/menu'
 
 
 
@@ -24,6 +24,10 @@ const menuReducer = (state = initialState, action) => {
       }
       default:
         return state;
+    case DELETE_ITEM_FROM_MENU:
+      return {
+        ...state, menu: action.menu
+      }
   }
 }
 

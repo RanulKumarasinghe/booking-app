@@ -5,6 +5,7 @@ import { Text, TopNavigation } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import RestaurantMenuItem from '../../components/RestaurantMenuItem';
 import {updateMenu} from '@/store/actions/menu';
+import {deleteItem} from '@/store/actions/menu';
 
 const RestaurantEditMenu = (props) => {
 
@@ -39,6 +40,13 @@ const RestaurantEditMenu = (props) => {
   }, 4000)
   };
 
+  const deleteMenuItem = () => {
+    dispatch(deleteItem({
+      id: itemId,
+      rId: restaurantId
+    }))
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
 
@@ -59,7 +67,7 @@ const RestaurantEditMenu = (props) => {
         imageUrl={imageUrlValue}
       />
       <View style={styles.buttonSpacing}>
-         <Button title="No Changes" onPress={() => console.log('pressed')} />
+         <Button title="Delete Item" onPress={deleteMenuItem} />
          <Button title="Confirm Changes" onPress={editMenu} />
       </View>
       </ScrollView>
