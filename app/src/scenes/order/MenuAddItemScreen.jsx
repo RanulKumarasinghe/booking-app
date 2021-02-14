@@ -9,7 +9,7 @@ import {createItem} from '@/store/actions/menu';
 const MenuAddItem = (props) => {
 
   const dispatch = useDispatch();
-  const restaurantId = props.route.getParam('resID');
+  const restaurantId = props.route.param.resID;
 
   const auth = useSelector(state => state.auth);
 

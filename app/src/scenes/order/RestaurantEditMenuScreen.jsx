@@ -12,13 +12,12 @@ const RestaurantEditMenu = (props) => {
   const dispatch = useDispatch();
 
   const menu = useSelector(state => state.menu.menu);
-  const itemId = props.route.getParam('itemID');
+  const itemId = props.route.param.itemID;
 
   const menuItem = menu.find(menuItem => menuItem.id === itemId);
 
-  const restaurantId = props.route.getParam('resID');
+  const restaurantId = props.route.param.resID;
 
-  const auth = useSelector(state => state.auth);
 
 
   const [nameValue, onChangeName] = React.useState(menuItem.name);
