@@ -136,7 +136,8 @@ const Restaurant = (props) => {
                 <Text>{data.result?.opening_hours.weekday_text[6]}</Text>
               </View>
               <View style={styles.menu}>
-                <Menu navigation={props.navigation}/>
+                <Menu navigation={props.navigation}
+                restaurantId={restaurant.id}/>
               </View>
                 <Button onPress={onBooking}>Make A Booking</Button>
                 { auth.uid !== undefined && (
