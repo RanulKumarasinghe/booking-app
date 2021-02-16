@@ -32,12 +32,8 @@ export const updateRestaurant = (saveRestaurant) => {
       type: saveRestaurant.type,
       description: saveRestaurant.description,
       imageUrl: saveRestaurant.imageUrl,
-      google_id: saveRestaurant.google_id,
-      staffId:saveRestaurant.staffId
-    }).then(newRestaurant => {
-      // TODO
-      // dispatch({ type: UPDATE_RESTAURANT, restaurant: newRestaurant})
-      dispatch({ type: UPDATE_RESTAURANT, restaurant: saveRestaurant})
+      google_id: saveRestaurant.google_id
+    }).then(() => {
       console.log('Restaurant Updated!');
     }).catch(e => {
       console.log(e)

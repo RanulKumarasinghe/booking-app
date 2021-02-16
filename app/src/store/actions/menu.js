@@ -3,23 +3,26 @@ import firebase from 'src/utils/firebase'
 
 export const FETCH_ALL_MENU = 'FETCH_ALL_MENU';
 
-export const fetchAllMenu = (restaurantId) => {
+export const fetchAllMenu = (restaurant) => {
   return async dispatch => {
-    const menu = await firebase.firestore().collection('restaurants').doc(restaurantId).collection('menu')
-    menu.get().then((querySnapshot) => {
+    firebase.firestore().collection('restaurants').doc(restaurant.id).collection('menu').get()
+    .then((querySnapshot) => {
       const menuArray = querySnapshot.docs.map((doc) => {
         return { ...doc.data(), id: doc.id }
       })
+
       dispatch({ type: FETCH_ALL_MENU, menu: menuArray})
-    })
+    }).catch(e=> {
+    alert(e)
+  })
   }
 };
 
 export const UPDATE_MENU = 'UPDATE_MENU';
 
-export const updateMenu = (saveRestaurant, saveMenu) => {
+export const updateMenu = (saveMenu) => {
   return dispatch => {
-    const menu = firebase.firestore().collection('restaurants').doc(saveRestaurant.id).collection('menu').doc(saveMenu.id)
+    const menu = firebase.firestore().collection('restaurants').doc(saveMenu.rId).collection('menu').doc(saveMenu.id)
     menu.update({
       name: saveMenu.name,
       price: saveMenu.price,
@@ -34,8 +37,26 @@ export const updateMenu = (saveRestaurant, saveMenu) => {
 
 export const ADD_ITEM_TO_MENU = 'ADD_ITEM_TO_MENU';
 
-export const createItem = (saveRestaurant, addItem) => {
+export const createItem = (addItem) => {
   return dispatch => {
+    const menu = firebase.firestore().collection('restaurants').doc(addItem.rId).collection('menu')
+    menu.add({
+      name: addItem.name,
+      price: addItem.price,
+      picture: addItem.picture,
+      description: addItem.description
+    }).then(() => {
+      console.log('User updated!');
+    })
+    dispatch({ type: ADD_ITEM_TO_MENU, menu: addItem })
+  }
+}
 
+export const DELETE_ITEM_FROM_MENU = 'DELETE_ITEM_FROM_MENU';
+
+export const deleteItem = (delItem) => {
+  return dispatch => {
+    firebase.firestore().collection('restaurants').doc(delItem.rId).collection('menu').doc(delItem.id).remove()
+    dispatch({ type: DELETE_ITEM_FROM_MENU, menu: delItem })
   }
 }

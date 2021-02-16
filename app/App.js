@@ -10,6 +10,7 @@ import restaurantReducer from '@/store/reducers/restaurants';
 import authReducer from '@/store/reducers/auth';
 import bookingsReducer from '@/store/reducers/bookings';
 import rewardsReducer from '@/store/reducers/rewards';
+import menuReducer from '@/store/reducers/menu';
 import orderReducer from '@/store/reducers/order';
 
 
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   bookings: bookingsReducer,
   rewards: rewardsReducer,
+  menu: menuReducer,
   order: orderReducer
 });
 
