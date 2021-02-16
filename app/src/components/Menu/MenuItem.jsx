@@ -5,19 +5,34 @@ import { Text, Divider, Button, Drawer, DrawerGroup, DrawerItem } from '@ui-kitt
 //Formats text for the drawer
 const MenuItem = (props) => {
   return (
-    <TouchableHighlight key={props.id} onPress={props.onPress} >
+    <>
+    <TouchableHighlight style={styles.item} key={props.id} onPress={props.onPress} >
       <>
         <View>
           <Text category='p1'>{props.name}</Text>
         </View>
-        <Divider />
         <View >
           <Text style={{width: 300 }} category='p2'>{props.desc}</Text>
           <Text style={{width: 300 }} category='p2'>{props.price}</Text>
         </View>
       </>
     </TouchableHighlight>
+    <Divider />
+    </>
   );
 }
+
+
+const styles = StyleSheet.create({
+  item: { 
+    padding: 10,
+    backgroundColor: '#86ffc8',
+  },
+  image: {
+    width: '10%',
+    height: '50%',
+    marginTop: 15
+  }
+});
 
 export default MenuItem
