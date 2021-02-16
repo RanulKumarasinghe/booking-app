@@ -20,7 +20,7 @@ const Menu = (props) => {
       <Text category='h2' style={{ textAlign: 'center' }}>Menu</Text>
       <Divider />
       {MenuData.map(category => (
-            <View key={category.id}>
+            <View key={category.id} style={styles.category}>
               <Text>{category.category}</Text>
               {category.items.map(item => (
                   <MenuItem {...item} onPress={() => onPress(category.id, item.id)}/>
@@ -35,6 +35,9 @@ const Menu = (props) => {
 }
 
 const styles = StyleSheet.create({
+  category: { 
+    backgroundColor: '#ff4c89',
+  },
   image: {
     width: '10%',
     height: '50%',
