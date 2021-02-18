@@ -5,7 +5,7 @@ export const FETCH_ALL_MENU = 'FETCH_ALL_MENU';
 
 export const fetchAllMenu = (restaurant) => {
   return async dispatch => {
-    firebase.firestore().collection('restaurants').doc(restaurant.id).collection('menu').get()
+    firebase.firestore().collection('restaurants').doc(restaurant.id).collection('menu').orderBy('numType').get()
     .then((querySnapshot) => {
       const menuArray = querySnapshot.docs.map((doc) => {
         return { ...doc.data(), id: doc.id }

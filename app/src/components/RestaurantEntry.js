@@ -34,7 +34,7 @@ const RestaurantEntry = props => {
   return (
 
     <View style={styles.listItem}>
-      {isLoading ? <ActivityIndicator/> : (
+
       <TouchableOpacity onPress={props.onSelectRestaurant}>
         <View>
           <View style={{ ...styles.listRow, ...styles.listHeader }}>
@@ -69,7 +69,7 @@ const RestaurantEntry = props => {
 
         </View>
       </TouchableOpacity>
-      )}
+
     </View>
   );
 };
