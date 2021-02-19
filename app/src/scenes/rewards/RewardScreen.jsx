@@ -11,45 +11,41 @@ import {
 } from "react-native";
 import { Divider, Icon, Layout } from "@ui-kitten/components";
 import firebase from "src/utils/firebase";
+import { auth } from "firebase";
 
 const RewardScreen = (props) => {
-  //State holds the money input by user
-  const [money, setMoney] = useState(0);
+  //State holds points returned from firebase
+  const [points, setpoints] = useState(0);
+  const [code, setCode] = useState();
 
-  //This func generates the code
-  function makeid() {
-    var text = "";
-    var possible =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (var i = 0; i < 6; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    return text;
-  }
+  //removes spaces from code, jst in case it's pasted
+  const onTextChange = (code) => {
+    var formatCode = code.replace(/\s/g, "");
+    setCode(formatCode);
+  };
 
   //The connection to the DB
   const rewards = firebase.firestore().collection("rewards");
 
-  //Converts value from String to Int
-  const onTextChange = (money) => {
-    var number = parseFloat(money);
-    setMoney(number);
-  };
+  //Current user
+  const currentUser = firebase.auth().currentUser.uid;
 
-  //The info sent to the DB
-  function addPoints() {
+  //Needs to search DB for Code
+  function redeemCode() {
+    //Check if the code is in firebase
+    // var codeSearch =
+    // rewards.where("code", "==", code);
+    // rewards.where("codeUsed", "==", false);
+    // codeSearch.get().then((querySnapshot) => {
+    //   querySnapshot.forEach((doc) => {
+    //     console.log(doc.id, ' => ', doc.data());
+    // });
+
+    //var query = rewards.where("state", "==", "CA");
     rewards
-      .add({
-        money: money,
-        points: null,
-        restrauntId: null,
-        customerId: null,
-        employeeId: null,
-        createdAt: new Date(),
-        code: makeid(),
-        codeUsed: false,
-      })
+      .update({})
       .then(() => {
-        console.log("Points added!");
+        console.log("code redeemed");
       })
       .catch(function (error) {
         console.error("There was an error, please try again: ", error);
@@ -67,13 +63,14 @@ const RewardScreen = (props) => {
           }}
         />
         <View>
-          <Text style={styles.font}>Hello Username</Text>
-          {/* /manage state to get username above/ */}
+          <Text style={styles.font}>
+            {currentUser} // {auth.uid}
+          </Text>
         </View>
         <View style={styles.lineThrough} />
         <View>
           <Text style={styles.font}>Your Points:</Text>
-          <Text style={styles.font}>£{money}: has been added</Text>
+          <Text style={styles.font}>{points}</Text>
         </View>
       </View>
 
@@ -87,14 +84,14 @@ const RewardScreen = (props) => {
             alignSelf: "center",
             alignContent: "center",
           }}
-          value={money}
+          value={code}
           keyboardType="numeric"
-          placeholder="Price of meal here"
-          onChangeText={(money) => onTextChange(money)}
+          placeholder="Redeem code here"
+          onChangeText={(code) => onTextChange(code)}
           maxLength={4}
         />
         <View style={styles.inputButton}>
-          <Button title="Redeem Points" onPress={addPoints} />
+          <Button title="Redeem Points" onPress={redeemCode} />
         </View>
       </View>
     </SafeAreaView>
