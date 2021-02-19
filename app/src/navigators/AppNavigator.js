@@ -13,11 +13,7 @@ export const AppNavigator = () => {
 
   const dispatch = useDispatch()
 
-  console.log(userId)
-  console.log(isManager)
-
   useEffect(() => {
-    console.log('Run')
     dispatch(fetchUserRestaurant(userId));
   }, [userId])
 

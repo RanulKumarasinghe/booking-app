@@ -82,6 +82,9 @@ const Menu = (props) => {
 }
 
 const styles = StyleSheet.create({
+  category: { 
+    backgroundColor: '#ff4c89',
+  },
   image: {
     width: '10%',
     height: '50%',
