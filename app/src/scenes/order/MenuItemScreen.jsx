@@ -11,8 +11,6 @@ const MenuItemScreen = (props) => {
 
   const params = props.route.params
 
-  // console.log(params);
-
   const dispatch = useDispatch()
 
   const menuItems = useSelector(state => state.menu.menu);

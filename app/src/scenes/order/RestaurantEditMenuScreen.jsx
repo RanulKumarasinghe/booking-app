@@ -76,16 +76,11 @@ const RestaurantEditMenu = (props) => {
    }, [])
 
    const foodTypes = useSelector(state => state.foodType.foodType[0]);
-  //  data.result?.rating
    const foodType0 = foodTypes?.foodTypes[0];
    const foodType1 = foodTypes?.foodTypes[1];
    const foodType2 = foodTypes?.foodTypes[2];
    const foodType3 = foodTypes?.foodTypes[3];
 
-
-  // const onSelect = (index) => {
-  //   setValue(foodTypes[index].name);
-  // };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

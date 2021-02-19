@@ -49,7 +49,6 @@ const MenuAddItem = (props) => {
    }, [])
 
    const foodTypes = useSelector(state => state.foodType.foodType[0]);
-  //  data.result?.rating
    const foodType0 = foodTypes?.foodTypes[0];
    const foodType1 = foodTypes?.foodTypes[1];
    const foodType2 = foodTypes?.foodTypes[2];
