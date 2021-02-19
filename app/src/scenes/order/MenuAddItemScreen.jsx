@@ -5,6 +5,8 @@ import { Text, TopNavigation } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import RestaurantMenuItem from '../../components/RestaurantMenuItem';
 import {createItem} from '@/store/actions/menu';
+import {fetchAllFoodTypes, filterFoodType} from '@/store/actions/foodtypes';
+
 
 const MenuAddItem = (props) => {
 
@@ -18,6 +20,40 @@ const MenuAddItem = (props) => {
   const [priceValue, onChangePrice] = React.useState('');
   const [descriptionValue, onChangeDescription] = React.useState('');
   const [imageUrlValue, onChangeImageUrl] = React.useState('');
+  const [menuTypeValue, onChangeMenuType] = React.useState(0);
+
+  let type = "";
+
+  if (menuTypeValue == 0) {
+    type = "Starter"
+  }
+
+  if (menuTypeValue == 1) {
+    type = "Main"
+  }
+
+  if (menuTypeValue == 2) {
+    type = "Dessert"
+  }
+
+  if (menuTypeValue == 3) {
+    type = "Drinks"
+  }
+
+  const getMenu = () => {
+    dispatch(fetchAllFoodTypes())
+   }
+
+   useEffect(() => {
+     getMenu()
+   }, [])
+
+   const foodTypes = useSelector(state => state.foodType.foodType[0]);
+  //  data.result?.rating
+   const foodType0 = foodTypes?.foodTypes[0];
+   const foodType1 = foodTypes?.foodTypes[1];
+   const foodType2 = foodTypes?.foodTypes[2];
+   const foodType3 = foodTypes?.foodTypes[3];
 
   const addMenuItem = () => {
     console.log('edit');
@@ -28,8 +64,10 @@ const MenuAddItem = (props) => {
       price: priceValue,
       description: descriptionValue,
       imageUrl: imageUrlValue,
+      numType: menuTypeValue,
+      type: type
     }))
-  }, 4000)
+  }, 1000)
   };
 
   return (
@@ -50,6 +88,12 @@ const MenuAddItem = (props) => {
         description={descriptionValue}
         onImageUrl={text => onChangeImageUrl(text)}
         imageUrl={imageUrlValue}
+        onMenuType= {(index)=> onChangeMenuType(index)}
+        menuType={menuTypeValue}
+        foodType0={foodType0}
+        foodType1={foodType1}
+        foodType2={foodType2}
+        foodType3={foodType3}
       />
       <View style={styles.buttonSpacing}>
          <Button title="No Changes" onPress={() => console.log('pressed')} />
