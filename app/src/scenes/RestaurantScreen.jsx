@@ -3,7 +3,7 @@ import React, { useEffect, useState }from "react";
 import { SafeAreaView, StyleSheet, Image, View, ImageBackground, ScrollView, Dimensions, ActivityIndicator } from "react-native";
 import { Divider, Icon, Layout, Text, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 // import Navbar from '../../components/Navbar';
-import Menu from '../../components/Menu/Menu';
+import Menu from '../components/Menu/Menu';
 import StarRating from 'react-native-star-rating';
 import { FlatList } from "react-native-gesture-handler";
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,13 +13,17 @@ import {fetchAllMenu} from '@/store/actions/menu';
 
 
 const Restaurant = (props) => {
-
-  const restaurants = useSelector(state => state.restaurants.restaurants);
-  const itemId = props.route.params.itemID;
-
-
-  const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
-
+  const restaurantManager = useSelector(state => state.staffRestaurant.restaurant);
+  let restaurant
+  if (!!restaurantManager) {
+    restaurant = restaurantManager
+    //
+  } else {
+    //Handle selection from Restaurant List
+    const restaurants = useSelector(state => state.restaurants.restaurants);
+    const itemId = props.route.params.itemID;
+    restaurant = restaurants.find(restaurant => restaurant.id === itemId);
+  }
   // const dispatch = useDispatch();
 
   // const getMenu = () => {
@@ -76,7 +80,6 @@ const Restaurant = (props) => {
   const onEditRestaurant = () => props.navigation.navigate('Edit Restaurant', {
     restaurantId: restaurant.id
   });
-
 
 
   return (

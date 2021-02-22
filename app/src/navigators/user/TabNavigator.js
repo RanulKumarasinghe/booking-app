@@ -6,8 +6,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
 
 // import 
-import HomeNavigator from 'src/navigators/HomeNavigator'
-import RestaurantsNavigator from 'src/navigators/RestaurantsNavigator'
+import {HomeNavigator, RestaurantNavigator} from '@/navigators/user/RestaurantsNavigator'
 import BookingListScreen from 'src/scenes/bookings/BookingListScreen';
 import AuthNavigator from 'src/navigators/AuthNavigator';
 
@@ -24,10 +23,12 @@ const TabNavigator = (props) => {
 
   return (
     <Tab.Navigator tabBar={props => <Navbar {...props} />}>
-      <Tab.Screen name='Home' component={HomeNavigator}/>
+      <Tab.Screen name='Home' component={HomeNavigator}
+      options={({ route }) => ({
+        tabBarVisible: getTabBarVisible(route, 'Restaurants') })} />
       <Tab.Screen 
         name="Restaurants" 
-        component={RestaurantsNavigator} 
+        component={RestaurantNavigator} 
         options={({ route }) => ({
           tabBarVisible: getTabBarVisible(route, 'Restaurants') })} />
       <Tab.Screen name='Bookings' component={BookingListScreen}/>

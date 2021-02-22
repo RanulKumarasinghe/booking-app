@@ -5,7 +5,7 @@ import LoginScreen from 'src/scenes/auth/LoginScreen'
 import SignUpScreen from 'src/scenes/auth/SignUpScreen'
 import ResetPasswordScreen from 'src/scenes/auth/ResetPasswordScreen'
 import { useSelector } from 'react-redux';
-import ProfileNavigator from 'src/navigators/ProfileNavigator';
+import SettingsNavigator from 'src/navigators/SettingsNavigator';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -30,7 +30,7 @@ const AuthSelector = () => {
   
   return (
     <>
-      {isAuth && <ProfileNavigator />}
+      {isAuth && <SettingsNavigator />}
       {!isAuth && <AuthNavigator />}
     </>
   )
