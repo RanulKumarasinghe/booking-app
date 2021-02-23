@@ -2,16 +2,20 @@ import React, { useState, useSelector } from "react";
 import {
   SafeAreaView,
   StyleSheet,
-  Button,
-  Text,
   TextInput,
   Image,
   View,
   StatusBar,
 } from "react-native";
-import { Divider, Icon, Layout } from "@ui-kitten/components";
+import {
+  Divider,
+  Icon,
+  Layout,
+  Button,
+  Text,
+  Avatar,
+} from "@ui-kitten/components";
 import firebase from "src/utils/firebase";
-import { auth } from "firebase";
 
 const RewardScreen = (props) => {
   //State holds points returned from firebase
@@ -19,7 +23,7 @@ const RewardScreen = (props) => {
   //Contains the user input code
   const [code, setCode] = useState();
   //Contains the document name used to track and change field for the code
-  const [document, setDocument] = useState("");
+  const [document, setDocument] = useState();
 
   //removes spaces from code, just in case it's copy & pasted
   const onTextChange = (code) => {
@@ -46,6 +50,7 @@ const RewardScreen = (props) => {
           console.log(setDocument(doc.id), " => ", doc.data());
         });
       });
+
     rewards
       .doc(document)
       .update({
@@ -54,16 +59,6 @@ const RewardScreen = (props) => {
       .catch((error) => {
         console.log("Error getting documents: ", error);
       });
-
-    //var query = rewards.where("state", "==", "CA");
-    // rewards
-    //   .update({})
-    //   .then(() => {
-    //     console.log("code redeemed");
-    //   })
-    //   .catch(function (error) {
-    //     console.error("There was an error, please try again: ", error);
-    //   });
   }
 
   return (
@@ -103,8 +98,14 @@ const RewardScreen = (props) => {
           onChangeText={(code) => onTextChange(code)}
           maxLength={6}
         />
-        <View style={styles.inputButton}>
-          <Button title="Redeem Points" onPress={redeemCode} />
+        <View>
+          <Button
+            style={styles.button}
+            appearance="filled"
+            onPress={redeemCode}
+          >
+            Redeem Points
+          </Button>
         </View>
       </View>
     </SafeAreaView>
@@ -146,22 +147,13 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    marginBottom: 10,
-    borderRadius: 50,
+    margin: 2,
     width: "80%",
     alignSelf: "center",
   },
 
-  input: {
-    flex: 1,
-    flexDirection: "row",
-    width: "50%",
-    height: 25,
-    paddingLeft: "10%",
-  },
-
   inputButton: {
-    marginBottom: 10,
+    margin: 2,
     borderRadius: 50,
     width: "80%",
     alignSelf: "center",
