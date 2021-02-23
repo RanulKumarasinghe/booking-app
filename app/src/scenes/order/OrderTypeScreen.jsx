@@ -33,10 +33,10 @@ const OrderTypeScreen = (props) => {
 
 
         <Button onPress={handleInRestaurant}>
-          Add Item to Cart
+          Eating in
         </Button>
         <Button onPress={handleTakeAway}>
-          Add Item to Cart
+          Take Away Order
         </Button>
       </Layout>
     </SafeAreaView>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { SafeAreaView, View, StyleSheet } from 'react-native';
+import { SafeAreaView, View, StyleSheet, InputAccessoryView } from 'react-native';
 import { Input, Divider, Text, Button, Layout } from '@ui-kitten/components';
 import Firebase from '@/utils/firebase'
 import { useDispatch, useSelector } from 'react-redux'
@@ -30,23 +30,23 @@ const MenuItemScreen = (props) => {
   // }
 
   // const item = getItem();
+  const [quantity, setQuantity] = useState(1)
+
 
   const handleAddItemToCard = () => {
-    dispatch(setItem(menuItem));
+    dispatch(setItem({item: menuItem, quantity: quantity}));
     props.navigation.navigate('Menu')
   }
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View>
           <Text category='p1'>{menuItem.name}</Text>
         </View>
-        <Divider />
-
         <View >
           <Text style={{width: 300 }} category='p2'>{menuItem.description}</Text>
           <Text style={{width: 300 }} category='p2'>{menuItem.price}</Text>
+          <Input value={quantity} onChangeText={setQuantity}/>
         </View>
         {params.order && (
           <View>
@@ -57,6 +57,7 @@ const MenuItemScreen = (props) => {
             Cancel
           </Button>
         </View> ) }
+        <Divider />
       </Layout>
     </SafeAreaView>
   );

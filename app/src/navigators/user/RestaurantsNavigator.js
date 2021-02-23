@@ -18,9 +18,9 @@ import RewardScreen from '@/scenes/rewards/RewardScreen';
 import CheckOutScreen from '@/scenes/order/CheckOutScreen';
 import MenuScreen from '@/scenes/order/MenuScreen';
 import OrderTypeScreen from '@/scenes/order/OrderTypeScreen';
-import RestaurantEditMenuScreen from '@/scenes/order/RestaurantEditMenuScreen';
+import RestaurantEditMenuScreen from '@/scenes/manager/EditMenuItemScreen';
 import MenuItemScreen from '@/scenes/order/MenuItemScreen';
-import MenuAddItem from '@/scenes/order/MenuAddItemScreen';
+import MenuAddItem from '@/scenes/manager/AddMenuItemScreen';
 
 
 const routes = (Screen) => (      
