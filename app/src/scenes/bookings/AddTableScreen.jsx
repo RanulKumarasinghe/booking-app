@@ -44,7 +44,7 @@ const AddTableScreen = (props) => {
             textAlign="center"
             maxLength={1}
             onChangeText={(text) => {
-              guestsInput = text;
+              guestsInput = parseInt(text);
             }}
           />
 

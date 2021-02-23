@@ -19,9 +19,9 @@ const ADD_NEW_BOOKING_TIME_DOCUMENT = 'ADD_NEW_BOOKING_TIME_DOCUMENT';
 //
 export const addTable = (table) => {
   return async dispatch => {
-    try{
+    try {
       dispatch({ type: ADD_TABLE, payload: table });
-    }catch(error){
+    } catch (error) {
       console.error(error);
     }
   }
@@ -51,14 +51,19 @@ export const fetchAvailableTables = (size, restid, day, month, year, start, end)
     try {
       firebase.firestore().collection('reservations').where('restid', '==', restid).where('size', '==', parseInt(size)).get().then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
-          return { ...doc.data()[`Y${year}`][`M${month - 1}`][`D${day - 1}`], id: doc.id }
+          return { ...doc.data(), id: doc.id }
         });
         response.forEach(object => {
-          const values = Object.values(object);
-          if (object[`${start}`] === undefined) {
-            if (!values.includes(end)) {
-              availableTables.push(object);
+          try {
+            const table = object[`Y${year}`][`M${month - 1}`][`D${day - 1}`];
+            const values = Object.values(table);
+            if (table[`${start}`] === undefined) {
+              if (!values.includes(end)) {
+                availableTables.push(table);
+              }
             }
+          } catch (err) {
+            console.log('No exist')
           }
         });
         dispatch({ type: FETCH_AVAILABLE_TABLES, payload: availableTables })

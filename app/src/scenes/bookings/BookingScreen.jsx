@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
-import { Divider, Icon, Button, Layout, Datepicker } from '@ui-kitten/components';
+import { Divider, Icon, Button, Layout, Datepicker, Drawer, DrawerItem, DrawerGroup } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import { fetchReservations, fetchAvailableTables, postRReservation } from '@/store/actions/bookings';
@@ -13,14 +13,16 @@ const BookingScreen = (props) => {
   const [guests, setGuests] = React.useState();
   const [date, setDate] = React.useState();
   const [dateString, setDateString] = React.useState();
-  const [start, setStart] = React.useState(0);
-  const [end, setEnd] = React.useState(0);
 
   const user = firebase.auth().currentUser.uid;
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const restId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === restId);
+
+  const times = [];
+  const unavailableTimes = ['15:00', '15:15', '15:30', '15:45', '17:00', '17:15', '17:30'];
+  const selectedTimes = [];
 
   const getDay = (date) => {
     return date.getDate();
@@ -34,27 +36,26 @@ const BookingScreen = (props) => {
     return date.getFullYear();
   }
 
-  const UnavailableTimes = () => {
-    const newStore = store;
-    const compArray = [];
-    let count = 1;
-    newStore.forEach((object) => {
-      delete object.id;
-    });
-
-    const timePairs = Object.values(newStore);
-    for (let j = 0; j < timePairs.length; j++) {
-      compArray.push(<Text>{`*Table ${count++}`}</Text>)
-      const keys = Object.keys(timePairs[j]);
-      const values = Object.values(timePairs[j]);
-
-      for (let i = 0; i < keys.length; i++) {
-        compArray.push(<Text>{`${keys[i]} - ${values[i]}`}</Text>);
+  const generateTimes = (start, end) => {
+    for (let i = start; i < end; i++) {
+      for (let j = 0; j < 60; j += 15) {
+        j == 0 ? times.push(`${i}:0${j}`) : times.push(`${i}:${j}`);
       }
     }
-
-    return <>{compArray}</>
   }
+
+  /* 
+  generateUnavailableTimes = () => {
+ 
+  }
+ */
+
+ /*
+ generateDrawer = () => {
+   
+ }
+ */
+  generateTimes(10, 19);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -95,44 +96,25 @@ const BookingScreen = (props) => {
           />
         </View>
 
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <Text>Start (Military time)</Text>
-          <TextInput
-            style={styles.table}
-            keyboardType='number-pad'
-            textAlign="center"
-            onChangeText={(value) => {
-              setStart(value);
-            }}
-            maxLength={4}
-          />
-        </View>
-
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <Text>End (Military time)</Text>
-          <TextInput
-            style={styles.table}
-            keyboardType='number-pad'
-            textAlign="center"
-            onChangeText={(value) => {
-              setEnd(value);
-            }}
-            maxLength={4}
-          />
-        </View>
-
         <Divider />
-        
+
         <View style={styles.times}>
-          <Text style={{ justifyContent: 'center' }}>Hours reserved:</Text>
-          {store.length !== 0 ?
-            <UnavailableTimes />
-            : undefined}
+          <Drawer>
+            <DrawerGroup title="Table_1">
+              <DrawerItem title={times.map(time => {
+                if (unavailableTimes.includes(time)) {
+                  return (<Button disabled={true}>{time}</Button>)
+                } else {
+                  return (<Button onPress={() => { selectedTimes.push(time) }}>{time}</Button>)
+                }
+              })} />
+            </DrawerGroup>
+          </Drawer>
         </View>
 
         <View style={styles.submitButton}>
           <Button style={styles.button} onPress={() => {
-            dispatch(fetchAvailableTables(guests, restId, getDay(date), getMonth(date), getYear(date), start, end));
+            dispatch(fetchAvailableTables(guests, restId, getDay(date), getMonth(date), getYear(date)));
           }}>Search</Button>
           <Button style={styles.button} onPress={() => {
             console.log('VIP')
@@ -181,15 +163,20 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginBottom: '2%',
   },
+  timeButton: {
+
+  },
+  timeButtonSelected: {
+
+  },
   times: {
-    margin: '2.5%',
-    padding: '2.5%',
+    margin: '2.7%',
+    padding: '0.5%',
     flex: 6,
     width: '95%',
     backgroundColor: '#C4C4C4',
-    borderRadius:5
+    borderRadius: 5
   }
 });
-
 
 export default BookingScreen;
