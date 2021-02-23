@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useSelector } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,9 +16,12 @@ import { auth } from "firebase";
 const RewardScreen = (props) => {
   //State holds points returned from firebase
   const [points, setpoints] = useState(0);
+  //Contains the user input code
   const [code, setCode] = useState();
+  //Contains the document name used to track and change field for the code
+  const [document, setDocument] = useState("");
 
-  //removes spaces from code, jst in case it's pasted
+  //removes spaces from code, just in case it's copy & pasted
   const onTextChange = (code) => {
     var formatCode = code.replace(/\s/g, "");
     setCode(formatCode);
@@ -28,28 +31,39 @@ const RewardScreen = (props) => {
   const rewards = firebase.firestore().collection("rewards");
 
   //Current user
-  const currentUser = firebase.auth().currentUser.uid;
+  const User = firebase.auth().currentUser;
 
-  //Needs to search DB for Code
+  //Needs to search DB for Code. If the code is usd return invalid code message
   function redeemCode() {
     //Check if the code is in firebase
-    // var codeSearch =
-    // rewards.where("code", "==", code);
-    // rewards.where("codeUsed", "==", false);
-    // codeSearch.get().then((querySnapshot) => {
-    //   querySnapshot.forEach((doc) => {
-    //     console.log(doc.id, ' => ', doc.data());
-    // });
+    rewards
+      .where("code", "==", code)
+      .where("codeUsed", "==", false)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(setDocument(doc.id), " => ", doc.data());
+        });
+      });
+    rewards
+      .doc(document)
+      .update({
+        codeUsed: true,
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
 
     //var query = rewards.where("state", "==", "CA");
-    rewards
-      .update({})
-      .then(() => {
-        console.log("code redeemed");
-      })
-      .catch(function (error) {
-        console.error("There was an error, please try again: ", error);
-      });
+    // rewards
+    //   .update({})
+    //   .then(() => {
+    //     console.log("code redeemed");
+    //   })
+    //   .catch(function (error) {
+    //     console.error("There was an error, please try again: ", error);
+    //   });
   }
 
   return (
@@ -59,18 +73,17 @@ const RewardScreen = (props) => {
           style={styles.userImage}
           source={{
             uri:
-              "https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png",
+              "https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg",
           }}
         />
         <View>
-          <Text style={styles.font}>
-            {currentUser} // {auth.uid}
-          </Text>
+          <Text style={styles.font}></Text>
         </View>
         <View style={styles.lineThrough} />
         <View>
           <Text style={styles.font}>Your Points:</Text>
           <Text style={styles.font}>{points}</Text>
+          <Text style={styles.font}>Last input code:{code}</Text>
         </View>
       </View>
 
@@ -85,10 +98,10 @@ const RewardScreen = (props) => {
             alignContent: "center",
           }}
           value={code}
-          keyboardType="numeric"
+          //keyboardType="numeric"
           placeholder="Redeem code here"
           onChangeText={(code) => onTextChange(code)}
-          maxLength={4}
+          maxLength={6}
         />
         <View style={styles.inputButton}>
           <Button title="Redeem Points" onPress={redeemCode} />

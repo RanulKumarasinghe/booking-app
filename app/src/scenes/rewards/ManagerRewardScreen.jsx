@@ -33,7 +33,7 @@ const ManagerRewardScreen = (props) => {
 
   //Takes the money and converts into points to store in the DB
   function pointConvert() {
-    var pointConversion = money / 10;
+    var pointConversion = money % 10;
     setPoints(pointConversion);
   }
 
@@ -53,8 +53,8 @@ const ManagerRewardScreen = (props) => {
       .add({
         money: money,
         points: points,
-        restrauntId: null,
-        employeeId: null,
+        //restrauntId: null,
+        //employeeId: ,
         createdAt: new Date(),
         code: makeid(),
         codeUsed: false,
@@ -84,10 +84,10 @@ const ManagerRewardScreen = (props) => {
         <View style={styles.lineThrough} />
         <View>
           <Text style={styles.font}>
-            Enter price of meal bllow to generate code
+            Enter price of sale in the box bellow to generate code for customer
           </Text>
-          <Text style={styles.font}>{}: has been added</Text>
-          <Text>code for user is: {code}</Text>
+          <Text style={styles.font}>{points}: points have been added</Text>
+          <Text style={styles.font}>code for user is: {code}</Text>
         </View>
       </View>
 
@@ -105,7 +105,7 @@ const ManagerRewardScreen = (props) => {
           keyboardType="numeric"
           placeholder="Price of meal here"
           onChangeText={(money) => onTextChange(money)}
-          maxLength={4}
+          maxLength={6}
         />
         <View style={styles.inputButton}>
           <Button title="Redeem Points" onPress={generateCode} />
