@@ -1,9 +1,12 @@
 import firebase from 'src/utils/firebase'
+import { useSelector, useDispatch } from "react-redux";
 
 const FETCH_TABLES = 'FETCH_TABLES';
-const FETCH_AVAILABLE_TABLES = 'FETCH_AVAILABLE_TABLES';
+const FETCH_TABLES_BY_SIZE = 'FETCH_TABLES_BY_SIZE';
+const FETCH_BOOKINGS_BY_TABLE = "FETCH_BOOKINGS_BY_TABLE";
 const ADD_TABLE = 'ADD_TABLE';
 const POST_TABLE = 'POST_TABLE';
+
 
 //Down from here obsolete
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
@@ -45,28 +48,29 @@ export const fetchTables = (restid) => {
   }
 }
 
-export const fetchAvailableTables = (size, restid, day, month, year, start, end) => {
+export const fetchTablesBySize = (size, restid) => {
   return async dispatch => {
-    availableTables = [];
     try {
       firebase.firestore().collection('reservations').where('restid', '==', restid).where('size', '==', parseInt(size)).get().then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), id: doc.id }
         });
-        response.forEach(object => {
-          try {
-            const table = object[`Y${year}`][`M${month - 1}`][`D${day - 1}`];
-            const values = Object.values(table);
-            if (table[`${start}`] === undefined) {
-              if (!values.includes(end)) {
-                availableTables.push(table);
-              }
-            }
-          } catch (err) {
-            console.log('No exist')
-          }
+        dispatch({ type: FETCH_TABLES_BY_SIZE, payload: response })
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const fetchBookingsByTable = (tableid) => {
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('bookings2').where('tableid', '==', tableid).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id }
         });
-        dispatch({ type: FETCH_AVAILABLE_TABLES, payload: availableTables })
+        dispatch({ type: FETCH_BOOKINGS_BY_TABLE, payload: response });
       });
     } catch (error) {
       console.error(error);
@@ -95,15 +99,20 @@ export const postTable = (restid, table) => {
   }
 }
 
-//VIP
-export const postReservation = (tableId, day, month, year, start, end) => {
-  const nestedQuery = `Y${year}.M${month}.D${day}.${start}`;
+export const postReservation = (tableid, user, start, end) => {
   (async function () {
-    const res = await firebase.firestore().collection('reservations').doc(tableId).update({
-      [nestedQuery]: end
-    })
+    try {
+      const res = await firebase.firestore().collection('bookings2').add({
+        cusid: user,
+        end: end,
+        start: start,
+        status: 'ok',
+        tableid: tableid,
+      })
+    } catch (error) {
+      console.error(error);
+    }
   })();
-
   return async dispatch => {
     dispatch({ type: POST_BOOKING, payload: undefined })
   }
