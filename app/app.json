@@ -8,5 +8,8 @@
     "assetBundlePatterns": [
       "**/*"
     ]
-  }
+  },
+  "android":{
+    "useNextNotficationsApi": true
+   }
 }

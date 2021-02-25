@@ -4,32 +4,25 @@ import { Text, TopNavigation } from '@ui-kitten/components';
 // import Navbar from '@/components/Navbar';
 import { useSelector, useDispatch } from 'react-redux';
 import RestaurantMenuItem from '../../components/RestaurantMenuItem';
-import {updateMenu} from '@/store/actions/menu';
-import {deleteItem} from '@/store/actions/menu';
+import {createItem} from '@/store/actions/menu';
 
-const RestaurantEditMenu = (props) => {
+const MenuAddItem = (props) => {
 
   const dispatch = useDispatch();
-
-  const menu = useSelector(state => state.menu.menu);
-  const itemId = props.route.param.itemID;
-
-  const menuItem = menu.find(menuItem => menuItem.id === itemId);
-
   const restaurantId = props.route.param.resID;
 
+  const auth = useSelector(state => state.auth);
 
 
-  const [nameValue, onChangeName] = React.useState(menuItem.name);
-  const [priceValue, onChangePrice] = React.useState(menuItem.price);
-  const [descriptionValue, onChangeDescription] = React.useState(menuItem.description);
-  const [imageUrlValue, onChangeImageUrl] = React.useState(menuItem.imageUrl);
+  const [nameValue, onChangeName] = React.useState('');
+  const [priceValue, onChangePrice] = React.useState('');
+  const [descriptionValue, onChangeDescription] = React.useState('');
+  const [imageUrlValue, onChangeImageUrl] = React.useState('');
 
-  const editMenu = () => {
+  const addMenuItem = () => {
     console.log('edit');
     setTimeout(() => {
-    dispatch(updateMenu({
-      id: itemId,
+    dispatch(createItem({
       rId: restaurantId,
       name: nameValue,
       price: priceValue,
@@ -38,13 +31,6 @@ const RestaurantEditMenu = (props) => {
     }))
   }, 4000)
   };
-
-  const deleteMenuItem = () => {
-    dispatch(deleteItem({
-      id: itemId,
-      rId: restaurantId
-    }))
-  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -66,8 +52,8 @@ const RestaurantEditMenu = (props) => {
         imageUrl={imageUrlValue}
       />
       <View style={styles.buttonSpacing}>
-         <Button title="Delete Item" onPress={deleteMenuItem} />
-         <Button title="Confirm Changes" onPress={editMenu} />
+         <Button title="No Changes" onPress={() => console.log('pressed')} />
+         <Button title="Confirm Changes" onPress={addMenuItem} />
       </View>
       </ScrollView>
       </View>
@@ -90,4 +76,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
 })
-export default RestaurantEditMenu;
+export default MenuAddItem;

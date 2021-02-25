@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Divider, Text, Button, Layout } from '@ui-kitten/components';
 import Firebase from '@/utils/firebase'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setItem } from '@/store/actions/order'
 import { MenuData } from '../../other/dummy-data';
 
@@ -13,35 +13,40 @@ const MenuItemScreen = (props) => {
 
   const dispatch = useDispatch()
 
+  const menuItems = useSelector(state => state.menu.menu);
 
-  const getCategory = () => {
-    return MenuData.find(category => category.id == params.categoryId);
-  }
+  const itemId = props.route.params.itemId;
 
-  const category = getCategory();
+  const menuItem = menuItems.find(menu => menu.id === itemId);
 
-  const getItem = () => {
-    return category.items.find(item => item.id == params.itemId);
-  }
+  // const getCategory = () => {
+  //   return MenuData.find(category => category.id == params.categoryId);
+  // }
 
-  const item = getItem();
+  // const category = getCategory();
+
+  // const getItem = () => {
+  //   return category.items.find(item => item.id == params.itemId);
+  // }
+
+  // const item = getItem();
 
   const handleAddItemToCard = () => {
-    dispatch(setItem(item));
+    dispatch(setItem(menuItem));
     props.navigation.navigate('Menu')
   }
- 
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View>
-          <Text category='p1'>{item.name}</Text>
+          <Text category='p1'>{menuItem.name}</Text>
         </View>
         <Divider />
 
         <View >
-          <Text style={{width: 300 }} category='p2'>{item.desc}</Text>
-          <Text style={{width: 300 }} category='p2'>{item.price}</Text>
+          <Text style={{width: 300 }} category='p2'>{menuItem.description}</Text>
+          <Text style={{width: 300 }} category='p2'>{menuItem.price}</Text>
         </View>
         {params.order && (
           <View>
