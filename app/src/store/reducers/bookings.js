@@ -78,21 +78,4 @@ const bookingsReducer = (state = initialState, action) => {
       return state;
   }
 }
-
-const scheduler = () => {
-  /*console.log("haha Scheduler go brr");
-  
-    
-
-    //Maps table data with availability based on if it can take in someone
-    const mappedTables = tablestore.map((element) => {
-      return { ...element, available: (unavailableTables.includes(element.id) ? false : true) };
-    });
-
-    //Maps tables by size with availability worked out above and sets it as the
-    //Tables to be displayed in the list
-    setFetchedTables(mappedTables);
-  */
-};
-
 export default bookingsReducer
