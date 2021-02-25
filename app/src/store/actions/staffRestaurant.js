@@ -1,5 +1,6 @@
 import Firebase, {db} from 'src/utils/firebase'
 
+export const RESET = 'RESET';
 
 export const FETCH_RESTAURANT = 'FETCH_ALL_RESTAURANTS';
 
@@ -14,7 +15,7 @@ export const fetchUserRestaurant = (userId) => {
             dispatch({ type: FETCH_RESTAURANT, restaurant: { ...doc.data(), id: doc.id }})
           });
       } else {
-        dispatch({ type: FETCH_RESTAURANT, restaurant: null})
+        dispatch({ type: RESET })
       }
     })
     .catch(e => {

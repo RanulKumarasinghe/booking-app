@@ -9,7 +9,7 @@ const RestaurantMenuListScreen = (props) => {
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantId;
 
-  const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
+  // const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
   const getMenu = () => {
     dispatch(fetchAllMenu({
