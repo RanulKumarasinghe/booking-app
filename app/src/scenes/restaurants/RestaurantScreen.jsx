@@ -140,12 +140,6 @@ const Restaurant = (props) => {
                 restaurantId={restaurant.id}/>
               </View>
                 <Button onPress={onBooking}>Make A Booking</Button>
-                { auth.uid !== undefined && (
-                  <>
-                    <Divider />
-                    <Button onPress={onPending}>Pending bookings</Button>
-                  </>
-                  ) }
             </View>
           </View>
           {/* {auth.uid == restaurant.staffId ?

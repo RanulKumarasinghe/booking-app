@@ -21,7 +21,6 @@ import RestaurantEditMenuScreen from '@/scenes/order/RestaurantEditMenuScreen';
 import MenuItemScreen from '@/scenes/order/MenuItemScreen';
 import MenuAddItem from '@/scenes/order/MenuAddItemScreen';
 
-
 const Restaurant = createStackNavigator();
 
 const HomeNavigator = () => (

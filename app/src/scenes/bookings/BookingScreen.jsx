@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Text, View, TextInput} from "react-native";
-import { Divider, Icon, Button, Layout, Datepicker } from '@ui-kitten/components';
+import { SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
+import { Divider, Icon, Button, Layout, Datepicker, List, ListItem } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
-import { fetchUnavailableFromRestaurant, postBooking, postBookingTime } from '@/store/actions/bookings';
-import firebase from 'src/utils/firebase'
+import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime } from '@/store/actions/bookings';
+import firebase from 'src/utils/firebase';
 
 const BookingScreen = (props) => {
-  const store = useSelector(state => state.bookings);
+  const all_scheduled_tables = useSelector(state => state.bookings.all_scheduled_tables);
+  const all_tables_of_size = useSelector(state => state.bookings.all_tables_of_size);
+  const all_bookings_of_size = useSelector(state => state.bookings.all_bookings_of_size);
+  const times = useSelector(state => state.bookings.time);
+
   const dispatch = useDispatch()
 
-  const [loaded, setLoaded] = React.useState(false)
-  const [tables, setTables] = React.useState();
+  const [guests, setGuests] = React.useState();
   const [date, setDate] = React.useState();
+  const [dateString, setDateString] = React.useState();
+  const [start, setStart] = React.useState();
+  const [end, setEnd] = React.useState();
+  const [table, setTable] = React.useState("C3SpKCkToYhIPBhoekJC");
+  const [selectedIndex, setSelectedIndex] = React.useState(undefined);
+  const [schedule, setSchedule] = React.useState(false);
 
   const user = firebase.auth().currentUser.uid;
 
@@ -20,65 +29,44 @@ const BookingScreen = (props) => {
   const restId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === restId);
 
-  let times = [];
-
-  for (let i = 10; i < 10 + 11; i++) {
-    for (let j = 0; j < 60; j += 15) {
-      times.push(i + ":" + (j == 0 ? "00" : j))
-    }
+  if(all_tables_of_size.length > 0 && all_bookings_of_size.length > 0 && times !== undefined && !schedule){
+    console.log('Haha redux go brr');
+    dispatch(performSchedule());
+    setSchedule(true);
   }
 
-  const getTimes = (formattedDate) => {
-    dispatch(fetchUnavailableFromRestaurant(restId, formattedDate));
-    setTimeout(() => {
-      setLoaded(true);
-    }, 1000)
+  const getDay = (date) => {
+    return date.getDate();
   }
 
-  const formatDate = (date) => {
-    const day = date.getDate()
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    return (day + '/' + month + '/' + year)
+  const getMonth = (date) => {
+    return date.getMonth() + 1;
   }
 
-  const checkBooked = (time) => {
-    if (store.bookingTimes.unavailable === undefined) {
-      return false;
-    }
-    return store.bookingTimes.unavailable.includes(time);
+  const getYear = (date) => {
+    return date.getFullYear();
   }
 
-  const bookAction = (time) => {
-    dispatch(postBookingTime(restId, date, time));
-    dispatch(postBooking(restId, restaurant.name, date, time, user, tables));
-    setLoaded(false);
-    setTimeout(()=>{
-      getTimes(date);
-      setLoaded(true);
-    },1000)
+  const constructDate = (time) => {
+    const month = ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1));
+    const fullDate = new Date(date.getFullYear() + "-" + (month) + "-" + date.getDate() + "T" + time);
+    return fullDate;
   }
 
-
-  //Body of page
-
-  const generateTimeBoxes = () => {
-    if (!loaded) {
-      return [];
-    }
-    const timeArray = [];
-    times.forEach((time) => {
-      timeArray.push({
-        element:
-          <Button key={time} size='small' style={styles.timeButton} disabled={checkBooked(time)} onPress={() => { bookAction(time) }}>
-            <Text>{time}</Text>
-          </Button>
+  //LIST ITEM THIS WHERE IT RENDER THE LIST COMPONENTS
+  //
+  const renderItem = ({ item, index }) => (
+    <ListItem
+      title={`${index} - table_id [${item.id}]`}
+      description={item.available ? 'Available' : `Unavailable`}
+      style={selectedIndex === index ? {backgroundColor:'#edf1f7'} : undefined}
+      onPress={() => {
+          setSelectedIndex(index);
+          console.log("go brrrr");
+        }
       }
-      )
-    })
-    return timeArray;
-  }
+    />
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -90,7 +78,7 @@ const BookingScreen = (props) => {
         <View style={{ flex: 1, alignItems: "center" }}>
           <DatePicker
             style={{ width: 200 }}
-            date={date}
+            date={dateString}
             mode="date"
             placeholder="Select a date"
             format="DD-MM-YYYY"
@@ -100,33 +88,66 @@ const BookingScreen = (props) => {
             cancelBtnText="Cancel"
             showIcon={false}
             onDateChange={(event, date) => {
-              const formattedDate = formatDate(date)
-              setDate(formattedDate);
-              getTimes(formattedDate);
+              setDate(date);
+              setDateString(`${getDay(date)}-${getMonth(date)}-${getYear(date)}`);
             }}
           />
         </View>
 
         <View style={{ flex: 1, alignItems: "center" }}>
-          <Text>Number of tables</Text>
+          <Text>Number of guests</Text>
           <TextInput
             style={styles.table}
             keyboardType='number-pad'
             textAlign="center"
-            onChangeText={(value) => {
-              setTables(value);
-            }}
+            onChangeText={setGuests}
             maxLength={2}
           />
         </View>
 
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text>Start time</Text>
+          <TextInput
+            style={styles.table}
+            keyboardType='number-pad'
+            textAlign="center"
+            onChangeText={setStart}
+            maxLength={5}
+          />
+        </View>
+
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text>End time</Text>
+          <TextInput
+            style={styles.table}
+            keyboardType='number-pad'
+            textAlign="center"
+            onChangeText={setEnd}
+            maxLength={5}
+          />
+        </View>
+
         <Divider />
-        <View style={styles.timeButtonContainer}>
-          {
-            generateTimeBoxes().map((elem) => {
-              return elem.element;
-            })
-          }
+
+        {/*LIST THIS CONTAINER FOR THE LIST*/}
+        <View style={styles.times}>
+          <List
+            data={all_scheduled_tables}
+            ItemSeparatorComponent={Divider}
+            renderItem={renderItem}
+            extraData={selectedIndex}
+          />
+        </View>
+
+        <View style={styles.submitButton}>
+          <Button style={styles.button} onPress={() => {
+            dispatch(fetchTablesBySize(guests, restId));
+            dispatch(fetchBookingsBySize(guests, restId));
+            dispatch(addTime(constructDate(start), constructDate(end)));
+          }}>Search</Button>
+          <Button style={styles.button} onPress={() => {
+            dispatch(postReservation(table, user, constructDate(start), constructDate(end)));
+          }}>Reserve</Button>
         </View>
       </View>
     </SafeAreaView>
@@ -145,12 +166,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 15
   },
-  buttonSpacing: {
-    marginTop: '40%',
-    width: '60%',
-    flexDirection: 'row',
-    alignSelf: 'center',
-    justifyContent: 'space-between'
+  button: {
+    margin: 2.5
   },
   dateTime: {
     borderWidth: 1,
@@ -168,18 +185,27 @@ const styles = StyleSheet.create({
   sizeFont: {
     fontSize: 16
   },
-  timeButton: {
-    width: "20%",
-    margin: 1,
-  },
-  timeButtonContainer: {
-    paddingLeft: '15%',
+  submitButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     flexWrap: 'wrap',
-    flex: 7,
+    marginBottom: '2%',
   },
-});
+  timeButton: {
 
+  },
+  timeButtonSelected: {
+
+  },
+  times: {
+    margin: '2.7%',
+    padding: '0.5%',
+    flex: 6,
+    width: '95%',
+    backgroundColor: '#C4C4C4',
+    borderRadius: 5
+  }
+});
 
 export default BookingScreen;
