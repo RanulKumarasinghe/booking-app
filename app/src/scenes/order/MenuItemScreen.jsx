@@ -19,6 +19,8 @@ const MenuItemScreen = (props) => {
 
   const menuItem = menuItems.find(menu => menu.id === itemId);
 
+  const restaurantId = props.route.params.restaurantId;
+
   // const getCategory = () => {
   //   return MenuData.find(category => category.id == params.categoryId);
   // }
@@ -36,6 +38,11 @@ const MenuItemScreen = (props) => {
     props.navigation.navigate('Menu')
   }
 
+  // const editMenuItem = () => props.navigation.navigate('EditMenuScreen', {
+  //   itemID: menuItem.id,
+  //   restaurantId: restaurantId
+  // });
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -48,6 +55,9 @@ const MenuItemScreen = (props) => {
           <Text style={{width: 300 }} category='p2'>{menuItem.description}</Text>
           <Text style={{width: 300 }} category='p2'>{menuItem.price}</Text>
         </View>
+        {/* <Button onPress={editMenuItem}>
+            Edit Item
+          </Button> */}
         {params.order && (
           <View>
           <Button onPress={handleAddItemToCard}>

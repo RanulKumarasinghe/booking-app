@@ -1,9 +1,9 @@
-import React, { useState, setState } from 'react';
+import React, { useState, setState, useEffect } from 'react';
 import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button} from 'react-native';
 import { Divider } from 'react-native-elements';
-import { Text, TopNavigation } from '@ui-kitten/components';
+import { Text, TopNavigation, Radio, RadioGroup } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
-
+import {fetchAllFoodTypes, filterFoodType} from '@/store/actions/foodtypes';
 
 const MultiTextInput = (props) => {
   return (
@@ -57,6 +57,19 @@ const RestaurantMenuItem = (props) => {
           onChangeText={props.onImageUrl}
           value = {props.imageUrl}
          />
+      </View>
+      <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Meal Type* </Text>
+      <RadioGroup
+        selectedIndex={props.menuType}
+        onChange={props.onMenuType}>
+        <Radio>{props.foodType0}</Radio>
+        <Radio>{props.foodType1}</Radio>
+        <Radio>{props.foodType2}</Radio>
+        <Radio>{props.foodType3}</Radio>
+      </RadioGroup>
+
+
       </View>
       </View>
 
