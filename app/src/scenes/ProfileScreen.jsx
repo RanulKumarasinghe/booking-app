@@ -23,29 +23,35 @@ const ProfileScreen = (props) => {
     //props.navigation.navigate("Reset Password");
   };
 
+  const handleRewards = () => {
+    props.navigation.navigate("Rewards");
+  };
+
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const list = [
+    { icon: "award", name: "Rewards", onPress: handleRewards },
     { icon: "cog", name: "Change Password", onPress: handleResetPassword },
     { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
     { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
   ];
 
   const test = () => {
-
-    db.collection('restaurants').where("staffIds", "array-contains", auth.uid).get()
-    .then((querySnapshot) => {
+    db.collection("restaurants")
+      .where("staffIds", "array-contains", auth.uid)
+      .get()
+      .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           console.log(doc.id, " => ", doc.data());
         });
-    })
+      });
 
     // console.log(auth.uid)
     // .get().then(e => {
     //   console.log(e)
     // }).catch(console.warn)
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>

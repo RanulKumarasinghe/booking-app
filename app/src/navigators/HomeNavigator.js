@@ -4,6 +4,7 @@ import React from 'react'
 import RewardScreen from 'src/scenes/rewards/RewardScreen'
 import HomeScreen from 'src/scenes/HomeScreen'
 import RestaurantAddScreen from 'src/scenes/restaurants/RestaurantAddScreen';
+import ManagerRewardScreen from 'src/scenes/rewards/ManagerRewardScreen';
 
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -26,7 +27,8 @@ const defaultNavOptions = {
 const HomeNavigator = () => {
   return (
     <HomeStackNavigator.Navigator
-      initialRouteName="Rewards"
+    //change to rewards for editing
+      initialRouteName="Home"
       screenOptions={defaultNavOptions}>
       <HomeStackNavigator.Screen
         name="Home"
@@ -38,6 +40,11 @@ const HomeNavigator = () => {
         component={RewardScreen}
         // options={authScreenOptions}
       />
+      <HomeStackNavigator.Screen
+        name="ManagerRewards"
+        component={ManagerRewardScreen}
+      />
+      
     </HomeStackNavigator.Navigator>
   );
 };
