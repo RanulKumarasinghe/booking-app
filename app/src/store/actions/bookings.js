@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 
 const FETCH_TABLES = 'FETCH_TABLES';
 const FETCH_TABLES_BY_SIZE = 'FETCH_TABLES_BY_SIZE';
-const FETCH_BOOKINGS_BY_TABLE = "FETCH_BOOKINGS_BY_TABLE";
+const FETCH_BOOKINGS_BY_SIZE = "FETCH_BOOKINGS_BY_SIZE";
 const ADD_TABLE = 'ADD_TABLE';
+const ADD_TIME = 'ADD_TIME';
+const PERFORM_SCHEDULE = 'PERFORM_SCHEDULE';
 const POST_TABLE = 'POST_TABLE';
 
 
@@ -24,6 +26,25 @@ export const addTable = (table) => {
   return async dispatch => {
     try {
       dispatch({ type: ADD_TABLE, payload: table });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+export const addTime = (start, end) => {
+  return async dispatch => {
+    try {
+      dispatch({ type: ADD_TIME, payload: { start, end } });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const performSchedule = () => {
+  return async dispatch => {
+    try {
+      dispatch({ type: PERFORM_SCHEDULE, payload: true });
     } catch (error) {
       console.error(error);
     }
@@ -55,6 +76,8 @@ export const fetchTablesBySize = (size, restid) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), id: doc.id }
         });
+        console.log('fetch tables by size go brr')
+        console.log(response)
         dispatch({ type: FETCH_TABLES_BY_SIZE, payload: response })
       });
     } catch (error) {
@@ -63,14 +86,16 @@ export const fetchTablesBySize = (size, restid) => {
   }
 }
 
-export const fetchBookingsByTable = (tableid) => {
+export const fetchBookingsBySize = (size, restid) => {
   return async dispatch => {
     try {
-      firebase.firestore().collection('bookings2').where('tableid', '==', tableid).get().then((querySnapshot) => {
+      firebase.firestore().collection('bookings2').where('guests', '==', size).where('restid', '==', restid).get().then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), docId: doc.id }
         });
-        dispatch({ type: FETCH_BOOKINGS_BY_TABLE, payload: response });
+        console.log('fetch bookings by size go brr')
+        console.log(response)
+        dispatch({ type: FETCH_BOOKINGS_BY_SIZE, payload: response });
       });
     } catch (error) {
       console.error(error);

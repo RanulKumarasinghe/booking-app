@@ -3,12 +3,15 @@ import { SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
 import { Divider, Icon, Button, Layout, Datepicker, List, ListItem } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
-import { postReservation, fetchTablesBySize, fetchBookingsByTable } from '@/store/actions/bookings';
+import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime } from '@/store/actions/bookings';
 import firebase from 'src/utils/firebase';
 
 const BookingScreen = (props) => {
-  const tablestore = useSelector(state => state.bookings.sized_tables);
-  const bookingsstore = useSelector(state => state.bookings.table_bookings);
+  const all_scheduled_tables = useSelector(state => state.bookings.all_scheduled_tables);
+  const all_tables_of_size = useSelector(state => state.bookings.all_tables_of_size);
+  const all_bookings_of_size = useSelector(state => state.bookings.all_bookings_of_size);
+  const times = useSelector(state => state.bookings.time);
+
   const dispatch = useDispatch()
 
   const [guests, setGuests] = React.useState();
@@ -17,15 +20,20 @@ const BookingScreen = (props) => {
   const [start, setStart] = React.useState();
   const [end, setEnd] = React.useState();
   const [table, setTable] = React.useState("C3SpKCkToYhIPBhoekJC");
-  const [fetchedTables, setFetchedTables] = React.useState([]);
-  const [unavailableTables, setUnavailableTables] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(undefined);
+  const [schedule, setSchedule] = React.useState(false);
 
   const user = firebase.auth().currentUser.uid;
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const restId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === restId);
+
+  if(all_tables_of_size.length > 0 && all_bookings_of_size.length > 0 && times !== undefined && !schedule){
+    console.log('Haha redux go brr');
+    dispatch(performSchedule());
+    setSchedule(true);
+  }
 
   const getDay = (date) => {
     return date.getDate();
@@ -43,33 +51,6 @@ const BookingScreen = (props) => {
     const month = ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1));
     const fullDate = new Date(date.getFullYear() + "-" + (month) + "-" + date.getDate() + "T" + time);
     return fullDate;
-  }
-
-  const scheduler = () => {
-    console.log("haha Scheduler go brr");
-
-    let startTimeStamp = Date.parse(constructDate(start));
-    let endTimeStamp = Date.parse(constructDate(end));
-
-    startTimeStamp = parseInt(startTimeStamp.toString().substring(0, 10));
-    endTimeStamp = parseInt(endTimeStamp.toString().substring(0, 10));
-
-    setTimeout(() => {
-      bookingsstore.forEach(element => {
-        if (element.start.seconds >= startTimeStamp && element.end.seconds <= endTimeStamp) {
-          console.log('Should go brr')
-          setUnavailableTables([...unavailableTables, element.tableid]);
-        }
-      });
-
-      //Maps table data with availability based on if it can take in someone
-      const mappedTables = tablestore.map((element) => {
-        return { ...element, available: (unavailableTables.includes(element.id) ? false : true) };
-      });
-      //Maps tables by size with availability worked out above and sets it as the
-      //Tables to be displayed in the list
-      setFetchedTables(mappedTables);
-    }, 1000);
   }
 
   //LIST ITEM THIS WHERE IT RENDER THE LIST COMPONENTS
@@ -151,7 +132,7 @@ const BookingScreen = (props) => {
         {/*LIST THIS CONTAINER FOR THE LIST*/}
         <View style={styles.times}>
           <List
-            data={fetchedTables}
+            data={all_scheduled_tables}
             ItemSeparatorComponent={Divider}
             renderItem={renderItem}
             extraData={selectedIndex}
@@ -161,8 +142,8 @@ const BookingScreen = (props) => {
         <View style={styles.submitButton}>
           <Button style={styles.button} onPress={() => {
             dispatch(fetchTablesBySize(guests, restId));
-            dispatch(fetchBookingsByTable(table));
-            scheduler();
+            dispatch(fetchBookingsBySize(guests, restId));
+            dispatch(addTime(constructDate(start), constructDate(end)));
           }}>Search</Button>
           <Button style={styles.button} onPress={() => {
             dispatch(postReservation(table, user, constructDate(start), constructDate(end)));
