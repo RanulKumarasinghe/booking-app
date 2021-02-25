@@ -23,8 +23,11 @@ const Menu = (props) => {
     getMenu()
   }, [])
 
+  const restaurantId = props.restaurantId;
+
   const menuItems = useSelector(state => state.menu.menu);
 
+  // console.log(props.restaurantId);
   // console.log(menuItems);
 
   // const onPress = (categoryId, itemId) => {
@@ -43,6 +46,7 @@ const Menu = (props) => {
         price={itemData.item.price}
         onPress={() => props.navigation.navigate('Menu Item', {
             itemId: itemData.item.id,
+            restaurantId: restaurantId,
             order: props.order
           })
         }

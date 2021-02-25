@@ -1,5 +1,16 @@
 import firebase from 'src/utils/firebase'
+import { useSelector, useDispatch } from "react-redux";
 
+const FETCH_TABLES = 'FETCH_TABLES';
+const FETCH_TABLES_BY_SIZE = 'FETCH_TABLES_BY_SIZE';
+const FETCH_BOOKINGS_BY_SIZE = "FETCH_BOOKINGS_BY_SIZE";
+const ADD_TABLE = 'ADD_TABLE';
+const ADD_TIME = 'ADD_TIME';
+const PERFORM_SCHEDULE = 'PERFORM_SCHEDULE';
+const POST_TABLE = 'POST_TABLE';
+
+
+//Down from here obsolete
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
 const FETCH_MY_BOOKINGS = 'FETCH_MY_BOOKINGS';
 const FETCH_UNAVAILABLE_RESTAURANT_TIMES = 'FETCH_UNAVAILABLE_RESTAURANT_TIMES';
@@ -7,6 +18,136 @@ const POST_BOOKING_TIME = 'POST_BOOKING_TIME';
 const POST_BOOKING = 'POST_BOOKING';
 const RESPOND_TO_BOOKING = 'RESPOND_TO_BOOKING';
 const ADD_NEW_BOOKING_TIME_DOCUMENT = 'ADD_NEW_BOOKING_TIME_DOCUMENT';
+
+//Internal actions (not involving the firestore databse)
+//
+//
+export const addTable = (table) => {
+  return async dispatch => {
+    try {
+      dispatch({ type: ADD_TABLE, payload: table });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+export const addTime = (start, end) => {
+  return async dispatch => {
+    try {
+      dispatch({ type: ADD_TIME, payload: { start, end } });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const performSchedule = () => {
+  return async dispatch => {
+    try {
+      dispatch({ type: PERFORM_SCHEDULE, payload: true });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+//External fetching actions (involving the firestore database but not affecting it)
+//
+//
+export const fetchTables = (restid) => {
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('reservations').where('restid', '==', restid).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id }
+        });
+        dispatch({ type: FETCH_TABLES, payload: response });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const fetchTablesBySize = (size, restid) => {
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('reservations').where('restid', '==', restid).where('size', '==', parseInt(size)).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id }
+        });
+        console.log('fetch tables by size go brr')
+        console.log(response)
+        dispatch({ type: FETCH_TABLES_BY_SIZE, payload: response })
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const fetchBookingsBySize = (size, restid) => {
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('bookings2').where('guests', '==', size).where('restid', '==', restid).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id }
+        });
+        console.log('fetch bookings by size go brr')
+        console.log(response)
+        dispatch({ type: FETCH_BOOKINGS_BY_SIZE, payload: response });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+//External posting actions (involving the firestore database and changing it)
+//
+//
+export const postTable = (restid, table) => {
+  (async function () {
+    try {
+      const res = await firebase.firestore().collection('reservations').add({
+        id: table.id,
+        size: table.size,
+        restid: restid,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  })();
+
+  return async dispatch => {
+    dispatch({ type: POST_TABLE, payload: undefined })
+  }
+}
+
+export const postReservation = (tableid, user, start, end) => {
+  (async function () {
+    try {
+      const res = await firebase.firestore().collection('bookings2').add({
+        cusid: user,
+        end: end,
+        start: start,
+        status: 'ok',
+        tableid: tableid,
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  })();
+  return async dispatch => {
+    dispatch({ type: POST_BOOKING, payload: undefined })
+  }
+}
+
+//
+//
+//Past this is discontinued
+//
+//
 
 export const fetchAllBookings = (userId) => {
   return async dispatch => {

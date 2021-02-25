@@ -19,6 +19,8 @@ const MenuItemScreen = (props) => {
 
   const menuItem = menuItems.find(menu => menu.id === itemId);
 
+  const restaurantId = props.route.params.restaurantId;
+
   // const getCategory = () => {
   //   return MenuData.find(category => category.id == params.categoryId);
   // }
@@ -48,6 +50,9 @@ const MenuItemScreen = (props) => {
           <Text style={{width: 300 }} category='p2'>{menuItem.price}</Text>
           <Input value={quantity} onChangeText={setQuantity}/>
         </View>
+        {/* <Button onPress={editMenuItem}>
+            Edit Item
+          </Button> */}
         {params.order && (
           <View>
           <Button onPress={handleAddItemToCard}>

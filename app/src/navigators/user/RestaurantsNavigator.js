@@ -2,17 +2,16 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import HomeScreen from '../../scenes/HomeScreen';
+import HomeScreen from '@/scenes/HomeScreen';
 
-import RestaurantScreen from '../../scenes/RestaurantScreen';
-import RestaurantListScreen from '../../scenes/restaurants/RestaurantListScreen';
-import BookingScreen from 'src/scenes/bookings/BookingScreen';
-import BookingListScreen from 'src/scenes/bookings/BookingListScreen';
-import PendingBookingScreen from 'src/scenes/bookings/PendingBookingScreen';
-import RestaurantMenuListScreen from '../../scenes/restaurants/RestaurantListMenuScreen';
+import RestaurantScreen from '@/scenes/RestaurantScreen';
+import RestaurantListScreen from '@/scenes/restaurants/RestaurantListScreen';
+import BookingScreen from '@/scenes/bookings/BookingScreen';
+import BookingListScreen from '@/scenes/bookings/BookingListScreen';
+import RestaurantMenuListScreen from '@/scenes/restaurants/RestaurantListMenuScreen';
 
-import RestaurantEditScreen from '../../scenes/restaurants/RestaurantEditScreen';
-import RestaurantAddScreen from '../../scenes/restaurants/RestaurantAddScreen';
+import RestaurantEditScreen from '@/scenes/restaurants/RestaurantEditScreen';
+import RestaurantAddScreen from '@/scenes/restaurants/RestaurantAddScreen';
 import RewardScreen from '@/scenes/rewards/RewardScreen';
 
 import CheckOutScreen from '@/scenes/order/CheckOutScreen';
@@ -22,6 +21,9 @@ import RestaurantEditMenuScreen from '@/scenes/manager/EditMenuItemScreen';
 import MenuItemScreen from '@/scenes/order/MenuItemScreen';
 import MenuAddItem from '@/scenes/manager/AddMenuItemScreen';
 
+// TODO: TO BE DELETED - Temporarry  
+import AddTableScreen from '@/scenes/bookings/AddTableScreen'
+import ManagerRewardScreen from '@/scenes/rewards/ManagerRewardScreen'
 
 const routes = (Screen) => (      
   <>
@@ -37,7 +39,6 @@ const routes = (Screen) => (
     <Screen name='EditMenuScreen' component={RestaurantEditMenuScreen}/>
     {/* <Screen name='MenuList' component={RestaurantMenuListScreen}/> */}
 
-
     {/* Order */}
     <Screen name='Checkout' component={CheckOutScreen}/>
     <Screen name='Menu Item' component={MenuItemScreen}/>
@@ -45,15 +46,17 @@ const routes = (Screen) => (
     <Screen name='Order Type' component={OrderTypeScreen}/>
     <Screen name='Add Item' component={MenuAddItem}/>
 
-
-    <Screen name='Bookings Pending' component={PendingBookingScreen}/>
+    {/* TODO: TO BE DELETED - Temporarry  */}
+    <Screen name="AddTableScreen" component={AddTableScreen} />
+    <Screen name="Rewards" component={RewardScreen} />
+    <Screen name="ManagerRewards" component={ManagerRewardScreen} />
   </>
   )
 
 const Home = createStackNavigator();
 const HomeNavigator = () => (
   <Home.Navigator
-    initialRouteName={ "Home"}>
+    initialRouteName="Home">
       {routes(Home.Screen)}
   </Home.Navigator>
 );
@@ -61,7 +64,7 @@ const HomeNavigator = () => (
 const Restaurant = createStackNavigator();
 const RestaurantNavigator = () => (
   <Restaurant.Navigator
-    initialRouteName={ "Restaurants"}>
+    initialRouteName="Restaurants">
       {routes(Restaurant.Screen)}
   </Restaurant.Navigator>
 );

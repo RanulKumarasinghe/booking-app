@@ -18,7 +18,6 @@ import {
   Icon,
 } from "@ui-kitten/components";
 import BookingsList from "@/components/BookingsList";
-import ConfirmBookingsList from "@/scenes/bookings/components/ConfirmBookingList";
 import { fetchAllBookings } from "@/store/actions/bookings";
 import { useSelector, useDispatch } from "react-redux";
 
