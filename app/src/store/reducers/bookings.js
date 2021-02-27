@@ -26,9 +26,7 @@ const bookingsReducer = (state = initialState, action) => {
       }
     case 'PERFORM_SCHEDULE':
       console.log("haha perform schedule go brr");
-      console.log(state.all_tables_of_size);
       console.log(state.all_bookings_of_size);
-      console.log(state.time);
 
       const table_availability = [];
 
@@ -42,21 +40,48 @@ const bookingsReducer = (state = initialState, action) => {
 
       state.all_tables_of_size.forEach(tableElement => {
         const table = { id: tableElement.id, available: false }
-        state.all_bookings_of_size.forEach(bookingElement => {
-          if (tableElement.id === bookingElement.tableref) {
-            if (startTimeStamp > bookingElement.start.seconds && endTimeStamp >= bookingElement.end.seconds) {
-              if (!table_availability.includes(table)) {
+        let booking_start_times = [];
+        let booking_end_times = [];
+        state.all_bookings_of_size.forEach((element) => {
+          if (tableElement.id === element.tableref) {
+            booking_start_times.push(element.start.seconds);
+            booking_end_times.push(element.end.seconds);
+          }
+        });
+
+        booking_start_times = booking_start_times.sort();
+        booking_end_times = booking_end_times.sort();
+
+        //Check if there are any bookings, if there arent then table is available regardless
+        if (booking_start_times.length < 1 && booking_end_times < 1) {
+          table.available = true;
+        }
+        //Check if lowest booking time is still larger than booking purposed, if so then check if purposed booking end is still lower or equal
+        //If so then table is available
+        else if(booking_start_times[0] > startTimeStamp && booking_start_times[0] >= endTimeStamp){
+          table.available = true;
+        }else {
+          //Go through every booking to find index where the potential booking would slot in
+          for (let i = 0; i < booking_start_times.length; i++) {
+            //If purposed booking is the same as a booking already present then its already taken
+            if (booking_start_times[i] === startTimeStamp && booking_end_times[i] === endTimeStamp) {
+            } 
+            //finds index of where the booking slots in by comparing potential bookings starting time to starting and ending slots of bookings
+            else if (booking_start_times[i] <= startTimeStamp && startTimeStamp <= booking_end_times[i]) {
+              //If program gets here it means that there is a free slot in the schedule
+              //If there is nothing below this means its free real estate and the booking is valid
+              if (booking_start_times[i + 1] === undefined) {
                 table.available = true;
-                table_availability.push(table);
-              } else {
-                console.log('Table already available');
+              } 
+              //The program now checks the booking "below" to see if potential bookings end time is within the start time of a booking on the database
+              else if (endTimeStamp <= booking_start_times[i + 1]) {
+                table.available = true;
               }
             }
           }
-        });
+        }
+        table_availability.push(table);
       });
-      console.log('available tables');
-      console.log(table_availability)
       return {
         ...state,
         all_scheduled_tables: table_availability,

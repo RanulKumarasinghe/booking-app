@@ -76,8 +76,6 @@ export const fetchTablesBySize = (size, restid) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), id: doc.id }
         });
-        console.log('fetch tables by size go brr')
-        console.log(response)
         dispatch({ type: FETCH_TABLES_BY_SIZE, payload: response })
       });
     } catch (error) {
@@ -93,8 +91,6 @@ export const fetchBookingsBySize = (size, restid) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), docId: doc.id }
         });
-        console.log('fetch bookings by size go brr')
-        console.log(response)
         dispatch({ type: FETCH_BOOKINGS_BY_SIZE, payload: response });
       });
     } catch (error) {
@@ -123,8 +119,7 @@ export const postTable = (restid, table) => {
     dispatch({ type: POST_TABLE, payload: undefined })
   }
 }
-
-export const postReservation = (tableid, user, start, end) => {
+export const postReservation = (tableid, restid, user, guests, start, end) => {
   (async function () {
     try {
       const res = await firebase.firestore().collection('bookings2').add({
@@ -132,7 +127,9 @@ export const postReservation = (tableid, user, start, end) => {
         end: end,
         start: start,
         status: 'ok',
-        tableid: tableid,
+        tableref: tableid,
+        guests: guests,
+        restid: restid,
       })
     } catch (error) {
       console.error(error);

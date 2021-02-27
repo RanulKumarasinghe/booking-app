@@ -146,7 +146,7 @@ const BookingScreen = (props) => {
             dispatch(addTime(constructDate(start), constructDate(end)));
           }}>Search</Button>
           <Button style={styles.button} onPress={() => {
-            dispatch(postReservation(table, user, constructDate(start), constructDate(end)));
+            dispatch(postReservation(all_scheduled_tables[selectedIndex].id, restId, user, guests, constructDate(start), constructDate(end)));
           }}>Reserve</Button>
         </View>
       </View>
