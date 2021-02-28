@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import TabNavigator from 'src/navigators/TabNavigator'
-import ManagerTabNavigator from 'src/navigators/ManagerTabNavigator'
+import TabNavigator from 'src/navigators/user/TabNavigator'
+import ManagerTabNavigator from 'src/navigators/manager/ManagerTabNavigator'
 import { useSelector } from 'react-redux';
 import { fetchUserRestaurant } from '@/store/actions/staffRestaurant'
 import { useDispatch } from 'react-redux'

@@ -12,7 +12,7 @@ import bookingsReducer from '@/store/reducers/bookings';
 import rewardsReducer from '@/store/reducers/rewards';
 import menuReducer from '@/store/reducers/menu';
 import orderReducer from '@/store/reducers/order';
-
+import foodTypeReducer from '@/store/reducers/foodtypes';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import * as Font from 'expo-font';
@@ -29,6 +29,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   bookings: bookingsReducer,
   rewards: rewardsReducer,
+  foodType: foodTypeReducer,
   menu: menuReducer,
   order: orderReducer
 });

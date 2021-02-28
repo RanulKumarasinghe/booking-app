@@ -26,8 +26,10 @@ export const updateMenu = (saveMenu) => {
     menu.update({
       name: saveMenu.name,
       price: saveMenu.price,
-      picture: saveMenu.picture,
-      description: saveMenu.description
+      imageUrl: saveMenu.imageUrl,
+      description: saveMenu.description,
+      numType: saveMenu.numType,
+      type: saveMenu.type
     }).then(() => {
       console.log('User updated!');
     })
@@ -43,8 +45,10 @@ export const createItem = (addItem) => {
     menu.add({
       name: addItem.name,
       price: addItem.price,
-      picture: addItem.picture,
-      description: addItem.description
+      imageUrl: addItem.imageUrl,
+      description: addItem.description,
+      numType: saveMenu.numType,
+      type: saveMenu.type
     }).then(() => {
       console.log('User updated!');
     })
@@ -60,3 +64,4 @@ export const deleteItem = (delItem) => {
     dispatch({ type: DELETE_ITEM_FROM_MENU, menu: delItem })
   }
 }
+

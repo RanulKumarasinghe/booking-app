@@ -18,6 +18,9 @@ const CheckOutScreen = (props) => {
   const totalCost = () => {
 
   }
+  const checkout = () => {
+    console.log(order)
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -25,19 +28,20 @@ const CheckOutScreen = (props) => {
         <Text>CheckOut</Text>
         <Text>Type: {order.type}</Text>
         {order.cart.map(cartItem => (  
-          <View key={cartItem.id}> 
+          <View key={cartItem.item.id}> 
             <View>
-              <Text category='p1'>{cartItem.name}</Text>
+              <Text category='p1'>{cartItem.item.name}</Text>
+            </View>
+            <View >
+              <Text style={{width: 300 }} category='p2'>Description: {cartItem.item.desc}</Text>
+              <Text style={{width: 300 }} category='p2'>Price: {cartItem.item.price}</Text>
+              <Text style={{width: 300 }} category='p2'>Quantity: {cartItem.quantity}</Text>
             </View>
             <Divider />
-
-            <View >
-              <Text style={{width: 300 }} category='p2'>{cartItem.desc}</Text>
-              <Text style={{width: 300 }} category='p2'>{cartItem.price}</Text>
-            </View>
           </View>
         ))}
         <Text>Total: </Text>
+        <Button onPress={checkout}>Order</Button>
       </Layout>
     </SafeAreaView>
   );
