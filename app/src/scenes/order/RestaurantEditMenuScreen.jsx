@@ -16,7 +16,7 @@ const RestaurantEditMenu = (props) => {
 
   const menuItem = menu.find(menuItem => menuItem.id === itemId);
 
-  const restaurantId = props.route.param.resID;
+  const restaurantId = props.route.params.resID;
 
 
 

@@ -44,11 +44,14 @@ const RestaurantMenuEntry = props => {
 const styles = StyleSheet.create({
   listItem: {
     height: 300,
-    width: '100%',
+    width: '90%',
     backgroundColor: '#f5f5f5',
     borderRadius: 10,
     overflow: 'hidden',
-    marginTop: 20
+    marginTop: 15,
+    marginLeft: 17,
+    justifyContent: 'center',
+    marginBottom: 5
   },
   bgImage: {
     width: '100%',
@@ -69,12 +72,12 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     backgroundColor: '#d9d9d9',
-    paddingVertical: 6
+    paddingVertical: 10
   },
   list: {
     fontWeight: 'bold',
     fontSize: 20,
-    width: '60%'
+    width: '85%'
   },
   list1: {
     fontWeight: 'bold',

@@ -8,7 +8,7 @@ import RestaurantListScreen from '../scenes/restaurants/RestaurantListScreen';
 import BookingScreen from 'src/scenes/bookings/BookingScreen';
 import BookingListScreen from 'src/scenes/bookings/BookingListScreen';
 import PendingBookingScreen from 'src/scenes/bookings/PendingBookingScreen';
-import RestaurantMenuListScreen from '../scenes/restaurants/RestaurantListMenuScreen';
+import RestaurantListMenuScreen from 'src/scenes/restaurants/RestaurantListMenuScreen';
 
 import RestaurantEditScreen from '../scenes/restaurants/RestaurantEditScreen';
 import RestaurantAddScreen from '../scenes/restaurants/RestaurantAddScreen';
@@ -36,8 +36,8 @@ const HomeNavigator = () => (
     <Restaurant.Screen name='Add Restaurant' component={RestaurantAddScreen}/>
     <Restaurant.Screen name='BookingListScreen' component={BookingListScreen}/>
     <Restaurant.Screen name='Booking' component={BookingScreen}/>
+    <Restaurant.Screen name='MenuList' component={RestaurantListMenuScreen}/>
     <Restaurant.Screen name='EditMenuScreen' component={RestaurantEditMenuScreen}/>
-    <Restaurant.Screen name='MenuList' component={RestaurantMenuListScreen}/>
 
 
     {/* Order */}
