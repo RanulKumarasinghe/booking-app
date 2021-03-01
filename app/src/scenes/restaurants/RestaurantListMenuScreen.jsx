@@ -11,7 +11,7 @@ const RestaurantListMenuScreen = (props) => {
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantId;
-  console.log(itemId)
+
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
   // const getMenu = () => {
@@ -25,7 +25,7 @@ const RestaurantListMenuScreen = (props) => {
   //  }, [])
 
   const menu = useSelector(state => state.menu.menu);
-  console.log(menu);
+
   const onAddMenuItem = () => props.navigation.navigate('Add Item', {
     resID: restaurant.id
   });
@@ -49,9 +49,9 @@ const RestaurantListMenuScreen = (props) => {
   return (
     <View style={styles.header}>
       <Divider />
-      <View style={styles.buttonSpacing}>
+      {/* <View style={styles.buttonSpacing}>
          <Button onPress={onAddMenuItem}> Add Menu Item</Button>
-      </View>
+      </View> */}
       <View style={styles.screen}>
         <FlatList
           data={menu}
@@ -60,9 +60,9 @@ const RestaurantListMenuScreen = (props) => {
           style={{ width: '100%' }}
         />
       </View>
-      {/* <View style={styles.buttonSpacing}>
-         <Button title="Add Menu Item" onPress={onAddMenuItem} />
-      </View> */}
+      <View style={styles.buttonSpacing}>
+        <Button onPress={onAddMenuItem}> Add Menu Item</Button>
+      </View>
       <View>
 
       </View>

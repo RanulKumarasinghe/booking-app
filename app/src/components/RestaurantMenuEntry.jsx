@@ -16,7 +16,7 @@ const RestaurantMenuEntry = props => {
 
     <View style={styles.listItem}>
       <TouchableOpacity onPress={props.onSelectItem}>
-        <View>
+
           <View style={{ ...styles.listRow, ...styles.listHeader }}>
             <ImageBackground
               source={{ uri: props.picture }}
@@ -34,8 +34,6 @@ const RestaurantMenuEntry = props => {
           </View>
           </View>
           </View>
-
-        </View>
       </TouchableOpacity>
     </View>
   );
@@ -43,15 +41,15 @@ const RestaurantMenuEntry = props => {
 
 const styles = StyleSheet.create({
   listItem: {
-    height: 300,
+    height: 350,
     width: '90%',
     backgroundColor: '#f5f5f5',
-    borderRadius: 10,
+    borderRadius: 30,
     overflow: 'hidden',
-    marginTop: 15,
+    // marginTop: 1,
     marginLeft: 17,
     justifyContent: 'center',
-    marginBottom: 5
+    // marginBottom: 1
   },
   bgImage: {
     width: '100%',
@@ -62,17 +60,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   listHeader: {
-    height: '75%'
+    height: '85%'
   },
   listDetail: {
     paddingHorizontal: 5,
     alignContent: 'space-between',
     alignItems: 'flex-start',
-    height: '25%'
+    height: '10%'
   },
   titleContainer: {
     backgroundColor: '#d9d9d9',
-    paddingVertical: 10
+    // paddingVertical: 12
   },
   list: {
     fontWeight: 'bold',

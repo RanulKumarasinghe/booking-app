@@ -165,6 +165,8 @@ const Restaurant = (props) => {
           <Button onPress={onMenuList}>Menu List</Button>
           </>
           : null}
+          {/* <Divider />
+          <Button onPress={onMenuList}>Menu List</Button> */}
           <Divider />
           <Button onPress={onOrder}>Order</Button>
 

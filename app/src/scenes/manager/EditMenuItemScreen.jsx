@@ -22,7 +22,7 @@ const RestaurantEditMenu = (props) => {
 
 
   const [nameValue, onChangeName] = React.useState(menuItem.name);
-  const [priceValue, onChangePrice] = React.useState(menuItem.price);
+  const [priceValue, onChangePrice] = React.useState(menuItem.price.toString());
   const [descriptionValue, onChangeDescription] = React.useState(menuItem.description);
   const [imageUrlValue, onChangeImageUrl] = React.useState(menuItem.imageUrl);
   const [menuTypeValue, onChangeMenuType] = React.useState(menuItem.numType);
@@ -45,7 +45,6 @@ const RestaurantEditMenu = (props) => {
     type = "Drinks"
   }
 
-  console.log(restaurantId)
   const editMenu = () => {
     console.log('edit');
     setTimeout(() => {
@@ -53,7 +52,7 @@ const RestaurantEditMenu = (props) => {
       rId: restaurantId,
       id: itemId,
       name: nameValue,
-      price: priceValue,
+      price: +priceValue,
       description: descriptionValue,
       imageUrl: imageUrlValue,
       numType: menuTypeValue,

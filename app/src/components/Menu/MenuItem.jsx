@@ -13,7 +13,10 @@ const MenuItem = (props) => {
         </View>
         <View >
           <Text style={{width: 300 }} category='p2'>{props.desc}</Text>
+          <View style={styles.listRow}>
           <Text style={{width: 300 }} category='p2'>{props.price}</Text>
+          <Text style={{width: 300 }} category='p2'>{props.type}</Text>
+          </View>
         </View>
       </>
     </TouchableHighlight>
@@ -24,7 +27,7 @@ const MenuItem = (props) => {
 
 
 const styles = StyleSheet.create({
-  item: { 
+  item: {
     padding: 10,
     backgroundColor: '#86ffc8',
   },
@@ -32,7 +35,10 @@ const styles = StyleSheet.create({
     width: '10%',
     height: '50%',
     marginTop: 15
-  }
+  },
+  listRow: {
+    flexDirection: 'row'
+  },
 });
 
 export default MenuItem

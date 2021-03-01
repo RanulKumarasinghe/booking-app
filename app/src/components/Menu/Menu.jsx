@@ -44,6 +44,7 @@ const Menu = (props) => {
         name={itemData.item.name}
         desc={itemData.item.description}
         price={itemData.item.price}
+        type={itemData.item.type}
         onPress={() => props.navigation.navigate('Menu Item', {
             itemId: itemData.item.id,
             restaurantId: restaurantId,
@@ -82,7 +83,7 @@ const Menu = (props) => {
 }
 
 const styles = StyleSheet.create({
-  category: { 
+  category: {
     backgroundColor: '#ff4c89',
   },
   image: {

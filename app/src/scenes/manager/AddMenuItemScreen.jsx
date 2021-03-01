@@ -60,7 +60,7 @@ const MenuAddItem = (props) => {
     dispatch(createItem({
       rId: restaurantId,
       name: nameValue,
-      price: priceValue,
+      price: +priceValue,
       description: descriptionValue,
       imageUrl: imageUrlValue,
       numType: menuTypeValue,
