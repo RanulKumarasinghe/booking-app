@@ -5,30 +5,49 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchAllBookings } from '@/store/actions/bookings'
 
 const BookingsListEntry = (props) => {
-    /*"index": 1,
-    "item": Object {
-      "confirmed": false,
-      "cusId": "test",
-      "date": "1/12/2021",
-      "id": "yFT9gMqoWiTqhcz9FuLU",
-      "resName": "Hello World",
-      "tables": "5",
-      "time": "11:00",
-    },*/
+    /*Object {
+        "cusid": "glJhg6e6vYS9AtXRE40Eo0DL42y1",
+        "docId": "I1JOgdMSt8RdqFV6H9uz",
+        "end": t {
+          "nanoseconds": 0,
+          "seconds": 1614438000,
+        },
+        "guests": "2",
+        "restid": "0oSOVkl4hMwsxHtexFJT",
+        "start": t {
+          "nanoseconds": 0,
+          "seconds": 1614434400,
+        },
+        "status": "ok",
+        "tableref": "C3SpKCkToYhIPBhoekJC",
+      }*/
 
     const image = { uri: "https://www.fsrmagazine.com/sites/default/files/styles/story_image_720x430/public/feature-images/state-full-service-restaurant-industry-1554901734.jpg?itok=-EciUerQ" };
+
+    const constructDate = (timestamp) => {
+        const date = new Date(timestamp*1000);
+        return `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`;
+    }
+
+    const constructTime = (timestamp) => {
+        const date = new Date(timestamp*1000);
+        const time = `${date.getHours()}:${date.getMinutes() < 10 ? "0"+date.getMinutes() : date.getMinutes()}`
+        return time;
+    }
+
+    const data = props.item;
 
     const ListHeader = () => {
         return (
             <ImageBackground source={image} style={styles.headerImg}>
                 <View style={styles.headerContainer}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={styles.headerTitle}>Booking - McDonalds</Text>
-                        <Text style={styles.headerSubTitle}>09-12-2021</Text>
+                        <Text style={styles.headerTitle}>Booking - {data.restname}</Text>
+                        <Text style={styles.headerSubTitle}>{constructDate(data.start.seconds)}</Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={styles.headerTitle}>Pending</Text>
-                        <Text style={styles.headerSubTitle}>Pedro</Text>
+                        <Text style={styles.headerTitle}>Status: {data.status}</Text>
+                        {/*<Text style={styles.headerSubTitle}>Pedro</Text>*/}
                     </View>
                 </View>
             </ImageBackground>
@@ -36,31 +55,30 @@ const BookingsListEntry = (props) => {
     }
 
     const ListContent = () => {
-        const data = [{ i: 'Pizza', q: '2' }, { i: 'Sushi', q: '2' }, { i: 'Hamburger', q: '2' }];
         let dividerCount = data.length - 1;
         return (
             <View style={styles.listContentContainer}>
                 <Divider />
                 <View style={{ flexDirection: 'row', margin: 5 }}>
-                    <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Diners: 1</Text>
-                    <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: ASAP</Text>
+                    <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
+                    <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.start.seconds)+"-"+constructTime(data.end.seconds)}</Text>
                 </View>
                 <Divider />
-                {true === true ? <OrderedFoodList data={data}/> : undefined}
+                {/*true === true ? <OrderedFoodList data={data}/> : undefined*/}
                 <View style={styles.orderPrice}>
-                    <Text>Total: £10:16</Text>
+                   {/*<Text>Total: £10:16</Text>*/}
                 </View>
             </View>
         );
     }
 
-    const OrderedFoodList = (props) => {
-        let dividerCount = props.data.length - 1;
+    const OrderedFoodList = () => {
+        let dividerCount = data.length - 1;
         //Placeholder
         return (
             <View style={styles.orderDetails}>
-                    <FlatList
-                        data={props.data}
+                    {/*<FlatList
+                        data={data}
                         renderItem={(order) => {
                             return (
                                 <View>
@@ -72,7 +90,7 @@ const BookingsListEntry = (props) => {
                             );
                         }}
                         keyExtractor={(item) => item.id}
-                    />
+                    />*/}
                     <Divider />
                 </View> 
         );
@@ -102,29 +120,10 @@ const BookingsListEntry = (props) => {
 }
 
 export default BookingsList = (props) => {
-    /*const store = useSelector(state => state.bookings);
-
-    const [refreshing, setRefreshing] = React.useState(false)
-    const [data, setData] = React.useState(props.payload);
-
-    console.log(props);
-
-    const auth = useSelector(state => state.auth);
-    const dispatch = useDispatch();
-
-    /*const handleRefresh = () => {
-        setRefreshing(true);
-        dispatch(fetchAllBookings(auth.uid));
-        setTimeout(function () {
-            setData(store.bookings);
-            setRefreshing(false);
-        }, 500);
-    }*/
-
     return (
         <View style={styles.container}>
             <FlatList
-                data={[{ id: 'A' }, { id: 'B' }, { id: 'C' }]}
+                data={props.payload}
                 renderItem={BookingsListEntry}
                 keyExtractor={(item) => item.id}
                 listKey={(item) => index.toString()}

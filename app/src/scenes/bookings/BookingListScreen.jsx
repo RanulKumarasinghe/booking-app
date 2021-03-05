@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { Toggle, Text, Divider, Spinner, Layout, Icon } from '@ui-kitten/components';
 import BookingsList from '@/components/BookingsList';
-import ConfirmBookingsList from '@/scenes/bookings/components/ConfirmBookingList';
-import { fetchAllBookings } from '@/store/actions/bookings'
+import { fetchBookingsByUser, fetchBookingsByUserFiltered, clearUserBookings } from '@/store/actions/bookings'
 import { useSelector, useDispatch } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 
@@ -14,24 +13,47 @@ export default BookingListScreen = ({ navigation }) => {
     const auth = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
-    const [showDatePicker, setshowDatePicker] = React.useState(true);
     const [showLoadingSpinner, setshowLoadingSpinner] = React.useState(false);
 
     const [filterToggle, setfilterToggle] = React.useState(false);
+    const [loaded, setLoaded] = React.useState(false);
     const [isOffline, setIsOffline] = React.useState(auth.uid === undefined);
 
-    const [date, setDate] = React.useState();
-    const [data, setData] = React.useState([]);
+    const users_bookings = useSelector(state => state.bookings.users_bookings);
 
-    const onCheckedChange = (isChecked) => {
-        setfilterToggle(isChecked);
+    const onCheckedChange = () => {
+        setfilterToggle(!filterToggle);
+        dispatch(clearUserBookings());
+        if(!filterToggle){
+            dispatch(fetchBookingsByUser(auth.uid));
+        }else{
+            dispatch(fetchBookingsByUserFiltered(auth.uid));
+        }
     };
 
     React.useEffect(() => {
-        const reload = navigation.addListener('focus', () => {
+     const reload = navigation.addListener('focus', () => {
             setIsOffline(auth.uid === undefined);
+            if(!isOffline){
+                setLoaded(false);
+                if(!filterToggle){
+                    dispatch(fetchBookingsByUser(auth.uid));
+                }else{
+                    dispatch(fetchBookingsByUserFiltered(auth.uid));
+                }
+            }
         });
     });
+    
+    if (users_bookings.length > 1 && !loaded) {
+        if(!showLoadingSpinner){
+            setshowLoadingSpinner(true);
+            setLoaded(true);
+            setTimeout(() => {
+                setshowLoadingSpinner(false);
+            },1500);
+        }
+    }
 
     const WarningIcon = () => (
         <Icon
@@ -54,49 +76,10 @@ export default BookingListScreen = ({ navigation }) => {
         );
     }
 
-    const Datepicker = () => {
-        if (showDatePicker && !isOffline) {
-            return (
-                <View style={styles.datePicker}>
-                    <DatePicker
-                        style={{ width: 300 }}
-                        date={date}
-                        mode="date"
-                        placeholder="Select a date"
-                        format="DD-MM-YYYY"
-                        minDate={filterToggle ? new Date() : undefined}
-                        maxDate="2021-12-31"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        showIcon={false}
-                        customStyles={{
-                            placeholderText: {
-                                color: '#939fb6'
-                            },
-                        }}                  
-                        onDateChange={(event, date) => {
-                            setshowLoadingSpinner(true);
-                            dispatch(fetchAllBookings(auth.uid));
-                            setTimeout(function () {
-                                setData(store.bookings);
-                                setDate(date);
-                                setshowLoadingSpinner(false);
-                            }, (Math.random() * 1000) + 1500);
-                        }
-                        }
-                    />
-                </View>
-            );
-        } else {
-            return (<View></View>)
-        }
-    }
-
     const HeaderText = () => {
         return (
             <View>
                 <View style={styles.toggleContainer}>
-                    <Datepicker />
                 </View>
                 <Divider />
             </View>
@@ -104,10 +87,10 @@ export default BookingListScreen = ({ navigation }) => {
     }
 
     const List = () => {
-        if (!showDatePicker && !showLoadingSpinner && !isOffline) {
+        if (!showLoadingSpinner && !isOffline) {
             return (
                 <View>
-                    <BookingsList payload={data} />
+                    <BookingsList payload={users_bookings} />
                 </View>);
         } else {
             return (<View></View>)
@@ -146,7 +129,6 @@ export default BookingListScreen = ({ navigation }) => {
     return (
         <Layout style={styles.container}>
             <ToggleFilter />
-            <HeaderText />
             <List />
             <LoadingScreen />
             <LoginError />

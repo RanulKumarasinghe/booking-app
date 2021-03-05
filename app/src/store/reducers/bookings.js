@@ -3,6 +3,7 @@ export const initialState = {
   all_tables_of_size: [],
   all_bookings_of_size: [],
   all_scheduled_tables: [],
+  users_bookings: [],
   tables: [],
   time: {}
 }
@@ -25,59 +26,64 @@ const bookingsReducer = (state = initialState, action) => {
         time: action.payload
       }
     case 'PERFORM_SCHEDULE':
-      console.log("haha perform schedule go brr");
-      console.log(state.all_bookings_of_size);
-
       const table_availability = [];
+      console.log("I DOOOOOOO");
+
+      /*let w = () => {
+        const timeSt = 0;
+        const timeEn = 100;
+        const timesStart = [8, 15, 18].sort((a, b) => a - b);
+        const timesEnd = [10, 17, 19].sort((a, b) => a - b);
+        for (let i = 0; i < timesStart.length; i++) {
+          if (timesStart[i] == timeSt && timesEnd[i] == timesEnd) {
+            console.log("They the same");
+          }
+          else if (timesStart[0] >= timeEn) {
+            console.log("table available");
+            i = timesStart.length;
+          }
+          else if ((timesEnd[i] <= timeSt && timesStart[i + 1] >= timeEn) || (timesEnd[i] <= timeSt && timesStart[i + 1] === undefined)) {
+            console.log("table available");
+            i = timesStart.length;
+          }
+          else {
+            console.log(i + "NOPE");
+          }
+        }
+      }*/
 
       let startTimeStamp = Date.parse(state.time.start);
       let endTimeStamp = Date.parse(state.time.end);
 
-      //Reformatting timestamp
-
-      startTimeStamp = parseInt(startTimeStamp.toString().substring(0, 10));
-      endTimeStamp = parseInt(endTimeStamp.toString().substring(0, 10));
-
       state.all_tables_of_size.forEach(tableElement => {
         const table = { id: tableElement.id, available: false }
+
         let booking_start_times = [];
         let booking_end_times = [];
+
         state.all_bookings_of_size.forEach((element) => {
           if (tableElement.id === element.tableref) {
-            booking_start_times.push(element.start.seconds);
-            booking_end_times.push(element.end.seconds);
+            booking_start_times.push(element.start.toDate().getTime());
+            booking_end_times.push(element.end.toDate().getTime());
           }
         });
 
-        booking_start_times = booking_start_times.sort();
-        booking_end_times = booking_end_times.sort();
+        booking_start_times = booking_start_times.sort((a, b) => a - b);
+        booking_end_times = booking_end_times.sort((a, b) => a - b);
 
-        //Check if there are any bookings, if there arent then table is available regardless
-        if (booking_start_times.length < 1 && booking_end_times < 1) {
+        if (state.all_bookings_of_size.length < 1) {
           table.available = true;
         }
-        //Check if lowest booking time is still larger than booking purposed, if so then check if purposed booking end is still lower or equal
-        //If so then table is available
-        else if(booking_start_times[0] > startTimeStamp && booking_start_times[0] >= endTimeStamp){
-          table.available = true;
-        }else {
-          //Go through every booking to find index where the potential booking would slot in
-          for (let i = 0; i < booking_start_times.length; i++) {
-            //If purposed booking is the same as a booking already present then its already taken
-            if (booking_start_times[i] === startTimeStamp && booking_end_times[i] === endTimeStamp) {
-            } 
-            //finds index of where the booking slots in by comparing potential bookings starting time to starting and ending slots of bookings
-            else if (booking_start_times[i] <= startTimeStamp && startTimeStamp <= booking_end_times[i]) {
-              //If program gets here it means that there is a free slot in the schedule
-              //If there is nothing below this means its free real estate and the booking is valid
-              if (booking_start_times[i + 1] === undefined) {
-                table.available = true;
-              } 
-              //The program now checks the booking "below" to see if potential bookings end time is within the start time of a booking on the database
-              else if (endTimeStamp <= booking_start_times[i + 1]) {
-                table.available = true;
-              }
-            }
+        for (let i = 0; i < booking_start_times.length; i++) {
+          if (booking_start_times[i] === startTimeStamp && booking_end_times[i] === endTimeStamp) {
+          } else if (booking_start_times[0] >= endTimeStamp) {
+            table.available = true;
+            i = booking_start_times.length;
+          } else if ((booking_end_times[i] <= startTimeStamp && booking_start_times[i + 1] >= endTimeStamp) || (booking_end_times[i] <= startTimeStamp && booking_start_times[i + 1] === undefined)) {
+            table.available = true;
+            i = booking_start_times.length;
+          } else {
+            console.log("Table unavailable");
           }
         }
         table_availability.push(table);
@@ -97,6 +103,29 @@ const bookingsReducer = (state = initialState, action) => {
       return {
         ...state,
         all_bookings_of_size: action.payload,
+      }
+    }
+    case 'FETCH_BOOKINGS_BY_USER': {
+      return {
+        ...state,
+        users_bookings: action.payload,
+      }
+    }
+    case 'FETCH_BOOKINGS_BY_USER_FILTERED': {
+      return {
+        ...state,
+        users_bookings: action.payload,
+      }
+    }
+    case 'Clear_User_Bookings': {
+      return {
+        ...state,
+        users_bookings: [],
+      }
+    } case 'CLEAR_TIME': {
+      return {
+        ...state,
+        time: undefined,
       }
     }
     default:

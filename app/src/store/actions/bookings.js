@@ -8,7 +8,10 @@ const ADD_TABLE = 'ADD_TABLE';
 const ADD_TIME = 'ADD_TIME';
 const PERFORM_SCHEDULE = 'PERFORM_SCHEDULE';
 const POST_TABLE = 'POST_TABLE';
-
+const FETCH_BOOKINGS_BY_USER = 'FETCH_BOOKINGS_BY_USER';
+const FETCH_BOOKINGS_BY_USER_FILTERED = 'FETCH_BOOKINGS_BY_USER_FILTERED';
+const Clear_User_Bookings = 'Clear_User_Bookings';
+const CLEAR_TIME = 'CLEAR_TIME';
 
 //Down from here obsolete
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
@@ -22,6 +25,27 @@ const ADD_NEW_BOOKING_TIME_DOCUMENT = 'ADD_NEW_BOOKING_TIME_DOCUMENT';
 //Internal actions (not involving the firestore databse)
 //
 //
+
+export const clearUserBookings = () => {
+  return async dispatch => {
+    try {
+      dispatch({ type: Clear_User_Bookings, payload: true });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const clearTime = () => {
+  return async dispatch => {
+    try {
+      dispatch({ type: CLEAR_TIME, payload: true });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
 export const addTable = (table) => {
   return async dispatch => {
     try {
@@ -31,6 +55,7 @@ export const addTable = (table) => {
     }
   }
 }
+
 export const addTime = (start, end) => {
   return async dispatch => {
     try {
@@ -85,13 +110,46 @@ export const fetchTablesBySize = (size, restid) => {
 }
 
 export const fetchBookingsBySize = (size, restid) => {
+  const now = new Date();
   return async dispatch => {
     try {
-      firebase.firestore().collection('bookings2').where('guests', '==', size).where('restid', '==', restid).get().then((querySnapshot) => {
+      firebase.firestore().collection('bookings2').where('guests', '==', size).where('restid', '==', restid).where('end', '>', now).get().then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), docId: doc.id }
         });
         dispatch({ type: FETCH_BOOKINGS_BY_SIZE, payload: response });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+export const fetchBookingsByUser = (userid) => {
+  console.log("NO FILTER")
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('bookings2').where('cusid', '==', userid).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id }
+        });
+        dispatch({ type: FETCH_BOOKINGS_BY_USER, payload: response });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const fetchBookingsByUserFiltered = (userid) => {
+  const now = new Date();
+  console.log("FILTER")
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('bookings2').where('cusid', '==', userid).where('end', '>', now).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id }
+        });
+        dispatch({ type: FETCH_BOOKINGS_BY_USER_FILTERED, payload: response });
       });
     } catch (error) {
       console.error(error);
@@ -119,7 +177,7 @@ export const postTable = (restid, table) => {
     dispatch({ type: POST_TABLE, payload: undefined })
   }
 }
-export const postReservation = (tableid, restid, user, guests, start, end) => {
+export const postReservation = (tableid, restid, user, guests, start, end, restname) => {
   (async function () {
     try {
       const res = await firebase.firestore().collection('bookings2').add({
@@ -130,6 +188,7 @@ export const postReservation = (tableid, restid, user, guests, start, end) => {
         tableref: tableid,
         guests: guests,
         restid: restid,
+        restname:restname,
       })
     } catch (error) {
       console.error(error);

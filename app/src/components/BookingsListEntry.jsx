@@ -27,9 +27,7 @@ const BookingsListEntry = (data) => {
             
         );
     }
-
-    console.log(data);
-
+    
     return (
         <ListHeader/>
     );

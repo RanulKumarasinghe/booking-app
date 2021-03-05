@@ -8,8 +8,6 @@ import firebase from 'src/utils/firebase';
 
 const BookingScreen = (props) => {
   const all_scheduled_tables = useSelector(state => state.bookings.all_scheduled_tables);
-  const all_tables_of_size = useSelector(state => state.bookings.all_tables_of_size);
-  const all_bookings_of_size = useSelector(state => state.bookings.all_bookings_of_size);
   const times = useSelector(state => state.bookings.time);
 
   const dispatch = useDispatch()
@@ -19,7 +17,6 @@ const BookingScreen = (props) => {
   const [dateString, setDateString] = React.useState();
   const [start, setStart] = React.useState();
   const [end, setEnd] = React.useState();
-  const [table, setTable] = React.useState("C3SpKCkToYhIPBhoekJC");
   const [selectedIndex, setSelectedIndex] = React.useState(undefined);
   const [schedule, setSchedule] = React.useState(false);
 
@@ -29,10 +26,9 @@ const BookingScreen = (props) => {
   const restId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === restId);
 
-  if(all_tables_of_size.length > 0 && all_bookings_of_size.length > 0 && times !== undefined && !schedule){
-    console.log('Haha redux go brr');
+  if (schedule) {
     dispatch(performSchedule());
-    setSchedule(true);
+    setSchedule(false);
   }
 
   const getDay = (date) => {
@@ -48,9 +44,11 @@ const BookingScreen = (props) => {
   }
 
   const constructDate = (time) => {
-    const month = ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1));
-    const fullDate = new Date(date.getFullYear() + "-" + (month) + "-" + date.getDate() + "T" + time);
-    return fullDate;
+    const month = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+    const day = (date.getDate()) < 10 ? "0" + (date.getDate()) : (date.getDate());
+    const paddedTime = (time.length < 5) ? "0" + (time) : (time);
+    const fullDate = new Date(date.getFullYear() + "-" + month + "-" + day + "T" + paddedTime);
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(time), 0, 0, 0));
   }
 
   //LIST ITEM THIS WHERE IT RENDER THE LIST COMPONENTS
@@ -59,11 +57,10 @@ const BookingScreen = (props) => {
     <ListItem
       title={`${index} - table_id [${item.id}]`}
       description={item.available ? 'Available' : `Unavailable`}
-      style={selectedIndex === index ? {backgroundColor:'#edf1f7'} : undefined}
+      style={selectedIndex === index ? { backgroundColor: '#edf1f7' } : undefined}
       onPress={() => {
-          setSelectedIndex(index);
-          console.log("go brrrr");
-        }
+        setSelectedIndex(index);
+      }
       }
     />
   );
@@ -144,9 +141,10 @@ const BookingScreen = (props) => {
             dispatch(fetchTablesBySize(guests, restId));
             dispatch(fetchBookingsBySize(guests, restId));
             dispatch(addTime(constructDate(start), constructDate(end)));
+            setSchedule(true);
           }}>Search</Button>
           <Button style={styles.button} onPress={() => {
-            dispatch(postReservation(all_scheduled_tables[selectedIndex].id, restId, user, guests, constructDate(start), constructDate(end)));
+            dispatch(postReservation(all_scheduled_tables[selectedIndex].id, restId, user, guests, constructDate(start), constructDate(end), restaurant.name));
           }}>Reserve</Button>
         </View>
       </View>
