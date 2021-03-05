@@ -83,7 +83,7 @@ const bookingsReducer = (state = initialState, action) => {
             table.available = true;
             i = booking_start_times.length;
           } else {
-            console.log("Table unavailable");
+            
           }
         }
         table_availability.push(table);

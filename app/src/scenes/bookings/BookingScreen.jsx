@@ -26,7 +26,7 @@ const BookingScreen = (props) => {
   const restId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === restId);
 
-  if (schedule) {
+  if (times !== undefined && schedule) {
     dispatch(performSchedule());
     setSchedule(false);
   }
