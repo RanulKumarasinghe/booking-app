@@ -8,7 +8,7 @@ import RestaurantScreen from '@/scenes/RestaurantScreen';
 import RestaurantListScreen from '@/scenes/restaurants/RestaurantListScreen';
 import BookingScreen from '@/scenes/bookings/BookingScreen';
 import BookingListScreen from '@/scenes/bookings/BookingListScreen';
-import RestaurantMenuListScreen from '@/scenes/restaurants/RestaurantListMenuScreen';
+import RestaurantListMenuScreen from '@/scenes/restaurants/RestaurantListMenuScreen';
 
 import RestaurantEditScreen from '@/scenes/restaurants/RestaurantEditScreen';
 import RestaurantAddScreen from '@/scenes/restaurants/RestaurantAddScreen';
@@ -21,11 +21,11 @@ import RestaurantEditMenuScreen from '@/scenes/manager/EditMenuItemScreen';
 import MenuItemScreen from '@/scenes/order/MenuItemScreen';
 import MenuAddItem from '@/scenes/manager/AddMenuItemScreen';
 
-// TODO: TO BE DELETED - Temporarry  
+// TODO: TO BE DELETED - Temporarry
 import AddTableScreen from '@/scenes/bookings/AddTableScreen'
 import ManagerRewardScreen from '@/scenes/rewards/ManagerRewardScreen'
 
-const routes = (Screen) => (      
+const routes = (Screen) => (
   <>
     <Screen name='Home' component={HomeScreen}/>
 
@@ -37,7 +37,7 @@ const routes = (Screen) => (
     <Screen name='BookingListScreen' component={BookingListScreen}/>
     <Screen name='Booking' component={BookingScreen}/>
     <Screen name='EditMenuScreen' component={RestaurantEditMenuScreen}/>
-    {/* <Screen name='MenuList' component={RestaurantMenuListScreen}/> */}
+    <Screen name='MenuList' component={RestaurantListMenuScreen}/>
 
     {/* Order */}
     <Screen name='Checkout' component={CheckOutScreen}/>

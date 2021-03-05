@@ -11,8 +11,8 @@ import {fetchAllFoodTypes, filterFoodType} from '@/store/actions/foodtypes';
 const MenuAddItem = (props) => {
 
   const dispatch = useDispatch();
-  const restaurantId = props.route.param.resID;
-
+  const restaurantId = props.route.params.resID;
+  console.log(restaurantId);
   const auth = useSelector(state => state.auth);
 
 
@@ -60,7 +60,7 @@ const MenuAddItem = (props) => {
     dispatch(createItem({
       rId: restaurantId,
       name: nameValue,
-      price: priceValue,
+      price: +priceValue,
       description: descriptionValue,
       imageUrl: imageUrlValue,
       numType: menuTypeValue,
@@ -72,7 +72,7 @@ const MenuAddItem = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
 
-      <View id={restaurant.id}>
+      <View id={restaurantId}>
       {/* <TopNavigation title="Restaurant Edit" alignment='center' style={styles.header} /> */}
       <ScrollView contentContainerStyle={{
             flexGrow: 1,

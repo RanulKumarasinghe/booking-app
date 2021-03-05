@@ -76,11 +76,23 @@ const Restaurant = (props) => {
 
   const auth = useSelector(state => state.auth);
 
+  let manager_login = false;
+
+  if (restaurant.staffIds[0] == auth.id && auth.id != null) {
+    manager_login = true;
+  } else {
+    manager_login = false;
+  }
+
+  // console.log(restaurant.staffIds[0]);
 
   const onEditRestaurant = () => props.navigation.navigate('Edit Restaurant', {
     restaurantId: restaurant.id
   });
 
+  const onMenuList = () => props.navigation.navigate('MenuList', {
+    restaurantId: restaurant.id
+  });
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -145,14 +157,19 @@ const Restaurant = (props) => {
                 <Button onPress={onBooking}>Make A Booking</Button>
             </View>
           </View>
-          {/* {auth.uid == restaurant.staffId ?
+          {manager_login ?
           <>
             <Divider />
             <Button onPress={onEditRestaurant}>Edit Restaurant</Button>
+            <Divider />
+          <Button onPress={onMenuList}>Menu List</Button>
           </>
           : null}
-          <Divider /> */}
+          {/* <Divider />
+          <Button onPress={onMenuList}>Menu List</Button> */}
+          <Divider />
           <Button onPress={onOrder}>Order</Button>
+
         </View>
       </ScrollView>
     </SafeAreaView>
