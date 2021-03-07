@@ -13,6 +13,8 @@ const FETCH_BOOKINGS_BY_USER_FILTERED = 'FETCH_BOOKINGS_BY_USER_FILTERED';
 const Clear_User_Bookings = 'Clear_User_Bookings';
 const CLEAR_TIME = 'CLEAR_TIME';
 const POST_RESERVATION_CANCELATION = 'POST_RESERVATION_CANCELATION';
+const FETCH_BOOKINGS_BY_RESTAURANT = 'FETCH_BOOKINGS_BY_RESTAURANT';
+const FETCH_BOOKINGS_BY_RESTAURANT_FILTERED = 'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED';
 
 //Down from here obsolete
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
@@ -125,6 +127,38 @@ export const fetchBookingsBySize = (size, restid) => {
     }
   }
 }
+
+export const fetchBookingsByRestaurant = (restid) => {
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('bookings2').where('restid', '==', restid).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id }
+        });
+        dispatch({ type: FETCH_BOOKINGS_BY_RESTAURANT, payload: response });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const fetchBookingsByRestaurantFiltered = (restid) => {
+  const now = new Date();
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('bookings2').where('restid', '==', restid).where('end', '>', now).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id }
+        });
+        dispatch({ type: FETCH_BOOKINGS_BY_RESTAURANT_FILTERED, payload: response });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
 export const fetchBookingsByUser = (userid) => {
   return async dispatch => {
     try {
@@ -212,6 +246,8 @@ export const postReservationCancelation = (bookingId) => {
     dispatch({ type: POST_RESERVATION_CANCELATION, payload: undefined })
   }
 }
+
+
 //
 //
 //Past this is discontinued and not used

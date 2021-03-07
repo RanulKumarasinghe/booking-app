@@ -3,6 +3,7 @@ export const initialState = {
   all_tables_of_size: [],
   all_bookings_of_size: [],
   all_scheduled_tables: [],
+  all_bookings_of_restaurant: [],
   users_bookings: [],
   tables: [],
   time: {}
@@ -27,7 +28,7 @@ const bookingsReducer = (state = initialState, action) => {
       }
     case 'PERFORM_SCHEDULE':
       const table_availability = [];
-      
+
       /*let w = () => {
         const timeSt = 0;
         const timeEn = 100;
@@ -82,7 +83,7 @@ const bookingsReducer = (state = initialState, action) => {
             table.available = true;
             i = booking_start_times.length;
           } else {
-            
+
           }
         }
         table_availability.push(table);
@@ -114,6 +115,18 @@ const bookingsReducer = (state = initialState, action) => {
       return {
         ...state,
         users_bookings: action.payload,
+      }
+    }
+    case 'FETCH_BOOKINGS_BY_RESTAURANT': {
+      return {
+        ...state,
+        all_bookings_of_restaurant: action.payload,
+      }
+    }
+    case 'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED': {
+      return {
+        ...state,
+        all_bookings_of_restaurant: action.payload,
       }
     }
     case 'Clear_User_Bookings': {
