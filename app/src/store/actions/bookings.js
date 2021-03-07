@@ -12,6 +12,7 @@ const FETCH_BOOKINGS_BY_USER = 'FETCH_BOOKINGS_BY_USER';
 const FETCH_BOOKINGS_BY_USER_FILTERED = 'FETCH_BOOKINGS_BY_USER_FILTERED';
 const Clear_User_Bookings = 'Clear_User_Bookings';
 const CLEAR_TIME = 'CLEAR_TIME';
+const POST_RESERVATION_CANCELATION = 'POST_RESERVATION_CANCELATION';
 
 //Down from here obsolete
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
@@ -125,7 +126,6 @@ export const fetchBookingsBySize = (size, restid) => {
   }
 }
 export const fetchBookingsByUser = (userid) => {
-  console.log("NO FILTER")
   return async dispatch => {
     try {
       firebase.firestore().collection('bookings2').where('cusid', '==', userid).get().then((querySnapshot) => {
@@ -142,7 +142,6 @@ export const fetchBookingsByUser = (userid) => {
 
 export const fetchBookingsByUserFiltered = (userid) => {
   const now = new Date();
-  console.log("FILTER")
   return async dispatch => {
     try {
       firebase.firestore().collection('bookings2').where('cusid', '==', userid).where('end', '>', now).get().then((querySnapshot) => {
@@ -188,7 +187,7 @@ export const postReservation = (tableid, restid, user, guests, start, end, restn
         tableref: tableid,
         guests: guests,
         restid: restid,
-        restname:restname,
+        restname: restname,
       })
     } catch (error) {
       console.error(error);
@@ -199,9 +198,23 @@ export const postReservation = (tableid, restid, user, guests, start, end, restn
   }
 }
 
+export const postReservationCancelation = (bookingId) => {
+  (async function () {
+    try {
+      const res = await firebase.firestore().collection('bookings2').doc(bookingId).update({
+        status: 'cancelled'
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  })();
+  return async dispatch => {
+    dispatch({ type: POST_RESERVATION_CANCELATION, payload: undefined })
+  }
+}
 //
 //
-//Past this is discontinued
+//Past this is discontinued and not used
 //
 //
 

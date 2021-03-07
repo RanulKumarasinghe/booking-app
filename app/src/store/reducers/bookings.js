@@ -27,8 +27,7 @@ const bookingsReducer = (state = initialState, action) => {
       }
     case 'PERFORM_SCHEDULE':
       const table_availability = [];
-      console.log("I DOOOOOOO");
-
+      
       /*let w = () => {
         const timeSt = 0;
         const timeEn = 100;
@@ -62,7 +61,7 @@ const bookingsReducer = (state = initialState, action) => {
         let booking_end_times = [];
 
         state.all_bookings_of_size.forEach((element) => {
-          if (tableElement.id === element.tableref) {
+          if (tableElement.id === element.tableref && element.status == 'ok') {
             booking_start_times.push(element.start.toDate().getTime());
             booking_end_times.push(element.end.toDate().getTime());
           }

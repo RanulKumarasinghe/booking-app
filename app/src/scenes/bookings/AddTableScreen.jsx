@@ -9,7 +9,7 @@ const AddTableScreen = (props) => {
   const store = useSelector(state => state.bookings.tables);
 
   //placeholder
-  const resid = '0oSOVkl4hMwsxHtexFJT';
+  const resid = useSelector(state => state.staffRestaurant.restaurant.id);
   const [newTables, setNewTables] = React.useState([]);
 
   let tableInput;

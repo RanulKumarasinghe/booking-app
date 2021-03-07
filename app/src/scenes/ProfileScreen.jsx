@@ -19,6 +19,8 @@ const ProfileScreen = (props) => {
     dispatch(logout());
   };
 
+  const isManager = useSelector(state => !!state.staffRestaurant.restaurant);
+
   const handleResetPassword = () => {
     //props.navigation.navigate("Reset Password");
   };
@@ -26,6 +28,10 @@ const ProfileScreen = (props) => {
   const handleRewards = () => {
     props.navigation.navigate("Rewards");
   };
+
+  const navAddTableScreen = () => {
+    props.navigation.navigate("AddTableScreen");
+  }
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -36,6 +42,10 @@ const ProfileScreen = (props) => {
     { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
     { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
   ];
+
+  if(isManager){
+    list.splice(2, 0, { icon: "cog", name: "Add table to restaurant", onPress: navAddTableScreen });
+  }
 
   const test = () => {
     db.collection("restaurants")

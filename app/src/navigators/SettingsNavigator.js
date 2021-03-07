@@ -3,6 +3,7 @@ import React from 'react'
 
 import ProfileScreen from 'src/scenes/ProfileScreen'
 import RestaurantAddScreen from 'src/scenes/restaurants/RestaurantAddScreen';
+import AddTableScreen from 'src/scenes/bookings/AddTableScreen';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -27,12 +28,17 @@ const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen
         name="Profile"
         component={ProfileScreen}
-        // options={authScreenOptions}
+      // options={authScreenOptions}
       />
       <ProfileStackNavigator.Screen
         name='Add Restaurant'
         component={RestaurantAddScreen}
-        // options={authScreenOptions}
+      // options={authScreenOptions}
+      />
+      <ProfileStackNavigator.Screen
+        name='AddTableScreen'
+        component={AddTableScreen}
+      // options={authScreenOptions}
       />
     </ProfileStackNavigator.Navigator>
   );

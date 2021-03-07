@@ -18,18 +18,12 @@ const BookingScreen = (props) => {
   const [start, setStart] = React.useState();
   const [end, setEnd] = React.useState();
   const [selectedIndex, setSelectedIndex] = React.useState(undefined);
-  const [schedule, setSchedule] = React.useState(false);
 
   const user = firebase.auth().currentUser.uid;
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const restId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === restId);
-
-  if (times !== undefined && schedule) {
-    dispatch(performSchedule());
-    setSchedule(false);
-  }
 
   const getDay = (date) => {
     return date.getDate();
@@ -141,7 +135,9 @@ const BookingScreen = (props) => {
             dispatch(fetchTablesBySize(guests, restId));
             dispatch(fetchBookingsBySize(guests, restId));
             dispatch(addTime(constructDate(start), constructDate(end)));
-            setSchedule(true);
+            setTimeout(()=>{
+              dispatch(performSchedule());
+            },1000);
           }}>Search</Button>
           <Button style={styles.button} onPress={() => {
             dispatch(postReservation(all_scheduled_tables[selectedIndex].id, restId, user, guests, constructDate(start), constructDate(end), restaurant.name));

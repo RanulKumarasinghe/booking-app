@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 import { Divider, Text, Button } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAllBookings } from '@/store/actions/bookings'
+import { fetchAllBookings, postReservationCancelation } from '@/store/actions/bookings'
 
 const BookingsListEntry = (props) => {
     /*Object {
@@ -25,17 +25,18 @@ const BookingsListEntry = (props) => {
     const image = { uri: "https://www.fsrmagazine.com/sites/default/files/styles/story_image_720x430/public/feature-images/state-full-service-restaurant-industry-1554901734.jpg?itok=-EciUerQ" };
 
     const constructDate = (timestamp) => {
-        const date = new Date(timestamp*1000);
-        return `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`;
+        const date = new Date(timestamp * 1000);
+        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     }
 
     const constructTime = (timestamp) => {
-        const date = new Date(timestamp*1000);
-        const time = `${date.getHours()}:${date.getMinutes() < 10 ? "0"+date.getMinutes() : date.getMinutes()}`
+        const date = new Date(timestamp * 1000);
+        const time = `${date.getHours()}:${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`
         return time;
     }
 
-    const data = props.item;
+    const data = props.item.element;
+    const callback = props.item.callback;
 
     const ListHeader = () => {
         return (
@@ -61,12 +62,12 @@ const BookingsListEntry = (props) => {
                 <Divider />
                 <View style={{ flexDirection: 'row', margin: 5 }}>
                     <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
-                    <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.start.seconds)+"-"+constructTime(data.end.seconds)}</Text>
+                    <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.start.seconds) + "-" + constructTime(data.end.seconds)}</Text>
                 </View>
                 <Divider />
                 {/*true === true ? <OrderedFoodList data={data}/> : undefined*/}
                 <View style={styles.orderPrice}>
-                   {/*<Text>Total: £10:16</Text>*/}
+                    {/*<Text>Total: £10:16</Text>*/}
                 </View>
             </View>
         );
@@ -77,7 +78,7 @@ const BookingsListEntry = (props) => {
         //Placeholder
         return (
             <View style={styles.orderDetails}>
-                    {/*<FlatList
+                {/*<FlatList
                         data={data}
                         renderItem={(order) => {
                             return (
@@ -91,15 +92,15 @@ const BookingsListEntry = (props) => {
                         }}
                         keyExtractor={(item) => item.id}
                     />*/}
-                    <Divider />
-                </View> 
+                <Divider />
+            </View>
         );
     }
 
     const ListButtons = () => {
         return (
             <View style={styles.buttonContainer}>
-                <Button style={styles.button} size='medium' status='basic'>
+                <Button style={styles.button} size='medium' status='basic' onPress={()=>{callback(data.docId)}}>
                     Cancel
                 </Button>
                 <Button style={styles.button} size='medium' status='basic'>
@@ -120,10 +121,20 @@ const BookingsListEntry = (props) => {
 }
 
 export default BookingsList = (props) => {
+    const dispatch = useDispatch();
+
+    const cancelBooking = (bookingid) => {
+        dispatch(postReservationCancelation(bookingid));
+    }
+
+    const mappedData = props.payload.map((element) => {
+        return({element, callback:cancelBooking})
+    })
+
     return (
         <View style={styles.container}>
             <FlatList
-                data={props.payload}
+                data={mappedData}
                 renderItem={BookingsListEntry}
                 keyExtractor={(item) => item.id}
                 listKey={(item) => index.toString()}
@@ -204,8 +215,8 @@ const styles = StyleSheet.create({
     },
     button: {
         width: '50%',
-        borderRadius:0,
-        borderLeftWidth:1,
-        borderColor:'white',
+        borderRadius: 0,
+        borderLeftWidth: 1,
+        borderColor: 'white',
     }
 });
