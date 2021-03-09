@@ -84,11 +84,10 @@ export default ReservationsScreen = ({ navigation }) => {
         if (!showLoadingSpinner && !isOffline) {
             const sortedBookings = sortDates(all_bookings_of_restaurant);
             return (
-                <View>
-                    <BookingsList payload={sortedBookings} />
-                </View>);
+              <BookingsList payload={sortedBookings} />
+            )
         } else {
-            return (<View></View>)
+            return (<></>)
         }
     }
 
@@ -132,12 +131,10 @@ export default ReservationsScreen = ({ navigation }) => {
         )
     } else {
         return (
-            <Layout style={styles.container}>
-                <ToggleFilter />
-                <ScrollView>
-                    <List />
-                </ScrollView>
-            </Layout>
+          <Layout style={styles.container}>
+              <ToggleFilter />
+              <List />
+          </Layout>
         );
     }
 };

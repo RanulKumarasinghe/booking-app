@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { Toggle, Text, Divider, Spinner, Layout, Icon } from '@ui-kitten/components';
 import BookingsList from '@/components/BookingsList';
@@ -33,7 +33,7 @@ export default BookingListScreen = ({ navigation }) => {
 
     const isFocused = useIsFocused()
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!isOffline) {
             dispatch(clearUserBookings());
             setshowLoadingSpinner(true);
@@ -82,12 +82,9 @@ export default BookingListScreen = ({ navigation }) => {
     const List = () => {
         if (!showLoadingSpinner && !isOffline) {
             const sortedBookings = sortDates(users_bookings);
-            return (
-                <View>
-                    <BookingsList payload={sortedBookings} />
-                </View>);
+            return (<BookingsList payload={sortedBookings} />);
         } else {
-            return (<View></View>)
+            return (<></>)
         }
     }
 
@@ -99,7 +96,7 @@ export default BookingListScreen = ({ navigation }) => {
                 </View>
             );
         } else {
-            return (<View></View>)
+            return (<></>)
         }
     }
 
@@ -133,9 +130,7 @@ export default BookingListScreen = ({ navigation }) => {
         return (
             <Layout style={styles.container}>
                 <ToggleFilter />
-                <ScrollView>
-                    <List />
-                </ScrollView>
+                <List />
             </Layout>
         );
     }
