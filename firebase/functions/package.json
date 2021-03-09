@@ -6,7 +6,8 @@
     "shell": "firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "test": "jest --watchAll"
   },
   "engines": {
     "node": "12"
@@ -17,7 +18,9 @@
     "firebase-functions": "^3.11.0"
   },
   "devDependencies": {
-    "firebase-functions-test": "^0.2.0"
+    "@firebase/rules-unit-testing": "^1.2.2",
+    "firebase-functions-test": "^0.2.3",
+    "jest": "^26.6.3"
   },
   "private": true
 }

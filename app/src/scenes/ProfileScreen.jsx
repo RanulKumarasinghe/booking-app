@@ -19,6 +19,8 @@ const ProfileScreen = (props) => {
     dispatch(logout());
   };
 
+  const isManager = useSelector(state => !!state.staffRestaurant.restaurant);
+
   const handleResetPassword = () => {
     //props.navigation.navigate("Reset Password");
   };

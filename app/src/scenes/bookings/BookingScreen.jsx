@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
-import { Divider, Icon, Button, Layout, Datepicker, List, ListItem } from '@ui-kitten/components';
+import { Divider, Icon, Button, Layout, Datepicker, List, ListItem, Spinner } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
-import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime } from '@/store/actions/bookings';
+import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime, clearTables } from '@/store/actions/bookings';
 import firebase from 'src/utils/firebase';
 
 const BookingScreen = (props) => {
   const all_scheduled_tables = useSelector(state => state.bookings.all_scheduled_tables);
-  const all_tables_of_size = useSelector(state => state.bookings.all_tables_of_size);
-  const all_bookings_of_size = useSelector(state => state.bookings.all_bookings_of_size);
-  const times = useSelector(state => state.bookings.time);
-
   const dispatch = useDispatch()
 
   const [guests, setGuests] = React.useState();
@@ -19,21 +15,18 @@ const BookingScreen = (props) => {
   const [dateString, setDateString] = React.useState();
   const [start, setStart] = React.useState();
   const [end, setEnd] = React.useState();
-  const [table, setTable] = React.useState("C3SpKCkToYhIPBhoekJC");
   const [selectedIndex, setSelectedIndex] = React.useState(undefined);
-  const [schedule, setSchedule] = React.useState(false);
 
+  const [buttonGhost, setButtonGhost] = React.useState(false);
   const user = firebase.auth().currentUser.uid;
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const restId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === restId);
 
-  if(all_tables_of_size.length > 0 && all_bookings_of_size.length > 0 && times !== undefined && !schedule){
-    console.log('Haha redux go brr');
-    dispatch(performSchedule());
-    setSchedule(true);
-  }
+  React.useEffect(() => {
+
+  }, [all_scheduled_tables]);
 
   const getDay = (date) => {
     return date.getDate();
@@ -48,22 +41,46 @@ const BookingScreen = (props) => {
   }
 
   const constructDate = (time) => {
-    const month = ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1));
-    const fullDate = new Date(date.getFullYear() + "-" + (month) + "-" + date.getDate() + "T" + time);
-    return fullDate;
+    const month = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+    const day = (date.getDate()) < 10 ? "0" + (date.getDate()) : (date.getDate());
+    const paddedTime = (time.length < 5) ? "0" + (time) : (time);
+    const fullDate = new Date(date.getFullYear() + "-" + month + "-" + day + "T" + paddedTime);
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(time), 0, 0, 0));
   }
 
+  const RenderSubmitButton = () => {
+    if (buttonGhost) {
+      return (
+        <Button style={styles.button} appearance="ghost"><Spinner/></Button>
+      );
+    } else {
+      return (
+        <Button style={styles.button} onPress={() => {
+          setButtonGhost(true);
+          if(all_scheduled_tables.length > 0){
+            dispatch(clearTables());
+          }
+          dispatch(fetchTablesBySize(guests, restId));
+          dispatch(fetchBookingsBySize(guests, restId));
+          dispatch(addTime(constructDate(start), constructDate(end)));
+          setTimeout(() => {
+            dispatch(performSchedule());
+            setButtonGhost(false);
+          }, 1600);
+        }}>Search</Button>
+      );
+    }
+  }
   //LIST ITEM THIS WHERE IT RENDER THE LIST COMPONENTS
   //
   const renderItem = ({ item, index }) => (
     <ListItem
       title={`${index} - table_id [${item.id}]`}
       description={item.available ? 'Available' : `Unavailable`}
-      style={selectedIndex === index ? {backgroundColor:'#edf1f7'} : undefined}
+      style={selectedIndex === index ? { backgroundColor: '#edf1f7' } : undefined}
       onPress={() => {
-          setSelectedIndex(index);
-          console.log("go brrrr");
-        }
+        setSelectedIndex(index);
+      }
       }
     />
   );
@@ -140,13 +157,11 @@ const BookingScreen = (props) => {
         </View>
 
         <View style={styles.submitButton}>
+          <RenderSubmitButton />
           <Button style={styles.button} onPress={() => {
-            dispatch(fetchTablesBySize(guests, restId));
-            dispatch(fetchBookingsBySize(guests, restId));
-            dispatch(addTime(constructDate(start), constructDate(end)));
-          }}>Search</Button>
-          <Button style={styles.button} onPress={() => {
-            dispatch(postReservation(table, user, constructDate(start), constructDate(end)));
+            if (selectedIndex !== undefined) {
+              dispatch(postReservation(all_scheduled_tables[selectedIndex].id, restId, user, guests, constructDate(start), constructDate(end), restaurant.name));
+            }
           }}>Reserve</Button>
         </View>
       </View>
@@ -167,6 +182,8 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   button: {
+    width:100,
+    height:50,
     margin: 2.5
   },
   dateTime: {

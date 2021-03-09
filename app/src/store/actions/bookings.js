@@ -8,7 +8,15 @@ const ADD_TABLE = 'ADD_TABLE';
 const ADD_TIME = 'ADD_TIME';
 const PERFORM_SCHEDULE = 'PERFORM_SCHEDULE';
 const POST_TABLE = 'POST_TABLE';
-
+const FETCH_BOOKINGS_BY_USER = 'FETCH_BOOKINGS_BY_USER';
+const FETCH_BOOKINGS_BY_USER_FILTERED = 'FETCH_BOOKINGS_BY_USER_FILTERED';
+const Clear_User_Bookings = 'Clear_User_Bookings';
+const CLEAR_TIME = 'CLEAR_TIME';
+const POST_RESERVATION_CANCELATION = 'POST_RESERVATION_CANCELATION';
+const FETCH_BOOKINGS_BY_RESTAURANT = 'FETCH_BOOKINGS_BY_RESTAURANT';
+const FETCH_BOOKINGS_BY_RESTAURANT_FILTERED = 'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED';
+const POST_BOOKING_EXPIRATION = 'POST_BOOKING_EXPIRATION';
+const CLEAR_TABLES = "CLEAR_TABLES";
 
 //Down from here obsolete
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
@@ -22,6 +30,37 @@ const ADD_NEW_BOOKING_TIME_DOCUMENT = 'ADD_NEW_BOOKING_TIME_DOCUMENT';
 //Internal actions (not involving the firestore databse)
 //
 //
+
+export const clearUserBookings = () => {
+  return async dispatch => {
+    try {
+      dispatch({ type: Clear_User_Bookings, payload: true });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const clearTime = () => {
+  return async dispatch => {
+    try {
+      dispatch({ type: CLEAR_TIME, payload: true });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const clearTables = () => {
+  return async dispatch => {
+    try {
+      dispatch({ type: CLEAR_TABLES, payload: true });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
 export const addTable = (table) => {
   return async dispatch => {
     try {
@@ -31,6 +70,7 @@ export const addTable = (table) => {
     }
   }
 }
+
 export const addTime = (start, end) => {
   return async dispatch => {
     try {
@@ -76,8 +116,6 @@ export const fetchTablesBySize = (size, restid) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), id: doc.id }
         });
-        console.log('fetch tables by size go brr')
-        console.log(response)
         dispatch({ type: FETCH_TABLES_BY_SIZE, payload: response })
       });
     } catch (error) {
@@ -87,15 +125,76 @@ export const fetchTablesBySize = (size, restid) => {
 }
 
 export const fetchBookingsBySize = (size, restid) => {
+  const now = new Date();
   return async dispatch => {
     try {
-      firebase.firestore().collection('bookings2').where('guests', '==', size).where('restid', '==', restid).get().then((querySnapshot) => {
+      firebase.firestore().collection('bookings2').where('guests', '==', size).where('restid', '==', restid).where('end', '>', now).get().then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), docId: doc.id }
         });
-        console.log('fetch bookings by size go brr')
-        console.log(response)
         dispatch({ type: FETCH_BOOKINGS_BY_SIZE, payload: response });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const fetchBookingsByRestaurant = (restid) => {
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('bookings2').where('restid', '==', restid).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id }
+        });
+        dispatch({ type: FETCH_BOOKINGS_BY_RESTAURANT, payload: response });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const fetchBookingsByRestaurantFiltered = (restid) => {
+  const now = new Date();
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('bookings2').where('restid', '==', restid).where('end', '>', now).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id }
+        });
+        dispatch({ type: FETCH_BOOKINGS_BY_RESTAURANT_FILTERED, payload: response });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const fetchBookingsByUser = (userid) => {
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('bookings2').where('cusid', '==', userid).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id }
+        });
+        dispatch({ type: FETCH_BOOKINGS_BY_USER, payload: response });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const fetchBookingsByUserFiltered = (userid) => {
+  const now = new Date();
+  return async dispatch => {
+    try {
+      firebase.firestore().collection('bookings2').where('cusid', '==', userid).where('end', '>', now).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id }
+        });
+        dispatch({ type: FETCH_BOOKINGS_BY_USER_FILTERED, payload: response });
       });
     } catch (error) {
       console.error(error);
@@ -123,8 +222,7 @@ export const postTable = (restid, table) => {
     dispatch({ type: POST_TABLE, payload: undefined })
   }
 }
-
-export const postReservation = (tableid, user, start, end) => {
+export const postReservation = (tableid, restid, user, guests, start, end, restname) => {
   (async function () {
     try {
       const res = await firebase.firestore().collection('bookings2').add({
@@ -132,7 +230,10 @@ export const postReservation = (tableid, user, start, end) => {
         end: end,
         start: start,
         status: 'ok',
-        tableid: tableid,
+        tableref: tableid,
+        guests: guests,
+        restid: restid,
+        restname: restname,
       })
     } catch (error) {
       console.error(error);
@@ -143,9 +244,39 @@ export const postReservation = (tableid, user, start, end) => {
   }
 }
 
+export const postReservationCancelation = (bookingId) => {
+  (async function () {
+    try {
+      const res = await firebase.firestore().collection('bookings2').doc(bookingId).update({
+        status: 'cancelled'
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  })();
+  return async dispatch => {
+    dispatch({ type: POST_RESERVATION_CANCELATION, payload: undefined })
+  }
+}
+
+export const postBookingExpiration = (bookingId) => {
+  (async function () {
+    try {
+      const res = await firebase.firestore().collection('bookings2').doc(bookingId).update({
+        status: 'expired'
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  })();
+  return async dispatch => {
+    dispatch({ type: POST_BOOKING_EXPIRATION, payload: undefined })
+  }
+}
+
 //
 //
-//Past this is discontinued
+//Past this is discontinued and not used
 //
 //
 
