@@ -8,16 +8,9 @@ import { login } from '@/store/actions/auth'
 
 const CheckOutScreen = (props) => {
   const order = useSelector(state => state.order);
+  const userId = useSelector(state => state.auth.uid);
 
   const dispatch = useDispatch()
-
-  const goTo = () => {
-    // props.navigation.navigate('Reset Password')
-  }
-
-  const totalCost = () => {
-
-  }
 
   const test = () => {
     const testFunction = Firebase.functions().httpsCallable('placeOrder')
@@ -30,24 +23,51 @@ const CheckOutScreen = (props) => {
       })
   }
 
-  const checkout = () => {
-    // let cart = []
-    // decorator(order.cart).map(cartItem => {
-    //   cart.push({
-    //     quantity: cartItem.quantity,
-    //     item: db.doc(`restaurants/${order.restaurantId}/menu/${cartItem.itemId}`),
-    //   })
-    // })
-    
-    // console.log(cart)
 
-    console.log(order)
-    // db.collection('orders').add({card: order});
-    // console.log(decorator(order.cart))
+  const checkout = async () => {
+    const data = {
+      cart: decorator(order.cart),
+      restaurantId: order.orderRestaurantId
+    }
+
+    proccessCheckout(data)
   }
 
-  const test2 = async () => {
+  const proccessCheckout = (data) => {
+    // console.log(data.restaurantId)
 
+    const fetchItems = (restaurantId, item) => {
+      return db.doc(`restaurants/${restaurantId}/menu/${item.itemId}`).get().then(doc => {
+        return {
+          item: doc.data(),
+          quantity: item.quantity,
+        }
+      }).catch(err =>{
+        console.log("err fetching files")
+      })
+    }
+    
+    const getItems = async (cart, restaurantId) => {
+      return Promise.all(cart.map(cartItem => fetchItems(restaurantId, cartItem)))
+    }
+    
+    // const userId = 1
+    getItems(data.cart, data.restaurantId).then(cartItems => {
+      db.collection('orders').add({
+        restaurantId: data.restaurantId,
+        userId: userId,
+        createdAt: new Date(),
+        cart: cartItems
+      }).then(() => {
+        console.log('Order Added!');
+      })
+    }).catch(err =>  {
+      console.log('Something went wrong');
+      // console.log(err);
+    })
+  }
+  const test2 = async () => {
+    console.log(order)
     // db.collection("orders").doc("T4Kp7Qj5hqGmmA8niWXC")
     // .get()
     // .then(function(doc) {

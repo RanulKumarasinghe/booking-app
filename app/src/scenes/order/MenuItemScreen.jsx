@@ -21,6 +21,10 @@ const MenuItemScreen = (props) => {
 
   const restaurantId = props.route.params.restaurantId;
 
+  const test = () => {
+    console.log(menuItem)
+  }
+
   // const getCategory = () => {
   //   return MenuData.find(category => category.id == params.categoryId);
   // }
@@ -60,6 +64,9 @@ const MenuItemScreen = (props) => {
           </Button>
           <Button onPress={() => {props.navigation.navigate('MenuScreen')}}>
             Cancel
+          </Button>
+          <Button onPress={test}>
+            Test
           </Button>
         </View> ) }
         <Divider />
