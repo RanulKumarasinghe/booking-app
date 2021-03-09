@@ -7,7 +7,7 @@ import Menu from '../components/Menu/Menu';
 import StarRating from 'react-native-star-rating';
 import { FlatList } from "react-native-gesture-handler";
 import { useSelector, useDispatch } from 'react-redux';
-import { setOrderType } from '@/store/actions/order'
+import { newOrder } from '@/store/actions/order'
 import {fetchAllMenu} from '@/store/actions/menu';
 
 
@@ -47,6 +47,8 @@ const Restaurant = (props) => {
   const [data, setData] = useState({});
   const [isLoading, setLoading] = useState(true);
 
+  const dispatch = useDispatch()
+
   useEffect(() => {
     const url  = 'https://maps.googleapis.com/maps/api/place/details/json?'
     const place = `place_id=${restaurant.google_id}`;
@@ -69,6 +71,7 @@ const Restaurant = (props) => {
   });
 
   const onOrder = () => {
+    dispatch(newOrder(restaurant.id));
     props.navigation.navigate('Order Type', {
       restaurantId: restaurant.id
     })
