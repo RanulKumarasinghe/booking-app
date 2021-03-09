@@ -1,54 +1,221 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native'
-import BookingsListEntry from './BookingsListEntry'
-import { List } from '@ui-kitten/components';
+import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
+import { Divider, Text, Button } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAllBookings } from '@/store/actions/bookings'
+import { fetchAllBookings, postReservationCancelation } from '@/store/actions/bookings'
 
-const BookingsList = () => {
-    const store = useSelector(state => state.bookings);
+const BookingsListEntry = (props) => {
+    /*Object {
+        "cusid": "glJhg6e6vYS9AtXRE40Eo0DL42y1",
+        "docId": "I1JOgdMSt8RdqFV6H9uz",
+        "end": t {
+          "nanoseconds": 0,
+          "seconds": 1614438000,
+        },
+        "guests": "2",
+        "restid": "0oSOVkl4hMwsxHtexFJT",
+        "start": t {
+          "nanoseconds": 0,
+          "seconds": 1614434400,
+        },
+        "status": "ok",
+        "tableref": "C3SpKCkToYhIPBhoekJC",
+      }*/
 
-    const [loaded, setLoaded] = React.useState(false);
-    const [refreshing, setRefreshing] = React.useState(false)
-    const [data, setData] = React.useState();
+    const image = { uri: "https://www.fsrmagazine.com/sites/default/files/styles/story_image_720x430/public/feature-images/state-full-service-restaurant-industry-1554901734.jpg?itok=-EciUerQ" };
 
-    const auth = useSelector(state => state.auth);
-    const dispatch = useDispatch();
-
-    if (!loaded) {
-        dispatch(fetchAllBookings(auth.uid));
-        setData(store.bookings);
-        setLoaded(true);
+    const constructDate = (timestamp) => {
+        const date = new Date(timestamp * 1000);
+        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     }
 
-    const handleRefresh = () => {
-        setRefreshing(true);
-        dispatch(fetchAllBookings(auth.uid));
-        setTimeout(function () {
-            setData(store.bookings);
-            setRefreshing(false);
-        }, 500);
+    const constructTime = (timestamp) => {
+        const date = new Date(timestamp * 1000);
+        const time = `${date.getHours()}:${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`
+        return time;
     }
 
-    if (auth.uid !== undefined) {
+    const data = props.item.element;
+    const callback = props.item.callback;
+
+    const ListHeader = () => {
         return (
-            <List
-                style={styles.container}
-                data={data}
-                renderItem={BookingsListEntry}
-                refreshing={refreshing}
-                onRefresh={handleRefresh}
-            />
+            <ImageBackground source={image} style={styles.headerImg}>
+                <View style={styles.headerContainer}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={styles.headerTitle}>Booking - {data.restname}</Text>
+                        <Text style={styles.headerSubTitle}>{constructDate(data.start.seconds)}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={styles.headerTitle}>Status: {data.status}</Text>
+                        {/*<Text style={styles.headerSubTitle}>Pedro</Text>*/}
+                    </View>
+                </View>
+            </ImageBackground>
         );
-    } else {
-        return (<Text>PLEASE LOG IN</Text>)
     }
+
+    const ListContent = () => {
+        let dividerCount = data.length - 1;
+        return (
+            <View style={styles.listContentContainer}>
+                <Divider />
+                <View style={{ flexDirection: 'row', margin: 5 }}>
+                    <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
+                    <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.start.seconds) + "-" + constructTime(data.end.seconds)}</Text>
+                </View>
+                <Divider />
+                {/*true === true ? <OrderedFoodList data={data}/> : undefined*/}
+                <View style={styles.orderPrice}>
+                    {/*<Text>Total: £10:16</Text>*/}
+                </View>
+            </View>
+        );
+    }
+
+    const OrderedFoodList = () => {
+        let dividerCount = data.length - 1;
+        //Placeholder
+        return (
+            <View style={styles.orderDetails}>
+                {/*<FlatList
+                        data={data}
+                        renderItem={(order) => {
+                            return (
+                                <View>
+                                    <View style={{ padding: 3 }}>
+                                        <Text>{order.item.q + ' - ' + order.item.i}</Text>
+                                    </View>
+                                    {dividerCount-- !== 0 ? <Divider /> : undefined}
+                                </View>
+                            );
+                        }}
+                        keyExtractor={(item) => item.id}
+                    />*/}
+                <Divider />
+            </View>
+        );
+    }
+
+    const ListButtons = () => {
+        return (
+            <View style={styles.buttonContainer}>
+                <Button style={styles.button} size='medium' status='basic' onPress={()=>{callback(data.docId)}}>
+                    Cancel
+                </Button>
+                <Button style={styles.button} size='medium' status='basic'>
+                    Receipt
+                </Button>
+            </View>
+        );
+    }
+
+    return (
+        <View style={styles.listEntryContainer}>
+            <ListHeader />
+            <ListContent />
+            <ListButtons />
+        </View>
+
+    );
+}
+
+export default BookingsList = (props) => {
+    const dispatch = useDispatch();
+    const cancelBooking = (bookingid) => {
+        dispatch(postReservationCancelation(bookingid));
+    }
+
+    const mappedData = props.payload.map((element) => {
+        return({element, callback:cancelBooking})
+    })
+
+    return (
+        <View style={styles.container}>
+            <FlatList
+                data={mappedData}
+                renderItem={BookingsListEntry}
+                keyExtractor={(item) => item.id}
+                listKey={(item) => index.toString()}
+            />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-        maxHeight: "100%",
+        maxWidth: '100%',
+        maxHeight: '100%',
+        margin: 5,
+        alignSelf: "stretch",
     },
+    listEntryContainer: {
+        borderTopWidth: 2,
+        borderBottomWidth: 2,
+        borderLeftWidth: 2,
+        borderRightWidth: 2,
+        borderRadius: 5,
+        marginTop: 5,
+        marginBottom: 5
+    },
+    headerContainer: {
+        height: 85,
+        width: '100%',
+    },
+    headerImg: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "center",
+        opacity: 0.75,
+    },
+    headerTitle: {
+        color: "white",
+        fontSize: 18,
+        fontWeight: "bold",
+        flex: 1,
+        margin: 5,
+        textShadowColor: 'black',
+        textShadowRadius: 1,
+        textShadowOffset: {
+            width: 1,
+            height: 1
+        }
+    },
+    headerSubTitle: {
+        color: "white",
+        fontSize: 18,
+        fontWeight: "bold",
+        margin: 5,
+        textShadowColor: 'black',
+        textShadowRadius: 1,
+        textShadowOffset: {
+            width: 1,
+            height: 1
+        }
+    },
+    listContentContainer: {
+        alignSelf: "stretch",
+        backgroundColor: '#C4C4C4'
+    },
+    orderDetails: {
+        margin: 5,
+        marginLeft: 15,
+        marginRight: 15
+    },
+    orderPrice: {
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'center',
+        padding: 5
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    button: {
+        width: '50%',
+        borderRadius: 0,
+        borderLeftWidth: 1,
+        borderColor: 'white',
+    }
 });
-
-export default BookingsList;

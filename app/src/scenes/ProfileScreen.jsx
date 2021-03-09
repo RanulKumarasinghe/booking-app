@@ -19,6 +19,8 @@ const ProfileScreen = (props) => {
     dispatch(logout());
   };
 
+  const isManager = useSelector(state => !!state.staffRestaurant.restaurant);
+
   const handleResetPassword = () => {
     //props.navigation.navigate("Reset Password");
   };
@@ -27,15 +29,32 @@ const ProfileScreen = (props) => {
     props.navigation.navigate("Rewards");
   };
 
+  const navAddTableScreen = () => {
+    props.navigation.navigate("AddTableScreen");
+  }
+
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const list = [
-    { icon: "award", name: "Rewards", onPress: handleRewards },
-    { icon: "cog", name: "Change Password", onPress: handleResetPassword },
-    { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
-    { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
-  ];
+  let list;
+
+  if (isManager) {
+    list = [
+      { icon: "award", name: "Rewards", onPress: handleRewards },
+      { icon: "cog", name: "Change Password", onPress: handleResetPassword },
+      { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
+      { icon: "cog", name: "Manage tables", onPress: navAddTableScreen },
+      { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
+    ];
+  } else {
+    list = [
+      { icon: "award", name: "Rewards", onPress: handleRewards },
+      { icon: "cog", name: "Change Password", onPress: handleResetPassword },
+      { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
+      { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
+    ];
+  }
+
 
   const test = () => {
     db.collection("restaurants")

@@ -3,6 +3,8 @@ export const initialState = {
   all_tables_of_size: [],
   all_bookings_of_size: [],
   all_scheduled_tables: [],
+  all_bookings_of_restaurant: [],
+  users_bookings: [],
   tables: [],
   time: {}
 }
@@ -25,38 +27,67 @@ const bookingsReducer = (state = initialState, action) => {
         time: action.payload
       }
     case 'PERFORM_SCHEDULE':
-      console.log("haha perform schedule go brr");
-      console.log(state.all_tables_of_size);
-      console.log(state.all_bookings_of_size);
-      console.log(state.time);
-
       const table_availability = [];
+
+      /*let w = () => {
+        const timeSt = 0;
+        const timeEn = 100;
+        const timesStart = [8, 15, 18].sort((a, b) => a - b);
+        const timesEnd = [10, 17, 19].sort((a, b) => a - b);
+        for (let i = 0; i < timesStart.length; i++) {
+          if (timesStart[i] == timeSt && timesEnd[i] == timesEnd) {
+            console.log("They the same");
+          }
+          else if (timesStart[0] >= timeEn) {
+            console.log("table available");
+            i = timesStart.length;
+          }
+          else if ((timesEnd[i] <= timeSt && timesStart[i + 1] >= timeEn) || (timesEnd[i] <= timeSt && timesStart[i + 1] === undefined)) {
+            console.log("table available");
+            i = timesStart.length;
+          }
+          else {
+            console.log(i + "NOPE");
+          }
+        }
+      }*/
 
       let startTimeStamp = Date.parse(state.time.start);
       let endTimeStamp = Date.parse(state.time.end);
 
-      //Reformatting timestamp
-
-      startTimeStamp = parseInt(startTimeStamp.toString().substring(0, 10));
-      endTimeStamp = parseInt(endTimeStamp.toString().substring(0, 10));
-
       state.all_tables_of_size.forEach(tableElement => {
         const table = { id: tableElement.id, available: false }
-        state.all_bookings_of_size.forEach(bookingElement => {
-          if (tableElement.id === bookingElement.tableref) {
-            if (startTimeStamp > bookingElement.start.seconds && endTimeStamp >= bookingElement.end.seconds) {
-              if (!table_availability.includes(table)) {
-                table.available = true;
-                table_availability.push(table);
-              } else {
-                console.log('Table already available');
-              }
-            }
+
+        let booking_start_times = [];
+        let booking_end_times = [];
+
+        state.all_bookings_of_size.forEach((element) => {
+          if (tableElement.id === element.tableref && element.status == 'ok') {
+            booking_start_times.push(element.start.toDate().getTime());
+            booking_end_times.push(element.end.toDate().getTime());
           }
         });
+
+        booking_start_times = booking_start_times.sort((a, b) => a - b);
+        booking_end_times = booking_end_times.sort((a, b) => a - b);
+
+        if (state.all_bookings_of_size.length < 1) {
+          table.available = true;
+        }
+        for (let i = 0; i < booking_start_times.length; i++) {
+          if (booking_start_times[i] === startTimeStamp && booking_end_times[i] === endTimeStamp) {
+          } else if (booking_start_times[0] >= endTimeStamp) {
+            table.available = true;
+            i = booking_start_times.length;
+          } else if ((booking_end_times[i] <= startTimeStamp && booking_start_times[i + 1] >= endTimeStamp) || (booking_end_times[i] <= startTimeStamp && booking_start_times[i + 1] === undefined)) {
+            table.available = true;
+            i = booking_start_times.length;
+          } else {
+
+          }
+        }
+        table_availability.push(table);
       });
-      console.log('available tables');
-      console.log(table_availability)
       return {
         ...state,
         all_scheduled_tables: table_availability,
@@ -72,6 +103,64 @@ const bookingsReducer = (state = initialState, action) => {
       return {
         ...state,
         all_bookings_of_size: action.payload,
+      }
+    }
+    case 'FETCH_BOOKINGS_BY_USER': {
+      const now = new Date();
+      action.payload.forEach((element) => {
+          if(now.getTime() > element.end.toDate().getTime() && element.status === 'ok'){
+              //dispatch(postBookingExpiration(element.docId));
+              element.status = 'expired';
+          }else{
+          }
+        });
+      return {
+        ...state,
+        users_bookings: action.payload,
+      }
+    }
+    case 'FETCH_BOOKINGS_BY_USER_FILTERED': {
+      return {
+        ...state,
+        users_bookings: action.payload,
+      }
+    }
+    case 'FETCH_BOOKINGS_BY_RESTAURANT': {
+      const now = new Date();
+      action.payload.forEach((element) => {
+          if(now.getTime() > element.end.toDate().getTime() && element.status === 'ok'){
+              //dispatch(postBookingExpiration(element.docId));
+              element.status = 'expired';
+          }else{
+
+          }
+        });
+      return {
+        ...state,
+        all_bookings_of_restaurant: action.payload,
+      }
+    }
+    case 'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED': {
+      return {
+        ...state,
+        all_bookings_of_restaurant: action.payload,
+      }
+    }
+    case 'Clear_User_Bookings': {
+      return {
+        ...state,
+        users_bookings: [],
+      }
+    } case 'CLEAR_TIME': {
+      return {
+        ...state,
+        time: undefined,
+      }
+    }
+    case 'CLEAR_TABLES': {
+      return {
+        ...state,
+        all_scheduled_tables: [],
       }
     }
     default:
