@@ -27,6 +27,11 @@ const ProfileScreen = (props) => {
     props.navigation.navigate("Rewards");
   };
 
+  const navAddTableScreen = () => {
+    props.navigation.navigate("AddTableScreen");
+  }
+
+
   const [list, setList] = useState([]);
 
   const auth = useSelector((state) => state.auth);
@@ -55,6 +60,7 @@ const ProfileScreen = (props) => {
     { icon: "cog", name: "Menu List", onPress: onMenuList},
     { icon: "cog", name: "Change Password", onPress: handleResetPassword },
     { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
+    { icon: "cog", name: "Manage tables", onPress: navAddTableScreen },
     { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
   ];
   useEffect(() => {
