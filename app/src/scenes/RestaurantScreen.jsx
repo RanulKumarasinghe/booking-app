@@ -79,16 +79,6 @@ const Restaurant = (props) => {
 
   const auth = useSelector(state => state.auth);
 
-  let manager_login = false;
-
-  if (restaurant.staffIds[0] == auth.id && auth.id != null) {
-    manager_login = true;
-  } else {
-    manager_login = false;
-  }
-
-  // console.log(restaurant.staffIds[0]);
-
   const onEditRestaurant = () => props.navigation.navigate('Edit Restaurant', {
     restaurantId: restaurant.id
   });
@@ -160,14 +150,6 @@ const Restaurant = (props) => {
                 <Button onPress={onBooking}>Make A Booking</Button>
             </View>
           </View>
-          {manager_login ?
-          <>
-            <Divider />
-            <Button onPress={onEditRestaurant}>Edit Restaurant</Button>
-            <Divider />
-          <Button onPress={onMenuList}>Menu List</Button>
-          </>
-          : null}
           {/* <Divider />
           <Button onPress={onMenuList}>Menu List</Button> */}
           <Divider />

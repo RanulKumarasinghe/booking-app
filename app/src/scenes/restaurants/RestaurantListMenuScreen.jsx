@@ -11,18 +11,18 @@ const RestaurantListMenuScreen = (props) => {
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const itemId = props.route.params.restaurantId;
-
+  console.log(itemId)
   const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
-  // const getMenu = () => {
-  //   dispatch(fetchAllMenu({
-  //    id: itemId
-  //  }))
-  //  }
+  const getMenu = () => {
+    dispatch(fetchAllMenu({
+     id: itemId
+   }))
+   }
 
-  //  useEffect(() => {
-  //    getMenu()
-  //  }, [])
+   useEffect(() => {
+     getMenu()
+   }, [])
 
   const menu = useSelector(state => state.menu.menu);
 

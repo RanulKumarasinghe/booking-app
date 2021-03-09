@@ -5,12 +5,21 @@ import RestaurantEntry from '../../components/RestaurantEntry';
 import { Button,Icon , Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux'
 
-import {filterRestaurant} from '@/store/actions/restaurants'
+import {filterRestaurant, fetchAllRestaurant} from '@/store/actions/restaurants'
 
 
 const RestaurantListScreen = props => {
-  const restaurants = useSelector(state => state.restaurants.filteredRestaurant);
+
   const dispatch = useDispatch()
+  const getRestaurants = () => {
+    dispatch(fetchAllRestaurant())
+   }
+
+   useEffect(() => {
+    getRestaurants()
+   }, [])
+
+   const restaurants = useSelector(state => state.restaurants.filteredRestaurant);
 
   // START name filter
   const [searchName, setSearchName]= useState('')

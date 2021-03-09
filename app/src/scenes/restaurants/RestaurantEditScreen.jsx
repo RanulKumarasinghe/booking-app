@@ -1,5 +1,5 @@
 import React, { useState, setState } from 'react';
-import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button} from 'react-native';
+import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button, Modal, Alert} from 'react-native';
 import { Text, TopNavigation } from '@ui-kitten/components';
 // import Navbar from '@/components/Navbar';
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,6 +22,7 @@ const RestaurantEdit = (props) => {
   const [typeValue, onChangeType] = React.useState(restaurant.type);
   const [descriptionValue, onChangeDescription] = React.useState(restaurant.description);
   const [imageUrlValue, onChangeImageUrl] = React.useState(restaurant.imageUrl);
+  // const [modalVisible, setModalVisible] = useState(false);
 
   const editRestaurant = () => {
     console.log('edit');
@@ -35,7 +36,7 @@ const RestaurantEdit = (props) => {
       google_id: restaurant.google_id,
       staffId: auth.uid
     }))
-  }, 4000)
+  })
   };
 
   return (
@@ -61,6 +62,25 @@ const RestaurantEdit = (props) => {
          <Button title="No Changes" onPress={() => console.log('pressed')} />
          <Button title="Confirm Changes" onPress={editRestaurant} />
       </View>
+      {/* <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+          <View style={{alignContent: 'flex-end'}}>
+          <Button title="X" onPress={() => setModalVisible(!modalVisible)} />
+          </View>
+            <Text style={styles.modalText}>Restaurant has been Edited</Text>
+
+       </View>
+       </View>
+      </Modal> */}
       </ScrollView>
       </View>
     </SafeAreaView>
@@ -81,5 +101,30 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-between'
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
 })
 export default RestaurantEdit;

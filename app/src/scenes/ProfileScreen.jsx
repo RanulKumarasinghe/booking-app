@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   StyleSheet,
   View,
@@ -33,27 +33,54 @@ const ProfileScreen = (props) => {
     props.navigation.navigate("AddTableScreen");
   }
 
+
+  const [list, setList] = useState([]);
+
   const auth = useSelector((state) => state.auth);
+  console.log(auth);
   const dispatch = useDispatch();
+  const isManager = useSelector(state => !!state.auth.staffing);
+  console.log(isManager);
+  const restaurants = useSelector(state => state.restaurants.restaurants);
+  if (isManager === true) {
 
-  let list;
 
-  if (isManager) {
-    list = [
-      { icon: "award", name: "Rewards", onPress: handleRewards },
-      { icon: "cog", name: "Change Password", onPress: handleResetPassword },
-      { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
-      { icon: "cog", name: "Manage tables", onPress: navAddTableScreen },
-      { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
-    ];
+  const restaurant = restaurants.find(restaurant => restaurant.id === auth.staffing[0]);
+  console.log(restaurant);
+
+  const onEditRestaurant = () => props.navigation.navigate('Edit Restaurant', {
+    restaurantId: restaurant.id
+  });
+
+  const onMenuList = () => props.navigation.navigate('MenuList', {
+    restaurantId: restaurant.id
+  });
+
+  const managerList = [
+    { icon: "award", name: "Rewards", onPress: handleRewards },
+    { icon: "cog", name: "Edit Restaurant", onPress: onEditRestaurant},
+    { icon: "cog", name: "Menu List", onPress: onMenuList},
+    { icon: "cog", name: "Change Password", onPress: handleResetPassword },
+    { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
+    { icon: "cog", name: "Manage tables", onPress: navAddTableScreen },
+    { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
+  ];
+  useEffect(() => {
+    setList(managerList)
+  }, [])
+
   } else {
-    list = [
+    const userList = [
       { icon: "award", name: "Rewards", onPress: handleRewards },
       { icon: "cog", name: "Change Password", onPress: handleResetPassword },
       { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
       { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
     ];
+    useEffect(() => {
+      setList(userList)
+    }, [])
   }
+
 
 
   const test = () => {
