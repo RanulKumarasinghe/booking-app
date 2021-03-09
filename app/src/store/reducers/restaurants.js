@@ -22,12 +22,6 @@ const restaurantReducer = (state = initialState, action) => {
       }
     case FETCH_ALL_RESTAURANTS:
       return {...state, restaurants: action.restaurants, filteredRestaurant: action.restaurants}
-    case UPDATE_RESTAURANT:
-      let newRestaurant = state.restaurants.filter(restaurant => restaurant.id != action.restaurant.id)
-      newRestaurant.push(action.restaurant)
-      return {
-        ...state, restaurants: newRestaurant
-      }
     case ADD_RESTAURANT:
       return {
         ...state, restaurants: {...state.restaurants}

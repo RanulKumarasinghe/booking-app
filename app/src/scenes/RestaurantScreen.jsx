@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState }from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, Image, View, ImageBackground, ScrollView, Dimensions, ActivityIndicator } from "react-native";
 import { Divider, Icon, Layout, Text, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 // import Navbar from '../../components/Navbar';
@@ -8,7 +8,7 @@ import StarRating from 'react-native-star-rating';
 import { FlatList } from "react-native-gesture-handler";
 import { useSelector, useDispatch } from 'react-redux';
 import { newOrder } from '@/store/actions/order'
-import {fetchAllMenu} from '@/store/actions/menu';
+import { fetchAllMenu } from '@/store/actions/menu';
 
 
 
@@ -24,23 +24,6 @@ const Restaurant = (props) => {
     const itemId = props.route.params.itemID;
     restaurant = restaurants.find(restaurant => restaurant.id === itemId);
   }
-  // const dispatch = useDispatch();
-
-  // const getMenu = () => {
-  //  dispatch(fetchAllMenu({
-  //   id: restaurant.id
-  // }))
-  // }
-
-  // useEffect(() => {
-  //   getMenu()
-  // }, [])
-
-  // const menuItems = useSelector(state => state.menu.menu);
-
-  // console.log(menuItems);
-  // const menu = useSelector(state => state.menu.menu);
-  // console.log(getMenu());
 
 
   // console.log(menu);
@@ -50,17 +33,17 @@ const Restaurant = (props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const url  = 'https://maps.googleapis.com/maps/api/place/details/json?'
+    const url = 'https://maps.googleapis.com/maps/api/place/details/json?'
     const place = `place_id=${restaurant.google_id}`;
     const fields = '&fields=name,rating,formatted_phone_number,opening_hours,vicinity';
     const key = '&key=AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc';
     const restaurantSearchUrl = url + place + fields + key;
     fetch(restaurantSearchUrl)
-    .then(response => response.json())
-    .then(result => setData(result))
-    .catch((error) => console.error(error))
-    .finally(() => setLoading(false));
-    });
+      .then(response => response.json())
+      .then(result => setData(result))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  });
 
   const onBooking = () => props.navigation.navigate('Booking', {
     restaurantId: restaurant.id
@@ -103,7 +86,7 @@ const Restaurant = (props) => {
                 source={{ uri: restaurant.imageUrl }}
                 style={styles.bgImage}
               />
-               <Text style={styles.font1}>{restaurant.name}</Text>
+              <Text style={styles.font1}>{restaurant.name}</Text>
               <Text style={styles.font}>Restaurant Info:</Text>
               <View style={styles.starrating}>
                 <StarRating
@@ -145,15 +128,18 @@ const Restaurant = (props) => {
               </View>
               <View style={styles.menu}>
                 <Menu navigation={props.navigation}
-                restaurantId={restaurant.id}/>
+                  restaurantId={restaurant.id} />
               </View>
-                <Button onPress={onBooking}>Make A Booking</Button>
+              {  !restaurantManager && (
+                <>
+                  <Button onPress={onBooking}>Make A Booking</Button>
+                  <Button onPress={onOrder}>Order</Button> 
+                </>) || null}
             </View>
           </View>
           {/* <Divider />
           <Button onPress={onMenuList}>Menu List</Button> */}
           <Divider />
-          <Button onPress={onOrder}>Order</Button>
 
         </View>
       </ScrollView>

@@ -23,23 +23,6 @@ export const fetchAllRestaurant = () => {
   }
 };
 
-export const UPDATE_RESTAURANT = 'UPDATE_RESTAURANT';
-
-export const updateRestaurant = (saveRestaurant) => {
-  return dispatch => {
-    firebase.firestore().collection('restaurants').doc(saveRestaurant.id).update({
-      name: saveRestaurant.name,
-      type: saveRestaurant.type,
-      description: saveRestaurant.description,
-      imageUrl: saveRestaurant.imageUrl,
-      google_id: saveRestaurant.google_id
-    }).then(() => {
-      console.log('Restaurant Updated!');
-    }).catch(e => {
-      console.log(e)
-    })
-  }
-}
 
 export const ADD_RESTAURANT = 'ADD_RESTAURANT';
 

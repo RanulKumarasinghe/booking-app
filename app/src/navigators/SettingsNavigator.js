@@ -4,6 +4,11 @@ import React from 'react'
 import ProfileScreen from 'src/scenes/ProfileScreen'
 import RestaurantAddScreen from 'src/scenes/restaurants/RestaurantAddScreen';
 import AddTableScreen from 'src/scenes/bookings/AddTableScreen';
+import EditRestaurant from '@/scenes/manager/RestaurantEditScreen'
+import ListMenu from '@/scenes/restaurants/RestaurantListMenuScreen'
+import AddMenuItem from '@/scenes/manager/AddMenuItemScreen'
+import ManagerRewards from '@/scenes/rewards/ManagerRewardScreen'
+import Rewards from '@/scenes/rewards/RewardScreen'
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -36,10 +41,36 @@ const ProfileNavigator = () => {
       // options={authScreenOptions}
       />
       <ProfileStackNavigator.Screen
-        name='AddTableScreen'
+        name='Add Table'
         component={AddTableScreen}
       // options={authScreenOptions}
       />
+      <ProfileStackNavigator.Screen
+        name='Edit Restaurant'
+        component={EditRestaurant}
+      // options={authScreenOptions}
+      />
+      <ProfileStackNavigator.Screen
+        name='Edit Menu'
+        component={ListMenu}
+      // options={authScreenOptions}
+      />
+      <ProfileStackNavigator.Screen
+        name='Add Menu Item'
+        component={AddMenuItem}
+      // options={authScreenOptions}
+      />
+      <ProfileStackNavigator.Screen
+        name='Create Rewards'
+        component={ManagerRewards}
+      // options={authScreenOptions}
+      />
+      <ProfileStackNavigator.Screen
+        name='Rewards'
+        component={Rewards}
+      // options={authScreenOptions}
+      />
+
     </ProfileStackNavigator.Navigator>
   );
 };

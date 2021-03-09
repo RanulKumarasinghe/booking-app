@@ -9,14 +9,12 @@ import {fetchAllMenu} from '@/store/actions/menu';
 const RestaurantListMenuScreen = (props) => {
   const dispatch = useDispatch();
 
-  const restaurants = useSelector(state => state.restaurants.restaurants);
-  const itemId = props.route.params.restaurantId;
-  console.log(itemId)
-  const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
+
+  const restaurantId = props.route.params.restaurantId;
 
   const getMenu = () => {
     dispatch(fetchAllMenu({
-     id: itemId
+     id: restaurantId
    }))
    }
 
@@ -26,11 +24,12 @@ const RestaurantListMenuScreen = (props) => {
 
   const menu = useSelector(state => state.menu.menu);
 
-  const onAddMenuItem = () => props.navigation.navigate('Add Item', {
-    resID: restaurant.id
+  const onAddMenuItem = () => props.navigation.navigate('Add Menu Item', {
+    resID: restaurantId
   });
 
   const renderRestaurantMenuListItem = itemData => {
+    console.log(itemData)
     return (
       <RestaurantMenuEntry
         id={itemData.id}

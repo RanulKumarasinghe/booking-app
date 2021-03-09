@@ -47,8 +47,8 @@ export const createItem = (addItem) => {
       price: addItem.price,
       imageUrl: addItem.imageUrl,
       description: addItem.description,
-      numType: saveMenu.numType,
-      type: saveMenu.type
+      numType: addItem.numType,
+      type: addItem.type
     }).then(() => {
       console.log('User updated!');
     })

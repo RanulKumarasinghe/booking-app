@@ -4,16 +4,13 @@ import { Text, TopNavigation } from '@ui-kitten/components';
 // import Navbar from '@/components/Navbar';
 import { useSelector, useDispatch } from 'react-redux';
 import RestaurantInput from '../../components/RestaurantInput';
-import {updateRestaurant} from '@/store/actions/restaurants';
+import {updateRestaurant} from '@/store/actions/staffRestaurant';
 
 const RestaurantEdit = (props) => {
 
   const dispatch = useDispatch();
+  const restaurant = useSelector(state => state.staffRestaurant.restaurant);
 
-  const restaurants = useSelector(state => state.restaurants.restaurants);
-  const itemId = props.route.params.restaurantId;
-
-  const restaurant = restaurants.find(restaurant => restaurant.id === itemId);
 
   const auth = useSelector(state => state.auth);
 
@@ -27,14 +24,12 @@ const RestaurantEdit = (props) => {
   const editRestaurant = () => {
     console.log('edit');
     setTimeout(() => {
-    dispatch(updateRestaurant({
-      id: itemId,
+    dispatch(updateRestaurant(restaurant.id ,{
       name: nameValue,
       type: typeValue,
       description: descriptionValue,
       imageUrl: imageUrlValue,
       google_id: restaurant.google_id,
-      staffId: auth.uid
     }))
   })
   };

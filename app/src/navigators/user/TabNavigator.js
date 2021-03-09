@@ -23,9 +23,6 @@ const TabNavigator = (props) => {
 
   return (
     <Tab.Navigator tabBar={props => <Navbar {...props} />}>
-      <Tab.Screen name='Home' component={HomeNavigator}
-      options={({ route }) => ({
-        tabBarVisible: getTabBarVisible(route, 'Restaurants') })} />
       <Tab.Screen 
         name="Restaurants" 
         component={RestaurantNavigator} 
@@ -51,10 +48,7 @@ const Navbar = ({ navigation, state }) => {
             onSelect={index => navigation.navigate(state.routeNames[index])}>
           <BottomNavigationTab 
             icon={(e) => (<Icon {...e} name='home-outline' />)} 
-            title="Home" />
-          <BottomNavigationTab 
-            icon={(e) => (<Icon {...e} name='search-outline' />)} 
-            title="Search" />
+            title="Restaurants" />
           <BottomNavigationTab 
             icon={(e) => (<Icon {...e} name='clipboard-outline' />)} 
             title="Bookings" />

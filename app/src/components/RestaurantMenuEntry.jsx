@@ -5,35 +5,29 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import {Icon} from 'react-native-elements';
 
-const RestaurantMenuEntry = props => {
-
-
+const RestaurantMenuEntry = (props) => {
+  console.log(props)
   return (
-
     <View style={styles.listItem}>
       <TouchableOpacity onPress={props.onSelectItem}>
-
-          <View style={{ ...styles.listRow, ...styles.listHeader }}>
-            <ImageBackground
-              source={{ uri: props.picture }}
-              style={styles.bgImage}
-            >
-
-            </ImageBackground>
+        <View style={{...styles.listRow, ...styles.listHeader}}>
+          <ImageBackground
+            source={{uri: props.picture}}
+            style={styles.bgImage}
+          />
+        </View>
+        <View style={styles.titleContainer}>
+          <View style={styles.listDetail}>
+            <View style={styles.listRow}>
+              <Text style={styles.list}>{props.name}</Text>
+              <Text style={styles.list}>{`£${props.price}`}</Text>
+            </View>
           </View>
-          <View style={styles.titleContainer}>
-          <View style={styles.listDetail }>
-          <View style={styles.listRow}>
-            <Text style={styles.list}>{props.name}</Text>
-            <Text style={styles.list}>{props.price}</Text>
-
-          </View>
-          </View>
-          </View>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -57,42 +51,42 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   listRow: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   listHeader: {
-    height: '85%'
+    height: '85%',
   },
   listDetail: {
     paddingHorizontal: 5,
     alignContent: 'space-between',
     alignItems: 'flex-start',
-    height: '10%'
   },
   titleContainer: {
     backgroundColor: '#d9d9d9',
     // paddingVertical: 12
   },
   list: {
+    color: 'black',
     fontWeight: 'bold',
     fontSize: 20,
-    width: '85%'
+    width: '85%',
   },
   list1: {
     fontWeight: 'bold',
     fontSize: 20,
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   starrating: {
     alignSelf: 'flex-end',
-    paddingHorizontal: '18%'
+    paddingHorizontal: '18%',
   },
   title: {
     // fontFamily: 'open-sans-bold',
     fontWeight: 'bold',
     fontSize: 20,
-    color: 'white',
-    textAlign: 'center'
-  }
+    // color: 'white',
+    textAlign: 'center',
+  },
 });
 
 export default RestaurantMenuEntry;

@@ -2,7 +2,7 @@ import Firebase, {db} from 'src/utils/firebase'
 
 export const RESET = 'RESET';
 
-export const FETCH_RESTAURANT = 'FETCH_ALL_RESTAURANTS';
+export const SET_RESTAURANT = 'SET_RESTAURANT';
 
 export const fetchUserRestaurant = (userId) => {
   return async dispatch => {
@@ -12,7 +12,7 @@ export const fetchUserRestaurant = (userId) => {
       if (restaurants.length > 0) {
         restaurants.forEach((doc, index) => {
           if (index == 0)
-            dispatch({ type: FETCH_RESTAURANT, restaurant: { ...doc.data(), id: doc.id }})
+            dispatch({ type: SET_RESTAURANT, restaurant: { ...doc.data(), id: doc.id }})
           });
       } else {
         dispatch({ type: RESET })
@@ -23,6 +23,27 @@ export const fetchUserRestaurant = (userId) => {
   })
   }
 };
+
+export const UPDATE_RESTAURANT = "UPDATE_RESTAURANT"
+
+export const updateRestaurant = (restaurantId, saveRestaurant) => {
+  return dispatch => {
+    const newRestaurantValues = {
+      name: saveRestaurant.name,
+      type: saveRestaurant.type,
+      description: saveRestaurant.description,
+      imageUrl: saveRestaurant.imageUrl,
+      google_id: saveRestaurant.google_id
+    }
+    db.collection('restaurants').doc(restaurantId).update(newRestaurantValues).then(() => {
+      dispatch({ type: UPDATE_RESTAURANT, newRestaurantValues: newRestaurantValues})
+      console.log('Restaurant Updated!');
+    }).catch(e => {
+      console.log('Restaurant Failed to Update!');
+      console.log(e)
+    })
+  }
+}
 
 
 

@@ -1,4 +1,4 @@
-import React, { useState, setState } from 'react';
+import React, { useState, setState, useEffect } from 'react';
 import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button} from 'react-native';
 import { Text, TopNavigation } from '@ui-kitten/components';
 // import Navbar from '@/components/Navbar';
@@ -55,7 +55,6 @@ const MenuAddItem = (props) => {
    const foodType3 = foodTypes?.foodTypes[3];
 
   const addMenuItem = () => {
-    console.log('edit');
     setTimeout(() => {
     dispatch(createItem({
       rId: restaurantId,
@@ -67,6 +66,7 @@ const MenuAddItem = (props) => {
       type: type
     }))
   }, 1000)
+  //TODO: props natigate go back
   };
 
   return (

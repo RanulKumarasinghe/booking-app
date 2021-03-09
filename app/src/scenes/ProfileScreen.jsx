@@ -15,66 +15,58 @@ import { logout } from "@/store/actions/auth";
 import { Avatar } from "react-native-elements";
 
 const ProfileScreen = (props) => {
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+  const dispatch = useDispatch();
 
-  const isManager = useSelector(state => !!state.staffRestaurant.restaurant);
+  const restaurant = useSelector(state => state.staffRestaurant.restaurant);
+  const auth = useSelector((state) => state.auth);
+
+  const [list, setList] = useState([]);
 
   const handleResetPassword = () => {
     //props.navigation.navigate("Reset Password");
   };
 
-  const handleRewards = () => {
-    props.navigation.navigate("Rewards");
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
+
   const navAddTableScreen = () => {
-    props.navigation.navigate("AddTableScreen");
+    props.navigation.navigate("Add Table");
   }
+  
+  const isManager = !!restaurant;
+  
+  if (isManager) {
 
+    const onEditRestaurant = () => props.navigation.navigate('Edit Restaurant', {
+      restaurantId: restaurant.id
+    });
 
-  const [list, setList] = useState([]);
+    const onMenuList = () => props.navigation.navigate('Edit Menu', {
+      restaurantId: restaurant.id
+    });
 
-  const auth = useSelector((state) => state.auth);
-  console.log(auth);
-  const dispatch = useDispatch();
-  const isManager = useSelector(state => !!state.auth.staffing);
-  console.log(isManager);
-  const restaurants = useSelector(state => state.restaurants.restaurants);
-  if (isManager === true) {
-
-
-  const restaurant = restaurants.find(restaurant => restaurant.id === auth.staffing[0]);
-  console.log(restaurant);
-
-  const onEditRestaurant = () => props.navigation.navigate('Edit Restaurant', {
-    restaurantId: restaurant.id
-  });
-
-  const onMenuList = () => props.navigation.navigate('MenuList', {
-    restaurantId: restaurant.id
-  });
-
-  const managerList = [
-    { icon: "award", name: "Rewards", onPress: handleRewards },
-    { icon: "cog", name: "Edit Restaurant", onPress: onEditRestaurant},
-    { icon: "cog", name: "Menu List", onPress: onMenuList},
-    { icon: "cog", name: "Change Password", onPress: handleResetPassword },
-    { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
-    { icon: "cog", name: "Manage tables", onPress: navAddTableScreen },
-    { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
-  ];
-  useEffect(() => {
-    setList(managerList)
-  }, [])
+    const managerList = [
+      { icon: "award", name: "Create Rewards", onPress: () => props.navigation.navigate("Create Rewards") },
+      { icon: "cog", name: "Edit Restaurant", onPress: onEditRestaurant},
+      { icon: "cog", name: "Edit Menu", onPress: onMenuList},
+      { icon: "cog", name: "Change Password", onPress: handleResetPassword },
+      { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
+      { icon: "cog", name: "Manage tables", onPress: navAddTableScreen },
+      { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
+    ];
+    useEffect(() => {
+      setList(managerList)
+    }, [])
 
   } else {
     const userList = [
-      { icon: "award", name: "Rewards", onPress: handleRewards },
+      { icon: "award", name: "Rewards", onPress: () => props.navigation.navigate("Rewards") },
       { icon: "cog", name: "Change Password", onPress: handleResetPassword },
       { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
       { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
+      
     ];
     useEffect(() => {
       setList(userList)
