@@ -24,11 +24,7 @@ const HomeScreen = ({ navigation }) => {
       ></Layout>
       <Layout
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-      >
-        <Button onPress={() => navigation.navigate("ManagerRewards")}>
-          Rewards
-        </Button>
-      </Layout>
+      ></Layout>
     </SafeAreaView>
   );
 };
