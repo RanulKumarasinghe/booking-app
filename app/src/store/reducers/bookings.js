@@ -106,6 +106,14 @@ const bookingsReducer = (state = initialState, action) => {
       }
     }
     case 'FETCH_BOOKINGS_BY_USER': {
+      const now = new Date();
+      action.payload.forEach((element) => {
+          if(now.getTime() > element.end.toDate().getTime() && element.status === 'ok'){
+              //dispatch(postBookingExpiration(element.docId));
+              element.status = 'expired';
+          }else{
+          }
+        });
       return {
         ...state,
         users_bookings: action.payload,
@@ -118,6 +126,15 @@ const bookingsReducer = (state = initialState, action) => {
       }
     }
     case 'FETCH_BOOKINGS_BY_RESTAURANT': {
+      const now = new Date();
+      action.payload.forEach((element) => {
+          if(now.getTime() > element.end.toDate().getTime() && element.status === 'ok'){
+              //dispatch(postBookingExpiration(element.docId));
+              element.status = 'expired';
+          }else{
+
+          }
+        });
       return {
         ...state,
         all_bookings_of_restaurant: action.payload,
@@ -138,6 +155,12 @@ const bookingsReducer = (state = initialState, action) => {
       return {
         ...state,
         time: undefined,
+      }
+    }
+    case 'CLEAR_TABLES': {
+      return {
+        ...state,
+        all_scheduled_tables: [],
       }
     }
     default:

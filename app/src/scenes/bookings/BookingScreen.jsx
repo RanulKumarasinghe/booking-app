@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
-import { Divider, Icon, Button, Layout, Datepicker, List, ListItem } from '@ui-kitten/components';
+import { Divider, Icon, Button, Layout, Datepicker, List, ListItem, Spinner } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
-import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime } from '@/store/actions/bookings';
+import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime, clearTables } from '@/store/actions/bookings';
 import firebase from 'src/utils/firebase';
 
 const BookingScreen = (props) => {
   const all_scheduled_tables = useSelector(state => state.bookings.all_scheduled_tables);
-  const times = useSelector(state => state.bookings.time);
-
   const dispatch = useDispatch()
 
   const [guests, setGuests] = React.useState();
@@ -19,11 +17,16 @@ const BookingScreen = (props) => {
   const [end, setEnd] = React.useState();
   const [selectedIndex, setSelectedIndex] = React.useState(undefined);
 
+  const [buttonGhost, setButtonGhost] = React.useState(false);
   const user = firebase.auth().currentUser.uid;
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const restId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === restId);
+
+  React.useEffect(() => {
+
+  }, [all_scheduled_tables]);
 
   const getDay = (date) => {
     return date.getDate();
@@ -45,6 +48,29 @@ const BookingScreen = (props) => {
     return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(time), 0, 0, 0));
   }
 
+  const RenderSubmitButton = () => {
+    if (buttonGhost) {
+      return (
+        <Button style={styles.button} appearance="ghost"><Spinner/></Button>
+      );
+    } else {
+      return (
+        <Button style={styles.button} onPress={() => {
+          setButtonGhost(true);
+          if(all_scheduled_tables.length > 0){
+            dispatch(clearTables());
+          }
+          dispatch(fetchTablesBySize(guests, restId));
+          dispatch(fetchBookingsBySize(guests, restId));
+          dispatch(addTime(constructDate(start), constructDate(end)));
+          setTimeout(() => {
+            dispatch(performSchedule());
+            setButtonGhost(false);
+          }, 1600);
+        }}>Search</Button>
+      );
+    }
+  }
   //LIST ITEM THIS WHERE IT RENDER THE LIST COMPONENTS
   //
   const renderItem = ({ item, index }) => (
@@ -131,16 +157,11 @@ const BookingScreen = (props) => {
         </View>
 
         <View style={styles.submitButton}>
+          <RenderSubmitButton />
           <Button style={styles.button} onPress={() => {
-            dispatch(fetchTablesBySize(guests, restId));
-            dispatch(fetchBookingsBySize(guests, restId));
-            dispatch(addTime(constructDate(start), constructDate(end)));
-            setTimeout(()=>{
-              dispatch(performSchedule());
-            },1000);
-          }}>Search</Button>
-          <Button style={styles.button} onPress={() => {
-            dispatch(postReservation(all_scheduled_tables[selectedIndex].id, restId, user, guests, constructDate(start), constructDate(end), restaurant.name));
+            if (selectedIndex !== undefined) {
+              dispatch(postReservation(all_scheduled_tables[selectedIndex].id, restId, user, guests, constructDate(start), constructDate(end), restaurant.name));
+            }
           }}>Reserve</Button>
         </View>
       </View>
@@ -161,6 +182,8 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   button: {
+    width:100,
+    height:50,
     margin: 2.5
   },
   dateTime: {

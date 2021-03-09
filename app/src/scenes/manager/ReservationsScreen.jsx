@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { Toggle, Text, Divider, Spinner, Layout, Icon } from '@ui-kitten/components';
 import BookingsList from '@/components/BookingsList';
-import {clearUserBookings, fetchBookingsByRestaurant, fetchBookingsByRestaurantFiltered } from '@/store/actions/bookings'
+import {fetchBookingsByRestaurant, clearUserBookings, fetchBookingsByRestaurantFiltered } from '@/store/actions/bookings'
 import { useSelector, useDispatch } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -10,20 +10,19 @@ import { useIsFocused } from '@react-navigation/native'
 
 
 
-export default BookingListScreen = ({ navigation }) => {
+export default ReservationsScreen = ({ navigation }) => {
     const auth = useSelector(state => state.auth);
     const resid = useSelector(state => state.staffRestaurant.restaurant.id);
     const dispatch = useDispatch();
-    
+
     const [showLoadingSpinner, setshowLoadingSpinner] = React.useState(true);
-    const [filterToggle, setfilterToggle] = React.useState(false);
-    const [loaded, setLoaded] = React.useState(false);
-    
+    const [filterToggle, setfilterToggle] = React.useState(true);
+
     let isOffline = auth.uid === undefined;
-    const restaurant_bookings = useSelector(state => state.bookings.all_bookings_of_restaurant);
+    const all_bookings_of_restaurant = useSelector(state => state.bookings.all_bookings_of_restaurant);
 
     const sortDates = (array) => {
-        array.sort((a,b)=>{
+        array.sort((a, b) => {
             return a.start.toDate() - b.start.toDate();
         })
         return array;
@@ -31,35 +30,24 @@ export default BookingListScreen = ({ navigation }) => {
 
     const onCheckedChange = () => {
         setfilterToggle(!filterToggle);
-        dispatch(clearUserBookings());
-        if (!filterToggle) {
-            dispatch(fetchBookingsByRestaurant(resid));
-        } else {
-            dispatch(fetchBookingsByRestaurantFiltered(auth.uid));
-        }
     };
 
     const isFocused = useIsFocused()
-    
+
     React.useEffect(() => {
         if (!isOffline) {
-            //dispatch(clearUserBookings());
+            dispatch(clearUserBookings());
             setshowLoadingSpinner(true);
-            setLoaded(false);
-            if (!filterToggle && !loaded) {
-                setLoaded(true);
-                console.log("Reload no filter");
-                dispatch(fetchBookingsByRestaurant(resid));
+            if (filterToggle) {
+                dispatch(fetchBookingsByRestaurantFiltered(resid));
             } else {
-                setLoaded(true);
-                console.log("Reload with filter");
-                dispatch(fetchBookingsByRestaurantFiltered(auth.uid));
+                dispatch(fetchBookingsByRestaurant(resid));
             }
-            setTimeout(()=>{
+            setTimeout(() => {
                 setshowLoadingSpinner(false);
-            },2000);
+            }, 2000);
         }
-    } , [isFocused])
+    }, [isFocused, filterToggle]);
 
     const WarningIcon = () => (
         <Icon
@@ -74,7 +62,7 @@ export default BookingListScreen = ({ navigation }) => {
             <View>
                 <View style={styles.toggleContainer}>
                     <Toggle style={styles.toggleElement} checked={filterToggle} onChange={onCheckedChange}>
-                        <Text appearance='hint'>Display expired</Text>
+                        <Text appearance='hint'>Filter expired</Text>
                     </Toggle>
                 </View>
                 <Divider />
@@ -94,8 +82,7 @@ export default BookingListScreen = ({ navigation }) => {
 
     const List = () => {
         if (!showLoadingSpinner && !isOffline) {
-            const sortedBookings = sortDates(restaurant_bookings);
-            console.log(sortedBookings);
+            const sortedBookings = sortDates(all_bookings_of_restaurant);
             return (
                 <View>
                     <BookingsList payload={sortedBookings} />
@@ -139,7 +126,7 @@ export default BookingListScreen = ({ navigation }) => {
         return (
             <LoginError />
         )
-    } else if (showLoadingSpinner && !loaded) {
+    } else if (showLoadingSpinner) {
         return (
             <LoadingScreen />
         )

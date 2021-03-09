@@ -15,6 +15,8 @@ const CLEAR_TIME = 'CLEAR_TIME';
 const POST_RESERVATION_CANCELATION = 'POST_RESERVATION_CANCELATION';
 const FETCH_BOOKINGS_BY_RESTAURANT = 'FETCH_BOOKINGS_BY_RESTAURANT';
 const FETCH_BOOKINGS_BY_RESTAURANT_FILTERED = 'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED';
+const POST_BOOKING_EXPIRATION = 'POST_BOOKING_EXPIRATION';
+const CLEAR_TABLES = "CLEAR_TABLES";
 
 //Down from here obsolete
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
@@ -43,6 +45,16 @@ export const clearTime = () => {
   return async dispatch => {
     try {
       dispatch({ type: CLEAR_TIME, payload: true });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const clearTables = () => {
+  return async dispatch => {
+    try {
+      dispatch({ type: CLEAR_TABLES, payload: true });
     } catch (error) {
       console.error(error);
     }
@@ -247,6 +259,20 @@ export const postReservationCancelation = (bookingId) => {
   }
 }
 
+export const postBookingExpiration = (bookingId) => {
+  (async function () {
+    try {
+      const res = await firebase.firestore().collection('bookings2').doc(bookingId).update({
+        status: 'expired'
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  })();
+  return async dispatch => {
+    dispatch({ type: POST_BOOKING_EXPIRATION, payload: undefined })
+  }
+}
 
 //
 //

@@ -122,7 +122,6 @@ const BookingsListEntry = (props) => {
 
 export default BookingsList = (props) => {
     const dispatch = useDispatch();
-
     const cancelBooking = (bookingid) => {
         dispatch(postReservationCancelation(bookingid));
     }

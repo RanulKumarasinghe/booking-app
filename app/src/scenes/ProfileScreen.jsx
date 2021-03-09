@@ -36,16 +36,25 @@ const ProfileScreen = (props) => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const list = [
-    { icon: "award", name: "Rewards", onPress: handleRewards },
-    { icon: "cog", name: "Change Password", onPress: handleResetPassword },
-    { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
-    { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
-  ];
+  let list;
 
-  if(isManager){
-    list.splice(2, 0, { icon: "cog", name: "Add table to restaurant", onPress: navAddTableScreen });
+  if (isManager) {
+    list = [
+      { icon: "award", name: "Rewards", onPress: handleRewards },
+      { icon: "cog", name: "Change Password", onPress: handleResetPassword },
+      { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
+      { icon: "cog", name: "Manage tables", onPress: navAddTableScreen },
+      { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
+    ];
+  } else {
+    list = [
+      { icon: "award", name: "Rewards", onPress: handleRewards },
+      { icon: "cog", name: "Change Password", onPress: handleResetPassword },
+      { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
+      { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
+    ];
   }
+
 
   const test = () => {
     db.collection("restaurants")
