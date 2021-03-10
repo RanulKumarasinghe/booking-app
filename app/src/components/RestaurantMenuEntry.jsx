@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     height: '85%',
   },
   listDetail: {
-    paddingHorizontal: 5,
+    paddingHorizontal: 4,
     alignContent: 'space-between',
     alignItems: 'flex-start',
   },
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     fontSize: 20,
-    width: '85%',
+    width: '80%',
   },
   list1: {
     fontWeight: 'bold',

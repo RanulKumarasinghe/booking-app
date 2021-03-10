@@ -46,7 +46,6 @@ const RestaurantEditMenu = (props) => {
   }
 
   const editMenu = () => {
-    console.log('edit');
     setTimeout(() => {
     dispatch(updateMenu({
       rId: restaurantId,
@@ -58,7 +57,9 @@ const RestaurantEditMenu = (props) => {
       numType: menuTypeValue,
       type: type
     }))
-  }, 1000)
+  }, 1000), props.navigation.navigate('Edit Menu', {
+    restaurantId: restaurantId
+  })
   };
 
   const deleteMenuItem = () => {

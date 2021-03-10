@@ -32,13 +32,13 @@ const RestaurantListMenuScreen = (props) => {
     console.log(itemData)
     return (
       <RestaurantMenuEntry
-        id={itemData.id}
+        id={itemData.item.id}
         name={itemData.item.name}
         picture={itemData.item.imageUrl}
         price={itemData.item.price}
         onSelectItem={() => props.navigation.navigate('EditMenuScreen', {
             itemID: itemData.item.id,
-            resID: itemId
+            resID: restaurantId
           })
         }
       />
