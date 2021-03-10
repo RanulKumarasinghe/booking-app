@@ -16,6 +16,7 @@ export default BookingListScreen = ({ navigation }) => {
 
     const [showLoadingSpinner, setshowLoadingSpinner] = React.useState(true);
     const [filterToggle, setfilterToggle] = React.useState(true);
+    const [refresh, setRefresh] = React.useState(false);
 
     let isOffline = auth.uid === undefined;
     const users_bookings = useSelector(state => state.bookings.users_bookings);
@@ -29,6 +30,10 @@ export default BookingListScreen = ({ navigation }) => {
 
     const onCheckedChange = () => {
         setfilterToggle(!filterToggle);
+    };
+
+    const doRefresh = () => {
+        setRefresh(!refresh);
     };
 
     const isFocused = useIsFocused()
@@ -46,7 +51,7 @@ export default BookingListScreen = ({ navigation }) => {
                 setshowLoadingSpinner(false);
             }, 2000);
         }
-    }, [isFocused, filterToggle]);
+    }, [isFocused, filterToggle, refresh]);
 
     const WarningIcon = () => (
         <Icon
@@ -60,7 +65,7 @@ export default BookingListScreen = ({ navigation }) => {
         return (
             <View>
                 <View style={styles.toggleContainer}>
-                    <Toggle style={styles.toggleElement} checked={filterToggle} onChange={onCheckedChange}>
+                    <Toggle style={styles.toggleElement} checked={filterToggle} onChange={doRefresh}>
                         <Text appearance='hint'>Filter expired</Text>
                     </Toggle>
                 </View>
@@ -82,7 +87,7 @@ export default BookingListScreen = ({ navigation }) => {
     const List = () => {
         if (!showLoadingSpinner && !isOffline) {
             const sortedBookings = sortDates(users_bookings);
-            return (<BookingsList payload={sortedBookings} />);
+            return (<BookingsList payload={sortedBookings} callback={onCheckedChange} />);
         } else {
             return (<></>)
         }

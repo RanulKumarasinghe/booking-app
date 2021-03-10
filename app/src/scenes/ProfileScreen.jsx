@@ -30,7 +30,6 @@ const ProfileScreen = (props) => {
     dispatch(logout());
   };
 
-
   const navAddTableScreen = () => {
     props.navigation.navigate("Add Table");
   }
