@@ -65,7 +65,9 @@ const MenuAddItem = (props) => {
       numType: menuTypeValue,
       type: type
     }))
-  }, 1000)
+  }, 1000), props.navigation.navigate('Edit Menu', {
+    restaurantId: restaurantId
+  })
   //TODO: props natigate go back
   };
 
@@ -95,8 +97,9 @@ const MenuAddItem = (props) => {
         foodType3={foodType3}
       />
       <View style={styles.buttonSpacing}>
-         <Button title="No Changes" onPress={() => console.log('pressed')} />
-         <Button title="Confirm Changes" onPress={addMenuItem} />
+         <Button title="Go Back" onPress={() => props.navigation.navigate('Edit Menu', {
+          restaurantId: restaurantId})} />
+         <Button title="Add Item" onPress={addMenuItem} />
       </View>
       </ScrollView>
       </View>
