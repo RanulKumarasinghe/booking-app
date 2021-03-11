@@ -17,6 +17,8 @@ const FETCH_BOOKINGS_BY_RESTAURANT = 'FETCH_BOOKINGS_BY_RESTAURANT';
 const FETCH_BOOKINGS_BY_RESTAURANT_FILTERED = 'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED';
 const POST_BOOKING_EXPIRATION = 'POST_BOOKING_EXPIRATION';
 const CLEAR_TABLES = "CLEAR_TABLES";
+const REMOVE_TABLE = "REMOVE_TABLE";
+const REMOVE_TABLE_FROM_DATABASE = "REMOVE_TABLE_FROM_DATABASE";
 
 //Down from here obsolete
 const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
@@ -65,6 +67,16 @@ export const addTable = (table) => {
   return async dispatch => {
     try {
       dispatch({ type: ADD_TABLE, payload: table });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export const removeTable = (table) => {
+  return async dispatch => {
+    try {
+      dispatch({ type: REMOVE_TABLE, payload: table });
     } catch (error) {
       console.error(error);
     }
@@ -209,19 +221,32 @@ export const postTable = (restid, table) => {
   (async function () {
     try {
       const res = await firebase.firestore().collection('reservations').add({
-        id: table.id,
         size: table.size,
+        attributeIndexes: table.attributeIndexes,
         restid: restid,
       });
     } catch (error) {
       console.error(error);
     }
   })();
-
   return async dispatch => {
     dispatch({ type: POST_TABLE, payload: undefined })
   }
 }
+
+export const removeTableFromDatabase = (tableid) => {
+  (async function () {
+    try {
+      const res = await firebase.firestore().collection('reservations').doc(tableid).delete();
+    } catch (error) {
+      console.error(error);
+    }
+  })();
+  return async dispatch => {
+    dispatch({ type: REMOVE_TABLE_FROM_DATABASE, payload: undefined })
+  }
+}
+
 export const postReservation = (tableid, restid, user, guests, start, end, restname) => {
   (async function () {
     try {
@@ -268,6 +293,36 @@ export const postBookingExpiration = (bookingId) => {
     } catch (error) {
       console.error(error);
     }
+  })();
+  return async dispatch => {
+    dispatch({ type: POST_BOOKING_EXPIRATION, payload: undefined })
+  }
+}
+
+export const postActivatedTables = (restId, tables) => {
+  (async function () {
+    try {
+      const response = await firebase.firestore().collection('reservations').where('restid', '==', restId).get().then((querySnapshot) => {
+        querySnapshot.forEach(async function (doc) {
+          const query = await firebase.firestore().collection('reservations').doc(doc.id).update({
+            active: false
+          });
+        })
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
+   try {
+      tables.forEach(async function (element) {
+        const res = await firebase.firestore().collection('reservations').doc(element.docId).update({
+          active: true
+        });
+      })
+    } catch (error) {
+      console.error(error);
+    }
+
   })();
   return async dispatch => {
     dispatch({ type: POST_BOOKING_EXPIRATION, payload: undefined })
