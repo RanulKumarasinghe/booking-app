@@ -2,23 +2,29 @@ import React, { useState, useEffect } from "react";
 import { SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
 import { Divider, Icon, Button, Layout, Datepicker, List, ListItem, Spinner, Modal, Card } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
-import DatePicker from 'react-native-datepicker';
-import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime, clearTables } from '@/store/actions/bookings';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime, clearTables, checkTableAvailability } from '@/store/actions/bookings';
 import firebase from 'src/utils/firebase';
 
 const BookingScreen = (props) => {
+  const all_tables_of_size = useSelector(state => state.bookings.all_tables_of_size);
   const all_scheduled_tables = useSelector(state => state.bookings.all_scheduled_tables);
+  const unavailable_tables = useSelector(state => state.bookings.unavailable_tables);
   const dispatch = useDispatch()
 
-  const [guests, setGuests] = React.useState();
-  const [date, setDate] = React.useState();
+  const [guests, setGuests] = React.useState(undefined);
   const [dateString, setDateString] = React.useState();
-  const [start, setStart] = React.useState();
-  const [end, setEnd] = React.useState();
   const [selectedIndex, setSelectedIndex] = React.useState(undefined);
   const [visible, setVisible] = React.useState(false);
 
   const [buttonGhost, setButtonGhost] = React.useState(false);
+  const [visibleGuestModal, setVisibleGuestModal] = React.useState(false);
+  const [mode, setMode] = React.useState('date');
+  const [show, setShow] = React.useState(false);
+  const [date, setDate] = React.useState(undefined);
+  const [time, setTime] = React.useState(undefined);
+  const [disableTime, setDisableTime] = React.useState(true);
+
   const user = firebase.auth().currentUser.uid;
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
@@ -26,20 +32,86 @@ const BookingScreen = (props) => {
   const restaurant = restaurants.find(restaurant => restaurant.id === restId);
 
   React.useEffect(() => {
+    dispatch(performSchedule());
+    setButtonGhost(false);
+  }, [unavailable_tables])
 
-  }, [all_scheduled_tables]);
-
-  const getDay = (date) => {
-    return date.getDate();
+  const SelectGuestsButton = () => {
+    let text = guests === 1 ? guests + " Guest" : guests + " Guests";
+    if (guests === undefined) {
+      text = 'Select guest number'
+    }
+    return (
+      <Button onPress={() => {
+        setVisibleGuestModal(true);
+      }}>
+        {text}
+      </Button>
+    );
   }
 
-  const getMonth = (date) => {
-    return date.getMonth() + 1;
+  const GuestModal = () => {
+    const data = new Array(20).fill({
+      text: 'Guests',
+    });
+
+    const renderItem = ({ item, index }) => (
+      <ListItem title={`${index + 1} ${item.text} `} onPress={() => {
+        setGuests(index + 1);
+        setVisibleGuestModal(false);
+      }} />
+    );
+
+    return (
+      <Modal visible={visibleGuestModal}
+        backdropStyle={styles.backdrop}
+        onBackdropPress={() => setVisibleGuestModal(false)}
+        style={{ maxHeight: '50%', padding: 10 }}
+      >
+        <Card disabled={true}>
+          <Text>Select how many guests will be attending</Text>
+          <Divider style={{ marginBottom: 10 }} />
+          <List
+            style={styles.modalList}
+            data={data}
+            renderItem={renderItem}
+          />
+        </Card>
+      </Modal>
+    );
   }
 
-  const getYear = (date) => {
-    return date.getFullYear();
-  }
+  const onChange = (event, selectedDate) => {
+    setShow(false);
+    if (mode === 'date') {
+      setDate(selectedDate);
+      setDisableTime(false);
+    } else if (mode === 'time') {
+      const newDate = date;
+      newDate.setHours(selectedDate.getHours());
+      newDate.setMinutes(selectedDate.getMinutes());
+      setTime(selectedDate);
+      setDate(newDate);
+    }
+  };
+
+  const showMode = (currentMode) => {
+    setMode(currentMode);
+    setShow(true);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
+
+  React.useEffect(() => {
+
+  }, []);
 
   const constructDate = (time) => {
     const month = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
@@ -59,7 +131,7 @@ const BookingScreen = (props) => {
             onBackdropPress={() => setVisible(false)}>
             <Card disabled={true} style={styles.modal}>
               <View style={{ alignItems: 'center' }}>
-              <Text style={{ marginBottom: 5 }}>{`Make booking at`}</Text>
+                <Text style={{ marginBottom: 5 }}>{`Make booking at`}</Text>
                 <Text style={{ marginBottom: 5 }}>{restaurant.name}</Text>
                 <Text style={{ marginBottom: 5 }}>{`Table: ${selectedIndex}`}</Text>
                 <Text style={{ marginBottom: 10 }}>{`from ${start} to ${end} on ${dateString}`}</Text>
@@ -72,7 +144,7 @@ const BookingScreen = (props) => {
                   </Button>
                   <Button style={styles.modalBtn} onPress={() => {
                     setVisible(false)
-                    dispatch(postReservation(all_scheduled_tables[selectedIndex].id, restId, user, guests, constructDate(start), constructDate(end), restaurant.name));
+                    // dispatch(postReservation(all_scheduled_tables[selectedIndex].id, restId, user, guests, constructDate(start), constructDate(end), restaurant.name));
                   }
                   }>
                     Yes
@@ -88,7 +160,7 @@ const BookingScreen = (props) => {
     }
   };
 
-  const RenderSubmitButton = () => {
+  const RenderSearchButton = () => {
     if (buttonGhost) {
       return (
         <Button style={styles.button} appearance="ghost"><Spinner /></Button>
@@ -98,37 +170,63 @@ const BookingScreen = (props) => {
         <Button style={styles.button} onPress={() => {
           setSelectedIndex(undefined);
           setButtonGhost(true);
-          if (all_scheduled_tables.length > 0) {
+          if (all_tables_of_size.length > 0) {
             dispatch(clearTables());
           }
           dispatch(fetchTablesBySize(guests, restId));
-          dispatch(fetchBookingsBySize(guests, restId));
-          dispatch(addTime(constructDate(start), constructDate(end)));
-          setTimeout(() => {
-            dispatch(performSchedule());
-            setButtonGhost(false);
-          }, 1600);
+          dispatch(checkTableAvailability(guests, restId, date));
         }}>Search</Button>
       );
     }
   }
+
+  const renderItemAccessoryAvailable = (props) => {
+    return (
+      <View style={{ alignItems: 'center' }}>
+        <Text>Available</Text>
+        <Icon
+          style={styles.icon}
+          fill='#8F9BB3'
+          name='checkmark-outline'
+        />
+      </View>
+    );
+  }
+
+  const renderItemAccessoryUnavailable = (props) => {
+    return (
+      <View style={{ alignItems: 'center' }}>
+        <Text>Unavailable</Text>
+        <Icon
+          style={styles.icon}
+          fill='#8F9BB3'
+          name='close-outline'
+        />
+      </View>
+    );
+  }
+
   //LIST ITEM THIS WHERE IT RENDER THE LIST COMPONENTS
   //
-  const renderItem = ({ item, index }) => (
-    <ListItem
-      title={`${index} - table_id [${item.id}]`}
-      description={item.available ? 'Available' : `Unavailable`}
-      style={selectedIndex === index ? { backgroundColor: '#edf1f7' } : undefined}
-      onPress={() => {
-        if (item.available) {
-          setSelectedIndex(index);
-        } else {
+  const renderItem = ({ item, index }) => {
+    let accessory = renderItemAccessoryAvailable;
+    if (!item.available) {
+      accessory = renderItemAccessoryUnavailable;
+    }
 
-        }
-      }
-      }
-    />
-  );
+    return (
+      <ListItem
+        title={`Table number - ${index}`}
+        description={`Recommended guest capacity: ${item.size}`}
+        style={selectedIndex === index ? { backgroundColor: '#edf1f7' } : undefined}
+        accessoryRight={accessory}
+        onPress={() => {
+          setSelectedIndex(index);
+        }}
+      />
+    );
+
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -138,55 +236,26 @@ const BookingScreen = (props) => {
           <Text> Restaurant Name: {restaurant.name}</Text>
         </View>
         <View style={{ flex: 1, alignItems: "center" }}>
-          <DatePicker
-            style={{ width: 200 }}
-            date={dateString}
-            mode="date"
-            placeholder="Select a date"
-            format="DD-MM-YYYY"
-            minDate={new Date()}
-            maxDate="2021-12-31"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            showIcon={false}
-            onDateChange={(event, date) => {
-              setDate(date);
-              setDateString(`${getDay(date)}-${getMonth(date)}-${getYear(date)}`);
-            }}
-          />
+          <View style={{ flexDirection: 'row' }}>
+            <Button size="small" style={styles.timeButton} onPress={showDatepicker}>{date !== undefined ? date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() : "Choose a date"}</Button>
+            <Button size="small" style={styles.timeButton} disabled={disableTime} onPress={showTimepicker}>{time !== undefined ? time.getHours() + ":" + time.getMinutes() : "Choose a time"}</Button>
+          </View>
+          {show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              minimumDate={new Date()}
+              value={new Date()}
+              mode={mode}
+              is24Hour={true}
+              display="default"
+              onChange={onChange}
+            />
+          )}
         </View>
 
         <View style={{ flex: 1, alignItems: "center" }}>
-          <Text>Number of guests</Text>
-          <TextInput
-            style={styles.table}
-            keyboardType='number-pad'
-            textAlign="center"
-            onChangeText={setGuests}
-            maxLength={2}
-          />
-        </View>
-
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <Text>Start time</Text>
-          <TextInput
-            style={styles.table}
-            keyboardType='number-pad'
-            textAlign="center"
-            onChangeText={setStart}
-            maxLength={5}
-          />
-        </View>
-
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <Text>End time</Text>
-          <TextInput
-            style={styles.table}
-            keyboardType='number-pad'
-            textAlign="center"
-            onChangeText={setEnd}
-            maxLength={5}
-          />
+          <GuestModal />
+          <SelectGuestsButton />
         </View>
 
         <Divider />
@@ -202,11 +271,13 @@ const BookingScreen = (props) => {
         </View>
 
         <View style={styles.submitButton}>
-          <RenderSubmitButton />
+          <RenderSearchButton />
           <Button style={styles.button} onPress={() => {
-            if (selectedIndex !== undefined) {
-              setVisible(true);
-            }
+
+            dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name));
+            //if (selectedIndex !== undefined) {
+            //  setVisible(true);
+            //}
           }}>Reserve</Button>
           <RenderModal />
         </View>
@@ -223,7 +294,7 @@ const styles = StyleSheet.create({
   },
   modalBtn: {
     minWidth: '40%',
-    marginLeft:10,
+    marginLeft: 10,
   },
   container: {
     minHeight: 0,
@@ -252,6 +323,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     fontSize: 16
   },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
   table: {
     height: 20,
     borderColor: 'black',
@@ -271,10 +345,7 @@ const styles = StyleSheet.create({
     marginBottom: '2%',
   },
   timeButton: {
-
-  },
-  timeButtonSelected: {
-
+    marginLeft: 10,
   },
   times: {
     margin: '2.7%',
@@ -283,6 +354,10 @@ const styles = StyleSheet.create({
     width: '95%',
     backgroundColor: '#C4C4C4',
     borderRadius: 5
+  },
+  icon: {
+    width: 32,
+    height: 32,
   }
 });
 

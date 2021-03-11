@@ -4,13 +4,21 @@ export const initialState = {
   all_bookings_of_size: [],
   all_scheduled_tables: [],
   all_bookings_of_restaurant: [],
+  unavailable_tables: [],
   users_bookings: [],
   tables: [],
-  time: {}
+  time: {},
+
 }
 
 const bookingsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'UNAVAILABLE_TABLES': {
+      return {
+        ...state,
+        unavailable_tables: action.payload
+      }
+    }
     case 'FETCH_TABLES':
       return {
         ...state,
@@ -27,7 +35,17 @@ const bookingsReducer = (state = initialState, action) => {
         time: action.payload
       }
     case 'PERFORM_SCHEDULE':
-      const table_availability = [];
+      console.log("Perform schedule");
+      console.log(state.unavailable_tables);
+      console.log(state.all_tables_of_size);
+    const table_availability = [];
+      state.all_tables_of_size.forEach((table) => {
+        if (state.unavailable_tables.includes(table.id)) {
+          table_availability.push({ ...table, available: false })
+        } else {
+          table_availability.push({ ...table, available: true })
+        }
+      })
 
       /*let w = () => {
         const timeSt = 0;
@@ -50,7 +68,7 @@ const bookingsReducer = (state = initialState, action) => {
             console.log(i + "NOPE");
           }
         }
-      }*/
+      }
 
       let startTimeStamp = Date.parse(state.time.start);
       let endTimeStamp = Date.parse(state.time.end);
@@ -86,8 +104,7 @@ const bookingsReducer = (state = initialState, action) => {
 
           }
         }
-        table_availability.push(table);
-      });
+      });*/
       return {
         ...state,
         all_scheduled_tables: table_availability,
@@ -164,13 +181,13 @@ const bookingsReducer = (state = initialState, action) => {
       }
     }
     case 'REMOVE_TABLE': {
-        const newTableArray = state.tables;
-        newTableArray.splice(action.payload, 1);
-        return {
-          ...state,
-          tables: [...newTableArray]
-        }
+      const newTableArray = state.tables;
+      newTableArray.splice(action.payload, 1);
+      return {
+        ...state,
+        tables: [...newTableArray]
       }
+    }
     default:
       return state;
   }
