@@ -23,7 +23,7 @@ export default BookingListScreen = ({ navigation }) => {
 
     const sortDates = (array) => {
         array.sort((a, b) => {
-            return a.start.toDate() - b.start.toDate();
+            return a.date.toDate() - b.date.toDate();
         })
         return array;
     }

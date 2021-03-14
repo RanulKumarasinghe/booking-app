@@ -109,9 +109,10 @@ export const performSchedule = () => {
 //
 
 export const checkTableAvailability = (size, restid, date) => {
+  const unavailableTables = [];
   return dispatch => {
     try {
-      firebase.firestore().collection('reservations').where('restid', '==', restid).where('size', '>=', parseInt(size)).get().then((querySnapshot) => {
+      firebase.firestore().collection('reservations').where('restid', '==', restid).where('size', '>=', parseInt(size)).where('active', '==', true).get().then((querySnapshot) => {
         const tableResponse = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), id: doc.id }
         });
@@ -121,15 +122,18 @@ export const checkTableAvailability = (size, restid, date) => {
               const bookingResponse = querySnapshot.docs.map((doc) => {
                 return ({ date: doc.data().date, tableref: table.id })
               });
-              const unavailableTables = [];
+
               bookingResponse.forEach((booking) => {
                 const dateConv = booking.date.toDate();
                 if (dateConv.getFullYear() === date.getFullYear() && dateConv.getMonth() === date.getMonth() && dateConv.getDate() === date.getDate()) {
+                  console.log("conflict" + booking.tableref);
                   unavailableTables.push(booking.tableref);
                 }
               });
-              dispatch({ type: UNAVAILABLE_TABLES, payload: unavailableTables });
             });
+            setTimeout(() => {
+              dispatch({ type: UNAVAILABLE_TABLES, payload: unavailableTables });
+            }, 2000)
           } catch (error) {
             console.error(error);
           }
@@ -160,7 +164,7 @@ export const fetchTables = (restid) => {
 export const fetchTablesBySize = (size, restid) => {
   return async dispatch => {
     try {
-      firebase.firestore().collection('reservations').where('restid', '==', restid).where('size', '>=', parseInt(size)).get().then((querySnapshot) => {
+      firebase.firestore().collection('reservations').where('restid', '==', restid).where('size', '>=', parseInt(size)).where('active', '==', true).get().then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), id: doc.id }
         });
@@ -176,7 +180,7 @@ export const fetchBookingsBySize = (size, restid) => {
   const now = new Date();
   return async dispatch => {
     try {
-      firebase.firestore().collection('bookings2').where('guests', '==', size).where('restid', '==', restid).where('end', '>', now).get().then((querySnapshot) => {
+      firebase.firestore().collection('bookings2').where('guests', '==', size).where('restid', '==', restid).where('date', '>', now).get().then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), docId: doc.id }
         });
@@ -207,7 +211,7 @@ export const fetchBookingsByRestaurantFiltered = (restid) => {
   const now = new Date();
   return async dispatch => {
     try {
-      firebase.firestore().collection('bookings2').where('restid', '==', restid).where('end', '>', now).get().then((querySnapshot) => {
+      firebase.firestore().collection('bookings2').where('restid', '==', restid).where('date', '>', now).get().then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), docId: doc.id }
         });
@@ -238,7 +242,7 @@ export const fetchBookingsByUserFiltered = (userid) => {
   const now = new Date();
   return async dispatch => {
     try {
-      firebase.firestore().collection('bookings2').where('cusid', '==', userid).where('end', '>', now).get().then((querySnapshot) => {
+      firebase.firestore().collection('bookings2').where('cusid', '==', userid).where('date', '>', now).get().then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), docId: doc.id }
         });
@@ -258,8 +262,10 @@ export const postTable = (restid, table) => {
     try {
       const res = await firebase.firestore().collection('reservations').add({
         size: table.size,
+        number: table.number,
         attributeIndexes: table.attributeIndexes,
         restid: restid,
+        active: false,
       });
     } catch (error) {
       console.error(error);
@@ -283,7 +289,7 @@ export const removeTableFromDatabase = (tableid) => {
   }
 }
 
-export const postReservation = (tableid, restid, user, guests, date, restname) => {
+export const postReservation = (tableid, restid, user, guests, date, restname, tableNum) => {
   (async function () {
     try {
       const res = await firebase.firestore().collection('bookings2').add({
@@ -294,6 +300,7 @@ export const postReservation = (tableid, restid, user, guests, date, restname) =
         guests: guests,
         restid: restid,
         restname: restname,
+        tableNumber: tableNum
       })
     } catch (error) {
       console.error(error);

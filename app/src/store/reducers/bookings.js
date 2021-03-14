@@ -14,10 +14,10 @@ export const initialState = {
 const bookingsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UNAVAILABLE_TABLES': {
-      return {
-        ...state,
-        unavailable_tables: action.payload
-      }
+        return {
+          ...state,
+          unavailable_tables: action.payload
+        }
     }
     case 'FETCH_TABLES':
       return {
@@ -35,10 +35,7 @@ const bookingsReducer = (state = initialState, action) => {
         time: action.payload
       }
     case 'PERFORM_SCHEDULE':
-      console.log("Perform schedule");
-      console.log(state.unavailable_tables);
-      console.log(state.all_tables_of_size);
-    const table_availability = [];
+      const table_availability = [];
       state.all_tables_of_size.forEach((table) => {
         if (state.unavailable_tables.includes(table.id)) {
           table_availability.push({ ...table, available: false })
@@ -125,7 +122,7 @@ const bookingsReducer = (state = initialState, action) => {
     case 'FETCH_BOOKINGS_BY_USER': {
       const now = new Date();
       action.payload.forEach((element) => {
-        if (now.getTime() > element.end.toDate().getTime() && element.status === 'ok') {
+        if (now.getTime() > element.date.toDate().getTime() && element.status === 'Ok') {
           //dispatch(postBookingExpiration(element.docId));
           element.status = 'expired';
         } else {
@@ -145,7 +142,7 @@ const bookingsReducer = (state = initialState, action) => {
     case 'FETCH_BOOKINGS_BY_RESTAURANT': {
       const now = new Date();
       action.payload.forEach((element) => {
-        if (now.getTime() > element.end.toDate().getTime() && element.status === 'ok') {
+        if (now.getTime() > element.date.toDate().getTime() && element.status === 'Ok') {
           //dispatch(postBookingExpiration(element.docId));
           element.status = 'expired';
         } else {

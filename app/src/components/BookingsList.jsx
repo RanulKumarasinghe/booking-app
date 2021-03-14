@@ -56,7 +56,7 @@ const BookingsListEntry = (props) => {
                 <View style={styles.headerContainer}>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.headerTitle}>Booking - {data.restname}</Text>
-                        <Text style={styles.headerSubTitle}>{constructDate(data.start.seconds)}</Text>
+                        <Text style={styles.headerSubTitle}>{constructDate(data.date.seconds)}</Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         {<StatusHeader />}
@@ -76,7 +76,7 @@ const BookingsListEntry = (props) => {
                     <Divider />
                     <View style={{ flexDirection: 'row', margin: 5 }}>
                         <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
-                        <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.start.seconds) + "-" + constructTime(data.end.seconds)}</Text>
+                        <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
                     </View>
                     <Divider />
                     <TableDescription />
@@ -88,7 +88,7 @@ const BookingsListEntry = (props) => {
                     <Divider />
                     <View style={{ flexDirection: 'row', margin: 5 }}>
                         <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
-                        <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.start.seconds) + "-" + constructTime(data.end.seconds)}</Text>
+                        <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
                     </View>
                     <Divider />
                     <TableDescription />
@@ -99,11 +99,12 @@ const BookingsListEntry = (props) => {
     }
 
     const TableDescription = () => {
+        const reference = ['Outside', 'Inside', 'Quiet area', 'Next to a window', 'Next to the door', 'No smoking', 'Smoking allowed'];
         return (
             <View style={styles.tableDetails}>
-                <Text>Table number: {data.tableref}</Text>
+                <Text>Table number: {data.number}</Text>
                 <View style={{flexDirection:'row'}}>
-                    <Text style={{flex: 1, flexWrap: 'wrap'}}>Attributes: {`Outside, Quiet place, Near a Window, Near the Door`}</Text>
+                    <Text style={{flex: 1, flexWrap: 'wrap'}}>Attributes: {}</Text>
                 </View>
             </View>
         );

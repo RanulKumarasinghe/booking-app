@@ -160,7 +160,11 @@ const AddTableScreen = (props) => {
     return (
       <Button style={styles.button} onPress={() => {
         if (selectedAttributes.length > 0 && guestNumber !== undefined) {
-          const newTable = { size: guestNumber, attributeIndexes: [...selectedAttributes] };
+          let table_num = 0
+          if (store.length > 0) {
+            table_num = store.length;
+          }
+          const newTable = { number:table_num ,size: guestNumber, attributeIndexes: [...selectedAttributes] };
           dispatch(addTable(newTable));
           dispatch(postTable(resid, newTable));
           setNewTables([...newTables, newTable]);
@@ -246,6 +250,8 @@ const AddTableScreen = (props) => {
 const ListComponent = (data) => {
   const [selectedTables, setSelectedTables] = React.useState([]);
   const [loadSelectedTables, setLoadSelectedTables] = React.useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
+
   const dispatch = useDispatch();
 
   if (loadSelectedTables) {
@@ -257,6 +263,11 @@ const ListComponent = (data) => {
     });
     setSelectedTables(loadedTables);
     setLoadSelectedTables(false);
+  }
+
+  const handleRefresh = () => {
+    dispatch(fetchTables(resid));
+    setRefreshing(true);
   }
 
   React.useEffect(() => {
@@ -283,6 +294,8 @@ const ListComponent = (data) => {
         title={'Table number: ' + entry.index}
         description={'Table size : ' + entry.item.size}
         accessoryRight={() => renderItemAccessory(entry)}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
         onPress={() => {
           if (selectedTables.includes(entry.index)) {
             const indexOfTable = selectedTables.indexOf(entry.index);

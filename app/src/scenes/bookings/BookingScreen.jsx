@@ -10,6 +10,7 @@ const BookingScreen = (props) => {
   const all_tables_of_size = useSelector(state => state.bookings.all_tables_of_size);
   const all_scheduled_tables = useSelector(state => state.bookings.all_scheduled_tables);
   const unavailable_tables = useSelector(state => state.bookings.unavailable_tables);
+  const auth = useSelector(state => state.auth);
   const dispatch = useDispatch()
 
   const [guests, setGuests] = React.useState(undefined);
@@ -23,17 +24,25 @@ const BookingScreen = (props) => {
   const [show, setShow] = React.useState(false);
   const [date, setDate] = React.useState(undefined);
   const [time, setTime] = React.useState(undefined);
-  const [disableTime, setDisableTime] = React.useState(true);
+  const [disableSearch, setDisableSearch] = React.useState(true);
+  const [disableReserve, setDisableReserve] = React.useState(true);
 
   const user = firebase.auth().currentUser.uid;
+  let isOffline = auth.uid === undefined;
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const restId = props.route.params.restaurantId;
   const restaurant = restaurants.find(restaurant => restaurant.id === restId);
 
+  if (guests !== undefined && time !== undefined && date !== undefined && disableSearch === true) {
+    setDisableSearch(false);
+  }
+
   React.useEffect(() => {
-    dispatch(performSchedule());
-    setButtonGhost(false);
+    setTimeout(() => {
+      dispatch(performSchedule());
+      setButtonGhost(false);
+    }, 100)
   }, [unavailable_tables])
 
   const SelectGuestsButton = () => {
@@ -42,7 +51,7 @@ const BookingScreen = (props) => {
       text = 'Select guest number'
     }
     return (
-      <Button onPress={() => {
+      <Button style={styles.guestButton} onPress={() => {
         setVisibleGuestModal(true);
       }}>
         {text}
@@ -85,13 +94,8 @@ const BookingScreen = (props) => {
     setShow(false);
     if (mode === 'date') {
       setDate(selectedDate);
-      setDisableTime(false);
     } else if (mode === 'time') {
-      const newDate = date;
-      newDate.setHours(selectedDate.getHours());
-      newDate.setMinutes(selectedDate.getMinutes());
       setTime(selectedDate);
-      setDate(newDate);
     }
   };
 
@@ -102,24 +106,11 @@ const BookingScreen = (props) => {
 
   const showDatepicker = () => {
     showMode('date');
-
   };
 
   const showTimepicker = () => {
     showMode('time');
   };
-
-  React.useEffect(() => {
-
-  }, []);
-
-  const constructDate = (time) => {
-    const month = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
-    const day = (date.getDate()) < 10 ? "0" + (date.getDate()) : (date.getDate());
-    const paddedTime = (time.length < 5) ? "0" + (time) : (time);
-    const fullDate = new Date(date.getFullYear() + "-" + month + "-" + day + "T" + paddedTime);
-    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(time), 0, 0, 0));
-  }
 
   const RenderModal = () => {
     if (visible) {
@@ -131,10 +122,9 @@ const BookingScreen = (props) => {
             onBackdropPress={() => setVisible(false)}>
             <Card disabled={true} style={styles.modal}>
               <View style={{ alignItems: 'center' }}>
-                <Text style={{ marginBottom: 5 }}>{`Make booking at`}</Text>
+                <Text style={{ marginBottom: 5 }}>{`Booking table #${all_scheduled_tables[selectedIndex].number}`}</Text>
                 <Text style={{ marginBottom: 5 }}>{restaurant.name}</Text>
-                <Text style={{ marginBottom: 5 }}>{`Table: ${selectedIndex}`}</Text>
-                <Text style={{ marginBottom: 10 }}>{`from ${start} to ${end} on ${dateString}`}</Text>
+                <Text style={{ marginBottom: 10 }}>{`On ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                   <Button style={styles.modalBtn} onPress={() => {
                     setVisible(false)
@@ -144,7 +134,14 @@ const BookingScreen = (props) => {
                   </Button>
                   <Button style={styles.modalBtn} onPress={() => {
                     setVisible(false)
-                    // dispatch(postReservation(all_scheduled_tables[selectedIndex].id, restId, user, guests, constructDate(start), constructDate(end), restaurant.name));
+                    setDisableReserve(true);
+                    setSelectedIndex(undefined);
+                    dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
+                    dispatch(clearTables());
+                    setTimeout(() => {
+                      dispatch(fetchTablesBySize(guests, restId));
+                      dispatch(checkTableAvailability(guests, restId, date));
+                    }, 1000)
                   }
                   }>
                     Yes
@@ -167,22 +164,43 @@ const BookingScreen = (props) => {
       );
     } else {
       return (
-        <Button style={styles.button} onPress={() => {
+        <Button style={styles.button} disabled={disableSearch} onPress={() => {
           setSelectedIndex(undefined);
           setButtonGhost(true);
           if (all_tables_of_size.length > 0) {
             dispatch(clearTables());
           }
+
+          const newDate = date;
+          newDate.setHours(time.getHours());
+          newDate.setMinutes(time.getMinutes());
+          setDate(newDate);
+
           dispatch(fetchTablesBySize(guests, restId));
           dispatch(checkTableAvailability(guests, restId, date));
+          setTimeout(() => {
+            if (all_scheduled_tables.length < 1 && buttonGhost) {
+              setButtonGhost(false);
+            }
+          }, 10000);
         }}>Search</Button>
       );
     }
   }
 
+  const RenderReserveButton = () => {
+    return (
+      <Button style={styles.button} disabled={disableReserve} onPress={() => {
+        if (selectedIndex !== undefined) {
+          setVisible(true);
+        }
+      }}>Reserve</Button>
+    );
+  }
+
   const renderItemAccessoryAvailable = (props) => {
     return (
-      <View style={{ alignItems: 'center' }}>
+      <View style={{ alignItems: 'center', minWidth: 75 }}>
         <Text>Available</Text>
         <Icon
           style={styles.icon}
@@ -195,7 +213,7 @@ const BookingScreen = (props) => {
 
   const renderItemAccessoryUnavailable = (props) => {
     return (
-      <View style={{ alignItems: 'center' }}>
+      <View style={{ alignItems: 'center', minWidth: 75 }}>
         <Text>Unavailable</Text>
         <Icon
           style={styles.icon}
@@ -216,81 +234,146 @@ const BookingScreen = (props) => {
 
     return (
       <ListItem
-        title={`Table number - ${index}`}
+        title={`Table number - ${all_scheduled_tables[index].number}`}
         description={`Recommended guest capacity: ${item.size}`}
         style={selectedIndex === index ? { backgroundColor: '#edf1f7' } : undefined}
         accessoryRight={accessory}
         onPress={() => {
-          setSelectedIndex(index);
+          if (item.available) {
+            setSelectedIndex(index);
+            setDisableReserve(false);
+          }
         }}
       />
     );
 
   }
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Divider />
-      <View style={{ flex: 1 }}>
-        <View style={{ padding: '2%', alignItems: "center" }}>
-          <Text> Restaurant Name: {restaurant.name}</Text>
-        </View>
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <View style={{ flexDirection: 'row' }}>
-            <Button size="small" style={styles.timeButton} onPress={showDatepicker}>{date !== undefined ? date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() : "Choose a date"}</Button>
-            <Button size="small" style={styles.timeButton} disabled={disableTime} onPress={showTimepicker}>{time !== undefined ? time.getHours() + ":" + time.getMinutes() : "Choose a time"}</Button>
-          </View>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              minimumDate={new Date()}
-              value={new Date()}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              onChange={onChange}
-            />
-          )}
-        </View>
-
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <GuestModal />
-          <SelectGuestsButton />
-        </View>
-
-        <Divider />
-
-        {/*LIST THIS CONTAINER FOR THE LIST*/}
-        <View style={styles.times}>
-          <List
-            data={all_scheduled_tables}
-            ItemSeparatorComponent={Divider}
-            renderItem={renderItem}
-            extraData={selectedIndex}
-          />
-        </View>
-
-        <View style={styles.submitButton}>
-          <RenderSearchButton />
-          <Button style={styles.button} onPress={() => {
-
-            dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name));
-            //if (selectedIndex !== undefined) {
-            //  setVisible(true);
-            //}
-          }}>Reserve</Button>
-          <RenderModal />
-        </View>
-      </View>
-    </SafeAreaView>
+  const WarningIcon = () => (
+    <Icon
+      style={styles.icon}
+      fill='#8F9BB3'
+      name='alert-triangle-outline'
+    />
   );
+
+  const TimeIcon = () => (
+    <Icon
+      style={styles.smallIcon}
+      fill='white'
+      name='clock-outline'
+    />
+  );
+
+  const DateIcon = () => (
+    <Icon
+      style={styles.smallIcon}
+      fill='white'
+      name='calendar-outline'
+    />
+  );
+
+  const LoginError = () => {
+    if (isOffline) {
+      return (
+        <View style={styles.datePicker} >
+          <View style={styles.error}>
+            <WarningIcon />
+          </View>
+          <View>
+            <Text appearance='hint'>PLEASE LOG IN</Text>
+          </View>
+        </View>);
+    } else {
+      return (<View></View>)
+    }
+  }
+
+  const addTimePadding = () => {
+    let hourStr = time.getHours()
+    let minuteStr = time.getMinutes()
+    if (time.getHours() < 10) {
+      hourStr = "0" + hourStr;
+    }
+    if (time.getMinutes() < 10) {
+      minuteStr = "0" + minuteStr;
+    }
+    return hourStr + ":" + minuteStr;
+  }
+
+  if (isOffline) {
+    return (<LoginError />)
+  } else {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <Divider />
+        <View style={{ flex: 1 }}>
+          <View style={{ padding: '2%', alignItems: "center" }}>
+            <Text style={{ fontWeight: 'bold' }}>{restaurant.name}</Text>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <View style={{ flexDirection: 'row' }}>
+              <Button size="small" style={styles.timeButton} onPress={showDatepicker}>{date !== undefined ? date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() : () => { return <View style={{ flexDirection: 'row' }}><DateIcon /><Text style={styles.text}>Pick a date</Text></View> }}</Button>
+              <Button size="small" style={styles.timeButton} onPress={showTimepicker}>{time !== undefined ? addTimePadding() : () => { return <View style={{ flexDirection: 'row' }}><TimeIcon /><Text style={styles.text}>Pick a time</Text></View> }}</Button>
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  minimumDate={new Date()}
+                  value={new Date()}
+                  mode={mode}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
+                />
+              )}
+            </View>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <GuestModal />
+              <SelectGuestsButton />
+            </View>
+          </View>
+
+          {/*LIST THIS CONTAINER FOR THE LIST*/}
+          <View style={styles.times}>
+            <List
+              data={all_scheduled_tables}
+              ItemSeparatorComponent={Divider}
+              renderItem={renderItem}
+              extraData={selectedIndex}
+            />
+          </View>
+
+          <View style={styles.submitButton}>
+            <RenderSearchButton />
+            <RenderReserveButton />
+            <RenderModal />
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
+  smallIcon: {
+    marginTop:2,
+    marginRight:2,
+    width: 16,
+    height: 16,
+  },
+  text:{
+    color:'white',
+    fontWeight:'bold'
+  },
   modal: {
     flex: 1,
     justifyContent: 'center',
     minHeight: 200,
+  },
+  guestButton: {
+    minWidth: 250,
+    maxHeight: 20,
+    marginTop: 4,
   },
   modalBtn: {
     minWidth: '40%',
@@ -308,6 +391,13 @@ const styles = StyleSheet.create({
   },
   header: {
     marginTop: 15
+  },
+  datePicker: {
+    marginTop: '1%',
+    marginBottom: '1%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   listRow: {
     flexDirection: 'row',
@@ -345,12 +435,13 @@ const styles = StyleSheet.create({
     marginBottom: '2%',
   },
   timeButton: {
-    marginLeft: 10,
+    margin: 8,
+    minWidth: 100,
   },
   times: {
     margin: '2.7%',
     padding: '0.5%',
-    flex: 6,
+    flex: 4,
     width: '95%',
     backgroundColor: '#C4C4C4',
     borderRadius: 5
