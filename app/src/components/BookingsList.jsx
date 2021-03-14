@@ -99,13 +99,9 @@ const BookingsListEntry = (props) => {
     }
 
     const TableDescription = () => {
-        const reference = ['Outside', 'Inside', 'Quiet area', 'Next to a window', 'Next to the door', 'No smoking', 'Smoking allowed'];
         return (
             <View style={styles.tableDetails}>
-                <Text>Table number: {data.number}</Text>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{flex: 1, flexWrap: 'wrap'}}>Attributes: {}</Text>
-                </View>
+                <Text>Table number: {data.tableNumber}</Text>
             </View>
         );
     }

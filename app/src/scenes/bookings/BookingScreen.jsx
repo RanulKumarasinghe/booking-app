@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
-import { Divider, Icon, Button, Layout, Datepicker, List, ListItem, Spinner, Modal, Card } from '@ui-kitten/components';
+import { SafeAreaView, StyleSheet, View, TextInput } from "react-native";
+import { Divider, Icon, Button, Layout, Datepicker, List, ListItem, Spinner, Modal, Card, Text } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime, clearTables, checkTableAvailability } from '@/store/actions/bookings';
 import firebase from 'src/utils/firebase';
+import { TouchableOpacity } from "react-native";
 
 const BookingScreen = (props) => {
   const all_tables_of_size = useSelector(state => state.bookings.all_tables_of_size);
@@ -14,7 +15,6 @@ const BookingScreen = (props) => {
   const dispatch = useDispatch()
 
   const [guests, setGuests] = React.useState(undefined);
-  const [dateString, setDateString] = React.useState();
   const [selectedIndex, setSelectedIndex] = React.useState(undefined);
   const [visible, setVisible] = React.useState(false);
 
@@ -26,6 +26,7 @@ const BookingScreen = (props) => {
   const [time, setTime] = React.useState(undefined);
   const [disableSearch, setDisableSearch] = React.useState(true);
   const [disableReserve, setDisableReserve] = React.useState(true);
+  const [displaySearchError, setDisplaySearchError] = React.useState(false);
 
   const user = firebase.auth().currentUser.uid;
   let isOffline = auth.uid === undefined;
@@ -157,6 +158,13 @@ const BookingScreen = (props) => {
     }
   };
 
+  const checkForResponse = () => {
+    if (all_tables_of_size.length < 1) {
+      return false
+    }
+    return true;
+  }
+
   const RenderSearchButton = () => {
     if (buttonGhost) {
       return (
@@ -167,6 +175,7 @@ const BookingScreen = (props) => {
         <Button style={styles.button} disabled={disableSearch} onPress={() => {
           setSelectedIndex(undefined);
           setButtonGhost(true);
+          setDisplaySearchError(false);
           if (all_tables_of_size.length > 0) {
             dispatch(clearTables());
           }
@@ -178,11 +187,14 @@ const BookingScreen = (props) => {
 
           dispatch(fetchTablesBySize(guests, restId));
           dispatch(checkTableAvailability(guests, restId, date));
+
           setTimeout(() => {
-            if (all_scheduled_tables.length < 1 && buttonGhost) {
+            if (checkForResponse() === false) {
+              setDisplaySearchError(true);
               setButtonGhost(false);
             }
           }, 10000);
+
         }}>Search</Button>
       );
     }
@@ -232,10 +244,20 @@ const BookingScreen = (props) => {
       accessory = renderItemAccessoryUnavailable;
     }
 
+    const reference = ['Outside', 'Inside', 'Quiet area', 'Next to a window', 'Next to the door', 'No smoking', 'Smoking allowed'];
+    let attrbString = "";
+    item.attributeIndexes.forEach((index, i) => {
+      if (i === item.attributeIndexes.length - 1) {
+        attrbString += reference[index]
+      } else {
+        attrbString += reference[index] + ", "
+      }
+    })
+
     return (
       <ListItem
         title={`Table number - ${all_scheduled_tables[index].number}`}
-        description={`Recommended guest capacity: ${item.size}`}
+        description={`Recommended guest capacity: ${item.size}\nDescription: ${attrbString}`}
         style={selectedIndex === index ? { backgroundColor: '#edf1f7' } : undefined}
         accessoryRight={accessory}
         onPress={() => {
@@ -276,16 +298,28 @@ const BookingScreen = (props) => {
   const LoginError = () => {
     if (isOffline) {
       return (
-        <View style={styles.datePicker} >
-          <View style={styles.error}>
+        <TouchableOpacity style={styles.loginError} onPress={() => {
+          props.navigation.navigate(
+            "User", { screen: 'Login' },
+          );
+        }}>
+          <View style={{ flex: 10, alignItems: 'center', justifyContent: 'center' }}>
             <WarningIcon />
-          </View>
-          <View>
             <Text appearance='hint'>PLEASE LOG IN</Text>
           </View>
-        </View>);
+          <Text style={{ flex: 1 }} appearance='hint'>Tap to redirect</Text>
+        </TouchableOpacity>
+      );
     } else {
       return (<View></View>)
+    }
+  }
+
+  const SearchErrorMessage = () => {
+    if (displaySearchError) {
+      return (<Text>Sorry but no tables are available</Text>);
+    } else {
+      return (<></>)
     }
   }
 
@@ -331,17 +365,19 @@ const BookingScreen = (props) => {
               <GuestModal />
               <SelectGuestsButton />
             </View>
+
+            <View style={styles.times}>
+              <List
+                data={all_scheduled_tables}
+                ItemSeparatorComponent={Divider}
+                renderItem={renderItem}
+                extraData={selectedIndex}
+              />
+            </View>
+            <SearchErrorMessage />
           </View>
 
           {/*LIST THIS CONTAINER FOR THE LIST*/}
-          <View style={styles.times}>
-            <List
-              data={all_scheduled_tables}
-              ItemSeparatorComponent={Divider}
-              renderItem={renderItem}
-              extraData={selectedIndex}
-            />
-          </View>
 
           <View style={styles.submitButton}>
             <RenderSearchButton />
@@ -356,14 +392,23 @@ const BookingScreen = (props) => {
 
 const styles = StyleSheet.create({
   smallIcon: {
-    marginTop:2,
-    marginRight:2,
+    marginTop: 2,
+    marginRight: 2,
     width: 16,
     height: 16,
   },
-  text:{
-    color:'white',
-    fontWeight:'bold'
+  loginError: {
+    width: "100%",
+    height: "100%",
+    marginTop: '1%',
+    marginBottom: '1%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'white',
+    fontWeight: 'bold'
   },
   modal: {
     flex: 1,
@@ -441,7 +486,7 @@ const styles = StyleSheet.create({
   times: {
     margin: '2.7%',
     padding: '0.5%',
-    flex: 4,
+    flex: 7,
     width: '95%',
     backgroundColor: '#C4C4C4',
     borderRadius: 5

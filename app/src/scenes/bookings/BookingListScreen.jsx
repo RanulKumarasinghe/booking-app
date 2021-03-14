@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
 import { Toggle, Text, Divider, Spinner, Layout, Icon } from '@ui-kitten/components';
 import BookingsList from '@/components/BookingsList';
 import { fetchBookingsByUser, fetchBookingsByUserFiltered, clearUserBookings, postBookingExpiration } from '@/store/actions/bookings'
 import { useSelector, useDispatch } from 'react-redux';
-import DatePicker from 'react-native-datepicker';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native'
-
 
 
 export default BookingListScreen = ({ navigation }) => {
@@ -30,6 +27,7 @@ export default BookingListScreen = ({ navigation }) => {
 
     const onCheckedChange = () => {
         setfilterToggle(!filterToggle);
+        doRefresh();
     };
 
     const doRefresh = () => {
@@ -51,7 +49,7 @@ export default BookingListScreen = ({ navigation }) => {
                 setshowLoadingSpinner(false);
             }, 2000);
         }
-    }, [isFocused, filterToggle, refresh]);
+    }, [isFocused, filterToggle]);
 
     const WarningIcon = () => (
         <Icon
@@ -65,19 +63,9 @@ export default BookingListScreen = ({ navigation }) => {
         return (
             <View>
                 <View style={styles.toggleContainer}>
-                    <Toggle style={styles.toggleElement} checked={filterToggle} onChange={doRefresh}>
+                    <Toggle style={styles.toggleElement} checked={filterToggle} onChange={onCheckedChange}>
                         <Text appearance='hint'>Filter expired</Text>
                     </Toggle>
-                </View>
-                <Divider />
-            </View>
-        );
-    }
-
-    const HeaderText = () => {
-        return (
-            <View>
-                <View style={styles.toggleContainer}>
                 </View>
                 <Divider />
             </View>
@@ -108,14 +96,18 @@ export default BookingListScreen = ({ navigation }) => {
     const LoginError = () => {
         if (isOffline) {
             return (
-                <View style={styles.datePicker} >
-                    <View style={styles.error}>
+                <TouchableOpacity style={styles.loginError} onPress={() => {
+                    navigation.navigate(
+                        "User", { screen: 'Login' },
+                    );
+                }}>
+                    <View style={{flex:10, alignItems:'center', justifyContent:'center'}}>
                         <WarningIcon />
-                    </View>
-                    <View>
                         <Text appearance='hint'>PLEASE LOG IN</Text>
                     </View>
-                </View>);
+                    <Text style={{flex:1}} appearance='hint'>Tap to redirect</Text>
+                </TouchableOpacity>
+            );
         } else {
             return (<View></View>)
         }
@@ -156,6 +148,15 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 10,
     },
+    loginError: {
+        width: "100%",
+        height: "100%",
+        marginTop: '1%',
+        marginBottom: '1%',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     datePicker: {
         marginTop: '1%',
         marginBottom: '1%',
@@ -181,9 +182,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     icon: {
-        width: 24,
-        height: 24,
-        textAlign: 'center',
-        textAlignVertical: 'center',
+        width: 32,
+        height: 32,
     },
 });
