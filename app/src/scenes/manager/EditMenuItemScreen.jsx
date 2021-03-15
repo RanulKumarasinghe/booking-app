@@ -48,17 +48,17 @@ const RestaurantEditMenu = (props) => {
   const editMenu = () => {
     console.log('edit');
     setTimeout(() => {
-    dispatch(updateMenu({
-      rId: restaurantId,
-      id: itemId,
-      name: nameValue,
-      price: +priceValue,
-      description: descriptionValue,
-      imageUrl: imageUrlValue,
-      numType: menuTypeValue,
-      type: type
-    }))
-  }, 1000)
+      dispatch(updateMenu({
+        rId: restaurantId,
+        id: itemId,
+        name: nameValue,
+        price: +priceValue,
+        description: descriptionValue,
+        imageUrl: imageUrlValue,
+        numType: menuTypeValue,
+        type: type
+      }))
+    }, 1000)
   };
 
   const deleteMenuItem = () => {

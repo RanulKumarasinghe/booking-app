@@ -15,7 +15,7 @@ export const fetchAllFoodTypes = () => {
       })
       dispatch({ type: FETCH_ALL_FOOD_TYPES, foodType: foodTypeArray})
     }).catch(e=> {
-    alert(e)
-  })
+      alert(e)
+    })
   }
 }
