@@ -1,4 +1,6 @@
-import React, { useState, useSelector } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,15 +17,21 @@ import {
   Text,
   Avatar,
 } from "@ui-kitten/components";
+
 import firebase from "src/utils/firebase";
+import { firestore } from "firebase";
 
 const RewardScreen = (props) => {
   //State holds points returned from firebase
-  const [points, setpoints] = useState(0);
+  const [points, setPoints] = useState(0);
   //Contains the user input code
-  const [code, setCode] = useState();
+  const [code, setCode] = useState("");
   //Contains the document name used to track and change field for the code
-  const [document, setDocument] = useState();
+  const [document, setDocument] = useState("");
+
+  const auth = useSelector((state) => state.auth);
+  const uid = auth.uid;
+  const user = auth.name;
 
   //removes spaces from code, just in case it's copy & pasted
   const onTextChange = (code) => {
@@ -33,11 +41,28 @@ const RewardScreen = (props) => {
 
   //The connection to the DB
   const rewards = firebase.firestore().collection("rewards");
+  const usersDB = firebase.firestore().collection("users");
 
-  //Current user
-  const User = firebase.auth().currentUser;
+  const isFocused = useIsFocused();
 
-  //Needs to search DB for Code. If the code is usd return invalid code message
+  useEffect(() => {
+    updatePoints();
+  }, [isFocused]);
+
+  function updatePoints() {
+    usersDB
+      .where("uid", "==", uid)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+          userPoints = doc.data().points;
+          setPoints(userPoints);
+        });
+      });
+  }
+
   function redeemCode() {
     //Check if the code is in firebase
     rewards
@@ -76,9 +101,9 @@ const RewardScreen = (props) => {
         </View>
         <View style={styles.lineThrough} />
         <View>
+          {/* FIX:Need to show users points, on load*/}
           <Text style={styles.font}>Your Points:</Text>
           <Text style={styles.font}>{points}</Text>
-          <Text style={styles.font}>Last input code:{code}</Text>
         </View>
       </View>
 

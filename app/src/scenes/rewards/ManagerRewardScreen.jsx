@@ -1,4 +1,5 @@
-import React, { useState, useSelector } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   SafeAreaView,
   StyleSheet,
@@ -31,30 +32,34 @@ const ManagerRewardScreen = (props) => {
     return text;
   }
 
-  //Takes the money and converts into points to store in the DB
-  function pointConvert() {
-    var pointConversion = money % 10;
-    setPoints(pointConversion);
-  }
-
   //The connection to the DB
+  const restaurant = useSelector((state) => state.staffRestaurant.restaurant);
   const rewards = firebase.firestore().collection("rewards");
+  const auth = useSelector((state) => state.auth);
+  const uid = auth.uid;
+  const user = auth.name;
 
   //Converts value from String to Int
   const onTextChange = (money) => {
     var number = parseFloat(money);
     setMoney(number);
+    if (number < 500) {
+      var pointConversion = number / 10;
+      //remove decimals above
+      setPoints(pointConversion);
+    } else {
+      setPoints(50);
+    }
   };
 
   //The info sent to the DB
-  function generateCode() {
-    pointConvert();
+  async function generateCode() {
     rewards
       .add({
         money: money,
         points: points,
-        //restrauntId: null,
-        //employeeId: ,
+        restrauntId: restaurant.id,
+        employeeId: uid,
         createdAt: new Date(),
         code: makeid(),
         codeUsed: false,
@@ -70,23 +75,22 @@ const ManagerRewardScreen = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <Image
+        {/* <Image
           style={styles.userImage}
           source={{
             uri:
-              "https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png",
+              "https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg",
           }}
-        />
+        /> */}
         <View>
-          <Text style={styles.font}>Hello Username</Text>
-          {/* /manage state to get username above/ */}
+          <Text style={styles.font}>Hello {user}</Text>
         </View>
         <View style={styles.lineThrough} />
         <View>
           <Text style={styles.font}>
             Enter price of sale in the box bellow to generate code for customer
           </Text>
-          <Text style={styles.font}>{points}: points have been added</Text>
+          <Text style={styles.font}>{points} have been added:</Text>
           <Text style={styles.font}>code for user is: {code}</Text>
         </View>
       </View>
@@ -135,13 +139,11 @@ const styles = StyleSheet.create({
 
   container: {
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    // paddingTop:'12%'
   },
 
   header: {
     alignContent: "center",
     backgroundColor: "green",
-    // paddingTop:30,
   },
 
   font: {
