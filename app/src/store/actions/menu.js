@@ -10,11 +10,10 @@ export const fetchAllMenu = (restaurant) => {
       const menuArray = querySnapshot.docs.map((doc) => {
         return { ...doc.data(), id: doc.id }
       })
-
       dispatch({ type: FETCH_ALL_MENU, menu: menuArray})
     }).catch(e=> {
-    alert(e)
-  })
+      alert(e)
+    })
   }
 };
 
@@ -22,8 +21,7 @@ export const UPDATE_MENU = 'UPDATE_MENU';
 
 export const updateMenu = (saveMenu) => {
   return dispatch => {
-    const menu = firebase.firestore().collection('restaurants').doc(saveMenu.rId).collection('menu').doc(saveMenu.id)
-    menu.update({
+    firebase.firestore().collection('restaurants').doc(saveMenu.rId).collection('menu').doc(saveMenu.id).update({
       name: saveMenu.name,
       price: saveMenu.price,
       imageUrl: saveMenu.imageUrl,
@@ -43,8 +41,7 @@ export const ADD_ITEM_TO_MENU = 'ADD_ITEM_TO_MENU';
 
 export const createItem = (addItem) => {
   return dispatch => {
-    const menu = firebase.firestore().collection('restaurants').doc(addItem.rId).collection('menu')
-    menu.add({
+    firebase.firestore().collection('restaurants').doc(addItem.rId).collection('menu').add({
       name: addItem.name,
       price: addItem.price,
       imageUrl: addItem.imageUrl,
