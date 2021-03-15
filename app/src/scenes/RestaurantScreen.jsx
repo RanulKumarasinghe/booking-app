@@ -148,6 +148,10 @@ const Restaurant = (props) => {
 }
 
 const styles = StyleSheet.create({
+  modalList: {
+    maxHeight: '90%',
+    marginBottom: 20,
+  },
   screen: {
     flex: 1,
     padding: 10,

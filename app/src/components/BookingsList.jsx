@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
-import { Divider, Text, Button } from '@ui-kitten/components';
+import { Divider, Text, Button, Icon } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchAllBookings, postReservationCancelation } from '@/store/actions/bookings'
 
@@ -24,6 +24,10 @@ const BookingsListEntry = (props) => {
 
     const image = { uri: "https://www.fsrmagazine.com/sites/default/files/styles/story_image_720x430/public/feature-images/state-full-service-restaurant-industry-1554901734.jpg?itok=-EciUerQ" };
 
+    const capitalize = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
     const constructDate = (timestamp) => {
         const date = new Date(timestamp * 1000);
         return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
@@ -38,16 +42,24 @@ const BookingsListEntry = (props) => {
     const data = props.item.element;
     const callback = props.item.callback;
 
+    const StatusHeader = () => {
+        if (data.status == 'cancelled') {
+            return (<Text style={styles.headerTitleCanceled}>Status: {capitalize(data.status)}</Text>)
+        } else {
+            return (<Text style={styles.headerTitle}>Status: {capitalize(data.status)}</Text>)
+        }
+    }
+
     const ListHeader = () => {
         return (
             <ImageBackground source={image} style={styles.headerImg}>
                 <View style={styles.headerContainer}>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.headerTitle}>Booking - {data.restname}</Text>
-                        <Text style={styles.headerSubTitle}>{constructDate(data.start.seconds)}</Text>
+                        <Text style={styles.headerSubTitle}>{constructDate(data.date.seconds)}</Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={styles.headerTitle}>Status: {data.status}</Text>
+                        {<StatusHeader />}
                         {/*<Text style={styles.headerSubTitle}>Pedro</Text>*/}
                     </View>
                 </View>
@@ -57,42 +69,39 @@ const BookingsListEntry = (props) => {
 
     const ListContent = () => {
         let dividerCount = data.length - 1;
-        return (
-            <View style={styles.listContentContainer}>
-                <Divider />
-                <View style={{ flexDirection: 'row', margin: 5 }}>
-                    <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
-                    <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.start.seconds) + "-" + constructTime(data.end.seconds)}</Text>
+
+        if (data.status == 'cancelled') {
+            return (
+                <View style={styles.listContentContainer, styles.listEntryCanceled}>
+                    <Divider />
+                    <View style={{ flexDirection: 'row', margin: 5 }}>
+                        <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
+                        <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
+                    </View>
+                    <Divider />
+                    <TableDescription />
                 </View>
-                <Divider />
-                {/*true === true ? <OrderedFoodList data={data}/> : undefined*/}
-                <View style={styles.orderPrice}>
-                    {/*<Text>Total: £10:16</Text>*/}
+            )
+        } else {
+            return (
+                <View style={styles.listContentContainer}>
+                    <Divider />
+                    <View style={{ flexDirection: 'row', margin: 5 }}>
+                        <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
+                        <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
+                    </View>
+                    <Divider />
+                    <TableDescription />
                 </View>
-            </View>
-        );
+            );
+        }
+
     }
 
-    const OrderedFoodList = () => {
-        let dividerCount = data.length - 1;
-        //Placeholder
+    const TableDescription = () => {
         return (
-            <View style={styles.orderDetails}>
-                {/*<FlatList
-                        data={data}
-                        renderItem={(order) => {
-                            return (
-                                <View>
-                                    <View style={{ padding: 3 }}>
-                                        <Text>{order.item.q + ' - ' + order.item.i}</Text>
-                                    </View>
-                                    {dividerCount-- !== 0 ? <Divider /> : undefined}
-                                </View>
-                            );
-                        }}
-                        keyExtractor={(item) => item.id}
-                    />*/}
-                <Divider />
+            <View style={styles.tableDetails}>
+                <Text>Table number: {data.tableNumber}</Text>
             </View>
         );
     }
@@ -100,7 +109,7 @@ const BookingsListEntry = (props) => {
     const ListButtons = () => {
         return (
             <View style={styles.buttonContainer}>
-                <Button style={styles.button} size='medium' status='basic' onPress={()=>{callback(data.docId)}}>
+                <Button style={styles.button} size='medium' status='basic' onPress={() => { callback(data.docId) }}>
                     Cancel
                 </Button>
                 <Button style={styles.button} size='medium' status='basic'>
@@ -122,32 +131,43 @@ const BookingsListEntry = (props) => {
 
 export default BookingsList = (props) => {
     const dispatch = useDispatch();
+
     const cancelBooking = (bookingid) => {
         dispatch(postReservationCancelation(bookingid));
+        props.callback();
     }
 
     const mappedData = props.payload.map((element) => {
-        return({element, callback:cancelBooking})
+        return ({ element, callback: cancelBooking })
     })
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                data={mappedData}
-                renderItem={BookingsListEntry}
-                keyExtractor={(item) => item.id}
-                listKey={(item) => index.toString()}
-            />
-        </View>
+        //<View style={styles.container}>
+        <FlatList
+            data={mappedData}
+            renderItem={BookingsListEntry}
+            keyExtractor={(item) => item.id}
+            listKey={(item) => index.toString()}
+        />
+        //</View>
     );
 }
 
 const styles = StyleSheet.create({
+    icon: {
+        margin: 5,
+        width: 20,
+        height: 20,
+        alignItems: 'center'
+    },
     container: {
         maxWidth: '100%',
         maxHeight: '100%',
         margin: 5,
         alignSelf: "stretch",
+    },
+    listEntryCanceled: {
+        backgroundColor: '#fbc3bc'
     },
     listEntryContainer: {
         borderTopWidth: 2,
@@ -168,6 +188,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         opacity: 0.75,
     },
+    headerTitleCanceled: {
+        color: "#e5383b",
+        fontSize: 18,
+        fontWeight: "bold",
+        flex: 1,
+        margin: 5,
+        textShadowColor: 'white',
+        textShadowRadius: 1,
+        textShadowOffset: {
+            width: 0.1,
+            height: 0.1
+        }
+    },
     headerTitle: {
         color: "white",
         fontSize: 18,
@@ -175,10 +208,10 @@ const styles = StyleSheet.create({
         flex: 1,
         margin: 5,
         textShadowColor: 'black',
-        textShadowRadius: 1,
+        textShadowRadius: 5,
         textShadowOffset: {
-            width: 1,
-            height: 1
+            width: 0.1,
+            height: 0.1,
         }
     },
     headerSubTitle: {
@@ -189,18 +222,21 @@ const styles = StyleSheet.create({
         textShadowColor: 'black',
         textShadowRadius: 1,
         textShadowOffset: {
-            width: 1,
-            height: 1
+            width: 0.1,
+            height: 0.1,
         }
     },
     listContentContainer: {
         alignSelf: "stretch",
         backgroundColor: '#C4C4C4'
     },
-    orderDetails: {
-        margin: 5,
-        marginLeft: 15,
-        marginRight: 15
+    tableDetails: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        justifyContent: 'center',
+        fontSize: 10,
+        fontWeight: "bold",
     },
     orderPrice: {
         flexDirection: 'row',

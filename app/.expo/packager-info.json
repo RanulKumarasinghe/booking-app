@@ -1,10 +1,1 @@
-{
-  "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 29388,
-  "expoServerNgrokUrl": "https://va-gnc.anonymous.app.exp.direct",
-  "packagerNgrokUrl": "https://packager.va-gnc.anonymous.app.exp.direct",
-  "ngrokPid": 24216,
-  "webpackServerPort": null
-}
+{}

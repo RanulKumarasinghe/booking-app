@@ -22,15 +22,14 @@ const RestaurantEdit = (props) => {
   // const [modalVisible, setModalVisible] = useState(false);
 
   const editRestaurant = () => {
-    console.log('edit');
-
     dispatch(updateRestaurant(restaurant.id ,{
       name: nameValue,
       type: typeValue,
       description: descriptionValue,
       imageUrl: imageUrlValue,
       google_id: restaurant.google_id,
-    })), props.navigation.navigate('Restaurant')
+    }))
+    props.navigation.navigate('Restaurant')
   };
 
   return (

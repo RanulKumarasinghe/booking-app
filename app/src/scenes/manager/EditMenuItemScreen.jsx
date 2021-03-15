@@ -46,7 +46,6 @@ const RestaurantEditMenu = (props) => {
   }
 
   const editMenu = () => {
-
     dispatch(updateMenu({
       rId: restaurantId,
       id: itemId,
@@ -56,7 +55,8 @@ const RestaurantEditMenu = (props) => {
       imageUrl: imageUrlValue,
       numType: menuTypeValue,
       type: type
-    })), props.navigation.navigate('Edit Menu', {
+    }))
+  props.navigation.navigate('Edit Menu', {
     restaurantId: restaurantId
   })
   };

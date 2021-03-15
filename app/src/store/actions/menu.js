@@ -10,11 +10,10 @@ export const fetchAllMenu = (restaurant) => {
       const menuArray = querySnapshot.docs.map((doc) => {
         return { ...doc.data(), id: doc.id }
       })
-
       dispatch({ type: FETCH_ALL_MENU, menu: menuArray})
     }).catch(e=> {
-    alert(e)
-  })
+      alert(e)
+    })
   }
 };
 
@@ -22,8 +21,7 @@ export const UPDATE_MENU = 'UPDATE_MENU';
 
 export const updateMenu = (saveMenu) => {
   return dispatch => {
-    const menu = firebase.firestore().collection('restaurants').doc(saveMenu.rId).collection('menu').doc(saveMenu.id)
-    menu.update({
+    firebase.firestore().collection('restaurants').doc(saveMenu.rId).collection('menu').doc(saveMenu.id).update({
       name: saveMenu.name,
       price: saveMenu.price,
       imageUrl: saveMenu.imageUrl,
@@ -31,9 +29,11 @@ export const updateMenu = (saveMenu) => {
       numType: saveMenu.numType,
       type: saveMenu.type
     }).then(() => {
+      dispatch({ type: UPDATE_MENU, menu: saveMenu })
       console.log('User updated!');
+    }).catch(e => {
+      console.log(e)
     })
-    dispatch({ type: UPDATE_MENU, menu: saveMenu })
   }
 }
 
@@ -41,8 +41,7 @@ export const ADD_ITEM_TO_MENU = 'ADD_ITEM_TO_MENU';
 
 export const createItem = (addItem) => {
   return dispatch => {
-    const menu = firebase.firestore().collection('restaurants').doc(addItem.rId).collection('menu')
-    menu.add({
+    firebase.firestore().collection('restaurants').doc(addItem.rId).collection('menu').add({
       name: addItem.name,
       price: addItem.price,
       imageUrl: addItem.imageUrl,
@@ -50,9 +49,11 @@ export const createItem = (addItem) => {
       numType: addItem.numType,
       type: addItem.type
     }).then(() => {
+      dispatch({ type: ADD_ITEM_TO_MENU, menu: addItem })
       console.log('User updated!');
+    }).catch(e => { 
+      console.log(e)
     })
-    dispatch({ type: ADD_ITEM_TO_MENU, menu: addItem })
   }
 }
 
@@ -61,8 +62,11 @@ export const DELETE_ITEM_FROM_MENU = 'DELETE_ITEM_FROM_MENU';
 export const deleteItem = (delItem) => {
   console.log(delItem)
   return dispatch => {
-    firebase.firestore().collection('restaurants').doc(delItem.rId).collection('menu').doc(delItem.id).remove()
-    dispatch({ type: DELETE_ITEM_FROM_MENU, menu: delItem })
+    firebase.firestore().collection('restaurants').doc(delItem.rId).collection('menu').doc(delItem.id).remove().then(() => {
+      dispatch({ type: DELETE_ITEM_FROM_MENU, menu: delItem })
+    }).catch(e => {
+      console.log(e)
+    })
   }
 }
 
