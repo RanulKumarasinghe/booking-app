@@ -31,6 +31,8 @@ const CheckOutScreen = (props) => {
     }
 
     proccessCheckout(data)
+
+    props.navigation.navigate('Order Completed')
   }
 
   const proccessCheckout = (data) => {
