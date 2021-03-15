@@ -17,18 +17,7 @@ const RestaurantEntry = props => {
   const [isLoading, setLoading] = useState(true);
   // console.log(data.result?.rating);
   // console.log(props.name);
-  useEffect(() => {
-  const url  = 'https://maps.googleapis.com/maps/api/place/details/json?'
-  const place = `place_id=${props.google_id}`;
-  const fields = '&fields=rating';
-  const key = '&key=AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc';
-  const restaurantSearchUrl = url + place + fields + key;
-  fetch(restaurantSearchUrl)
-  .then(response => response.json())
-  .then(result => setData(result))
-  .catch((error) => console.error(error))
-  .finally(() => setLoading(false));
-  });
+  //
 
 
   return (
@@ -54,7 +43,7 @@ const RestaurantEntry = props => {
 
             disabled={true}
             maxStars={5}
-            rating={data.result?.rating}
+            rating={props.starRating}
             fullStarColor={'#dbeb34'}
             starSize={15}
 
