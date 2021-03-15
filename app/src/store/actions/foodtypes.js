@@ -9,8 +9,7 @@ export const FETCH_ALL_FOOD_TYPES = 'FETCH_ALL_FOOD_TYPES';
 
 export const fetchAllFoodTypes = () => {
   return async dispatch => {
-    const foodTypes = await firebase.firestore().collection('foodTypes')
-    foodTypes.get().then((querySnapshot) => {
+    firebase.firestore().collection('foodTypes').get().then((querySnapshot) => {
       const foodTypeArray = querySnapshot.docs.map((doc) => {
         return { ...doc.data(), id: doc.id }
       })

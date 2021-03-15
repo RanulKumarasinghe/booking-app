@@ -17,6 +17,7 @@ import OrderTypeScreen from '@/scenes/order/OrderTypeScreen';
 import RestaurantEditMenuScreen from '@/scenes/manager/EditMenuItemScreen';
 import MenuItemScreen from '@/scenes/order/MenuItemScreen';
 import MenuAddItem from '@/scenes/manager/AddMenuItemScreen';
+import OrderCompletedScreen from '@/scenes/order/OrderCompleteScreen'
 
 const routes = (Screen) => (
   <>
@@ -29,6 +30,7 @@ const routes = (Screen) => (
     <Screen name='MenuList' component={RestaurantListMenuScreen}/>
 
     {/* Order */}
+    <Screen name='Order Completed' component={OrderCompletedScreen}/>
     <Screen name='Checkout' component={CheckOutScreen}/>
     <Screen name='Menu Item' component={MenuItemScreen}/>
     <Screen name='Menu' component={MenuScreen}/>
