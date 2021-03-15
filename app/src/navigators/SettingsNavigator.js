@@ -9,7 +9,7 @@ import ListMenu from '@/scenes/restaurants/RestaurantListMenuScreen'
 import AddMenuItem from '@/scenes/manager/AddMenuItemScreen'
 import ManagerRewards from '@/scenes/rewards/ManagerRewardScreen'
 import Rewards from '@/scenes/rewards/RewardScreen'
-
+import RestaurantEditMenuScreen from '@/scenes/manager/EditMenuItemScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const ProfileStackNavigator = createStackNavigator();
@@ -58,6 +58,11 @@ const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen
         name='Add Menu Item'
         component={AddMenuItem}
+      // options={authScreenOptions}
+      />
+       <ProfileStackNavigator.Screen
+        name='EditMenuScreen'
+        component={RestaurantEditMenuScreen}
       // options={authScreenOptions}
       />
       <ProfileStackNavigator.Screen

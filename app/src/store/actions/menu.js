@@ -30,7 +30,7 @@ export const updateMenu = (saveMenu) => {
       type: saveMenu.type
     }).then(() => {
       dispatch({ type: UPDATE_MENU, menu: saveMenu })
-      console.log('User updated!');
+      console.log('Item updated!');
     }).catch(e => {
       console.log(e)
     })
@@ -50,8 +50,8 @@ export const createItem = (addItem) => {
       type: addItem.type
     }).then(() => {
       dispatch({ type: ADD_ITEM_TO_MENU, menu: addItem })
-      console.log('User updated!');
-    }).catch(e => { 
+      console.log('Item Added!');
+    }).catch(e => {
       console.log(e)
     })
   }
@@ -60,8 +60,9 @@ export const createItem = (addItem) => {
 export const DELETE_ITEM_FROM_MENU = 'DELETE_ITEM_FROM_MENU';
 
 export const deleteItem = (delItem) => {
+  console.log(delItem)
   return dispatch => {
-    firebase.firestore().collection('restaurants').doc(delItem.rId).collection('menu').doc(delItem.id).remove().then(() => {
+    firebase.firestore().collection('restaurants').doc(delItem.rId).collection('menu').doc(delItem.id).delete().then(() => {
       dispatch({ type: DELETE_ITEM_FROM_MENU, menu: delItem })
     }).catch(e => {
       console.log(e)
