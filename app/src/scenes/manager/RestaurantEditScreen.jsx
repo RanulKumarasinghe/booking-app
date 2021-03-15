@@ -23,15 +23,14 @@ const RestaurantEdit = (props) => {
 
   const editRestaurant = () => {
     console.log('edit');
-    setTimeout(() => {
+
     dispatch(updateRestaurant(restaurant.id ,{
       name: nameValue,
       type: typeValue,
       description: descriptionValue,
       imageUrl: imageUrlValue,
       google_id: restaurant.google_id,
-    }))
-  }, 100), props.navigation.navigate('Restaurant')
+    })), props.navigation.navigate('Restaurant')
   };
 
   return (

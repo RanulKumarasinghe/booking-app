@@ -46,7 +46,7 @@ const RestaurantEditMenu = (props) => {
   }
 
   const editMenu = () => {
-    setTimeout(() => {
+
     dispatch(updateMenu({
       rId: restaurantId,
       id: itemId,
@@ -56,8 +56,7 @@ const RestaurantEditMenu = (props) => {
       imageUrl: imageUrlValue,
       numType: menuTypeValue,
       type: type
-    }))
-  }, 1000), props.navigation.navigate('Edit Menu', {
+    })), props.navigation.navigate('Edit Menu', {
     restaurantId: restaurantId
   })
   };
@@ -66,7 +65,9 @@ const RestaurantEditMenu = (props) => {
     dispatch(deleteItem({
       id: itemId,
       rId: restaurantId
-    }))
+    })), props.navigation.navigate('Edit Menu', {
+      restaurantId: restaurantId
+    })
   }
 
   const getMenu = () => {

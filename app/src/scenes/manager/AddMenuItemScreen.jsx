@@ -55,7 +55,7 @@ const MenuAddItem = (props) => {
    const foodType3 = foodTypes?.foodTypes[3];
 
   const addMenuItem = () => {
-    setTimeout(() => {
+
     dispatch(createItem({
       rId: restaurantId,
       name: nameValue,
@@ -64,8 +64,7 @@ const MenuAddItem = (props) => {
       imageUrl: imageUrlValue,
       numType: menuTypeValue,
       type: type
-    }))
-  }, 1000), props.navigation.navigate('Edit Menu', {
+    })), props.navigation.navigate('Edit Menu', {
     restaurantId: restaurantId
   })
   //TODO: props natigate go back

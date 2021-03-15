@@ -59,6 +59,7 @@ export const createItem = (addItem) => {
 export const DELETE_ITEM_FROM_MENU = 'DELETE_ITEM_FROM_MENU';
 
 export const deleteItem = (delItem) => {
+  console.log(delItem)
   return dispatch => {
     firebase.firestore().collection('restaurants').doc(delItem.rId).collection('menu').doc(delItem.id).remove()
     dispatch({ type: DELETE_ITEM_FROM_MENU, menu: delItem })
