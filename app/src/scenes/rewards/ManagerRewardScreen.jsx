@@ -41,12 +41,11 @@ const ManagerRewardScreen = (props) => {
 
   //Converts value from String to Int
   const onTextChange = (money) => {
-    var number = parseFloat(money);
+    var number = parseInt(money);
     setMoney(number);
     if (number < 500) {
       var pointConversion = number / 10;
-      //remove decimals above
-      setPoints(pointConversion);
+      setPoints(Math.floor(pointConversion));
     } else {
       setPoints(50);
     }
@@ -90,7 +89,7 @@ const ManagerRewardScreen = (props) => {
           <Text style={styles.font}>
             Enter price of sale in the box bellow to generate code for customer
           </Text>
-          <Text style={styles.font}>{points} have been added:</Text>
+          <Text style={styles.font}> {points} has/have been added:</Text>
           <Text style={styles.font}>code for user is: {code}</Text>
         </View>
       </View>
