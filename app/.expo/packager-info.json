@@ -1,10 +1,9 @@
 {
-  "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19000,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
-  "webpackServerPort": null
+  "expoServerNgrokUrl": "https://ff-7ww.anonymous.app.exp.direct",
+  "packagerNgrokUrl": "https://packager.ff-7ww.anonymous.app.exp.direct",
+  "ngrokPid": 26644,
+  "devToolsPort": 19002,
+  "packagerPort": 19001,
+  "packagerPid": 14120
 }
