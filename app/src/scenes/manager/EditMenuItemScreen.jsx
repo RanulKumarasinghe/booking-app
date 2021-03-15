@@ -20,7 +20,6 @@ const RestaurantEditMenu = (props) => {
   const restaurantId = props.route.params.resID;
 
 
-
   const [nameValue, onChangeName] = React.useState(menuItem.name);
   const [priceValue, onChangePrice] = React.useState(menuItem.price.toString());
   const [descriptionValue, onChangeDescription] = React.useState(menuItem.description);
@@ -65,7 +64,7 @@ const RestaurantEditMenu = (props) => {
     dispatch(deleteItem({
       id: itemId,
       rId: restaurantId
-    })), props.navigation.navigate('Edit Menu', {
+    })), props.navigation.navigate('Profile', {
       restaurantId: restaurantId
     })
   }

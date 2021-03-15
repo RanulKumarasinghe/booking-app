@@ -22,12 +22,14 @@ const menuReducer = (state = initialState, action) => {
       return {
         ...state, menu: newItem
       }
+      case DELETE_ITEM_FROM_MENU:
+        let deletedMenuItem = state.menu.filter(menu => menu.id != action.menu.id)
+        deletedMenuItem.pull(action.menu)
+      return {
+        ...state, menu: deletedMenuItem
+      }
       default:
         return state;
-    case DELETE_ITEM_FROM_MENU:
-      return {
-        ...state, menu: action.menu
-      }
   }
 }
 
