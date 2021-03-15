@@ -23,7 +23,6 @@ const RestaurantEdit = (props) => {
 
   const editRestaurant = () => {
     console.log('edit');
-    setTimeout(() => {
       dispatch(updateRestaurant(restaurant.id ,{
         name: nameValue,
         type: typeValue,
@@ -31,7 +30,6 @@ const RestaurantEdit = (props) => {
         imageUrl: imageUrlValue,
         google_id: restaurant.google_id,
       }))
-    })
   };
 
   return (
