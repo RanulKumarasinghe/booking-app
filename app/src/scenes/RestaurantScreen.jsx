@@ -133,7 +133,7 @@ const Restaurant = (props) => {
               {  !restaurantManager && (
                 <>
                   <Button onPress={onBooking}>Make A Booking</Button>
-                  <Button onPress={onOrder}>Order</Button> 
+                  <Button onPress={onOrder}>Order</Button>
                 </>) || null}
             </View>
           </View>
@@ -188,7 +188,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start'
   },
   menu: {
-    paddingTop: 15
+    paddingTop: 15,
+    paddingBottom: 20
   },
   openHours: {
     marginTop: 10
