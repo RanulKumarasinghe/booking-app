@@ -27,23 +27,11 @@ const Restaurant = (props) => {
 
 
   // console.log(menu);
-  const [data, setData] = useState({});
+  // const [data, setData] = useState({});
   const [isLoading, setLoading] = useState(true);
 
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    const url = 'https://maps.googleapis.com/maps/api/place/details/json?'
-    const place = `place_id=${restaurant.google_id}`;
-    const fields = '&fields=name,rating,formatted_phone_number,opening_hours,vicinity';
-    const key = '&key=AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc';
-    const restaurantSearchUrl = url + place + fields + key;
-    fetch(restaurantSearchUrl)
-      .then(response => response.json())
-      .then(result => setData(result))
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  });
 
   const onBooking = () => props.navigation.navigate('Booking', {
     restaurantId: restaurant.id
@@ -92,39 +80,39 @@ const Restaurant = (props) => {
                 <StarRating
                   disabled={true}
                   maxStars={5}
-                  rating={data.result?.rating}
+                  rating={restaurant.googleData?.rating}
                   fullStarColor={'#dbeb34'}
                   starSize={15}
                 />
               </View>
               <View style={styles.description}>
                 <Text>{restaurant.description}</Text>
-                <Text>{data.result?.formatted_phone_number}</Text>
-                <Text>{data.result?.vicinity}</Text>
+                <Text>{restaurant.googleData?.formatted_phone_number}</Text>
+                <Text>{restaurant.googleData?.vicinity}</Text>
               </View>
               <View style={styles.openHours}>
                 <Text style={styles.font}>Opening hours:</Text>
               </View>
               <View>
-                <Text>{data.result?.opening_hours.weekday_text[0]}</Text>
+                <Text>{restaurant.googleData?.opening_hours.weekday_text[0]}</Text>
               </View>
               <View>
-                <Text>{data.result?.opening_hours.weekday_text[1]}</Text>
+                <Text>{restaurant.googleData?.opening_hours.weekday_text[1]}</Text>
               </View>
               <View>
-                <Text>{data.result?.opening_hours.weekday_text[2]}</Text>
+                <Text>{restaurant.googleData?.opening_hours.weekday_text[2]}</Text>
               </View>
               <View>
-                <Text>{data.result?.opening_hours.weekday_text[3]}</Text>
+                <Text>{restaurant.googleData?.opening_hours.weekday_text[3]}</Text>
               </View>
               <View>
-                <Text>{data.result?.opening_hours.weekday_text[4]}</Text>
+                <Text>{restaurant.googleData?.opening_hours.weekday_text[4]}</Text>
               </View>
               <View>
-                <Text>{data.result?.opening_hours.weekday_text[5]}</Text>
+                <Text>{restaurant.googleData?.opening_hours.weekday_text[5]}</Text>
               </View>
               <View>
-                <Text>{data.result?.opening_hours.weekday_text[6]}</Text>
+                <Text>{restaurant.googleData?.opening_hours.weekday_text[6]}</Text>
               </View>
               <View style={styles.menu}>
                 <Menu navigation={props.navigation}
