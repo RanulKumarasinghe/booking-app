@@ -27,28 +27,28 @@ const RewardScreen = (props) => {
   //State holds points returned from firebase
   const [pointsFromUser, setPointsFromUser] = useState(0);
 
-  const [currentPoints, setCurrentPoints] = useState(0);
-
   //removes spaces from code, just in case it's copy & pasted
   const onTextChange = (code) => {
     var formatCode = code.replace(/\s/g, "");
     setCode(formatCode);
   };
+
   //Redux to get user
   const auth = useSelector((state) => state.auth);
-  //Current users uid from user collection
+  //Current users uid taken from the redux state
   const uid = auth.uid;
+  //Current users name taken from the redux state
   const name = auth.name;
 
-  //The connection to the DB
+  //The connection to the DB on firestore
   const rewards = db.collection("rewards");
   const user = db.collection("users");
 
   const isFocused = useIsFocused();
-
   useEffect(() => {
     fetchPoints();
   }, [isFocused]);
+
   //Function loads user points on load
   function fetchPoints() {
     user
@@ -88,7 +88,6 @@ const RewardScreen = (props) => {
                   user.doc(uid).update({
                     points: FieldValue.increment(doc.data().points),
                   });
-
                   fetchPoints();
                 })
                 .catch((error) => {
