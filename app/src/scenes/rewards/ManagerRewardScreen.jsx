@@ -46,8 +46,7 @@ const ManagerRewardScreen = (props) => {
     if (number < 500) {
       var pointConversion = number / 10;
       setPoints(Math.floor(pointConversion));
-    } else {
-      setPoints(50);
+    } else if (money == null) {
     }
   };
 

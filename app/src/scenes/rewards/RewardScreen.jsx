@@ -46,10 +46,10 @@ const RewardScreen = (props) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    updatePoints();
+    fetchPoints();
   }, [isFocused]);
 
-  function updatePoints() {
+  function fetchPoints() {
     usersDB
       .where("uid", "==", uid)
       .get()
@@ -57,7 +57,7 @@ const RewardScreen = (props) => {
         querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, " => ", doc.data());
-          userPoints = doc.data().points;
+          userPoints = doc.data().points ? doc.data().points : 0;
           setPoints(userPoints);
         });
       });
@@ -65,25 +65,26 @@ const RewardScreen = (props) => {
 
   function redeemCode() {
     //Check if the code is in firebase
-    rewards
-      .where("code", "==", code)
-      .where("codeUsed", "==", false)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(setDocument(doc.id), " => ", doc.data());
-        });
-      });
 
-    rewards
-      .doc(document)
-      .update({
-        codeUsed: true,
-      })
-      .catch((error) => {
-        console.log("Error getting documents: ", error);
-      });
+    if (code == undefined) {
+      console.log("Code empty");
+    } else {
+      rewards
+        .where("code", "==", code)
+        .where("codeUsed", "==", false)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            rewards.doc(doc.id).update({
+              codeUsed: true,
+            });
+          });
+        })
+        .catch((error) => {
+          console.log("Error getting documents: ", error);
+        });
+    }
   }
 
   return (
