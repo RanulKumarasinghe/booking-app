@@ -20,7 +20,6 @@ const RestaurantEditMenu = (props) => {
   const restaurantId = props.route.params.resID;
 
 
-
   const [nameValue, onChangeName] = React.useState(menuItem.name);
   const [priceValue, onChangePrice] = React.useState(menuItem.price.toString());
   const [descriptionValue, onChangeDescription] = React.useState(menuItem.description);
@@ -46,8 +45,6 @@ const RestaurantEditMenu = (props) => {
   }
 
   const editMenu = () => {
-    console.log('edit');
-    setTimeout(() => {
     dispatch(updateMenu({
       rId: restaurantId,
       id: itemId,
@@ -58,14 +55,18 @@ const RestaurantEditMenu = (props) => {
       numType: menuTypeValue,
       type: type
     }))
-  }, 1000)
+  props.navigation.navigate('Edit Menu', {
+    restaurantId: restaurantId
+  })
   };
 
   const deleteMenuItem = () => {
     dispatch(deleteItem({
       id: itemId,
       rId: restaurantId
-    }))
+    })), props.navigation.navigate('Profile', {
+      restaurantId: restaurantId
+    })
   }
 
   const getMenu = () => {

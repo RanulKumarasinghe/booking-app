@@ -22,16 +22,14 @@ const RestaurantEdit = (props) => {
   // const [modalVisible, setModalVisible] = useState(false);
 
   const editRestaurant = () => {
-    console.log('edit');
-    setTimeout(() => {
-    dispatch(updateRestaurant(restaurant.id ,{
+    dispatch(updateRestaurant(restaurant.id, {
       name: nameValue,
       type: typeValue,
       description: descriptionValue,
       imageUrl: imageUrlValue,
       google_id: restaurant.google_id,
     }))
-  })
+    props.navigation.navigate('Restaurant')
   };
 
   return (
@@ -54,7 +52,7 @@ const RestaurantEdit = (props) => {
         imageUrl={imageUrlValue}
       />
       <View style={styles.buttonSpacing}>
-         <Button title="No Changes" onPress={() => console.log('pressed')} />
+         <Button title="No Changes" onPress={() => props.navigation.navigate('Profile')} />
          <Button title="Confirm Changes" onPress={editRestaurant} />
       </View>
       {/* <Modal

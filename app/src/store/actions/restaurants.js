@@ -9,17 +9,14 @@ export const FETCH_ALL_RESTAURANTS = 'FETCH_ALL_RESTAURANTS';
 
 export const fetchAllRestaurant = () => {
   return async dispatch => {
-    try { 
-      const restaurants = await firebase.firestore().collection('restaurants')
-      restaurants.get().then((querySnapshot) => {
+      firebase.firestore().collection('restaurants').get().then((querySnapshot) => {
         const restaurantArray = querySnapshot.docs.map((doc) => {
           return { ...doc.data(), id: doc.id }
         })
         dispatch({ type: FETCH_ALL_RESTAURANTS, restaurants: restaurantArray})
-      })
-    } catch (e) {
+      }).catch(e => {
       console.log(e)
-    }
+    })
   }
 };
 
@@ -31,8 +28,7 @@ export const createRestaurant = (addRestaurant) => {
   //   return functions.https.HttpsError('unauthenticated', 'Endpoint requires authentication!');
   // }
   return dispatch => {
-    const restaurant = firebase.firestore().collection('restaurants')
-    restaurant.add({
+    firebase.firestore().collection('restaurants').add({
       name: addRestaurant.name,
       type: addRestaurant.type,
       postCode: addRestaurant.postCode,
@@ -63,8 +59,10 @@ export const createRestaurant = (addRestaurant) => {
       sunClose: addRestaurant.sunClose,
     }).then(() => {
       console.log('Restaurant Added!');
+      dispatch({ type: ADD_RESTAURANT, restaurant: addRestaurant })
+    }).catch(e => {
+      console.log(e)
     })
-    dispatch({ type: ADD_RESTAURANT, restaurant: addRestaurant })
   }
 };
 
