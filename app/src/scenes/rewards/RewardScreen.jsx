@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,6 +17,7 @@ import {
   Text,
   Avatar,
 } from "@ui-kitten/components";
+
 import firebase, { db, FieldValue } from "src/utils/firebase";
 
 const RewardScreen = (props) => {
@@ -43,9 +45,27 @@ const RewardScreen = (props) => {
 
   //The connection to the DB
   const rewards = db.collection("rewards");
-  const user = db.collection("users").doc(uid);
+  const user = db.collection("users");
 
-  //const increment = firebase.firestore.FieldValue.increment(awardedPoints);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    fetchPoints();
+  }, [isFocused]);
+  //Function loads user points on load
+  function fetchPoints() {
+    user
+      .where("uid", "==", uid)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+          userPoints = doc.data().points ? doc.data().points : 0;
+          setPointsFromUser(userPoints);
+        });
+      });
+  }
 
   //Needs to search DB for Code. If the code is usd return invalid code message
   function redeemCode() {
@@ -58,18 +78,23 @@ const RewardScreen = (props) => {
         const rewardsDocs = querySnapshot.docs;
         if (rewardsDocs.length > 0) {
           rewardsDocs.forEach((doc, index) => {
+            //(If a record is returned) the index start at 0
             if (index == 0) {
               rewards
                 .doc(doc.id)
                 .update({
                   codeUsed: true,
-                  //Customer that redeemed the code
                   customerId: uid,
                 })
                 .then(() => {
-                  user.update({
-                    points: FieldValue.increment(doc.data().points),
-                  });
+                  console.log("We got this far");
+                  db.collection("users")
+                    .doc(uid)
+                    .update({
+                      points: FieldValue.increment(doc.data().points),
+                    });
+
+                  fetchPoints();
                 })
                 .catch((error) => {
                   console.log("Error getting documents: ", error);
@@ -98,7 +123,7 @@ const RewardScreen = (props) => {
         <View style={styles.lineThrough} />
         <View>
           <Text style={styles.font}>Your Points:</Text>
-          <Text style={styles.font}>{currentPoints}</Text>
+          <Text style={styles.font}>{pointsFromUser}</Text>
           <Text style={styles.font}>Last input code:{code}</Text>
         </View>
       </View>
