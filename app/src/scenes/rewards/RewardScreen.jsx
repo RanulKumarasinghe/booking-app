@@ -21,13 +21,10 @@ import {
 import firebase, { db, FieldValue } from "src/utils/firebase";
 
 const RewardScreen = (props) => {
-  //State holds points returned from firebase
-  const [awardedPoints, setAwardedPoints] = useState(0);
   //Contains the user input code
   const [code, setCode] = useState("");
-  //Contains the document name used to track and change field for the code
-  const [document, setDocument] = useState("");
 
+  //State holds points returned from firebase
   const [pointsFromUser, setPointsFromUser] = useState(0);
 
   const [currentPoints, setCurrentPoints] = useState(0);
@@ -88,11 +85,9 @@ const RewardScreen = (props) => {
                 })
                 .then(() => {
                   console.log("We got this far");
-                  db.collection("users")
-                    .doc(uid)
-                    .update({
-                      points: FieldValue.increment(doc.data().points),
-                    });
+                  user.doc(uid).update({
+                    points: FieldValue.increment(doc.data().points),
+                  });
 
                   fetchPoints();
                 })
