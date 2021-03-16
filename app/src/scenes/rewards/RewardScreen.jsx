@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useIsFocused } from "@react-navigation/native";
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,94 +16,90 @@ import {
   Text,
   Avatar,
 } from "@ui-kitten/components";
-
-import firebase from "src/utils/firebase";
-import { firestore } from "firebase";
+import firebase, { db, FieldValue } from "src/utils/firebase";
 
 const RewardScreen = (props) => {
   //State holds points returned from firebase
-  const [points, setPoints] = useState(0);
+  const [awardedPoints, setAwardedPoints] = useState(0);
   //Contains the user input code
   const [code, setCode] = useState("");
   //Contains the document name used to track and change field for the code
   const [document, setDocument] = useState("");
 
-  const auth = useSelector((state) => state.auth);
-  const uid = auth.uid;
-  const user = auth.name;
+  const [pointsFromUser, setPointsFromUser] = useState(0);
+
+  const [currentPoints, setCurrentPoints] = useState(0);
 
   //removes spaces from code, just in case it's copy & pasted
   const onTextChange = (code) => {
     var formatCode = code.replace(/\s/g, "");
     setCode(formatCode);
   };
+  //Redux to get user
+  const auth = useSelector((state) => state.auth);
+  //Current users uid from user collection
+  const uid = auth.uid;
+  const name = auth.name;
 
   //The connection to the DB
-  const rewards = firebase.firestore().collection("rewards");
-  const usersDB = firebase.firestore().collection("users");
+  const rewards = db.collection("rewards");
+  const user = db.collection("users").doc(uid);
 
-  const isFocused = useIsFocused();
+  //const increment = firebase.firestore.FieldValue.increment(awardedPoints);
 
-  useEffect(() => {
-    fetchPoints();
-  }, [isFocused]);
-
-  function fetchPoints() {
-    usersDB
-      .where("uid", "==", uid)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          userPoints = doc.data().points ? doc.data().points : 0;
-          setPoints(userPoints);
-        });
-      });
-  }
-
+  //Needs to search DB for Code. If the code is usd return invalid code message
   function redeemCode() {
     //Check if the code is in firebase
-
-    if (code == undefined) {
-      console.log("Code empty");
-    } else {
-      rewards
-        .where("code", "==", code)
-        .where("codeUsed", "==", false)
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            rewards.doc(doc.id).update({
-              codeUsed: true,
-            });
+    rewards
+      .where("code", "==", code)
+      .where("codeUsed", "==", false)
+      .get()
+      .then((querySnapshot) => {
+        const rewardsDocs = querySnapshot.docs;
+        if (rewardsDocs.length > 0) {
+          rewardsDocs.forEach((doc, index) => {
+            if (index == 0) {
+              rewards
+                .doc(doc.id)
+                .update({
+                  codeUsed: true,
+                  //Customer that redeemed the code
+                  customerId: uid,
+                })
+                .then(() => {
+                  user.update({
+                    points: FieldValue.increment(doc.data().points),
+                  });
+                })
+                .catch((error) => {
+                  console.log("Error getting documents: ", error);
+                });
+            } else {
+              console.log("Code not found");
+            }
           });
-        })
-        .catch((error) => {
-          console.log("Error getting documents: ", error);
-        });
-    }
+        }
+      });
   }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        {/* <Image
+        <Image
           style={styles.userImage}
           source={{
             uri:
               "https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg",
           }}
-        /> */}
+        />
         <View>
-          <Text style={styles.font}></Text>
+          <Text style={styles.font}>{name}</Text>
         </View>
         <View style={styles.lineThrough} />
         <View>
-          {/* FIX:Need to show users points, on load*/}
           <Text style={styles.font}>Your Points:</Text>
-          <Text style={styles.font}>{points}</Text>
+          <Text style={styles.font}>{currentPoints}</Text>
+          <Text style={styles.font}>Last input code:{code}</Text>
         </View>
       </View>
 
