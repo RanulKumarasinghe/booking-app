@@ -22,7 +22,7 @@ const RestaurantEdit = (props) => {
   // const [modalVisible, setModalVisible] = useState(false);
 
   const editRestaurant = () => {
-    dispatch(updateRestaurant(restaurant.id ,{
+    dispatch(updateRestaurant(restaurant.id, {
       name: nameValue,
       type: typeValue,
       description: descriptionValue,

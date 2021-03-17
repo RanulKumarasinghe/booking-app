@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 import { Divider, Text, Button, Icon } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAllBookings, postReservationCancelation } from '@/store/actions/bookings'
+import { postReservationCancelation } from '@/store/actions/bookings'
 
 const BookingsListEntry = (props) => {
     /*Object {
