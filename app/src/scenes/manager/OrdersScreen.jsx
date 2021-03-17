@@ -20,19 +20,20 @@ const OrderScreen = (props) => {
       return (<></>)
     }
   }
+  
+  const List = () => {
+      return (
+        <></>
+      )
+  }
 
-  if (!!restaurant) {
+  if (!restaurant) {
     return (
       <LoginRequired />
-    )
-  } else if (showLoadingSpinner) {
-    return (
-      <LoadingScreen />
     )
   } else {
     return (
       <Layout style={styles.container}>
-        <ToggleFilter />
         <List />
       </Layout>
     );
