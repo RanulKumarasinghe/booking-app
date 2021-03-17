@@ -51,7 +51,7 @@ const MenuItemScreen = (props) => {
         </View>
         <View >
           <Text style={{width: 300 }} category='p2'>{menuItem.description}</Text>
-          <Text style={{width: 300 }} category='p2'>{menuItem.price}</Text>
+          <Text style={{width: 300 }} category='p2'>{`£${menuItem.price}`}</Text>
           <Input value={quantity} onChangeText={setQuantity}/>
         </View>
         {/* <Button onPress={editMenuItem}>

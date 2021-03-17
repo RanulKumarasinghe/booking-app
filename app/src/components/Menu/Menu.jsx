@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, TouchableHighlight } from 'react-native';
 import { Text, Divider } from '@ui-kitten/components';
 import { MenuData } from '../../other/dummy-data';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
@@ -23,6 +23,10 @@ const Menu = (props) => {
     getMenu()
   }, [])
 
+
+  const [showMenu, setShowMenu] = useState(false);
+
+
   const restaurantId = props.restaurantId;
 
   const menuItems = useSelector(state => state.menu.menu);
@@ -44,6 +48,7 @@ const Menu = (props) => {
         name={itemData.item.name}
         desc={itemData.item.description}
         price={itemData.item.price}
+        imageUrl={itemData.item.imageUrl}
         type={itemData.item.type}
         onPress={() => props.navigation.navigate('Menu Item', {
             itemId: itemData.item.id,
@@ -58,8 +63,11 @@ const Menu = (props) => {
 
   return (
     <View style={{ height: 'auto' }}>
-      <Text category='h2' style={{ textAlign: 'center' }}>Menu</Text>
+      <TouchableHighlight onPress = {() => setShowMenu(!showMenu)} style = {styles.touchColor}>
+      <Text category='h2' style={{ textAlign: 'center' }}> {!showMenu ? (<Text category='h2'>Show </Text>) : null}Menu</Text>
+      </TouchableHighlight>
       <Divider />
+      {showMenu ? (
       <FlatList
           data={menuItems}
           keyExtractor={(item, index) => item.id}
@@ -67,6 +75,7 @@ const Menu = (props) => {
           removeClippedSubviews= {true}
           onEndReachedThreshold={0.5}
         />
+        ) : null}
       {/* {MenuData.map(category => (
             <View key={category.id}>
               <Text>{category.category}</Text>
@@ -90,6 +99,9 @@ const styles = StyleSheet.create({
     width: '10%',
     height: '50%',
     marginTop: 15
+  },
+  touchColor: {
+    backgroundColor: 'white'
   }
 });
 

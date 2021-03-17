@@ -1,38 +1,37 @@
 export const TOGGLE_FILTER = 'TOGGLE_FILTER';
-import firebase from 'src/utils/firebase'
+import firebase, {db} from 'src/utils/firebase'
 import axios from 'axios'
 
 export const filterRestaurant = (name) => {
-  return { type: TOGGLE_FILTER, restaurantName: name}
+  return { type: TOGGLE_FILTER, restaurantName: name }
 }
 
 export const FETCH_ALL_RESTAURANTS = 'FETCH_ALL_RESTAURANTS';
 
 export const fetchAllRestaurant = () => {
   return async dispatch => {
-      firebase.firestore().collection('restaurants').get().then((querySnapshot) => {
-        let promiseArr = querySnapshot.docs.map((doc) => {
-          const restaurantData = doc.data()
+    db.collection('restaurants').get().then((querySnapshot) => {
+      let promiseArr = querySnapshot.docs.map((doc) => {
+        const restaurantData = doc.data()
 
-          params = {
-            place_id: restaurantData.google_id,
-            fields: "name,rating,formatted_phone_number,opening_hours,vicinity",
-            key: 'AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc',
-          }
-    
-          return axios.get('https://maps.googleapis.com/maps/api/place/details/json', {params}).then(response => {
-            return { ...restaurantData, id: doc.id, googleData: response.data.result }
-          }).catch(e => {
-            return { ...data, id: doc.id}
-          })
-        });
-        //Resolves and Checks if there was any problem with executiong returns results.
-        return Promise.all(promiseArr).then(restaurantArray => { 
-          dispatch({ type: FETCH_ALL_RESTAURANTS, restaurants: restaurantArray})
+        params = {
+          place_id: restaurantData.google_id,
+          fields: "name,rating,formatted_phone_number,opening_hours,vicinity",
+          key: 'AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc',
+        }
+
+        return axios.get('https://maps.googleapis.com/maps/api/place/details/json', { params }).then(response => {
+          return { ...restaurantData, id: doc.id, googleData: response.data.result }
         }).catch(e => {
-          console.log('Nono')
-          console.log(e)
+          return { ...data, id: doc.id }
         })
+      });
+      //Resolves and Checks if there was any problem with executiong returns results.
+      return Promise.all(promiseArr).then(restaurantArray => {
+        dispatch({ type: FETCH_ALL_RESTAURANTS, restaurants: restaurantArray })
+      }).catch(e => {
+        console.log(e)
+      })
     })
   };
 }
