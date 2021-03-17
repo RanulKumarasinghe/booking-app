@@ -26,8 +26,7 @@ export default BookingListScreen = ({ navigation }) => {
     }
 
     const onCheckedChange = () => {
-        setfilterToggle(!filterToggle);
-        doRefresh();
+        setfilterToggle(!filterToggle);        
     };
 
     const doRefresh = () => {
@@ -49,7 +48,7 @@ export default BookingListScreen = ({ navigation }) => {
                 setshowLoadingSpinner(false);
             }, 2000);
         }
-    }, [isFocused, filterToggle]);
+    }, [isFocused, filterToggle, refresh]);
 
     const WarningIcon = () => (
         <Icon
@@ -75,7 +74,7 @@ export default BookingListScreen = ({ navigation }) => {
     const List = () => {
         if (!showLoadingSpinner && !isOffline) {
             const sortedBookings = sortDates(users_bookings);
-            return (<BookingsList payload={sortedBookings} callback={onCheckedChange} />);
+            return (<BookingsList payload={sortedBookings} callback={doRefresh} />);
         } else {
             return (<></>)
         }

@@ -145,6 +145,7 @@ const BookingScreen = (props) => {
             onBackdropPress={() => setShowConfirmationModal(false)}>
             <Card disabled={true} style={styles.modal}>
               <View style={{ minWidth: 300, minHeight: 150, justifyContent: 'center', alignItems: 'center' }}>
+                <Text category='p1' style={{marginBottom:15}}>Just a sec...</Text>
                 <Spinner />
               </View>
             </Card>
@@ -167,12 +168,13 @@ const BookingScreen = (props) => {
             onBackdropPress={() => setShowConfirmationModal(false)}>
             <Card disabled={true} style={styles.modal}>
               <View style={{ alignItems: 'center' }}>
-                <Text style={{ marginBottom: 5 }}>{`Booking table #${all_scheduled_tables[selectedIndex].number}`}</Text>
-                <Text style={{ marginBottom: 5 }}>{restaurant.name}</Text>
-                <Text style={{ marginBottom: 10 }}>{`On ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`}</Text>
-                <View style={styles.confirmModal}>
+              <Text category='h6' style={{ marginBottom: 5 }}>{`Please confirm the details`}</Text>
+              <Text category='p1' style={{marginBottom: 5}}>{restaurant.name}</Text>
+                <Text category='p1' style={{ marginBottom: 5 }}>{`Booking table #${all_scheduled_tables[selectedIndex].number}`}</Text>
+                <Text category='p1' style={{ marginBottom: 5 }}>{`On ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} at ${addTimePadding(time)}`}</Text>
+                <View category='p1' style={styles.confirmModal}>
                   <Button style={styles.modalBtn} onPress={() => {
-                    dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
+                   // dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
                     setShowModalSpinner(true);
                     setShowConfirmationModal(false);
                   }

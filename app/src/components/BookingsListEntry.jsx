@@ -21,109 +21,117 @@ const BookingsListEntry = (props) => {
       "tableref": "C3SpKCkToYhIPBhoekJC",
     }*/
 
-  const image = { uri: "https://www.fsrmagazine.com/sites/default/files/styles/story_image_720x430/public/feature-images/state-full-service-restaurant-industry-1554901734.jpg?itok=-EciUerQ" };
-
   const capitalize = (string) => {
-      return string.charAt(0).toUpperCase() + string.slice(1);
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   const constructDate = (timestamp) => {
-      const date = new Date(timestamp * 1000);
-      return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    const date = new Date(timestamp * 1000);
+    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
   }
 
   const constructTime = (timestamp) => {
-      const date = new Date(timestamp * 1000);
-      const time = `${date.getHours()}:${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`
-      return time;
+    const date = new Date(timestamp * 1000);
+    const time = `${date.getHours()}:${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`
+    return time;
   }
 
   const data = props.item.element;
   const callback = props.item.callback;
 
+  const image = {};
+
+  if (data.date.toDate().getHours() > 17) {
+    image.uri = "https://www.denverpost.com/wp-content/uploads/2016/04/20150209__20150211_C1_FE11FDROMANCEp2.jpg?w=620"
+  } else {
+    image.uri = "https://images.unsplash.com/photo-1570894322743-aefb6905a4b5?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGluaW5nJTIwdGFibGVzfGVufDB8fDB8&ixlib=rb-1.2.1&w=1000&q=80"
+  }
+
+
   const StatusHeader = () => {
-      if (data.status == 'cancelled') {
-          return (<Text style={styles.headerTitleCanceled}>Status: {capitalize(data.status)}</Text>)
-      } else {
-          return (<Text style={styles.headerTitle}>Status: {capitalize(data.status)}</Text>)
-      }
+    if (data.status == 'cancelled') {
+      return (<Text style={styles.headerTitle}>Status: {capitalize(data.status)}</Text>)
+    } else {
+      return (<Text style={styles.headerTitle}>Status: {capitalize(data.status)}</Text>)
+    }
   }
 
   const ListHeader = () => {
-      return (
-          <ImageBackground source={image} style={styles.headerImg}>
-              <View style={styles.headerContainer}>
-                  <View style={{ flexDirection: 'row' }}>
-                      <Text style={styles.headerTitle}>Booking - {data.restname}</Text>
-                      <Text style={styles.headerSubTitle}>{constructDate(data.date.seconds)}</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row' }}>
-                      {<StatusHeader />}
-                      {/*<Text style={styles.headerSubTitle}>Pedro</Text>*/}
-                  </View>
-              </View>
-          </ImageBackground>
-      );
+    return (
+      <ImageBackground source={image} style={styles.headerImg}>
+        <View style={styles.headerContainer}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text category='h3' style={styles.headerTitle}>Booking - {data.restname}</Text>
+            <Text category='p1' style={styles.headerSubTitle}>{constructDate(data.date.seconds)}</Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            {<StatusHeader />}
+            {/*<Text style={styles.headerSubTitle}>Pedro</Text>*/}
+          </View>
+        </View>
+      </ImageBackground>
+    );
   }
 
   const ListContent = () => {
-      let dividerCount = data.length - 1;
+    let dividerCount = data.length - 1;
 
-      if (data.status == 'cancelled') {
-          return (
-              <View style={styles.listContentContainer, styles.listEntryCanceled}>
-                  <Divider />
-                  <View style={{ flexDirection: 'row', margin: 5 }}>
-                      <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
-                      <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
-                  </View>
-                  <Divider />
-                  <TableDescription />
-              </View>
-          )
-      } else {
-          return (
-              <View style={styles.listContentContainer}>
-                  <Divider />
-                  <View style={{ flexDirection: 'row', margin: 5 }}>
-                      <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
-                      <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
-                  </View>
-                  <Divider />
-                  <TableDescription />
-              </View>
-          );
-      }
+    if (data.status == 'cancelled') {
+      return (
+        <View style={styles.listContentContainer, styles.listEntryCanceled}>
+          <Divider />
+          <View style={{ flexDirection: 'row', margin: 5 }}>
+            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
+            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
+          </View>
+          <Divider />
+          <TableDescription />
+        </View>
+      )
+    } else {
+      return (
+        <View style={styles.listContentContainer}>
+          <Divider />
+          <View style={{ flexDirection: 'row', margin: 5 }}>
+            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
+            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
+          </View>
+          <Divider />
+          <TableDescription />
+        </View>
+      );
+    }
 
   }
 
   const TableDescription = () => {
-      return (
-          <View style={styles.tableDetails}>
-              <Text>Table number: {data.tableNumber}</Text>
-          </View>
-      );
+    return (
+      <View style={styles.tableDetails}>
+        <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Table number: {data.tableNumber}</Text>
+      </View>
+    );
   }
 
   const ListButtons = () => {
-      return (
-          <View style={styles.buttonContainer}>
-              <Button style={styles.button} size='medium' status='basic' onPress={() => { callback(data.docId) }}>
-                  Cancel
+    const disableCancelButton = data.status == 'cancelled' ? true : false
+    return (
+      <View style={styles.buttonContainer}>
+        <Button disabled={disableCancelButton} style={styles.button} size='medium' status='basic' onPress={() => { callback(data.docId) }}>
+          Cancel
               </Button>
-              <Button style={styles.button} size='medium' status='basic'>
-                  Receipt
+        <Button style={styles.button} size='medium' status='basic'>
+          Receipt
               </Button>
-          </View>
-      );
+      </View>
+    );
   }
 
   return (
-      <View style={styles.listEntryContainer}>
-          <ListHeader />
-          <ListContent />
-          <ListButtons />
-      </View>
+    <View style={styles.listEntryContainer}>
+      <ListHeader />
+      <ListContent />
+      <ListButtons />
+    </View>
 
   );
 }
@@ -151,7 +159,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderLeftWidth: 2,
     borderRightWidth: 2,
-    borderRadius: 5,
+    borderRadius: 2,
     marginTop: 5,
     marginBottom: 5
   },
@@ -163,45 +171,20 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
-    opacity: 0.75,
   },
-  headerTitleCanceled: {
-    color: "#e5383b",
-    fontSize: 18,
-    fontWeight: "bold",
-    flex: 1,
-    margin: 5,
-    textShadowColor: 'white',
-    textShadowRadius: 1,
-    textShadowOffset: {
-      width: 0.1,
-      height: 0.1
-    }
-  },
+
   headerTitle: {
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
     flex: 1,
     margin: 5,
-    textShadowColor: 'black',
-    textShadowRadius: 5,
-    textShadowOffset: {
-      width: 0.1,
-      height: 0.1,
-    }
   },
   headerSubTitle: {
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
     margin: 5,
-    textShadowColor: 'black',
-    textShadowRadius: 1,
-    textShadowOffset: {
-      width: 0.1,
-      height: 0.1,
-    }
   },
   listContentContainer: {
     alignSelf: "stretch",
