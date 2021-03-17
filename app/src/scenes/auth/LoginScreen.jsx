@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, StyleSheet, KeyboardAvoidingView, Keyboard } from 'react-native';
+import { SafeAreaView, View, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import { Input, Text, Button, Layout, Divider } from '@ui-kitten/components';
 import Firebase from '@/utils/firebase'
 import { useDispatch } from 'react-redux'
@@ -29,25 +29,6 @@ const LoginScreen = (props) => {
     props.navigation.navigate('Reset Password')
   }
 
-
-  useEffect(() => {
-    Keyboard.addListener("keyboardDidShow", keyboardDidShow);
-    Keyboard.addListener("keyboardDidHide", keyboardDidHide);
-
-    return () => {
-      Keyboard.removeListener("keyboardDidShow", keyboardDidShow);
-      Keyboard.removeListener("keyboardDidHide", keyboardDidHide);
-    };
-  }, []);
-
-  const keyboardDidShow = () => {
-    setHideTitle(true)
-  };
-
-  const keyboardDidHide = () => {
-    setHideTitle(false)
-  };
-
   const Title = () => {
     if (hideTitle) {
       return <></>
@@ -62,6 +43,7 @@ const LoginScreen = (props) => {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <Title />
+
           {/* {this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
            {this.state.errorMessage}
