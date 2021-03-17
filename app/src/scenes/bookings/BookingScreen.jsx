@@ -6,6 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime, clearTables, checkTableAvailability } from '@/store/actions/bookings';
 import firebase from 'src/utils/firebase';
 import { TouchableOpacity } from "react-native";
+import { set } from "lodash";
 
 const BookingScreen = (props) => {
   const all_tables_of_size = useSelector(state => state.bookings.all_tables_of_size);
@@ -16,7 +17,7 @@ const BookingScreen = (props) => {
 
   const [guests, setGuests] = React.useState(undefined);
   const [selectedIndex, setSelectedIndex] = React.useState(undefined);
-  const [visible, setVisible] = React.useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = React.useState(false);
 
   const [buttonGhost, setButtonGhost] = React.useState(false);
   const [visibleGuestModal, setVisibleGuestModal] = React.useState(false);
@@ -27,6 +28,7 @@ const BookingScreen = (props) => {
   const [disableSearch, setDisableSearch] = React.useState(true);
   const [disableReserve, setDisableReserve] = React.useState(true);
   const [displaySearchError, setDisplaySearchError] = React.useState(false);
+  const [showModalSpinner, setShowModalSpinner] = React.useState(false);
 
   const user = firebase.auth().currentUser.uid;
   let isOffline = auth.uid === undefined;
@@ -40,10 +42,8 @@ const BookingScreen = (props) => {
   }
 
   React.useEffect(() => {
-    setTimeout(() => {
-      dispatch(performSchedule());
-      setButtonGhost(false);
-    }, 100)
+    dispatch(performSchedule());
+    setButtonGhost(false);
   }, [unavailable_tables])
 
   const SelectGuestsButton = () => {
@@ -76,11 +76,11 @@ const BookingScreen = (props) => {
       <Modal visible={visibleGuestModal}
         backdropStyle={styles.backdrop}
         onBackdropPress={() => setVisibleGuestModal(false)}
-        style={{ maxHeight: '50%', padding: 10 }}
+        style={{ maxHeight: '30%', padding: 10 }}
       >
         <Card disabled={true}>
           <Text>Select how many guests will be attending</Text>
-          <Divider style={{ marginBottom: 10 }} />
+          <Divider />
           <List
             style={styles.modalList}
             data={data}
@@ -113,39 +113,78 @@ const BookingScreen = (props) => {
     showMode('time');
   };
 
-  const RenderModal = () => {
-    if (visible) {
+  const RenderModalLoadingSpinner = () => {
+    if (showModalSpinner) {
+
+      //dispatch(clearTables());
+
+      const bookingTime = time;
+      const bookingDate = date;
+      const bookingGuests = guests;
+
+      setTimeout(() => {
+        setShowModalSpinner(false);
+
+        setTime(undefined);
+        setDate(undefined);
+        setGuests(undefined);
+        setDisableReserve(true);
+        setDisableSearch(true);
+
+        props.navigation.navigate("Booking successful", {
+          time: bookingTime,
+          date: bookingDate,
+          guests: bookingGuests,
+        });
+      }, 3500)
+
       return (
         <View style={styles.container}>
           <Modal
-            visible={visible}
+            visible={showModalSpinner}
             backdropStyle={styles.backdrop}
-            onBackdropPress={() => setVisible(false)}>
+            onBackdropPress={() => setShowConfirmationModal(false)}>
+            <Card disabled={true} style={styles.modal}>
+              <View style={{ minWidth: 300, minHeight: 150, justifyContent: 'center', alignItems: 'center' }}>
+                <Spinner />
+              </View>
+            </Card>
+          </Modal>
+        </View>);
+    } else {
+      return (
+        <></>
+      );
+    }
+  }
+
+  const RenderConfirmationModal = () => {
+    if (showConfirmationModal) {
+      return (
+        <View style={styles.container}>
+          <Modal
+            visible={showConfirmationModal}
+            backdropStyle={styles.backdrop}
+            onBackdropPress={() => setShowConfirmationModal(false)}>
             <Card disabled={true} style={styles.modal}>
               <View style={{ alignItems: 'center' }}>
                 <Text style={{ marginBottom: 5 }}>{`Booking table #${all_scheduled_tables[selectedIndex].number}`}</Text>
                 <Text style={{ marginBottom: 5 }}>{restaurant.name}</Text>
                 <Text style={{ marginBottom: 10 }}>{`On ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`}</Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <View style={styles.confirmModal}>
                   <Button style={styles.modalBtn} onPress={() => {
-                    setVisible(false)
-                  }
-                  }>
-                    No
-                  </Button>
-                  <Button style={styles.modalBtn} onPress={() => {
-                    setVisible(false)
-                    setDisableReserve(true);
-                    setSelectedIndex(undefined);
-                    dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
-                    dispatch(clearTables());
-                    setTimeout(() => {
-                      dispatch(fetchTablesBySize(guests, restId));
-                      dispatch(checkTableAvailability(guests, restId, date));
-                    }, 1000)
+                    //dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
+                    setShowModalSpinner(true);
+                    setShowConfirmationModal(false);
                   }
                   }>
                     Yes
+                  </Button>
+                  <Button style={styles.modalBtn} onPress={() => {
+                    setShowConfirmationModal(false)
+                  }
+                  }>
+                    No
                   </Button>
                 </View>
               </View>
@@ -157,13 +196,6 @@ const BookingScreen = (props) => {
       return (<></>)
     }
   };
-
-  const checkForResponse = () => {
-    if (all_tables_of_size.length < 1) {
-      return false
-    }
-    return true;
-  }
 
   const RenderSearchButton = () => {
     if (buttonGhost) {
@@ -189,11 +221,8 @@ const BookingScreen = (props) => {
           dispatch(checkTableAvailability(guests, restId, date));
 
           setTimeout(() => {
-            if (checkForResponse() === false) {
-              setDisplaySearchError(true);
-              setButtonGhost(false);
-            }
-          }, 10000);
+            setButtonGhost(false);
+          }, 2000);
 
         }}>Search</Button>
       );
@@ -204,7 +233,7 @@ const BookingScreen = (props) => {
     return (
       <Button style={styles.button} disabled={disableReserve} onPress={() => {
         if (selectedIndex !== undefined) {
-          setVisible(true);
+          setShowConfirmationModal(true);
         }
       }}>Reserve</Button>
     );
@@ -315,14 +344,6 @@ const BookingScreen = (props) => {
     }
   }
 
-  const SearchErrorMessage = () => {
-    if (displaySearchError) {
-      return (<Text>Sorry but no tables are available</Text>);
-    } else {
-      return (<></>)
-    }
-  }
-
   const addTimePadding = () => {
     let hourStr = time.getHours()
     let minuteStr = time.getMinutes()
@@ -339,7 +360,7 @@ const BookingScreen = (props) => {
     return (<LoginError />)
   } else {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <Divider />
         <View style={{ flex: 1 }}>
           <View style={{ padding: '2%', alignItems: "center" }}>
@@ -365,7 +386,6 @@ const BookingScreen = (props) => {
               <GuestModal />
               <SelectGuestsButton />
             </View>
-
             <View style={styles.times}>
               <List
                 data={all_scheduled_tables}
@@ -374,7 +394,6 @@ const BookingScreen = (props) => {
                 extraData={selectedIndex}
               />
             </View>
-            <SearchErrorMessage />
           </View>
 
           {/*LIST THIS CONTAINER FOR THE LIST*/}
@@ -382,15 +401,22 @@ const BookingScreen = (props) => {
           <View style={styles.submitButton}>
             <RenderSearchButton />
             <RenderReserveButton />
-            <RenderModal />
+            <RenderConfirmationModal />
+            <RenderModalLoadingSpinner />
           </View>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  confirmModal: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20
+  },
   smallIcon: {
     marginTop: 2,
     marginRight: 2,
