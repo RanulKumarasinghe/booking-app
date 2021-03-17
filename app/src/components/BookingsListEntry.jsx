@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
-import { Toggle, Text, Divider, Spinner, Layout, Icon } from '@ui-kitten/components';
+import { StyleSheet, View, ImageBackground } from 'react-native';
+import { Toggle, Text, Divider, Spinner, Layout, Icon, Button } from '@ui-kitten/components';
 
 
 const BookingsListEntry = (props) => {

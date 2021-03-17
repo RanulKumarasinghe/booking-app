@@ -6,7 +6,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime, clearTables, checkTableAvailability } from '@/store/actions/bookings';
 import firebase from 'src/utils/firebase';
 import { TouchableOpacity } from "react-native";
-import { set } from "lodash";
 
 const BookingScreen = (props) => {
   const all_tables_of_size = useSelector(state => state.bookings.all_tables_of_size);
@@ -27,7 +26,6 @@ const BookingScreen = (props) => {
   const [time, setTime] = React.useState(undefined);
   const [disableSearch, setDisableSearch] = React.useState(true);
   const [disableReserve, setDisableReserve] = React.useState(true);
-  const [displaySearchError, setDisplaySearchError] = React.useState(false);
   const [showModalSpinner, setShowModalSpinner] = React.useState(false);
 
   const user = firebase.auth().currentUser.uid;
@@ -39,6 +37,7 @@ const BookingScreen = (props) => {
 
   if (guests !== undefined && time !== undefined && date !== undefined && disableSearch === true) {
     setDisableSearch(false);
+    dispatch(clearTables());
   }
 
   React.useEffect(() => {
@@ -113,10 +112,12 @@ const BookingScreen = (props) => {
     showMode('time');
   };
 
+  const refreshPage = () => {
+    dispatch(checkTableAvailability(guests, restId, date));
+  }
+
   const RenderModalLoadingSpinner = () => {
     if (showModalSpinner) {
-
-      //dispatch(clearTables());
 
       const bookingTime = time;
       const bookingDate = date;
@@ -124,19 +125,17 @@ const BookingScreen = (props) => {
 
       setTimeout(() => {
         setShowModalSpinner(false);
-
-        setTime(undefined);
-        setDate(undefined);
-        setGuests(undefined);
+        setSelectedIndex(undefined);
         setDisableReserve(true);
-        setDisableSearch(true);
 
         props.navigation.navigate("Booking successful", {
           time: bookingTime,
           date: bookingDate,
           guests: bookingGuests,
+          callback: refreshPage,
         });
-      }, 3500)
+
+      }, 2500)
 
       return (
         <View style={styles.container}>
@@ -173,7 +172,7 @@ const BookingScreen = (props) => {
                 <Text style={{ marginBottom: 10 }}>{`On ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`}</Text>
                 <View style={styles.confirmModal}>
                   <Button style={styles.modalBtn} onPress={() => {
-                    //dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
+                    dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
                     setShowModalSpinner(true);
                     setShowConfirmationModal(false);
                   }
@@ -207,7 +206,7 @@ const BookingScreen = (props) => {
         <Button style={styles.button} disabled={disableSearch} onPress={() => {
           setSelectedIndex(undefined);
           setButtonGhost(true);
-          setDisplaySearchError(false);
+
           if (all_tables_of_size.length > 0) {
             dispatch(clearTables());
           }
@@ -268,36 +267,38 @@ const BookingScreen = (props) => {
   //LIST ITEM THIS WHERE IT RENDER THE LIST COMPONENTS
   //
   const renderItem = ({ item, index }) => {
-    let accessory = renderItemAccessoryAvailable;
-    if (!item.available) {
-      accessory = renderItemAccessoryUnavailable;
-    }
-
-    const reference = ['Outside', 'Inside', 'Quiet area', 'Next to a window', 'Next to the door', 'No smoking', 'Smoking allowed'];
-    let attrbString = "";
-    item.attributeIndexes.forEach((index, i) => {
-      if (i === item.attributeIndexes.length - 1) {
-        attrbString += reference[index]
-      } else {
-        attrbString += reference[index] + ", "
+    if (date !== undefined && time !== undefined && guests !== undefined) {
+      let accessory = renderItemAccessoryAvailable;
+      if (!item.available) {
+        accessory = renderItemAccessoryUnavailable;
       }
-    })
 
-    return (
-      <ListItem
-        title={`Table number - ${all_scheduled_tables[index].number}`}
-        description={`Recommended guest capacity: ${item.size}\nDescription: ${attrbString}`}
-        style={selectedIndex === index ? { backgroundColor: '#edf1f7' } : undefined}
-        accessoryRight={accessory}
-        onPress={() => {
-          if (item.available) {
-            setSelectedIndex(index);
-            setDisableReserve(false);
-          }
-        }}
-      />
-    );
+      const reference = ['Outside', 'Inside', 'Quiet area', 'Next to a window', 'Next to the door', 'No smoking', 'Smoking allowed'];
+      let attrbString = "";
+      item.attributeIndexes.forEach((index, i) => {
+        if (i === item.attributeIndexes.length - 1) {
+          attrbString += reference[index]
+        } else {
+          attrbString += reference[index] + ", "
+        }
+      })
 
+      return (
+        <ListItem
+          title={`Table number - ${all_scheduled_tables[index].number}`}
+          description={`Recommended guest capacity: ${item.size}\nDescription: ${attrbString}`}
+          style={selectedIndex === index ? { backgroundColor: '#edf1f7' } : undefined}
+          accessoryRight={accessory}
+          onPress={() => {
+            if (item.available) {
+              setSelectedIndex(index);
+              setDisableReserve(false);
+            }
+          }}
+        />
+      );
+    }
+    return <></>
   }
 
   const WarningIcon = () => (
