@@ -84,12 +84,12 @@ const RewardScreen = (props) => {
                   customerId: uid,
                 })
                 .then(() => {
-                  console.log("We got this far");
-                  user.doc(uid).update({
+                  console.log(doc.data().points);
+                  return user.doc(uid).update({
                     points: FieldValue.increment(doc.data().points),
                   });
-                  fetchPoints();
                 })
+                .then(() => fetchPoints())
                 .catch((error) => {
                   console.log("Error getting documents: ", error);
                 });
