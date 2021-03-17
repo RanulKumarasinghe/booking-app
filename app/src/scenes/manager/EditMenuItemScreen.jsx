@@ -55,9 +55,7 @@ const RestaurantEditMenu = (props) => {
       numType: menuTypeValue,
       type: type
     }))
-  props.navigation.navigate('Edit Menu', {
-    restaurantId: restaurantId
-  })
+    props.navigation.navigate('Restaurant')
   };
 
   const deleteMenuItem = () => {

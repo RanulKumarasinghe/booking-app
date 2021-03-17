@@ -28,7 +28,7 @@ const RestaurantEntry = props => {
         <View>
           <View style={{ ...styles.listRow, ...styles.listHeader }}>
             <ImageBackground
-              source={{ uri: props.imageUrl }}
+              source={{ uri: props?.imageUrl }}
               style={styles.bgImage}
             >
 
