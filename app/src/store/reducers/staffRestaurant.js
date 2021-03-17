@@ -4,6 +4,7 @@ import { SET_RESTAURANT, UPDATE_RESTAURANT, RESET } from '@/store/actions/staffR
 
 const initialState = {
   restaurant: null,
+  restaurantOrders: [],
 }
 
 const restaurantReducer = (state = initialState, action) => {
