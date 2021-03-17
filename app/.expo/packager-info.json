@@ -2,8 +2,8 @@
   "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://ff-7ww.anonymous.app.exp.direct",
   "packagerNgrokUrl": "https://packager.ff-7ww.anonymous.app.exp.direct",
-  "ngrokPid": 30572,
+  "ngrokPid": 23464,
   "devToolsPort": 19002,
   "packagerPort": 19001,
-  "packagerPid": 10508
+  "packagerPid": 27272
 }
