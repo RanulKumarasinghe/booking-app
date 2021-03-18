@@ -11,7 +11,7 @@ const restaurantReducer = (state = initialState, action) => {
   switch(action.type) {
     //Filters restaurant by name
     case SET_RESTAURANT:
-      return {restaurant: action.restaurant}
+      return {restaurant: action.restaurant, restaurantOrders: action.restaurantOrders}
     case UPDATE_RESTAURANT:
       // console.log(action)
       return {restaurant: {...action.restaurant, ...action.newRestaurantValues}}
