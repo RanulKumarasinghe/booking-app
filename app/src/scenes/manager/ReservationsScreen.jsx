@@ -115,6 +115,24 @@ export default ReservationsScreen = ({ navigation }) => {
     }
   }
 
+  const EmptyError = () => {
+    if (!isOffline) {
+      return (
+        <TouchableOpacity style={styles.loginError} onPress={() => {
+          navigation.navigate("Restaurants");
+        }}>
+          <View style={{ flex: 10, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+            <WarningIcon />
+            <Text style={{ marginTop: 10 }} appearance='hint'>Oops we found no bookings!</Text>
+          </View>
+          <Text style={{ flex: 1 }} appearance='hint'>Tap this screen to start booking</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (<View></View>)
+    }
+  }
+
   //Screen render code
 
   if (isOffline) {
@@ -125,7 +143,10 @@ export default ReservationsScreen = ({ navigation }) => {
     return (
       <LoadingScreen />
     )
-  } else {
+  } else if (restaurant_bookings.length < 1) {
+    <EmptyError />
+  }
+  else {
     return (
       <Layout style={styles.container}>
         <ToggleFilter />

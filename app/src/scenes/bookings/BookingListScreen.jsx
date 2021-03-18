@@ -26,7 +26,7 @@ export default BookingListScreen = ({ navigation }) => {
     }
 
     const onCheckedChange = () => {
-        setfilterToggle(!filterToggle);        
+        setfilterToggle(!filterToggle);
     };
 
     const doRefresh = () => {
@@ -100,17 +100,36 @@ export default BookingListScreen = ({ navigation }) => {
                         "User", { screen: 'Login' },
                     );
                 }}>
-                    <View style={{flex:10, alignItems:'center', justifyContent:'center'}}>
+                    <View style={{ flex: 10, alignItems: 'center', justifyContent: 'center' }}>
                         <WarningIcon />
-                        <Text appearance='hint'>PLEASE LOG IN</Text>
+                        <Text style={{ marginTop: 10 }} appearance='hint'>PLEASE LOG IN</Text>
                     </View>
-                    <Text style={{flex:1}} appearance='hint'>Tap to redirect</Text>
+                    <Text style={{ flex: 1 }} appearance='hint'>Tap to redirect</Text>
                 </TouchableOpacity>
             );
         } else {
             return (<View></View>)
         }
     }
+
+    const EmptyError = () => {
+        if (!isOffline) {
+            return (
+                <TouchableOpacity style={styles.loginError} onPress={() => {
+                    navigation.navigate("Restaurants");
+                }}>
+                    <View style={{ flex: 10, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                        <WarningIcon />
+                        <Text style={{ marginTop: 10 }} appearance='hint'>Oops we found no bookings!</Text>
+                    </View>
+                    <Text style={{ flex: 1 }} appearance='hint'>Tap this screen to start booking</Text>
+                </TouchableOpacity>
+            );
+        } else {
+            return (<View></View>)
+        }
+    }
+
 
     //Screen render code
 
@@ -122,7 +141,12 @@ export default BookingListScreen = ({ navigation }) => {
         return (
             <LoadingScreen />
         )
-    } else {
+    } else if (users_bookings.length < 1) {
+        return (
+            <EmptyError />
+        )
+    }
+    else {
         return (
             <Layout style={styles.container}>
                 <ToggleFilter />
