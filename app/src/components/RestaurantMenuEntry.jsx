@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     backgroundColor: '#d9d9d9',
-    // paddingVertical: 12
+    paddingVertical: 10
   },
   list: {
     color: 'black',

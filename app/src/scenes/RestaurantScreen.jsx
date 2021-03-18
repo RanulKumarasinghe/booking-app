@@ -71,7 +71,7 @@ const Restaurant = (props) => {
           <View>
             <View style={styles.listRow}>
               <Image
-                source={{ uri: restaurant.imageUrl }}
+                source={{ uri: restaurant?.imageUrl }}
                 style={styles.bgImage}
               />
               <Text style={styles.font1}>{restaurant.name}</Text>
@@ -81,14 +81,16 @@ const Restaurant = (props) => {
                   disabled={true}
                   maxStars={5}
                   rating={restaurant.googleData?.rating}
-                  fullStarColor={'#dbeb34'}
+                  fullStarColor={'#c7c708'}
                   starSize={15}
                 />
               </View>
               <View style={styles.description}>
                 <Text>{restaurant.description}</Text>
+                <View style={styles.addressDetails}>
                 <Text>{restaurant.googleData?.formatted_phone_number}</Text>
                 <Text>{restaurant.googleData?.vicinity}</Text>
+                </View>
               </View>
               <View style={styles.openHours}>
                 <Text style={styles.font}>Opening hours:</Text>
@@ -111,18 +113,22 @@ const Restaurant = (props) => {
               <View>
                 <Text>{restaurant.googleData?.opening_hours.weekday_text[5]}</Text>
               </View>
-              <View>
+              <View style={styles.openSpacing}>
                 <Text>{restaurant.googleData?.opening_hours.weekday_text[6]}</Text>
               </View>
+              {  !restaurantManager && (
+                <>
+                  <View style={styles.buttonSpacing}>
+                  <Button onPress={onBooking}>Make A Booking</Button>
+                  </View>
+                  <View style={styles.buttonSpacing}>
+                  <Button onPress={onOrder}>Order</Button>
+                  </View>
+                </>) || null}
               <View style={styles.menu}>
                 <Menu navigation={props.navigation}
                   restaurantId={restaurant.id} />
               </View>
-              {  !restaurantManager && (
-                <>
-                  <Button onPress={onBooking}>Make A Booking</Button>
-                  <Button onPress={onOrder}>Order</Button>
-                </>) || null}
             </View>
           </View>
           {/* <Divider />
@@ -183,11 +189,21 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   description: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginTop: 5
   },
-  editButton: {
-    marginBottom: 10
+  addressDetails: {
+    marginTop: 5
+  },
+  buttonSpacing: {
+    marginTop: 15,
+    width: '95%',
+    alignSelf: 'center'
+  },
+  openSpacing: {
+    marginBottom: 20
   }
+
 });
 
 Restaurant.defaultProps = {
