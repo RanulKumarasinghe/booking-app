@@ -16,12 +16,13 @@ const BookingsListEntry = ({item}) => {
   const order = item.order;
 
   const callback = item.onCancel;
+
   const test = () => {
     console.log(isBooking)
     console.log(booking)
     console.log(order)
-
   }
+  
   const isCancelled = booking.status == 'cancelled'
 
   const image = { uri: "https://www.fsrmagazine.com/sites/default/files/styles/story_image_720x430/public/feature-images/state-full-service-restaurant-industry-1554901734.jpg?itok=-EciUerQ" };
