@@ -66,6 +66,7 @@ export const UPDATE_RESTAURANT = "UPDATE_RESTAURANT"
 export const updateRestaurant = (restaurantId, saveRestaurant) => {
   return dispatch => {
     const newRestaurantValues = {
+      id: saveRestaurant.id,
       name: saveRestaurant.name,
       type: saveRestaurant.type,
       description: saveRestaurant.description,
