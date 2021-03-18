@@ -98,7 +98,7 @@ const ManagerRewardScreen = (props) => {
           //maxLength={4} is based on the average cost of a meal being £15-25
         />
         <View style={styles.inputButton}>
-          <Button onPress={generateCode}>Redeem Points</Button>
+          <Button onPress={generateCode}>Create Points Code</Button>
         </View>
       </View>
     </SafeAreaView>
