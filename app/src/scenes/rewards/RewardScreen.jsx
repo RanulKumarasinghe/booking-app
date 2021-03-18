@@ -16,6 +16,7 @@ import {
   Button,
   Text,
   Avatar,
+  Input,
 } from "@ui-kitten/components";
 
 import firebase, { db, FieldValue } from "src/utils/firebase";
@@ -122,7 +123,7 @@ const RewardScreen = (props) => {
       </View>
 
       <View>
-        <TextInput
+        <Input
           style={{
             height: 40,
             borderColor: "gray",
