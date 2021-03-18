@@ -32,7 +32,7 @@ export const fetchUserRestaurant = (userId) => {
               }).catch(e => {
                 dispatch({
                   type: SET_RESTAURANT, restaurant: {
-                    ...restaurantData, id: doc.id 
+                    ...restaurantData, id: doc.id
                 }})
               })
             }
@@ -52,6 +52,7 @@ export const UPDATE_RESTAURANT = "UPDATE_RESTAURANT"
 export const updateRestaurant = (restaurantId, saveRestaurant) => {
   return dispatch => {
     const newRestaurantValues = {
+      id: saveRestaurant.id,
       name: saveRestaurant.name,
       type: saveRestaurant.type,
       description: saveRestaurant.description,
