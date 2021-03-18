@@ -63,11 +63,11 @@ const Menu = (props) => {
 
   return (
     <View style={{ height: 'auto' }}>
-      <TouchableHighlight onPress = {() => setShowMenu(!showMenu)} style = {styles.touchColor}>
-      <Text category='h2' style={{ textAlign: 'center' }}> {!showMenu ? (<Text category='h2'>Show </Text>) : null}Menu</Text>
-      </TouchableHighlight>
+
+      <Text category='h2' style={{ textAlign: 'center' }}>Menu</Text>
+
       <Divider />
-      {showMenu ? (
+
       <FlatList
           data={menuItems}
           keyExtractor={(item, index) => item.id}
@@ -75,7 +75,7 @@ const Menu = (props) => {
           removeClippedSubviews= {true}
           onEndReachedThreshold={0.5}
         />
-        ) : null}
+
       {/* {MenuData.map(category => (
             <View key={category.id}>
               <Text>{category.category}</Text>

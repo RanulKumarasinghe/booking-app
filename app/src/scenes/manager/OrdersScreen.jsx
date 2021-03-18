@@ -1,38 +1,37 @@
 import React, {useState, useEffect} from 'react';
-import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Text, Button, Layout } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '@/store/actions/auth'
 import LoginRequired from '@/components/LoginRequired'
+import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
+import BookingOrderEntry from '@/components/BookingOrderEntry'
 
 const OrderScreen = (props) => {
   const restaurant = useSelector(state => state.staffRestaurant.restaurant);
   const restaurantOrders = useSelector(state => state.staffRestaurant.restaurantOrders);
 
-  const LoadingScreen = () => {
-    if (showLoadingSpinner) {
+  const mappedData = restaurantOrders.map((order) => {
+    return ({ order })
+  })
+    
+  const List = () => {
       return (
-        <View style={styles.datePicker}>
-          <Spinner />
-        </View>
-      );
-    } else {
-      return (<></>)
-    }
+        <FlatList
+        data={mappedData}
+        renderItem={BookingOrderEntry}
+        keyExtractor={(item) => item.order.docId}
+      />  
+      )
   }
 
-  if (!!restaurant) {
+  if (!restaurant) {
     return (
       <LoginRequired />
-    )
-  } else if (showLoadingSpinner) {
-    return (
-      <LoadingScreen />
     )
   } else {
     return (
       <Layout style={styles.container}>
-        <ToggleFilter />
+        <Button onPress={() => console.log(restaurantOrders)} />
         <List />
       </Layout>
     );

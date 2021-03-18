@@ -119,7 +119,7 @@ export default ReservationsScreen = ({ navigation }) => {
     return (
       <Layout style={styles.container}>
         <ToggleFilter />
-        <List />
+        {/* <List /> */}
       </Layout>
     );
   }
