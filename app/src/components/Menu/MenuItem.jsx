@@ -43,7 +43,7 @@ const MenuItem = (props) => {
 const styles = StyleSheet.create({
   item: {
     padding: 10,
-    backgroundColor: '#34ebe8',
+    backgroundColor: '#dedede',
   },
   image: {
     width: '10%',

@@ -44,7 +44,7 @@ const RestaurantEntry = props => {
             disabled={true}
             maxStars={5}
             rating={props.starRating}
-            fullStarColor={'#dbeb34'}
+            fullStarColor={'#c7c708'}
             starSize={15}
 
             />

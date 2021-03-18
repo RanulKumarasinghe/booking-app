@@ -16,6 +16,7 @@ import {
   Button,
   Text,
   Avatar,
+  Input,
 } from "@ui-kitten/components";
 
 import firebase, { db, FieldValue } from "src/utils/firebase";
@@ -108,22 +109,21 @@ const RewardScreen = (props) => {
           style={styles.userImage}
           source={{
             uri:
-              "https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg",
+              "https://images.unsplash.com/photo-1510168857767-25918342e7aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1491&q=80",
           }}
         />
         <View>
-          <Text style={styles.font}>{name}</Text>
+          <Text style={styles.font}>Welcome {name}</Text>
         </View>
         <View style={styles.lineThrough} />
         <View>
           <Text style={styles.font}>Your Points:</Text>
           <Text style={styles.font}>{pointsFromUser}</Text>
-          <Text style={styles.font}>Last input code:{code}</Text>
         </View>
       </View>
 
       <View>
-        <TextInput
+        <Input
           style={{
             height: 40,
             borderColor: "gray",
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
   },
 
   userImage: {
-    width: "40%",
-    height: "60%",
+    width: "100%",
+    height: "70%",
     alignSelf: "center",
   },
 
