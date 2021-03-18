@@ -113,8 +113,9 @@ const CheckOutScreen = (props) => {
           </View>
         ))}
         <Text style={[styles.itemName, {alignSelf: 'flex-end', paddingRight: 20}]}>Total: £{calculateTotal()}</Text>
-        <Button onPress={checkout}>Order</Button>
-        <Button onPress={test2}>test2</Button>
+        <View style={styles.buttonSpacing}>
+          <Button onPress={checkout}>Order</Button>
+        </View>
       </Layout>
     </SafeAreaView>
   );
@@ -123,6 +124,11 @@ const CheckOutScreen = (props) => {
 
 
 const styles = StyleSheet.create({
+  buttonSpacing: {
+    marginTop: 15,
+    width: '95%',
+    alignSelf: 'center'
+  },
   description: {
     flexWrap: 'wrap'
   },

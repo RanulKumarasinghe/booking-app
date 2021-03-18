@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Text, Button, Layout } from '@ui-kitten/components';
 import Firebase from '@/utils/firebase'
@@ -7,18 +7,16 @@ import Menu from '@/components/Menu/Menu'
 const MenuScreen = (props) => {
   const order = useSelector(state => state.order);
 
-  
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Layout style={{ flex: 1}}>
-      <Menu navigation={props.navigation} order={true} cartNumberOfItems={order.cart.length} />
-        <Button onPress={() => {props.navigation.navigate('Checkout')}}>
-          CheckOut
+      <Layout style={{ flex: 1 }}>
+        <Menu navigation={props.navigation} order={true} cartNumberOfItems={order.cart.length} />
+        <View style={styles.buttonSpacing}>
+          <Button onPress={() => { props.navigation.navigate('Checkout') }}>
+            CheckOut
         </Button>
-
-        <Button onPress={() => {console.log(order)}}>
-          CheckOut
-        </Button>
+        </View>
       </Layout>
     </SafeAreaView>
   );
@@ -27,6 +25,11 @@ const MenuScreen = (props) => {
 
 
 const styles = StyleSheet.create({
+  buttonSpacing: {
+    marginTop: 15,
+    width: '95%',
+    alignSelf: 'center'
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Text, Button, Layout } from '@ui-kitten/components';
 import Firebase from '@/utils/firebase'
@@ -14,12 +14,12 @@ const OrderTypeScreen = (props) => {
 
 
   const dispatch = useDispatch()
-  
+
   const handleInRestaurant = () => {
     dispatch(setOrderType('Eat In'));
     props.navigation.navigate('Menu')
   }
-  
+
   const handleTakeAway = () => {
     dispatch(setOrderType('Take Away'));
     props.navigation.navigate('Menu')
@@ -29,15 +29,22 @@ const OrderTypeScreen = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
       <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-        <Text>{restaurant.name}</Text>
+        <Text style={{fontSize: 20, fontWeight: 'bold'}}>{restaurant.name}</Text>
+        <Text style={{fontSize: 20}}>Pick One:</Text>
 
+        <View style={styles.buttonContainer}>
+          <View style={styles.button}>
 
-        <Button onPress={handleInRestaurant}>
-          Eating in
+            <Button style={{width: 170}} onPress={handleInRestaurant}>
+              Eating in
         </Button>
-        <Button onPress={handleTakeAway}>
-          Take Away Order
+          </View>
+          <View style={styles.button}>
+            <Button style={{width: 170}} onPress={handleTakeAway}>
+              Take Away Order
         </Button>
+          </View>
+        </View>
       </Layout>
     </SafeAreaView>
   );
@@ -46,10 +53,12 @@ const OrderTypeScreen = (props) => {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  button: {
+    padding: 20
   },
   textInput: {
     height: 40,
