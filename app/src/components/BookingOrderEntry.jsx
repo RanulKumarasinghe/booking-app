@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ImageBackground } from 'react-native';
-import { Toggle, Text, Divider, Spinner, Layout, Icon, Button } from '@ui-kitten/components';
+import { Toggle, Text, Divider, Button, Spinner, Layout, Icon } from '@ui-kitten/components';
+import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux';
+
+const BookingsListEntry = ({ item }) => {
+  const isManager = useSelector(state => !!state.staffRestaurant.restaurant);
+
+  // console.log(props)
+  let isBooking
+  if (item.element) {
+    isBooking = true
+  } else {
+    isBooking = false
+  }
 
 
-const BookingsListEntry = (props) => {
-  /*Object {
-      "cusid": "glJhg6e6vYS9AtXRE40Eo0DL42y1",
-      "docId": "I1JOgdMSt8RdqFV6H9uz",
-      "end": t {
-        "nanoseconds": 0,
-        "seconds": 1614438000,
-      },
-      "guests": "2",
-      "restid": "0oSOVkl4hMwsxHtexFJT",
-      "start": t {
-        "nanoseconds": 0,
-        "seconds": 1614434400,
-      },
-      "status": "ok",
-      "tableref": "C3SpKCkToYhIPBhoekJC",
-    }*/
+  const booking = item.element;
+  const order = item.order;
+
+  const callback = item.onCancel;
+
+  const test = () => {
+    console.log(isBooking)
+    console.log(booking)
+    console.log(order)
+  }
+
+  const isCancelled = (booking ? booking.status == 'cancelled' : false) || (order ? order.status == 'cancelled' : false)
 
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -36,109 +43,126 @@ const BookingsListEntry = (props) => {
     return time;
   }
 
-  const data = props.item.element;
-  const callback = props.item.callback;
-
   const image = {};
 
-  if (data.date.toDate().getHours() > 17) {
-    image.uri = "https://www.denverpost.com/wp-content/uploads/2016/04/20150209__20150211_C1_FE11FDROMANCEp2.jpg?w=620"
-  } else {
-    image.uri = "https://images.unsplash.com/photo-1570894322743-aefb6905a4b5?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGluaW5nJTIwdGFibGVzfGVufDB8fDB8&ixlib=rb-1.2.1&w=1000&q=80"
-  }
+  // if (new Date(item.date).getHours() > 17) {
+  image.uri = "https://www.denverpost.com/wp-content/uploads/2016/04/20150209__20150211_C1_FE11FDROMANCEp2.jpg?w=620"
+  // } else {
+  //   image.uri = "https://images.unsplash.com/photo-1570894322743-aefb6905a4b5?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGluaW5nJTIwdGFibGVzfGVufDB8fDB8&ixlib=rb-1.2.1&w=1000&q=80"
+  // }
 
-
-  const StatusHeader = () => {
-    if (data.status == 'cancelled') {
-      return (<Text style={styles.headerTitle}>Status: {capitalize(data.status)}</Text>)
-    } else {
-      return (<Text style={styles.headerTitle}>Status: {capitalize(data.status)}</Text>)
-    }
-  }
-
-  const ListHeader = () => {
+  const BookingHeader = () => {
     return (
-      <ImageBackground source={image} style={styles.headerImg}>
-        <View style={styles.headerContainer}>
-          <View style={{ flexDirection: 'row' }}>
-            <Text category='h3' style={styles.headerTitle}>Booking - {data.restname}</Text>
-            <Text category='p1' style={styles.headerSubTitle}>{constructDate(data.date.seconds)}</Text>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            {<StatusHeader />}
-            {/*<Text style={styles.headerSubTitle}>Pedro</Text>*/}
-          </View>
+      <>
+        <View style={styles.headerTextContainer}>
+          <Text category='h3' style={styles.headerTitle}>{booking.restname}</Text>
+          <Text category='p1' style={styles.headerSubTitle}>{constructDate(booking.date.seconds)}</Text>
         </View>
-      </ImageBackground>
-    );
+        <View style={styles.headerTextContainer}>
+          <Text category='h3' style={styles.headerTitle} >Table number: {booking.tableNumber}</Text>
+          <Text category='p1' style={styles.headerSubTitle}>
+            Status: {capitalize(booking.status)}
+          </Text>
+        </View>
+      </>
+    )
   }
 
-  const ListContent = () => {
-    let dividerCount = data.length - 1;
-
-    if (data.status == 'cancelled') {
+  const BookingContent = () => {
+    if (booking) {
       return (
-        <View style={styles.listContentContainer, styles.listEntryCanceled}>
+        <>
+          <Divider />
+          <Text style={styles.typeTitle}>{"Booking"}</Text>
           <Divider />
           <View style={{ flexDirection: 'row', margin: 5 }}>
-            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
-            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
+            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {booking.guests}</Text>
+            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(booking.date.seconds)}</Text>
           </View>
-          <Divider />
-          <TableDescription />
-        </View>
+        </>
       )
-    } else {
-      return (
-        <View style={styles.listContentContainer}>
-          <Divider />
-          <View style={{ flexDirection: 'row', margin: 5 }}>
-            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
-            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
-          </View>
-          <Divider />
-          <TableDescription />
-        </View>
-      );
     }
-
   }
 
-  const TableDescription = () => {
+  const OrderHeader = () => {
     return (
-      <View style={styles.tableDetails}>
-        <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Table number: {data.tableNumber}</Text>
-      </View>
-    );
+      <>
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerTitle}>{'Restaurant Name'}</Text>
+          <Text style={styles.headerSubTitle}>{order.type}</Text>
+        </View>
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerTitle}>
+            Status:
+            {order.status ? capitalize(order.status) : null}
+          </Text>
+        </View>
+      </>
+    )
   }
 
-  const ListButtons = () => {
-    const disableCancelButton = data.status == 'cancelled' ? true : false
-    return (
-      <View style={styles.buttonContainer}>
-        <Button disabled={disableCancelButton} style={styles.button} size='medium' status='basic' onPress={() => { callback(data.docId) }}>
-          Cancel
-              </Button>
-        <Button style={styles.button} size='medium' status='basic'>
-          Receipt
-              </Button>
-      </View>
-    );
+  const OrderContent = () => {
+    if (order) {
+      return (
+        <>
+          <Divider />
+          <Text style={styles.typeTitle}>{"Order"}</Text>
+          <Divider />
+          <FlatList
+            data={order.cart}
+            // keyExtractor={(item) => item}
+            renderItem={({ item }) => (
+              <View style={{ flexDirection: 'row', alignContent: 'space-between', margin: 5 }}>
+                <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>{item.item.name}</Text>
+                <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>£{item.item.price}</Text>
+              </View>
+            )}
+          />
+
+        </>
+      )
+    }
   }
 
   return (
     <View style={styles.listEntryContainer}>
-      <ListHeader />
-      <ListContent />
-      <ListButtons />
+      {/* Header */}
+      <ImageBackground source={image} style={styles.headerImg}>
+        {/* <View style={styles.headerContainer}> */}
+        {isBooking && BookingHeader() || OrderHeader()}
+      </ImageBackground>
+      {/*Content */}
+      <View style={styles.listContentContainer, (isCancelled ? styles.listEntryCanceled : {})}>
+        {BookingContent()}
+        {OrderContent()}
+      </View>
+      {/* Buutons */}
+      <View style={styles.buttonContainer}>
+        <Button style={styles.button} size='medium' status='basic' onPress={() => { callback(booking.docId) }}>
+          Cancel
+        </Button>
+        {order && isManager (
+          <Button style={styles.button} size='medium' status='basic' onPress={test}>
+            Accept
+          </Button>
+        ) || null}
+      </View>
     </View>
-
   );
 }
 
 export default BookingsListEntry
 
 const styles = StyleSheet.create({
+  typeTitle: {
+    alignSelf: 'center',
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  headerTextContainer: {
+    flexDirection: 'row',
+    alignContent: 'space-between'
+  },
   icon: {
     margin: 5,
     width: 20,
@@ -174,6 +198,7 @@ const styles = StyleSheet.create({
   },
 
   headerTitle: {
+    alignSelf: 'flex-start',
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
@@ -181,6 +206,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   headerSubTitle: {
+    alignSelf: 'flex-start',
     color: "white",
     fontSize: 18,
     fontWeight: "bold",

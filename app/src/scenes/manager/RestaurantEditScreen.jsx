@@ -11,7 +11,6 @@ const RestaurantEdit = (props) => {
   const dispatch = useDispatch();
   const restaurant = useSelector(state => state.staffRestaurant.restaurant);
 
-
   const auth = useSelector(state => state.auth);
 
 
@@ -23,13 +22,14 @@ const RestaurantEdit = (props) => {
 
   const editRestaurant = () => {
     dispatch(updateRestaurant(restaurant.id, {
+      id: restaurant.id,
       name: nameValue,
       type: typeValue,
       description: descriptionValue,
       imageUrl: imageUrlValue,
       google_id: restaurant.google_id,
     }))
-    props.navigation.navigate('Restaurant')
+    props.navigation.navigate('Profile')
   };
 
   return (

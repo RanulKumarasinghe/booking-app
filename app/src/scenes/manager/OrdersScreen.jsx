@@ -1,29 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Text, Button, Layout } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '@/store/actions/auth'
 import LoginRequired from '@/components/LoginRequired'
+import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
+import BookingOrderEntry from '@/components/BookingOrderEntry'
 
 const OrderScreen = (props) => {
   const restaurant = useSelector(state => state.staffRestaurant.restaurant);
   const restaurantOrders = useSelector(state => state.staffRestaurant.restaurantOrders);
 
-  const LoadingScreen = () => {
-    if (showLoadingSpinner) {
-      return (
-        <View style={styles.datePicker}>
-          <Spinner />
-        </View>
-      );
-    } else {
-      return (<></>)
-    }
-  }
-  
+  const mappedData = restaurantOrders.map((order) => {
+    return ({ order })
+  })
+    
   const List = () => {
       return (
-        <></>
+        <FlatList
+        data={mappedData}
+        renderItem={BookingOrderEntry}
+        keyExtractor={(item) => item.order.docId}
+      />  
       )
   }
 
@@ -34,6 +31,7 @@ const OrderScreen = (props) => {
   } else {
     return (
       <Layout style={styles.container}>
+        <Button onPress={() => console.log(restaurantOrders)} />
         <List />
       </Layout>
     );

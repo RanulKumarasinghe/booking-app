@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 import { Divider, Text, Button, Icon } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { postReservationCancelation } from '@/store/actions/bookings'
-import BookingsListEntry from './BookingsListEntry'
+import BookingOrderEntry from './BookingOrderEntry'
 
 export default BookingsList = (props) => {
   const dispatch = useDispatch();
@@ -14,16 +14,15 @@ export default BookingsList = (props) => {
   }
 
   const mappedData = props.payload.map((element) => {
-    return ({ element, callback: cancelBooking })
+    return ({ element, onCancel: cancelBooking })
   })
 
   return (
     //<View style={styles.container}>
     <FlatList
       data={mappedData}
-      renderItem={BookingsListEntry}
-      keyExtractor={(item) => item.id}
-      listKey={(item) => index.toString()}
+      renderItem={BookingOrderEntry}
+    // keyExtractor={(item) => item.element.docId}
     />
     //</View>
   );
