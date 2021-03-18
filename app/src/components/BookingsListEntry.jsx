@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
-import { Toggle, Text, Divider, Spinner, Layout, Icon } from '@ui-kitten/components';
-
+import { Toggle, Text, Divider, Button, Spinner, Layout, Icon} from '@ui-kitten/components';
+import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 
 const BookingsListEntry = (props) => {
   /*Object {
@@ -24,106 +23,92 @@ const BookingsListEntry = (props) => {
   const image = { uri: "https://www.fsrmagazine.com/sites/default/files/styles/story_image_720x430/public/feature-images/state-full-service-restaurant-industry-1554901734.jpg?itok=-EciUerQ" };
 
   const capitalize = (string) => {
-      return string.charAt(0).toUpperCase() + string.slice(1);
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   const constructDate = (timestamp) => {
-      const date = new Date(timestamp * 1000);
-      return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    const date = new Date(timestamp * 1000);
+    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
   }
 
   const constructTime = (timestamp) => {
-      const date = new Date(timestamp * 1000);
-      const time = `${date.getHours()}:${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`
-      return time;
+    const date = new Date(timestamp * 1000);
+    const time = `${date.getHours()}:${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`
+    return time;
   }
 
   const data = props.item.element;
   const callback = props.item.callback;
 
   const StatusHeader = () => {
-      if (data.status == 'cancelled') {
-          return (<Text style={styles.headerTitleCanceled}>Status: {capitalize(data.status)}</Text>)
-      } else {
-          return (<Text style={styles.headerTitle}>Status: {capitalize(data.status)}</Text>)
-      }
+    if (data.status == 'cancelled') {
+      return (<Text style={styles.headerTitleCanceled}>Status: {capitalize(data.status)}</Text>)
+    } else {
+      return (<Text style={styles.headerTitle}>Status: {capitalize(data.status)}</Text>)
+    }
   }
 
   const ListHeader = () => {
-      return (
-          <ImageBackground source={image} style={styles.headerImg}>
-              <View style={styles.headerContainer}>
-                  <View style={{ flexDirection: 'row' }}>
-                      <Text style={styles.headerTitle}>Booking - {data.restname}</Text>
-                      <Text style={styles.headerSubTitle}>{constructDate(data.date.seconds)}</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row' }}>
-                      {<StatusHeader />}
-                      {/*<Text style={styles.headerSubTitle}>Pedro</Text>*/}
-                  </View>
-              </View>
-          </ImageBackground>
-      );
+    return (
+      <ImageBackground source={image} style={styles.headerImg}>
+        <View style={styles.headerContainer}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={styles.headerTitle}>Booking - {data.restname}</Text>
+            <Text style={styles.headerSubTitle}>{constructDate(data.date.seconds)}</Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            {<StatusHeader />}
+            {/*<Text style={styles.headerSubTitle}>Pedro</Text>*/}
+          </View>
+        </View>
+      </ImageBackground>
+    );
   }
 
   const ListContent = () => {
-      let dividerCount = data.length - 1;
+    let dividerCount = data.length - 1;
+    let isCancelled = (data.status == 'cancelled')
 
-      if (data.status == 'cancelled') {
-          return (
-              <View style={styles.listContentContainer, styles.listEntryCanceled}>
-                  <Divider />
-                  <View style={{ flexDirection: 'row', margin: 5 }}>
-                      <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
-                      <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
-                  </View>
-                  <Divider />
-                  <TableDescription />
-              </View>
-          )
-      } else {
-          return (
-              <View style={styles.listContentContainer}>
-                  <Divider />
-                  <View style={{ flexDirection: 'row', margin: 5 }}>
-                      <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
-                      <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
-                  </View>
-                  <Divider />
-                  <TableDescription />
-              </View>
-          );
-      }
-
+    return (
+      <View style={styles.listContentContainer, (isCancelled ? styles.listEntryCanceled : {})}>
+        <Divider />
+        <View style={{ flexDirection: 'row', margin: 5 }}>
+          <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {data.guests}</Text>
+          <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(data.date.seconds)}</Text>
+        </View>
+        <Divider />
+        <TableDescription />
+      </View>
+    )
   }
 
   const TableDescription = () => {
-      return (
-          <View style={styles.tableDetails}>
-              <Text>Table number: {data.tableNumber}</Text>
-          </View>
-      );
+    return (
+      <View style={styles.tableDetails}>
+        <Text>Table number: {data.tableNumber}</Text>
+      </View>
+    );
   }
 
   const ListButtons = () => {
-      return (
-          <View style={styles.buttonContainer}>
-              <Button style={styles.button} size='medium' status='basic' onPress={() => { callback(data.docId) }}>
-                  Cancel
+    return (
+      <View style={styles.buttonContainer}>
+        <Button style={styles.button} size='medium' status='basic' onPress={() => { callback(data.docId) }}>
+          Cancel
               </Button>
-              <Button style={styles.button} size='medium' status='basic'>
-                  Receipt
+        <Button style={styles.button} size='medium' status='basic'>
+          Receipt
               </Button>
-          </View>
-      );
+      </View>
+    );
   }
 
   return (
-      <View style={styles.listEntryContainer}>
-          <ListHeader />
-          <ListContent />
-          <ListButtons />
-      </View>
+    <View style={styles.listEntryContainer}>
+      <ListHeader />
+      <ListContent />
+      <ListButtons />
+    </View>
 
   );
 }
