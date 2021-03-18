@@ -11,7 +11,34 @@ export const fetchUserRestaurant = (userId) => {
       .then((querySnapshot) => {
         const restaurants = querySnapshot.docs
         if (restaurants.length > 0) {
-          return { id: restaurants[0].id, ...restaurants[0].data() }
+          restaurants.forEach((doc, index) => {
+            if (index == 0) {
+              const restaurantData = doc.data()
+
+              params = {
+                place_id: restaurantData.google_id,
+                fields: "name,rating,formatted_phone_number,opening_hours,vicinity",
+                key: 'AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc',
+              }
+
+              return axios.get('https://maps.googleapis.com/maps/api/place/details/json', { params }).then(response => {
+                dispatch({
+                  type: SET_RESTAURANT, restaurant: {
+                    ...restaurantData,
+                    id: doc.id,
+                    googleData: response.data.result
+                  }
+                })
+              }).catch(e => {
+                dispatch({
+                  type: SET_RESTAURANT, restaurant: {
+                    ...restaurantData, id: doc.id
+                }})
+              })
+            }
+          });
+        } else {
+          dispatch({ type: RESET })
         }
       }).then(data => {
         //get Google Data
@@ -66,6 +93,7 @@ export const UPDATE_RESTAURANT = "UPDATE_RESTAURANT"
 export const updateRestaurant = (restaurantId, saveRestaurant) => {
   return dispatch => {
     const newRestaurantValues = {
+      id: saveRestaurant.id,
       name: saveRestaurant.name,
       type: saveRestaurant.type,
       description: saveRestaurant.description,
