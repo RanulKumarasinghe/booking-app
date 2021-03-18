@@ -9,7 +9,7 @@ import {
   View,
   StatusBar,
 } from "react-native";
-import { Divider, Icon, Layout, Button } from "@ui-kitten/components";
+import { Divider, Icon, Layout, Button, Input } from "@ui-kitten/components";
 import firebase from "src/utils/firebase";
 
 const ManagerRewardScreen = (props) => {
@@ -82,32 +82,24 @@ const ManagerRewardScreen = (props) => {
         <Text style={styles.font}>Welcome {user}</Text>
         <View style={styles.lineThrough} />
         <Text style={styles.font}>
-          This many points have been earned: {"\n"}
-          <View style={styles.pointsEr}>
-            <Text>{points}</Text>
-          </View>
-        </Text>
-        <Text style={styles.font}>
-          code for user is: {"\n"}
-          {code}
+          This many points have been earned: {points}
+          {"\n"}
+          <Text style={styles.font}>Code for user is: {code}</Text>
         </Text>
       </View>
-
-      <TextInput
-        style={styles.textInput}
-        value={money}
-        keyboardType="numeric"
-        placeholder="Price of meal here"
-        onChangeText={(money) => onTextChange(money)}
-        maxLength={4}
-        //maxLength={4} is based on the average cost of a meal being £15-25
-      />
-      <View style={styles.inputButton}>
-        <Button
-          title="Redeem Points"
-          appearance="filled"
-          onPress={generateCode}
+      <View>
+        <Input
+          style={styles.textInput}
+          value={money}
+          keyboardType="numeric"
+          placeholder="Price of meal here"
+          onChangeText={(money) => onTextChange(money)}
+          maxLength={4}
+          //maxLength={4} is based on the average cost of a meal being £15-25
         />
+        <View style={styles.inputButton}>
+          <Button onPress={generateCode}>Redeem Points</Button>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -120,9 +112,9 @@ const styles = StyleSheet.create({
   },
 
   userImage: {
-    width: "40%",
-    height: "60%",
-    alignSelf: "center",
+    // width: "10%",
+    // height: "10%",
+    // alignSelf: "center",
   },
 
   lineThrough: {
