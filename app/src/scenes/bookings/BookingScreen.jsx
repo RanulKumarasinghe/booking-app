@@ -27,6 +27,7 @@ const BookingScreen = (props) => {
   const [disableSearch, setDisableSearch] = React.useState(true);
   const [disableReserve, setDisableReserve] = React.useState(true);
   const [showModalSpinner, setShowModalSpinner] = React.useState(false);
+  const [showList, setShowList] = React.useState(false);
 
   const user = firebase.auth().currentUser.uid;
   let isOffline = auth.uid === undefined;
@@ -42,7 +43,6 @@ const BookingScreen = (props) => {
 
   React.useEffect(() => {
     dispatch(performSchedule());
-    setButtonGhost(false);
   }, [unavailable_tables])
 
   const SelectGuestsButton = () => {
@@ -54,7 +54,7 @@ const BookingScreen = (props) => {
       <Button style={styles.guestButton} onPress={() => {
         setVisibleGuestModal(true);
       }}>
-        {text}
+        <Text category='s1' style={styles.text}>{text}</Text>
       </Button>
     );
   }
@@ -145,7 +145,7 @@ const BookingScreen = (props) => {
             onBackdropPress={() => setShowConfirmationModal(false)}>
             <Card disabled={true} style={styles.modal}>
               <View style={{ minWidth: 300, minHeight: 150, justifyContent: 'center', alignItems: 'center' }}>
-                <Text category='p1' style={{marginBottom:15}}>Just a sec...</Text>
+                <Text category='p1' style={{ marginBottom: 15 }}>Just a sec...</Text>
                 <Spinner />
               </View>
             </Card>
@@ -168,13 +168,13 @@ const BookingScreen = (props) => {
             onBackdropPress={() => setShowConfirmationModal(false)}>
             <Card disabled={true} style={styles.modal}>
               <View style={{ alignItems: 'center' }}>
-              <Text category='h6' style={{ marginBottom: 5 }}>{`Please confirm the details`}</Text>
-              <Text category='p1' style={{marginBottom: 5}}>{restaurant.name}</Text>
+                <Text category='h6' style={{ marginBottom: 5 }}>{`Please confirm the details`}</Text>
+                <Text category='p1' style={{ marginBottom: 5 }}>{restaurant.name}</Text>
                 <Text category='p1' style={{ marginBottom: 5 }}>{`Booking table #${all_scheduled_tables[selectedIndex].number}`}</Text>
                 <Text category='p1' style={{ marginBottom: 5 }}>{`On ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} at ${addTimePadding(time)}`}</Text>
                 <View category='p1' style={styles.confirmModal}>
                   <Button style={styles.modalBtn} onPress={() => {
-                   // dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
+                    dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
                     setShowModalSpinner(true);
                     setShowConfirmationModal(false);
                   }
@@ -206,12 +206,19 @@ const BookingScreen = (props) => {
     } else {
       return (
         <Button style={styles.button} disabled={disableSearch} onPress={() => {
+          
           setSelectedIndex(undefined);
           setButtonGhost(true);
+          setShowList(false);
 
           if (all_tables_of_size.length > 0) {
             dispatch(clearTables());
           }
+
+          setTimeout(() => {
+            setButtonGhost(false);
+            setShowList(true);
+          }, 2000);
 
           const newDate = date;
           newDate.setHours(time.getHours());
@@ -220,10 +227,6 @@ const BookingScreen = (props) => {
 
           dispatch(fetchTablesBySize(guests, restId));
           dispatch(checkTableAvailability(guests, restId, date));
-
-          setTimeout(() => {
-            setButtonGhost(false);
-          }, 2000);
 
         }}>Search</Button>
       );
@@ -367,12 +370,13 @@ const BookingScreen = (props) => {
         <Divider />
         <View style={{ flex: 1 }}>
           <View style={{ padding: '2%', alignItems: "center" }}>
-            <Text style={{ fontWeight: 'bold' }}>{restaurant.name}</Text>
+            <Text category='h5' style={{ fontWeight: 'bold' }}>{restaurant.name}</Text>
+            <Divider />
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <View style={{ flexDirection: 'row' }}>
-              <Button size="small" style={styles.timeButton} onPress={showDatepicker}>{date !== undefined ? date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() : () => { return <View style={{ flexDirection: 'row' }}><DateIcon /><Text style={styles.text}>Pick a date</Text></View> }}</Button>
-              <Button size="small" style={styles.timeButton} onPress={showTimepicker}>{time !== undefined ? addTimePadding() : () => { return <View style={{ flexDirection: 'row' }}><TimeIcon /><Text style={styles.text}>Pick a time</Text></View> }}</Button>
+              <Button size="small" style={styles.timeButton} onPress={showDatepicker}>{date !== undefined ? date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() : () => { return <View style={{ flexDirection: 'row' }}><DateIcon /><Text category='s1' style={styles.text}>Pick a date</Text></View> }}</Button>
+              <Button size="small" style={styles.timeButton} onPress={showTimepicker}>{time !== undefined ? addTimePadding() : () => { return <View style={{ flexDirection: 'row' }}><TimeIcon /><Text category='s1' style={styles.text}>Pick a time</Text></View> }}</Button>
               {show && (
                 <DateTimePicker
                   testID="dateTimePicker"
@@ -389,14 +393,16 @@ const BookingScreen = (props) => {
               <GuestModal />
               <SelectGuestsButton />
             </View>
-            <View style={styles.times}>
-              <List
-                data={all_scheduled_tables}
-                ItemSeparatorComponent={Divider}
-                renderItem={renderItem}
-                extraData={selectedIndex}
-              />
-            </View>
+            {showList === false ? <></> :
+              <View style={styles.times}>
+                <List
+                  data={all_scheduled_tables}
+                  ItemSeparatorComponent={Divider}
+                  renderItem={renderItem}
+                  extraData={selectedIndex}
+                />
+              </View>
+            }
           </View>
 
           {/*LIST THIS CONTAINER FOR THE LIST*/}
@@ -445,9 +451,10 @@ const styles = StyleSheet.create({
     minHeight: 200,
   },
   guestButton: {
-    minWidth: 250,
+    minWidth: 340,
     maxHeight: 20,
-    marginTop: 4,
+    margin: 10,
+    borderRadius: 100,
   },
   modalBtn: {
     minWidth: '40%',
@@ -475,12 +482,13 @@ const styles = StyleSheet.create({
   },
   listRow: {
     flexDirection: 'row',
-    marginTop: 15
+    marginTop: 15,
   },
   button: {
-    width: 100,
+    width: 165,
     height: 50,
-    margin: 2.5
+    margin: 4,
+    borderRadius:100,
   },
   dateTime: {
     borderWidth: 1,
@@ -510,7 +518,8 @@ const styles = StyleSheet.create({
   },
   timeButton: {
     margin: 8,
-    minWidth: 100,
+    minWidth: 160,
+    borderRadius: 100,
   },
   times: {
     margin: '2.7%',
