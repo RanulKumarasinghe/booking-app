@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Text, Button, Layout } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '@/store/actions/auth'
 import LoginRequired from '@/components/LoginRequired'
+import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 
 const OrderScreen = (props) => {
   const restaurant = useSelector(state => state.staffRestaurant.restaurant);
-  const restaurantOrders = useSelector(state => state.staffRestaurant.restaurantOrders);
+  const restaurantOrders = useSelector(state => state.staffRestaurant);
 
   const LoadingScreen = () => {
     if (showLoadingSpinner) {
@@ -23,7 +23,13 @@ const OrderScreen = (props) => {
   
   const List = () => {
       return (
-        <></>
+      //   <FlatList
+      //   data={mappedData}
+      //   renderItem={BookingsListEntry}
+      //   keyExtractor={(item) => item.id}
+      //   listKey={(item) => index.toString()}
+      // />    
+      <></>  
       )
   }
 
@@ -34,6 +40,7 @@ const OrderScreen = (props) => {
   } else {
     return (
       <Layout style={styles.container}>
+        <Button onPress={() => console.log(restaurantOrders)} />
         <List />
       </Layout>
     );

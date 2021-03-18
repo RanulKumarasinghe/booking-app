@@ -55,7 +55,7 @@ const CheckOutScreen = (props) => {
     
     // const userId = 1
     getItems(data.cart, data.restaurantId).then(cartItems => {
-      db.collection('orders').add({
+      db.collection(`restaurants/${data.restaurantId}/orders`).add({
         restaurantId: data.restaurantId,
         userId: userId,
         createdAt: new Date(),
