@@ -11,13 +11,13 @@ import {filterRestaurant, fetchAllRestaurant} from '@/store/actions/restaurants'
 const RestaurantListScreen = props => {
 
   const dispatch = useDispatch()
-  // const getRestaurants = () => {
-  //   dispatch(fetchAllRestaurant())
-  //  }
+  const getRestaurants = () => {
+    dispatch(fetchAllRestaurant())
+   }
 
-  //  useEffect(() => {
-  //   getRestaurants()
-  //  }, [])
+   useEffect(() => {
+    getRestaurants()
+   }, [])
 
    const restaurants = useSelector(state => state.restaurants.filteredRestaurant);
 
