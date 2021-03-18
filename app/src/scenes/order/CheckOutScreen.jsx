@@ -57,6 +57,8 @@ const CheckOutScreen = (props) => {
     getItems(data.cart, data.restaurantId).then(cartItems => {
       db.collection(`restaurants/${data.restaurantId}/orders`).add({
         restaurantId: data.restaurantId,
+        status: 'ok',
+        type: 'ASAP',
         userId: userId,
         createdAt: new Date(),
         cart: cartItems

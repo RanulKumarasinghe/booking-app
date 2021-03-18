@@ -14,7 +14,7 @@ const restaurantReducer = (state = initialState, action) => {
       return {restaurant: action.restaurant, restaurantOrders: action.restaurantOrders}
     case UPDATE_RESTAURANT:
       console.log(action)
-      return {restaurant: {...action.restaurant, ...action.newRestaurantValues}}
+      return {restaurant: {...state.restaurant, ...action.newRestaurantValues}}
     case RESET:
       return initialState
     default:

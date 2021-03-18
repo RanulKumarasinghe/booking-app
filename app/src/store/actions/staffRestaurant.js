@@ -12,7 +12,7 @@ export const fetchUserRestaurant = (userId) => {
         const restaurants = querySnapshot.docs
         if (restaurants.length > 0) {
           return { id: restaurants[0].id, ...restaurants[0].data() }
-        }
+        } 
       }).then(data => {
         //get Google Data
         return getGoogleData(data.google_id).then(googleData => {
@@ -28,7 +28,7 @@ export const fetchUserRestaurant = (userId) => {
           type: SET_RESTAURANT, ...data})
       })
       .catch(e => {
-        console.log('Something bad happened fetching staff restaurant')
+        console.log('Restaurant not Found - User is not a manager')
       })
   }
 };

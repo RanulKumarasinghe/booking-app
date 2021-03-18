@@ -4,32 +4,23 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '@/store/actions/auth'
 import LoginRequired from '@/components/LoginRequired'
 import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
+import BookingOrderEntry from '@/components/BookingOrderEntry'
 
 const OrderScreen = (props) => {
   const restaurant = useSelector(state => state.staffRestaurant.restaurant);
-  const restaurantOrders = useSelector(state => state.staffRestaurant);
+  const restaurantOrders = useSelector(state => state.staffRestaurant.restaurantOrders);
 
-  const LoadingScreen = () => {
-    if (showLoadingSpinner) {
-      return (
-        <View style={styles.datePicker}>
-          <Spinner />
-        </View>
-      );
-    } else {
-      return (<></>)
-    }
-  }
-  
+  const mappedData = restaurantOrders.map((order) => {
+    return ({ order })
+  })
+    
   const List = () => {
       return (
-      //   <FlatList
-      //   data={mappedData}
-      //   renderItem={BookingsListEntry}
-      //   keyExtractor={(item) => item.id}
-      //   listKey={(item) => index.toString()}
-      // />    
-      <></>  
+        <FlatList
+        data={mappedData}
+        renderItem={BookingOrderEntry}
+        keyExtractor={(item) => item.order.docId}
+      />  
       )
   }
 
