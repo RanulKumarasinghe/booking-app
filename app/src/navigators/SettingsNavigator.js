@@ -10,7 +10,9 @@ import AddMenuItem from '@/scenes/manager/AddMenuItemScreen'
 import ManagerRewards from '@/scenes/rewards/ManagerRewardScreen'
 import Rewards from '@/scenes/rewards/RewardScreen'
 import RestaurantEditMenuScreen from '@/scenes/manager/EditMenuItemScreen';
+import ResetPasswordScreen from '@/scenes/auth/ResetPasswordScreen';
 import { createStackNavigator } from '@react-navigation/stack';
+
 
 const ProfileStackNavigator = createStackNavigator();
 
@@ -73,6 +75,11 @@ const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen
         name='Rewards'
         component={Rewards}
+      // options={authScreenOptions}
+      />
+      <ProfileStackNavigator.Screen
+        name='Reset Password'
+        component={ResetPasswordScreen}
       // options={authScreenOptions}
       />
 

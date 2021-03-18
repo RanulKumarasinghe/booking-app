@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -17,13 +17,13 @@ import { Avatar } from "react-native-elements";
 const ProfileScreen = (props) => {
   const dispatch = useDispatch();
 
-  const restaurant = useSelector(state => state.staffRestaurant.restaurant);
+  const restaurant = useSelector((state) => state.staffRestaurant.restaurant);
   const auth = useSelector((state) => state.auth);
 
   const [list, setList] = useState([]);
 
   const handleResetPassword = () => {
-    //props.navigation.navigate("Reset Password");
+    props.navigation.navigate("Reset Password");
   };
 
   const handleLogout = () => {
@@ -32,47 +32,52 @@ const ProfileScreen = (props) => {
 
   const navAddTableScreen = () => {
     props.navigation.navigate("Add Table");
-  }
-  
+  };
+
   const isManager = !!restaurant;
-  
+
   if (isManager) {
+    const onEditRestaurant = () =>
+      props.navigation.navigate("Edit Restaurant", {
+        restaurantId: restaurant.id,
+      });
 
-    const onEditRestaurant = () => props.navigation.navigate('Edit Restaurant', {
-      restaurantId: restaurant.id
-    });
-
-    const onMenuList = () => props.navigation.navigate('Edit Menu', {
-      restaurantId: restaurant.id
-    });
+    const onMenuList = () =>
+      props.navigation.navigate("Edit Menu", {
+        restaurantId: restaurant.id,
+      });
 
     const managerList = [
-      { icon: "award", name: "Create Rewards", onPress: () => props.navigation.navigate("Create Rewards") },
-      { icon: "cog", name: "Edit Restaurant", onPress: onEditRestaurant},
-      { icon: "cog", name: "Edit Menu", onPress: onMenuList},
+      {
+        icon: "award",
+        name: "Create Rewards",
+        onPress: () => props.navigation.navigate("Create Rewards"),
+      },
+      { icon: "cog", name: "Edit Restaurant", onPress: onEditRestaurant },
+      { icon: "cog", name: "Edit Menu", onPress: onMenuList },
       { icon: "cog", name: "Change Password", onPress: handleResetPassword },
       { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
       { icon: "cog", name: "Manage tables", onPress: navAddTableScreen },
       { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
     ];
     useEffect(() => {
-      setList(managerList)
-    }, [])
-
+      setList(managerList);
+    }, []);
   } else {
     const userList = [
-      { icon: "award", name: "Rewards", onPress: () => props.navigation.navigate("Rewards") },
+      {
+        icon: "award",
+        name: "Rewards",
+        onPress: () => props.navigation.navigate("Rewards"),
+      },
       { icon: "cog", name: "Change Password", onPress: handleResetPassword },
       { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
       { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
-      
     ];
     useEffect(() => {
-      setList(userList)
-    }, [])
+      setList(userList);
+    }, []);
   }
-
-
 
   const test = () => {
     db.collection("restaurants")
