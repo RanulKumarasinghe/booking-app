@@ -14,7 +14,6 @@ const BookingsListEntry = ({ item }) => {
     isBooking = false
   }
 
-
   const booking = item.element;
   const order = item.order;
 

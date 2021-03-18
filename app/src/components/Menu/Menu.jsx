@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { View, Image, StyleSheet, TouchableHighlight } from 'react-native';
-import { Text, Divider } from '@ui-kitten/components';
+import { Text, Divider, Icon } from '@ui-kitten/components';
 import { MenuData } from '../../other/dummy-data';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import  MenuItem from './MenuItem'
@@ -25,7 +25,6 @@ const Menu = (props) => {
 
 
   const [showMenu, setShowMenu] = useState(false);
-
 
   const restaurantId = props.restaurantId;
 
@@ -66,6 +65,17 @@ const Menu = (props) => {
 
       <Text category='h2' style={{ textAlign: 'center' }}>Menu</Text>
 
+      {props.order && (
+        <> 
+          <View style={{ position: 'absolute', alignSelf: 'flex-end' }}>
+            <Icon style={styles.icon} fill='black' name='shopping-cart-outline' />
+          </View>
+          <Text category='h2' style={{ position: 'absolute', alignSelf: 'flex-end', paddingRight: 37 }}>
+            {props.cartNumberOfItems}
+          </Text>
+        </>
+      ) || null}
+
       <Divider />
 
       <FlatList
@@ -92,6 +102,10 @@ const Menu = (props) => {
 }
 
 const styles = StyleSheet.create({
+  icon: {
+    height: 40,
+    width: 40,
+  },
   category: {
     backgroundColor: '#ff4c89',
   },

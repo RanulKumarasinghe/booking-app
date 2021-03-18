@@ -2,20 +2,21 @@ import React, {useState, useEffect} from 'react';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Text, Button, Layout } from '@ui-kitten/components';
 import Firebase from '@/utils/firebase'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Menu from '@/components/Menu/Menu'
 const MenuScreen = (props) => {
+  const order = useSelector(state => state.order);
 
-  const dispatch = useDispatch()
-
-
-
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Layout style={{ flex: 1}}>
-      <Menu navigation={props.navigation} order={true}/>
-
+      <Menu navigation={props.navigation} order={true} cartNumberOfItems={order.cart.length} />
         <Button onPress={() => {props.navigation.navigate('Checkout')}}>
+          CheckOut
+        </Button>
+
+        <Button onPress={() => {console.log(order)}}>
           CheckOut
         </Button>
       </Layout>
