@@ -118,7 +118,6 @@ const RewardScreen = (props) => {
         <View>
           <Text style={styles.font}>Your Points:</Text>
           <Text style={styles.font}>{pointsFromUser}</Text>
-          {/* <Text style={styles.font}>Last input code:{code}</Text> */}
         </View>
       </View>
 
