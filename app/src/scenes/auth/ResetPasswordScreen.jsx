@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import { SafeAreaView, View, Divider, Icon, Layout, Text,} from 'react-native';
-import { StyleSheet, TextInput, Button } from 'react-native'
+import React, { useState } from 'react';
+import { SafeAreaView, View, StyleSheet, TextInput } from 'react-native'
+import { Input, Text, Button, Layout, Divider } from '@ui-kitten/components';
 // import {login } from '@/store/actions/auth'
 import { useDispatch } from 'react-redux';
 
@@ -10,26 +10,25 @@ const ResetPasswordScreen = (props) => {
   const handleResetPassword = () => {
 
   }
-  
+
   return (
-    <View style={styles.container}>
+    <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
 
-      {/* <Image source={require('_assets/icon.png')} /> */}
-
-      <Text>Reset your password</Text>
-
-      <TextInput
-        style={styles.textInput}
-        autoCapitalize="none"
-        placeholder="Email"
-        onChangeText={email => setEmail(email)}
-        value={email}
-      />
-
-      <Text>By signing up, you agree to our terms of service and privacy policy.</Text>
-
-      <Button title="Send Email" onPress={handleResetPassword} />
-    </View>
+        <View style={styles.container}>
+          {/* <Image source={require('_assets/icon.png')} /> */}
+          <View style={{ flex: 1 }}></View>
+          <View style={{ flex: 2 }}>
+            <Input
+              style={styles.textInput}
+              value={email}
+              onChangeText={email => setEmail(email)}
+              label={<Text category='s1' appearance="hint" >Email</Text>}
+            />
+            <Text style={{ textAlign: 'center' }}>By signing up, you agree to our terms of service and privacy policy.</Text>
+            <Button style={styles.button} onPress={handleResetPassword}> Send Email </Button>
+          </View>
+        </View>
+    </Layout>
   );
 };
 
@@ -38,15 +37,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    textAlign: 'center',
+    margin: 20,
+    padding: 10,
   },
   textInput: {
-    height: 40,
-    width: '90%',
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginTop: 8
-  }
+  },
+  button: {
+    minWidth: "90%",
+    marginTop: 15,
+    margin: 10,
+    borderRadius: 100
+  },
 })
 
 export default ResetPasswordScreen;

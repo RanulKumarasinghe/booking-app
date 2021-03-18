@@ -3,14 +3,13 @@ import { useSelector } from "react-redux";
 import {
   SafeAreaView,
   StyleSheet,
-  Button,
   Text,
   TextInput,
   Image,
   View,
   StatusBar,
 } from "react-native";
-import { Divider, Icon, Layout } from "@ui-kitten/components";
+import { Divider, Icon, Layout, Button, Input } from "@ui-kitten/components";
 import firebase from "src/utils/firebase";
 
 const ManagerRewardScreen = (props) => {
@@ -73,44 +72,33 @@ const ManagerRewardScreen = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        {/* <Image
+        <Image
           style={styles.userImage}
           source={{
             uri:
-              "https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg",
+              "https://images.unsplash.com/photo-1510168857767-25918342e7aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1491&q=80",
           }}
-        /> */}
-        <View>
-          <Text style={styles.font}>Hello {user}</Text>
-        </View>
+        />
+        <Text style={styles.font}>Welcome {user}</Text>
         <View style={styles.lineThrough} />
-        <View>
-          <Text style={styles.font}>
-            Enter price of sale in the box bellow to generate code for customer
-          </Text>
-          <Text style={styles.font}> {points} has/have been added:</Text>
-          <Text style={styles.font}>code for user is: {code}</Text>
-        </View>
+        <Text style={styles.font}>
+          This many points have been earned: {points}
+          {"\n"}
+          <Text style={styles.font}>Code for user is: {code}</Text>
+        </Text>
       </View>
-
       <View>
-        <TextInput
-          style={{
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 1,
-            width: "80%",
-            alignSelf: "center",
-            alignContent: "center",
-          }}
+        <Input
+          style={styles.textInput}
           value={money}
           keyboardType="numeric"
           placeholder="Price of meal here"
           onChangeText={(money) => onTextChange(money)}
-          maxLength={6}
+          maxLength={4}
+          //maxLength={4} is based on the average cost of a meal being £15-25
         />
         <View style={styles.inputButton}>
-          <Button title="Redeem Points" onPress={generateCode} />
+          <Button onPress={generateCode}>Create Points Code</Button>
         </View>
       </View>
     </SafeAreaView>
@@ -120,14 +108,13 @@ const ManagerRewardScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 10,
     alignItems: "center",
   },
 
   userImage: {
-    width: "40%",
-    height: "60%",
-    alignSelf: "center",
+    // width: "10%",
+    // height: "10%",
+    // alignSelf: "center",
   },
 
   lineThrough: {
@@ -137,11 +124,6 @@ const styles = StyleSheet.create({
 
   container: {
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
-
-  header: {
-    alignContent: "center",
-    backgroundColor: "green",
   },
 
   font: {
@@ -170,6 +152,20 @@ const styles = StyleSheet.create({
     width: "80%",
     alignSelf: "center",
     height: "50%",
+  },
+  userImage: {
+    width: "100%",
+    height: "70%",
+    alignSelf: "center",
+  },
+  pointsEr: {},
+  textInput: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    width: "80%",
+    alignSelf: "center",
+    alignContent: "center",
   },
 });
 

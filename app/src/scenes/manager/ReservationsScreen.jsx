@@ -1,41 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
 import { Toggle, Text, Divider, Spinner, Layout, Icon } from '@ui-kitten/components';
 import BookingsList from '@/components/BookingsList';
-import { fetchBookingsByRestaurant, clearUserBookings, fetchBookingsByRestaurantFiltered } from '@/store/actions/bookings'
+import { fetchBookingsByRestaurant, fetchBookingsByRestaurantFiltered, clearUserBookings } from '@/store/actions/bookings'
 import { useSelector, useDispatch } from 'react-redux';
-import DatePicker from 'react-native-datepicker';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native'
-import LoginRequired from '@/components/LoginRequired'
 
 
 export default ReservationsScreen = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
-  const resid = useSelector(state => state.staffRestaurant.restaurant.id);
   const dispatch = useDispatch();
 
-  const [showLoadingSpinner, setshowLoadingSpinner] = useState(true);
-  const [filterToggle, setfilterToggle] = useState(true);
+  const [showLoadingSpinner, setshowLoadingSpinner] = React.useState(true);
+  const [filterToggle, setfilterToggle] = React.useState(true);
+  const [refresh, setRefresh] = React.useState(false);
 
-  let isLogged = auth.uid === undefined;
-  const all_bookings_of_restaurant = useSelector(state => state.bookings.all_bookings_of_restaurant);
+  let isOffline = auth.uid === undefined;
+  const restaurant_bookings = useSelector(state => state.bookings.all_bookings_of_restaurant);
+  const resid = useSelector(state => state.staffRestaurant.restaurant.id);
+
 
   const sortDates = (array) => {
     array.sort((a, b) => {
-      return a.start.toDate() - b.start.toDate();
+      return a.date.toDate() - b.date.toDate();
     })
     return array;
   }
 
   const onCheckedChange = () => {
     setfilterToggle(!filterToggle);
+    doRefresh();
+  };
+
+  const doRefresh = () => {
+    setRefresh(!refresh);
   };
 
   const isFocused = useIsFocused()
 
   useEffect(() => {
-    if (!isLogged) {
+    if (!isOffline) {
       dispatch(clearUserBookings());
       setshowLoadingSpinner(true);
       if (filterToggle) {
@@ -49,7 +53,13 @@ export default ReservationsScreen = ({ navigation }) => {
     }
   }, [isFocused, filterToggle]);
 
-
+  const WarningIcon = () => (
+    <Icon
+      style={styles.icon}
+      fill='#8F9BB3'
+      name='alert-triangle-outline'
+    />
+  );
 
   const ToggleFilter = () => {
     return (
@@ -64,22 +74,10 @@ export default ReservationsScreen = ({ navigation }) => {
     );
   }
 
-  const HeaderText = () => {
-    return (
-      <View>
-        <View style={styles.toggleContainer}>
-        </View>
-        <Divider />
-      </View>
-    );
-  }
-
   const List = () => {
-    if (!showLoadingSpinner && !isLogged) {
-      const sortedBookings = sortDates(all_bookings_of_restaurant);
-      return (
-        <BookingsList payload={sortedBookings} />
-      )
+    if (!showLoadingSpinner && !isOffline) {
+      const sortedBookings = sortDates(restaurant_bookings);
+      return (<BookingsList payload={sortedBookings} callback={onCheckedChange} />);
     } else {
       return (<></>)
     }
@@ -98,16 +96,46 @@ export default ReservationsScreen = ({ navigation }) => {
   }
 
   const LoginError = () => {
-    if (isLogged) {
-      return (<LoginRequired />);
+    if (isOffline) {
+      return (
+        <TouchableOpacity style={styles.loginError} onPress={() => {
+          navigation.navigate(
+            "User", { screen: 'Login' },
+          );
+        }}>
+          <View style={{ flex: 10, alignItems: 'center', justifyContent: 'center' }}>
+            <WarningIcon />
+            <Text appearance='hint'>PLEASE LOG IN</Text>
+          </View>
+          <Text style={{ flex: 1 }} appearance='hint'>Tap to redirect</Text>
+        </TouchableOpacity>
+      );
     } else {
-      return (<></>)
+      return (<View></View>)
+    }
+  }
+
+  const EmptyError = () => {
+    if (!isOffline) {
+      return (
+        <TouchableOpacity style={styles.loginError} onPress={() => {
+          navigation.navigate("Restaurants");
+        }}>
+          <View style={{ flex: 10, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+            <WarningIcon />
+            <Text style={{ marginTop: 10 }} appearance='hint'>Oops we found no bookings!</Text>
+          </View>
+          <Text style={{ flex: 1 }} appearance='hint'>Tap this screen to start booking</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (<View></View>)
     }
   }
 
   //Screen render code
 
-  if (isLogged) {
+  if (isOffline) {
     return (
       <LoginError />
     )
@@ -115,11 +143,14 @@ export default ReservationsScreen = ({ navigation }) => {
     return (
       <LoadingScreen />
     )
-  } else {
+  } else if (restaurant_bookings.length < 1) {
+    <EmptyError />
+  }
+  else {
     return (
       <Layout style={styles.container}>
         <ToggleFilter />
-        {/* <List /> */}
+        <List />
       </Layout>
     );
   }
@@ -139,6 +170,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     borderRadius: 10,
+  },
+  loginError: {
+    width: "100%",
+    height: "100%",
+    marginTop: '1%',
+    marginBottom: '1%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   datePicker: {
     marginTop: '1%',
@@ -165,9 +205,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   icon: {
-    width: 24,
-    height: 24,
-    textAlign: 'center',
-    textAlignVertical: 'center',
+    width: 32,
+    height: 32,
   },
 });

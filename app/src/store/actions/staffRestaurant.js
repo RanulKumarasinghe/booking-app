@@ -11,35 +11,8 @@ export const fetchUserRestaurant = (userId) => {
       .then((querySnapshot) => {
         const restaurants = querySnapshot.docs
         if (restaurants.length > 0) {
-          restaurants.forEach((doc, index) => {
-            if (index == 0) {
-              const restaurantData = doc.data()
-
-              params = {
-                place_id: restaurantData.google_id,
-                fields: "name,rating,formatted_phone_number,opening_hours,vicinity",
-                key: 'AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc',
-              }
-
-              return axios.get('https://maps.googleapis.com/maps/api/place/details/json', { params }).then(response => {
-                dispatch({
-                  type: SET_RESTAURANT, restaurant: {
-                    ...restaurantData,
-                    id: doc.id,
-                    googleData: response.data.result
-                  }
-                })
-              }).catch(e => {
-                dispatch({
-                  type: SET_RESTAURANT, restaurant: {
-                    ...restaurantData, id: doc.id
-                }})
-              })
-            }
-          });
-        } else {
-          dispatch({ type: RESET })
-        }
+          return { id: restaurants[0].id, ...restaurants[0].data() }
+        } 
       }).then(data => {
         //get Google Data
         return getGoogleData(data.google_id).then(googleData => {
@@ -55,7 +28,7 @@ export const fetchUserRestaurant = (userId) => {
           type: SET_RESTAURANT, ...data})
       })
       .catch(e => {
-        console.log('Something bad happened fetching staff restaurant')
+        console.log('Restaurant not Found - User is not a manager')
       })
   }
 };
