@@ -83,7 +83,9 @@ const ManagerRewardScreen = (props) => {
         <View style={styles.lineThrough} />
         <Text style={styles.font}>
           This many points have been earned: {"\n"}
-          <Text style={styles.pointsEr}>{points}</Text>
+          <View style={styles.pointsEr}>
+            <Text>{points}</Text>
+          </View>
         </Text>
         <Text style={styles.font}>
           code for user is: {"\n"}
@@ -98,7 +100,7 @@ const ManagerRewardScreen = (props) => {
         placeholder="Price of meal here"
         onChangeText={(money) => onTextChange(money)}
         maxLength={4}
-        //Based on the average cost of a meal being £15-25
+        //maxLength={4} is based on the average cost of a meal being £15-25
       />
       <View style={styles.inputButton}>
         <Button
@@ -164,10 +166,7 @@ const styles = StyleSheet.create({
     height: "70%",
     alignSelf: "center",
   },
-  pointsEr: {
-    borderColor: "black",
-    alignItems: "center",
-  },
+  pointsEr: {},
   textInput: {
     height: 40,
     borderColor: "gray",
