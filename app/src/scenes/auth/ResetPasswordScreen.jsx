@@ -12,8 +12,8 @@ const ResetPasswordScreen = (props) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ededed' }}>
+    <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+
         <View style={styles.container}>
           {/* <Image source={require('_assets/icon.png')} /> */}
           <View style={{ flex: 1 }}></View>
@@ -24,13 +24,11 @@ const ResetPasswordScreen = (props) => {
               onChangeText={email => setEmail(email)}
               label={<Text category='s1' appearance="hint" >Email</Text>}
             />
-            <Text style={{textAlign: 'center'}}>By signing up, you agree to our terms of service and privacy policy.</Text>
+            <Text style={{ textAlign: 'center' }}>By signing up, you agree to our terms of service and privacy policy.</Text>
             <Button style={styles.button} onPress={handleResetPassword}> Send Email </Button>
           </View>
-
         </View>
-      </Layout>
-    </SafeAreaView>
+    </Layout>
   );
 };
 
@@ -41,15 +39,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    backgroundColor: '#ededed',
-    margin:20,
-    padding:10,
+    margin: 20,
+    padding: 10,
   },
   textInput: {
   },
   button: {
     minWidth: "90%",
-    marginTop:15,
+    marginTop: 15,
     margin: 10,
     borderRadius: 100
   },

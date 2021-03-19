@@ -84,4 +84,12 @@ export const updateRestaurant = (restaurantId, saveRestaurant) => {
 }
 
 
+export const ACCEPT_ORDER = "ACCEPT_ORDER"
 
+export const acceptOrder = (restaurantId, orderId) => {
+  return db.doc(`restaurants/${restaurantId}/orders/${orderId}`).update({status: 'accepted'}).then(() => {
+    dispatch({ type: ACCEPT_ORDER, orderId: orderId })
+  }).catch(e => {
+    console.log('Error updating Order')
+  })
+}
