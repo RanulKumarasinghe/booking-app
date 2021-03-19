@@ -1,19 +1,32 @@
 import React, { useState } from "react";
-import { SafeAreaView, View, StyleSheet } from "react-native";
-import { Input, Text, Button, Layout, Divider } from "@ui-kitten/components";
+import { View, StyleSheet } from "react-native";
+import {
+  Input,
+  Text,
+  Button,
+  Layout,
+  Modal,
+  Card,
+} from "@ui-kitten/components";
 import firebase from "src/utils/firebase";
 
 const ResetPasswordScreen = (props) => {
   const [newPassword, setNewPassword] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [passwordChanged, setPasswordChanged] = useState(false);
 
-  const handleResetPassword = () => {
+  const handleChangePassword = () => {
     var user = firebase.auth().currentUser;
     user
       .updatePassword(newPassword)
       .then(() => {
+        setPasswordChanged(true);
+        setVisible(true);
         console.log("Password was changed");
       })
       .catch((error) => {
+        setPasswordChanged(false);
+        setVisible(true);
         console.log("Password was not changed");
       });
   };
@@ -21,8 +34,7 @@ const ResetPasswordScreen = (props) => {
   return (
     <Layout style={styles.container}>
       <View style={styles.padding}>
-
-        <Text>Reset your password</Text>
+        <Text>Change your password</Text>
 
         <Input
           style={styles.textInput}
@@ -32,33 +44,46 @@ const ResetPasswordScreen = (props) => {
           value={newPassword}
         />
 
-        <Text>Enter an new password and press "Reset Password" to update</Text>
+        <Text>Enter an new password and press "Change Password" to update</Text>
 
-        <Button onPress={handleResetPassword}>Reset Password</Button>
+        <Button onPress={() => handleChangePassword()}>Change Password</Button>
+        <Modal
+          visible={visible}
+          backdropStyle={styles.backdrop}
+          onBackdropPress={() => setVisible(false)}
+        >
+          <Card
+            disabled={true}
+            //style={{minWidth:400}}
+          >
+            {passwordChanged ? (
+              <Text>Password has been changed</Text>
+            ) : (
+              <Text>Password has not been changed</Text>
+            )}
+            <Button onPress={() => setVisible(false)}>DISMISS</Button>
+          </Card>
+        </Modal>
       </View>
-
     </Layout>
   );
 };
 
 const styles = StyleSheet.create({
   padding: {
-    padding: 30
+    padding: 30,
   },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-    // margin: 20,
-    // ma: 10,
   },
-  textInput: {},
   button: {
     minWidth: "90%",
-    // marginTop: 15,
-    // margin: 10,
-    // borderRadius: 100,
+  },
+  backdrop: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });
 
