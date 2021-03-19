@@ -1,23 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
-import {
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  Image,
-  View,
-  StatusBar,
-} from "react-native";
-import {
-  Divider,
-  Icon,
-  Layout,
-  Button,
-  Text,
-  Avatar,
-  Input,
-} from "@ui-kitten/components";
+import { SafeAreaView, StyleSheet, Image, View, StatusBar } from "react-native";
+import { Icon, Button, Text, Input } from "@ui-kitten/components";
 
 import firebase, { db, FieldValue } from "src/utils/firebase";
 
