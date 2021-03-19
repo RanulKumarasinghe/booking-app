@@ -11,7 +11,7 @@ export const SET_ORDER_TYPE = 'SET_ORDER_TYPE';
 
 export const setOrderType = (type) =>{
   return async dispatch => {
-    dispatch({ type: SET_ORDER_TYPE, type: type})
+    dispatch({ type: SET_ORDER_TYPE, orderType: type})
   } 
 };
 

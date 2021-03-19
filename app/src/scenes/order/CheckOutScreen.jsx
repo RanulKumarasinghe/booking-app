@@ -57,7 +57,8 @@ const CheckOutScreen = (props) => {
     getItems(data.cart, data.restaurantId).then(cartItems => {
       db.collection(`restaurants/${data.restaurantId}/orders`).add({
         restaurantId: data.restaurantId,
-        status: 'ok',
+        restaurantName: data.restaurantId,
+        status: 'pending',
         type: 'ASAP',
         userId: userId,
         createdAt: new Date(),
@@ -71,20 +72,8 @@ const CheckOutScreen = (props) => {
     })
   }
   const test2 = async () => {
+    
     console.log(order)
-    // db.collection("orders").doc("T4Kp7Qj5hqGmmA8niWXC")
-    // .get()
-    // .then(function(doc) {
-    //   if (doc.exists) {
-    //     console.log("Found");
-    //     await console.log(doc.data().card[0].item.get());
-    //   } else {
-    //     // doc.data() will be undefined in this case
-    //     console.log("No such document!");
-    //   }
-    // }).catch(function(error) {
-    //   console.log("Error getting document:", error);
-    // });
   }
 
   const decorator = (cart) => {
@@ -96,28 +85,38 @@ const CheckOutScreen = (props) => {
     })
   }
 
+  const calculateTotal = () => {
+    let total = 0
+    order.cart.forEach(item => {
+      total = total + (item.item.price * item.quantity)
+    });
+    return total
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>CheckOut</Text>
-        <Text>Type: {order.type}</Text>
+      <Layout style={{ flex: 1 }}>
+        <View style={[styles.container, styles.headerContainerText]}>
+          <Text style={styles.headerText}>Cart Items</Text>
+          <Text style={styles.headerText}>Type: {order.type}</Text>
+        </View>
+        <Divider />
         {order.cart.map(cartItem => (  
-          <View key={cartItem.id}> 
-            <View>
+          <View style={styles.container} key={cartItem.id}> 
+            <View style={styles.headerContainerText}>
               <Text style={styles.itemName}>{cartItem.item.name}</Text>
+              <Text style={styles.itemName}>£{cartItem.item.price * cartItem.quantity}</Text>
             </View>
             <View >
-              <Text style={{width: 300 }} category='p2'>Id: {cartItem.id}</Text>
-              <Text style={{width: 300 }} category='p2'>Description: {cartItem.item.desc}</Text>
-              <Text style={{width: 300 }} category='p2'>Quantity: {cartItem.quantity}</Text>
-              <Text style={{width: 300 }} category='p2'>Price: {cartItem.item.price * cartItem.quantity}</Text>
+              <Text style={styles.description} category='p2'>{cartItem.item.description}</Text>
             </View>
             <Divider />
           </View>
         ))}
-        <Text>Total: </Text>
-        <Button onPress={checkout}>Order</Button>
-        <Button onPress={test2}>test2</Button>
+        <Text style={[styles.itemName, {alignSelf: 'flex-end', paddingRight: 20}]}>Total: £{calculateTotal()}</Text>
+        <View style={styles.buttonSpacing}>
+          <Button onPress={checkout}>Order</Button>
+        </View>
       </Layout>
     </SafeAreaView>
   );
@@ -126,13 +125,26 @@ const CheckOutScreen = (props) => {
 
 
 const styles = StyleSheet.create({
-  itemName: {
-    fontSize: 20
+  buttonSpacing: {
+    marginTop: 15,
+    width: '95%',
+    alignSelf: 'center'
+  },
+  description: {
+    flexWrap: 'wrap'
   },
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    padding: 20,
+  },
+  headerContainerText: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  headerText: {
+    fontSize: 20
+  },
+  itemName: {
+    fontSize: 20
   },
   textInput: {
     height: 40,
