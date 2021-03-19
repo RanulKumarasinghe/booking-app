@@ -10,7 +10,6 @@ import {
 import {Icon} from 'react-native-elements';
 
 const RestaurantMenuEntry = (props) => {
-  console.log(props)
   return (
     <View style={styles.listItem}>
       <TouchableOpacity onPress={props.onSelectItem}>
