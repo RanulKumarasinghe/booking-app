@@ -94,8 +94,8 @@ const ManagerRewardScreen = (props) => {
           keyboardType="numeric"
           placeholder="Price of meal here"
           onChangeText={(money) => onTextChange(money)}
-          maxLength={4}
-          //maxLength={4} is based on the average cost of a meal being £15-25
+          maxLength={5}
+          //maxLength={5} is based on the average cost of a meal being £15-25
         />
         <View style={styles.inputButton}>
           <Button onPress={generateCode}>Create Points Code</Button>
