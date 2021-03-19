@@ -52,15 +52,10 @@ const ResetPasswordScreen = (props) => {
           backdropStyle={styles.backdrop}
           onBackdropPress={() => setVisible(false)}
         >
-          <Card
-            disabled={true}
-            //style={{minWidth:400}}
+          <Card disabled={true}
+          //style={{minWidth:400}}
           >
-            {passwordChanged ? (
-              <Text>Password has been changed</Text>
-            ) : (
-              <Text>Password has not been changed</Text>
-            )}
+            {passwordChanged ? <Text>Password has been changed</Text> : <Text>Password has not been changed</Text>}
             <Button onPress={() => setVisible(false)}>DISMISS</Button>
           </Card>
         </Modal>
