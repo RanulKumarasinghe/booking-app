@@ -153,12 +153,6 @@ const RewardScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    padding: 10,
-    alignItems: "center",
-  },
-
   userImage: {
     width: "100%",
     height: "70%",
@@ -172,13 +166,6 @@ const styles = StyleSheet.create({
 
   container: {
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    // paddingTop:'12%'
-  },
-
-  header: {
-    alignContent: "center",
-    backgroundColor: "green",
-    // paddingTop:30,
   },
 
   font: {
@@ -190,14 +177,6 @@ const styles = StyleSheet.create({
     margin: 2,
     width: "80%",
     alignSelf: "center",
-  },
-
-  inputButton: {
-    margin: 2,
-    borderRadius: 50,
-    width: "80%",
-    alignSelf: "center",
-    height: "50%",
   },
 });
 
