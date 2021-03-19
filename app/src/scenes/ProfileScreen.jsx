@@ -23,7 +23,7 @@ const ProfileScreen = (props) => {
   const [list, setList] = useState([]);
 
   const handleResetPassword = () => {
-    props.navigation.navigate("Reset Password");
+    props.navigation.navigate("Change Password");
   };
 
   const handleLogout = () => {
