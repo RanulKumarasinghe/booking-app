@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { SafeAreaView, View, StyleSheet, TextInput } from "react-native";
-import { Input, Text, Button, Layout, Divider } from "@ui-kitten/components";
+import { View, StyleSheet } from "react-native";
+import { Input, Text, Button, Modal, Card } from "@ui-kitten/components";
 import firebase from "src/utils/firebase";
 
 const ResetPasswordScreen = (props) => {
   const [newPassword, setNewPassword] = useState("");
 
-  const handleResetPassword = () => {
+  const [visible, setVisible] = React.useState(false);
+
+  const handleChangePassword = () => {
     var user = firebase.auth().currentUser;
     user
       .updatePassword(newPassword)
       .then(() => {
+        setVisible(true);
         console.log("Password was changed");
       })
       .catch((error) => {
@@ -22,7 +25,7 @@ const ResetPasswordScreen = (props) => {
     <View style={styles.container}>
       <Text>Reset your password</Text>
 
-      <TextInput
+      <Input
         style={styles.textInput}
         autoCapitalize="none"
         placeholder="New Password"
@@ -30,9 +33,19 @@ const ResetPasswordScreen = (props) => {
         value={newPassword}
       />
 
-      <Text>Enter an new password and press "Reset Password" to update</Text>
+      <Text>Enter an new password and press "Change Password" to update</Text>
 
-      <Button title="Reset Password" onPress={handleResetPassword} />
+      <Button onPress={() => handleChangePassword}>Change Password</Button>
+      <Modal
+        visible={visible}
+        backdropStyle={styles.backdrop}
+        onBackdropPress={() => setVisible(false)}
+      >
+        <Card disabled={true}>
+          <Text>Welcome to UI Kitten 😻</Text>
+          <Button onPress={() => setVisible(false)}>DISMISS</Button>
+        </Card>
+      </Modal>
     </View>
   );
 };
@@ -45,13 +58,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
     margin: 20,
     padding: 10,
+    minHeight: 192,
   },
-  textInput: {},
   button: {
     minWidth: "90%",
     marginTop: 15,
     margin: 10,
     borderRadius: 100,
+  },
+  backdrop: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });
 
