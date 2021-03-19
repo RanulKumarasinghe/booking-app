@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Button } from '@ui-kitten/components';
+import { Text, Button, Divider } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { View } from 'react-native';
@@ -34,13 +34,13 @@ export default BookingSuccessScreen = (props) => {
         let hourStr = time.getHours()
         let minuteStr = time.getMinutes()
         if (time.getHours() < 10) {
-          hourStr = "0" + hourStr;
+            hourStr = "0" + hourStr;
         }
         if (time.getMinutes() < 10) {
-          minuteStr = "0" + minuteStr;
+            minuteStr = "0" + minuteStr;
         }
         return hourStr + ":" + minuteStr;
-      }
+    }
 
     const formatDate = (day) => {
         let dayString = day.toString();
@@ -64,16 +64,21 @@ export default BookingSuccessScreen = (props) => {
 
     return (
         <View style={styles.container}>
-            <Text category='h5'>Success!</Text>
-            <Text category='p1'>Your table has been booked</Text>
 
+            <Text style={{ margin: 20, fontWeight:'bold' }} category='h5'>Success!</Text>
+
+            <Text style={{ marginTop: 5 }} category='p1'>Your table has been booked</Text>
+            <Text style={{ marginTop: 5 }} category='p1'>{"For " + formatDate(date.getDate()) + " of " + (monthNames[date.getMonth()]) + " " + date.getFullYear() + ' at ' + addTimePadding(time)}</Text>
             <View>
-                <Text category='p1'>{"For " + formatDate(date.getDate()) + " of " + (monthNames[date.getMonth()]) + " " + date.getFullYear() + ' at ' + addTimePadding(time)}</Text>
-            </View>
+                <Text style={{maxWidth:"80%", marginTop: 20, textAlign:'center' }} category='p1' appearance='hint'>{"You can add an order to your booking, to receive food on arrival"}</Text>
 
+            </View>
+            <Divider />
             <View style={styles.buttonContainer}>
-                <Button style={styles.button} onPress={navBack}>Book Another Table</Button>
-                <Button style={styles.button} onPress={navToBookingList}>View My Bookings</Button>
+                <Button style={styles.button} onPress={() => { }}> Add an order to my booking</Button>
+                <Text style={{margin: 10, textAlign:'center' }} category='p1' appearance='hint'>{"Or choose one of the options below"}</Text>
+                <Button style={styles.button} onPress={navBack}>Book another table</Button>
+                <Button style={styles.button} onPress={navToBookingList}>View my bookings</Button>
             </View>
         </View>
     );
@@ -86,10 +91,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonContainer: {
-        flexDirection: 'row',
+        marginTop: 10,
     },
     button: {
-        maxWidth: '90%',
-        margin: 10
+        minWidth: "90%",
+        margin: 5,
+        borderRadius: 100,
     }
 });

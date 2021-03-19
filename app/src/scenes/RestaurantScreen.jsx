@@ -74,8 +74,9 @@ const Restaurant = (props) => {
                 source={{ uri: restaurant?.imageUrl }}
                 style={styles.bgImage}
               />
-              <Text style={styles.font1}>{restaurant.name}</Text>
-              <Text style={styles.font}>Restaurant Info:</Text>
+              <View style={styles.buttonSpacing}>
+              <Text style={styles.titleText}>{restaurant.name}</Text>
+              {restaurant.googleData?.rating && (
               <View style={styles.starrating}>
                 <StarRating
                   disabled={true}
@@ -84,7 +85,7 @@ const Restaurant = (props) => {
                   fullStarColor={'#c7c708'}
                   starSize={15}
                 />
-              </View>
+              </View> ) || null}
               <View style={styles.description}>
                 <Text>{restaurant.description}</Text>
                 <View style={styles.addressDetails}>
@@ -130,6 +131,7 @@ const Restaurant = (props) => {
                   restaurantId={restaurant.id} />
               </View>
             </View>
+            </View>
           </View>
           {/* <Divider />
           <Button onPress={onMenuList}>Menu List</Button> */}
@@ -156,9 +158,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10
   },
-  font1: {
+  titleText: {
     fontWeight: 'bold',
     fontSize: 24,
+    alignSelf: 'center',
     marginTop: 1
   },
   button: {
@@ -171,7 +174,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   bgImage: {
-    width: 400,
+    width: '100%',
     height: 180,
     paddingTop: 10
   },
@@ -179,7 +182,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   starrating: {
-    alignSelf: 'flex-start'
+    paddingTop: 10,
+    position: 'absolute',
+    alignSelf: 'flex-end'
   },
   menu: {
     paddingTop: 15,
