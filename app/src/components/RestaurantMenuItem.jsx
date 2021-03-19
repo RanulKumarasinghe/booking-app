@@ -1,7 +1,7 @@
 import React, { useState, setState, useEffect } from 'react';
 import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button} from 'react-native';
 import { Divider } from 'react-native-elements';
-import { Text, TopNavigation, Radio, RadioGroup } from '@ui-kitten/components';
+import { Text, TopNavigation, Input, Radio, RadioGroup } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import {fetchAllFoodTypes, filterFoodType} from '@/store/actions/foodtypes';
 
