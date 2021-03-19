@@ -50,7 +50,7 @@ const LoginScreen = (props) => {
            </Text>} */}
 
           <Input
-            // textStyle={{ ... }}  
+            // textStyle={{ ... }}
             style={styles.textInput}
             value={email}
             onChangeText={email => setEmail(email)}
