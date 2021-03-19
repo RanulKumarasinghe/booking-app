@@ -12,7 +12,7 @@ const orderReducer = (state = initialState, action) => {
           return {...initialState, orderRestaurantId: action.restaurantId, cart: []};
         case SET_ORDER_TYPE:
           console.log(action)
-          return {...state, type: action.type};
+          return {...state, type: action.orderType};
         case SET_ITEM:
           //Get cart without the item about to be added.
           let newCart = state.cart.filter(cartItem => cartItem.item.id != action.item.id)

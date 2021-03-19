@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Toggle, Text, Divider, Button, Spinner, Layout, Icon } from '@ui-kitten/components';
 import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 
-const BookingsListEntry = ({item}) => {
+const BookingsListEntry = ({ item }) => {
   // console.log(props)
   let isBooking
   if (item.element) {
@@ -11,21 +11,18 @@ const BookingsListEntry = ({item}) => {
     isBooking = false
   }
 
-
   const booking = item.element;
   const order = item.order;
 
   const callback = item.onCancel;
 
   const test = () => {
-    console.log(isBooking)
-    console.log(booking)
-    console.log(order)
+    console.log(isManager)
+    // console.log(booking)
+    // console.log(order)
   }
-  
-  const isCancelled = booking.status == 'cancelled'
 
-  const image = { uri: "https://www.fsrmagazine.com/sites/default/files/styles/story_image_720x430/public/feature-images/state-full-service-restaurant-industry-1554901734.jpg?itok=-EciUerQ" };
+  const isCancelled = (booking ? booking.status == 'cancelled' : false) || (order ? order.status == 'cancelled' : false)
 
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -42,16 +39,24 @@ const BookingsListEntry = ({item}) => {
     return time;
   }
 
+  const image = {};
+
+  // if (new Date(item.date).getHours() > 17) {
+  image.uri = "https://www.denverpost.com/wp-content/uploads/2016/04/20150209__20150211_C1_FE11FDROMANCEp2.jpg?w=620"
+  // } else {
+  //   image.uri = "https://images.unsplash.com/photo-1570894322743-aefb6905a4b5?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGluaW5nJTIwdGFibGVzfGVufDB8fDB8&ixlib=rb-1.2.1&w=1000&q=80"
+  // }
+
   const BookingHeader = () => {
     return (
       <>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.headerTitle}>{booking.restname}</Text>
-          <Text style={styles.headerSubTitle}>{constructDate(booking.date.seconds)}</Text>
+          <Text category='h3' style={styles.headerTitle}>{booking.restname}</Text>
+          <Text category='p1' style={styles.headerSubTitle}>{constructDate(booking.date.seconds)}</Text>
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.headerTitle} >Table number: {booking.tableNumber}</Text>
-          <Text style={isCancelled ? styles.headerTitleCanceled : styles.headerSubTitle}>
+          <Text category='h3' style={styles.headerTitle} >Table number: {booking.tableNumber}</Text>
+          <Text category='p1' style={styles.headerSubTitle}>
             Status: {capitalize(booking.status)}
           </Text>
         </View>
@@ -60,15 +65,15 @@ const BookingsListEntry = ({item}) => {
   }
 
   const BookingContent = () => {
-    if (true) {
+    if (booking) {
       return (
         <>
           <Divider />
           <Text style={styles.typeTitle}>{"Booking"}</Text>
           <Divider />
           <View style={{ flexDirection: 'row', margin: 5 }}>
-            <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {booking.guests}</Text>
-            <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(booking.date.seconds)}</Text>
+            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {booking.guests}</Text>
+            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(booking.date.seconds)}</Text>
           </View>
         </>
       )
@@ -80,12 +85,12 @@ const BookingsListEntry = ({item}) => {
       <>
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>{'Restaurant Name'}</Text>
-          <Text style={styles.headerSubTitle}>{booking.type}</Text>
+          <Text style={styles.headerSubTitle}>{order.type}</Text>
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={isCancelled ? styles.headerTitleCanceled : styles.headerTitle}>
+          <Text style={styles.headerTitle}>
             Status:
-            {/* {capitalize(booking.status)} */}
+            {order.status ? capitalize(order.status) : null}
           </Text>
         </View>
       </>
@@ -99,12 +104,17 @@ const BookingsListEntry = ({item}) => {
           <Divider />
           <Text style={styles.typeTitle}>{"Order"}</Text>
           <Divider />
-          <View style={{ flexDirection: 'row', margin: 5 }}>
-            <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>{booking.guests}</Text>
-            <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Price:
-            {/* {constructTime(booking.date.seconds)} */}
-            </Text>
-          </View>
+          <FlatList
+            data={order.cart}
+            // keyExtractor={(item) => item}
+            renderItem={({ item }) => (
+              <View style={{ flexDirection: 'row', alignContent: 'space-between', margin: 5 }}>
+                <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>{item.item.name}</Text>
+                <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>£{item.item.price}</Text>
+              </View>
+            )}
+          />
+
         </>
       )
     }
@@ -127,9 +137,11 @@ const BookingsListEntry = ({item}) => {
         <Button style={styles.button} size='medium' status='basic' onPress={() => { callback(booking.docId) }}>
           Cancel
         </Button>
-        <Button style={styles.button} size='medium' status='basic' onPress={test}>
-          Receipt
-        </Button>
+        {item.isManager && order && (
+          <Button style={styles.button} size='medium' status='basic' onPress={item.onAccept}>
+            Accept
+          </Button>
+        ) || null}
       </View>
     </View>
   );
@@ -167,7 +179,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderLeftWidth: 2,
     borderRightWidth: 2,
-    borderRadius: 5,
+    borderRadius: 2,
     marginTop: 5,
     marginBottom: 5
   },
@@ -179,21 +191,8 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
-    opacity: 0.75,
   },
-  headerTitleCanceled: {
-    color: "#e5383b",
-    fontSize: 18,
-    fontWeight: "bold",
-    flex: 1,
-    margin: 5,
-    textShadowColor: 'white',
-    textShadowRadius: 1,
-    textShadowOffset: {
-      width: 0.1,
-      height: 0.1
-    }
-  },
+
   headerTitle: {
     alignSelf: 'flex-start',
     color: "white",
@@ -201,25 +200,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     flex: 1,
     margin: 5,
-    textShadowColor: 'black',
-    textShadowRadius: 5,
-    textShadowOffset: {
-      width: 0.1,
-      height: 0.1,
-    }
   },
   headerSubTitle: {
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
     margin: 5,
-    textShadowColor: 'black',
-    textShadowRadius: 1,
-    textShadowOffset: {
-      width: 0.1,
-      height: 0.1,
-    }
   },
   listContentContainer: {
     alignSelf: "stretch",

@@ -52,7 +52,6 @@ const MenuItemScreen = (props) => {
         <View >
           <Text style={{width: 300 }} category='p2'>{menuItem.description}</Text>
           <Text style={{width: 300 }} category='p2'>{`£${menuItem.price}`}</Text>
-          <Input value={quantity} onChangeText={setQuantity}/>
         </View>
         {/* <Button onPress={editMenuItem}>
             Edit Item
@@ -61,12 +60,6 @@ const MenuItemScreen = (props) => {
           <View>
           <Button onPress={handleAddItemToCard}>
             Add Item to Cart
-          </Button>
-          <Button onPress={() => {props.navigation.navigate('MenuScreen')}}>
-            Cancel
-          </Button>
-          <Button onPress={test}>
-            Test
           </Button>
         </View> ) }
         <Divider />

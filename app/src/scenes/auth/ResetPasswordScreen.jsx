@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { SafeAreaView, View, Divider, Icon, Layout, Text } from "react-native";
-import { StyleSheet, TextInput, Button } from "react-native";
-// import {login } from '@/store/actions/auth'
-import { useDispatch } from "react-redux";
+import { SafeAreaView, View, StyleSheet, TextInput } from "react-native";
+import { Input, Text, Button, Layout, Divider } from "@ui-kitten/components";
 import firebase from "src/utils/firebase";
 
 const ResetPasswordScreen = (props) => {
@@ -22,8 +20,6 @@ const ResetPasswordScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      {/* <Image source={require('_assets/icon.png')} /> */}
-
       <Text>Reset your password</Text>
 
       <TextInput
@@ -46,13 +42,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    textAlign: "center",
+    margin: 20,
+    padding: 10,
   },
-  textInput: {
-    height: 40,
-    width: "90%",
-    borderColor: "gray",
-    borderWidth: 1,
-    marginTop: 8,
+  textInput: {},
+  button: {
+    minWidth: "90%",
+    marginTop: 15,
+    margin: 10,
+    borderRadius: 100,
   },
 });
 
