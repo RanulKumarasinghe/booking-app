@@ -155,7 +155,7 @@ const RewardScreen = (props) => {
 const styles = StyleSheet.create({
   userImage: {
     width: "100%",
-    height: "70%",
+    height: "60%",
     alignSelf: "center",
   },
 
