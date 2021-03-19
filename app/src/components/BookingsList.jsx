@@ -14,7 +14,7 @@ export default BookingsList = (props) => {
   }
 
   const mappedData = props.payload.map((element) => {
-    return ({ element, callback: cancelBooking })
+    return ({ element, onCancel: cancelBooking })
   })
 
   return (

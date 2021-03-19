@@ -14,7 +14,6 @@ const BookingsListEntry = ({ item }) => {
   const booking = item.element;
   const order = item.order;
 
-  const callback = item.onCancel;
 
   const test = () => {
     console.log(isManager)
@@ -134,14 +133,14 @@ const BookingsListEntry = ({ item }) => {
       </View>
       {/* Buutons */}
       <View style={styles.buttonContainer}>
-        <Button style={styles.button} size='medium' status='basic' onPress={() => { callback(booking.docId) }}>
+        <Button style={styles.button} size='medium' status='basic' onPress={() => { item.onCancel(booking.docId) }}>
           Cancel
         </Button>
-        {item.isManager && order && (
-          <Button style={styles.button} size='medium' status='basic' onPress={item.onAccept}>
+        {/* {item.isManager && order && (
+          <Button style={styles.button} size='medium' status='basic' onPress={() => item.onAccept}>
             Accept
           </Button>
-        ) || null}
+        ) || null} */}
       </View>
     </View>
   );
