@@ -1,6 +1,6 @@
 import React, { useState, setState, useEffect } from 'react';
-import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button} from 'react-native';
-import { Text, TopNavigation, IndexPath } from '@ui-kitten/components';
+import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView} from 'react-native';
+import { Text, TopNavigation, IndexPath, Card, Modal, Button } from '@ui-kitten/components';
 // import Navbar from '@/components/Navbar';
 import { useSelector, useDispatch } from 'react-redux';
 import RestaurantMenuItem from '../../components/RestaurantMenuItem';
@@ -18,6 +18,9 @@ const RestaurantEditMenu = (props) => {
   const menuItem = menu.find(menuItem => menuItem.id === itemId);
 
   const restaurantId = props.route.params.resID;
+
+  const [visibleEditModal, setVisible] = React.useState(false);
+  const [visibleDeleteModal, setDelVisible] = React.useState(false);
 
 
   const [nameValue, onChangeName] = React.useState(menuItem.name);
@@ -54,17 +57,19 @@ const RestaurantEditMenu = (props) => {
       imageUrl: imageUrlValue,
       numType: menuTypeValue,
       type: type
-    }))
-    props.navigation.navigate('Restaurant')
+    })), setVisible(true)
+    // props.navigation.navigate('Restaurant')
   };
 
   const deleteMenuItem = () => {
     dispatch(deleteItem({
       id: itemId,
       rId: restaurantId
-    })), props.navigation.navigate('Profile', {
-      restaurantId: restaurantId
-    })
+    })), setDelVisible(true)
+
+    // props.navigation.navigate('Profile', {
+    //   restaurantId: restaurantId
+    // })
   }
 
   const getMenu = () => {
@@ -80,6 +85,20 @@ const RestaurantEditMenu = (props) => {
    const foodType1 = foodTypes?.foodTypes[1];
    const foodType2 = foodTypes?.foodTypes[2];
    const foodType3 = foodTypes?.foodTypes[3];
+
+   const navEditItem = () => {
+    props.navigation.navigate('Profile', {
+        restaurantId: restaurantId
+      })
+    setVisible(false)
+  };
+
+  const navDelItem = () => {
+    props.navigation.navigate('Profile', {
+        restaurantId: restaurantId
+      })
+    setDelVisible(false)
+  };
 
 
   return (
@@ -108,10 +127,30 @@ const RestaurantEditMenu = (props) => {
         foodType3={foodType3}
       />
       <View style={styles.buttonSpacing}>
-         <Button title="Delete Item" onPress={deleteMenuItem} />
-         <Button title="Confirm Changes" onPress={editMenu} />
+         <Button title="Delete Item" onPress={deleteMenuItem} > Delete Item </Button>
+         <Button title="Confirm Changes" onPress={editMenu} > Confirm Changes</Button>
       </View>
       </ScrollView>
+      <Modal visible={visibleEditModal}>
+        <Card disabled={true}>
+          <View style={styles.modalSpacing}>
+          <Text>Menu Item updated!!</Text>
+          </View>
+          <Button onPress={navEditItem}>
+            Finish
+          </Button>
+        </Card>
+      </Modal>
+      <Modal visible={visibleDeleteModal}>
+        <Card disabled={true}>
+          <View style={styles.modalSpacing}>
+          <Text>Menu Item deleted</Text>
+          </View>
+          <Button onPress={navDelItem}>
+            Finish
+          </Button>
+        </Card>
+      </Modal>
       </View>
     </SafeAreaView>
 
@@ -131,5 +170,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-between'
   },
+  modalSpacing: {
+    marginBottom: '20%',
+  }
 })
 export default RestaurantEditMenu;
