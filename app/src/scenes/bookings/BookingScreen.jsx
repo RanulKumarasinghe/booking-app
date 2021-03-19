@@ -379,6 +379,7 @@ const BookingScreen = (props) => {
               <Button size="small" style={styles.timeButton} onPress={showTimepicker}>{time !== undefined ? addTimePadding() : () => { return <View style={{ flexDirection: 'row' }}><TimeIcon /><Text category='s1' style={styles.text}>Pick a time</Text></View> }}</Button>
               {show && (
                 <DateTimePicker
+                  style={{width: 320, backgroundColor: "white"}}
                   testID="dateTimePicker"
                   minimumDate={new Date()}
                   value={new Date()}
