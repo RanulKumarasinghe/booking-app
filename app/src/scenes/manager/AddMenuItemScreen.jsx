@@ -1,6 +1,6 @@
 import React, { useState, setState, useEffect } from 'react';
-import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button} from 'react-native';
-import { Text, TopNavigation } from '@ui-kitten/components';
+import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView} from 'react-native';
+import { Text, Card, TopNavigation, Modal, Button } from '@ui-kitten/components';
 // import Navbar from '@/components/Navbar';
 import { useSelector, useDispatch } from 'react-redux';
 import RestaurantMenuItem from '../../components/RestaurantMenuItem';
@@ -15,6 +15,7 @@ const MenuAddItem = (props) => {
   console.log(restaurantId);
   const auth = useSelector(state => state.auth);
 
+  const [visible, setVisible] = React.useState(false);
 
   const [nameValue, onChangeName] = React.useState('');
   const [priceValue, onChangePrice] = React.useState('');
@@ -64,10 +65,18 @@ const MenuAddItem = (props) => {
       imageUrl: imageUrlValue,
       numType: menuTypeValue,
       type: type
-    })), props.navigation.navigate('Profile', {
-    restaurantId: restaurantId
-  })
+    })), setVisible(true)
+  //   props.navigation.navigate('Profile', {
+  //   restaurantId: restaurantId
+  // })
   //TODO: props natigate go back
+  };
+
+  const navItem = () => {
+    props.navigation.navigate('Profile', {
+        restaurantId: restaurantId
+      })
+    setVisible(false)
   };
 
   return (
@@ -97,10 +106,20 @@ const MenuAddItem = (props) => {
       />
       <View style={styles.buttonSpacing}>
          <Button title="Go Back" onPress={() => props.navigation.navigate('Edit Menu', {
-          restaurantId: restaurantId})} />
-         <Button title="Add Item" onPress={addMenuItem} />
+          restaurantId: restaurantId})} > Go Back </Button>
+         <Button title="Add Item" onPress={addMenuItem} > Add Item </Button>
       </View>
       </ScrollView>
+      <Modal visible={visible}>
+        <Card disabled={true}>
+          <View style={styles.modalSpacing}>
+          <Text>Menu Item added!!</Text>
+          </View>
+          <Button onPress={navItem}>
+            Finish
+          </Button>
+        </Card>
+      </Modal>
       </View>
     </SafeAreaView>
 
@@ -120,5 +139,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-between'
   },
+  modalSpacing: {
+    marginBottom: '20%',
+  }
 })
 export default MenuAddItem;
