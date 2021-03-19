@@ -11,7 +11,7 @@ const OrderCompleteScreen = (props) => {
 
         <Text category='h5'>Success!</Text>
         <Text category='p1'>Your Order has been taken</Text>
-        <Button onPress={props.navigation.popToTop()}>Close</Button>
+        <Button onPress={() => props.navigation.popToTop()}>Close</Button>
       </SafeAreaView>
     </Layout>
   );

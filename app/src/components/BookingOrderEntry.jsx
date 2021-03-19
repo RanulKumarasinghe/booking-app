@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { Toggle, Text, Divider, Button, Spinner, Layout, Icon } from '@ui-kitten/components';
 import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux';
 
 const BookingsListEntry = ({ item }) => {
-  const isManager = useSelector(state => !!state.staffRestaurant.restaurant);
-
   // console.log(props)
   let isBooking
   if (item.element) {
@@ -20,9 +17,9 @@ const BookingsListEntry = ({ item }) => {
   const callback = item.onCancel;
 
   const test = () => {
-    console.log(isBooking)
-    console.log(booking)
-    console.log(order)
+    console.log(isManager)
+    // console.log(booking)
+    // console.log(order)
   }
 
   const isCancelled = (booking ? booking.status == 'cancelled' : false) || (order ? order.status == 'cancelled' : false)
@@ -140,8 +137,8 @@ const BookingsListEntry = ({ item }) => {
         <Button style={styles.button} size='medium' status='basic' onPress={() => { callback(booking.docId) }}>
           Cancel
         </Button>
-        {order && isManager (
-          <Button style={styles.button} size='medium' status='basic' onPress={test}>
+        {item.isManager && order && (
+          <Button style={styles.button} size='medium' status='basic' onPress={item.onAccept}>
             Accept
           </Button>
         ) || null}
