@@ -131,7 +131,8 @@ const RestaurantEditMenu = (props) => {
          <Button title="Confirm Changes" onPress={editMenu} > Confirm Changes</Button>
       </View>
       </ScrollView>
-      <Modal visible={visibleEditModal}>
+      <Modal visible={visibleEditModal}
+      style={{ maxHeight: '50%', padding: 10 }}>
         <Card disabled={true}>
           <View style={styles.modalSpacing}>
           <Text>Menu Item updated!!</Text>

@@ -63,7 +63,8 @@ const RestaurantEdit = (props) => {
          <Button title="Confirm Changes" onPress={editRestaurant} > Confirm Changes </Button>
       </View>
       </ScrollView>
-      <Modal visible={visible}>
+      <Modal visible={visible}
+      style={{ maxHeight: '50%', padding: 10 }}>
         <Card disabled={true}>
           <View style={styles.modalSpacing}>
           <Text>Restaurant Updated!!</Text>
