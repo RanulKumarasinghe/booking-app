@@ -6,7 +6,7 @@ import firebase from "src/utils/firebase";
 const ResetPasswordScreen = (props) => {
   const [newPassword, setNewPassword] = useState("");
 
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
 
   const handleChangePassword = () => {
     var user = firebase.auth().currentUser;
@@ -42,7 +42,7 @@ const ResetPasswordScreen = (props) => {
         onBackdropPress={() => setVisible(false)}
       >
         <Card disabled={true}>
-          <Text>Welcome to UI Kitten 😻</Text>
+          <Text>Password has been changed</Text>
           <Button onPress={() => setVisible(false)}>DISMISS</Button>
         </Card>
       </Modal>
