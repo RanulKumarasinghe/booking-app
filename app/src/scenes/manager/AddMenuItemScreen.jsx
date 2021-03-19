@@ -64,7 +64,7 @@ const MenuAddItem = (props) => {
       imageUrl: imageUrlValue,
       numType: menuTypeValue,
       type: type
-    })), props.navigation.navigate('Edit Menu', {
+    })), props.navigation.navigate('Profile', {
     restaurantId: restaurantId
   })
   //TODO: props natigate go back
