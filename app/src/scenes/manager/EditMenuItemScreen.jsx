@@ -87,16 +87,12 @@ const RestaurantEditMenu = (props) => {
    const foodType3 = foodTypes?.foodTypes[3];
 
    const navEditItem = () => {
-    props.navigation.navigate('Profile', {
-        restaurantId: restaurantId
-      })
+    props.navigation.navigate('Profile')
     setVisible(false)
   };
 
   const navDelItem = () => {
-    props.navigation.navigate('Profile', {
-        restaurantId: restaurantId
-      })
+    props.navigation.navigate('Profile')
     setDelVisible(false)
   };
 
@@ -132,6 +128,7 @@ const RestaurantEditMenu = (props) => {
       </View>
       </ScrollView>
       <Modal visible={visibleEditModal}
+      backdropStyle={styles.backdrop}
       style={{ maxHeight: '50%', padding: 10 }}>
         <Card disabled={true}>
           <View style={styles.modalSpacing}>
@@ -142,7 +139,9 @@ const RestaurantEditMenu = (props) => {
           </Button>
         </Card>
       </Modal>
-      <Modal visible={visibleDeleteModal}>
+      <Modal visible={visibleDeleteModal}
+      backdropStyle={styles.backdrop}
+      style={{ maxHeight: '50%', padding: 10 }}>
         <Card disabled={true}>
           <View style={styles.modalSpacing}>
           <Text>Menu Item deleted</Text>
@@ -173,6 +172,9 @@ const styles = StyleSheet.create({
   },
   modalSpacing: {
     marginBottom: '20%',
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   }
 })
 export default RestaurantEditMenu;

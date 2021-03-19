@@ -64,6 +64,7 @@ const RestaurantEdit = (props) => {
       </View>
       </ScrollView>
       <Modal visible={visible}
+      backdropStyle={styles.backdrop}
       style={{ maxHeight: '50%', padding: 10 }}>
         <Card disabled={true}>
           <View style={styles.modalSpacing}>
@@ -120,6 +121,9 @@ const styles = StyleSheet.create({
   },
   modalSpacing: {
     marginBottom: '20%',
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   }
 })
 export default RestaurantEdit;
