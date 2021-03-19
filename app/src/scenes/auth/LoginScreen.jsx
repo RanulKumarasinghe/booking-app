@@ -22,7 +22,7 @@ const LoginScreen = (props) => {
   }
 
   const LoginUser = () => {
-    dispatch(login('user@user.com', '123456'));
+    dispatch(login('user@user.com', 'Test123'));
   }
 
   const handleResetPassword = () => {
