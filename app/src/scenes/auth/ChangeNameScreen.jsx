@@ -9,31 +9,36 @@ import {
   Modal,
   Card,
 } from "@ui-kitten/components";
-import firebase, { db } from "src/utils/firebase";
+import firebase from "src/utils/firebase";
 
 const ChangeNameScreen = (props) => {
-  const [NewName, setNewName] = useState("");
+  const [newName, setNewName] = useState("");
   const [visible, setVisible] = useState(false);
   const [NameChanged, setNameChanged] = useState(false);
 
   const auth = useSelector((state) => state.auth);
   const uid = auth.uid;
-
   const user = firebase.firestore().collection("users").doc(uid);
 
   const handleChangeName = () => {
-    return user
-      .update({ name: NewName })
-      .then(() => {
-        setNameChanged(true);
-        setVisible(true);
-        console.log("Name has been changed");
-      })
-      .catch((error) => {
-        setNameChanged(false);
-        setVisible(true);
-        console.log("Name has not been changed");
-      });
+    if (newName) {
+      return user
+        .update({ name: NewName })
+        .then(() => {
+          setNameChanged(true);
+          setVisible(true);
+          console.log("Name has been changed");
+        })
+        .catch((error) => {
+          setNameChanged(false);
+          setVisible(true);
+          console.log("Name has not been changed");
+        });
+    } else {
+      setNameChanged(false);
+      setVisible(true);
+      console.log("Name cannot be empty");
+    }
   };
 
   return (
@@ -47,8 +52,8 @@ const ChangeNameScreen = (props) => {
           style={styles.textInput}
           autoCapitalize="none"
           placeholder="New Name"
-          onChangeText={(NewName) => setNewName(NewName)}
-          value={NewName}
+          onChangeText={(newName) => setNewName(newName)}
+          value={newName}
         />
 
         <Text>Enter an new name and press "Change Name" to update</Text>
