@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-<<<<<<< HEAD
 import {
   Input,
   Text,
@@ -9,9 +8,6 @@ import {
   Modal,
   Card,
 } from "@ui-kitten/components";
-=======
-import { Input, Text, Button, Layout, Modal, Card} from "@ui-kitten/components";
->>>>>>> master
 import firebase from "src/utils/firebase";
 
 const ChangePasswordScreen = (props) => {
@@ -38,11 +34,7 @@ const ChangePasswordScreen = (props) => {
   return (
     <Layout style={styles.container}>
       <View style={styles.padding}>
-<<<<<<< HEAD
         <Text>Change your password</Text>
-=======
-        {<Text>Change your password</Text>}
->>>>>>> master
 
         <Input
           style={styles.textInput}
@@ -60,7 +52,6 @@ const ChangePasswordScreen = (props) => {
           backdropStyle={styles.backdrop}
           onBackdropPress={() => setVisible(false)}
         >
-<<<<<<< HEAD
           <Card
             disabled={true}
             //style={{minWidth:400}}
@@ -70,12 +61,6 @@ const ChangePasswordScreen = (props) => {
             ) : (
               <Text>Password has not been changed</Text>
             )}
-=======
-          <Card disabled={true}
-          //style={{minWidth:400}}
-          >
-            {passwordChanged ? <Text>Password has been changed</Text> : <Text>Password has not been changed</Text>}
->>>>>>> master
             <Button onPress={() => setVisible(false)}>DISMISS</Button>
           </Card>
         </Modal>

@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-<<<<<<< HEAD
-import { Input, Text, Button, Layout } from "@ui-kitten/components";
-=======
 import {
   Input,
   Text,
@@ -11,7 +8,6 @@ import {
   Modal,
   Card,
 } from "@ui-kitten/components";
->>>>>>> master
 import firebase from "src/utils/firebase";
 
 const ResetPasswordScreen = (props) => {
