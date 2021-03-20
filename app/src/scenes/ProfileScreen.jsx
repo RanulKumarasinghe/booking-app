@@ -62,7 +62,7 @@ const ProfileScreen = (props) => {
       { icon: "cog", name: "Edit Restaurant", onPress: onEditRestaurant },
       { icon: "cog", name: "Edit Menu", onPress: onMenuList },
       { icon: "cog", name: "Change Password", onPress: handleChangePassword },
-      { icon: "cog", name: "Change Password", onPress: handleChangeName },
+      { icon: "cog", name: "Change Name", onPress: handleChangeName },
       { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
       { icon: "cog", name: "Manage tables", onPress: navAddTableScreen },
       { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
