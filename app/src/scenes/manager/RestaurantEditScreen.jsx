@@ -1,6 +1,6 @@
 import React, { useState, setState } from 'react';
-import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button, Modal, Alert} from 'react-native';
-import { Text, TopNavigation } from '@ui-kitten/components';
+import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Alert} from 'react-native';
+import { Text, Card, TopNavigation, Modal, Button } from '@ui-kitten/components';
 // import Navbar from '@/components/Navbar';
 import { useSelector, useDispatch } from 'react-redux';
 import RestaurantInput from '../../components/RestaurantInput';
@@ -12,6 +12,7 @@ const RestaurantEdit = (props) => {
   const restaurant = useSelector(state => state.staffRestaurant.restaurant);
 
   const auth = useSelector(state => state.auth);
+  const [visible, setVisible] = React.useState(false);
 
 
   const [nameValue, onChangeName] = React.useState(restaurant.name);
@@ -29,8 +30,14 @@ const RestaurantEdit = (props) => {
       imageUrl: imageUrlValue,
       google_id: restaurant.google_id,
     }))
-    props.navigation.navigate('Profile')
+    setVisible(true)
   };
+
+  const navItem = () => {
+    props.navigation.navigate('Profile')
+    setVisible(false)
+  };
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -52,29 +59,22 @@ const RestaurantEdit = (props) => {
         imageUrl={imageUrlValue}
       />
       <View style={styles.buttonSpacing}>
-         <Button title="No Changes" onPress={() => props.navigation.navigate('Profile')} />
-         <Button title="Confirm Changes" onPress={editRestaurant} />
+         <Button title="No Changes" onPress={() => props.navigation.navigate('Profile')} > No Changes </Button>
+         <Button title="Confirm Changes" onPress={editRestaurant} > Confirm Changes </Button>
       </View>
-      {/* <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-          <View style={{alignContent: 'flex-end'}}>
-          <Button title="X" onPress={() => setModalVisible(!modalVisible)} />
-          </View>
-            <Text style={styles.modalText}>Restaurant has been Edited</Text>
-
-       </View>
-       </View>
-      </Modal> */}
       </ScrollView>
+      <Modal visible={visible}
+      backdropStyle={styles.backdrop}
+      style={{ maxHeight: '50%', padding: 10 }}>
+        <Card disabled={true}>
+          <View style={styles.modalSpacing}>
+          <Text>Restaurant Updated!!</Text>
+          </View>
+          <Button onPress={navItem}>
+            Finish
+          </Button>
+        </Card>
+      </Modal>
       </View>
     </SafeAreaView>
 
@@ -118,6 +118,12 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+  modalSpacing: {
+    marginBottom: '20%',
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   }
 })
 export default RestaurantEdit;
