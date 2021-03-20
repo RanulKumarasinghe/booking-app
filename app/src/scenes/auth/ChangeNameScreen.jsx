@@ -21,7 +21,7 @@ const ChangeNameScreen = (props) => {
   const user = firebase.firestore().collection("users").doc(uid);
 
   const handleChangeName = () => {
-    if (newName) {
+    if (newName && newName.length > 5) {
       return user
         .update({ name: newName })
         .then(() => {
@@ -37,7 +37,7 @@ const ChangeNameScreen = (props) => {
     } else {
       setNameChanged(false);
       setVisible(true);
-      console.log("Name cannot be empty");
+      console.log("Name cannot be empty and must be greater than 6 characters");
     }
   };
 
@@ -71,7 +71,9 @@ const ChangeNameScreen = (props) => {
             {nameChanged ? (
               <Text>Name has been changed</Text>
             ) : (
-              <Text>Name has not been changed</Text>
+              <Text>
+                "Name cannot be empty and must be greater than 6 characters"
+              </Text>
             )}
             <Button onPress={() => setVisible(false)}>DISMISS</Button>
           </Card>
