@@ -69,7 +69,7 @@ const ChangeNameScreen = (props) => {
             //style={{minWidth:400}}
           >
             {nameChanged ? (
-              <Text>Name has been changed</Text>
+              <Text>Name has been changed to {newName}</Text>
             ) : (
               <Text>
                 "Name cannot be empty and must be greater than 6 characters"
