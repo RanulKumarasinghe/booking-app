@@ -14,7 +14,7 @@ import firebase from "src/utils/firebase";
 const ChangeNameScreen = (props) => {
   const [newName, setNewName] = useState("");
   const [visible, setVisible] = useState(false);
-  const [NameChanged, setNameChanged] = useState(false);
+  const [nameChanged, setNameChanged] = useState(false);
 
   const auth = useSelector((state) => state.auth);
   const uid = auth.uid;
@@ -23,7 +23,7 @@ const ChangeNameScreen = (props) => {
   const handleChangeName = () => {
     if (newName) {
       return user
-        .update({ name: NewName })
+        .update({ name: newName })
         .then(() => {
           setNameChanged(true);
           setVisible(true);
@@ -45,7 +45,7 @@ const ChangeNameScreen = (props) => {
     <Layout style={styles.container}>
       <View style={styles.padding}>
         <Text>
-          Input your name update in the box belowand press "change name"
+          Input your name in the box bellow and press "change name" to update!
         </Text>
 
         <Input
@@ -68,7 +68,7 @@ const ChangeNameScreen = (props) => {
             disabled={true}
             //style={{minWidth:400}}
           >
-            {NameChanged ? (
+            {nameChanged ? (
               <Text>Name has been changed</Text>
             ) : (
               <Text>Name has not been changed</Text>
