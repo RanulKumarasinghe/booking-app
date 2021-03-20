@@ -22,8 +22,14 @@ const ProfileScreen = (props) => {
 
   const [list, setList] = useState([]);
 
-  const handleResetPassword = () => {
+  const handleResetPassword = () => {};
+
+  const handleChangePassword = () => {
     props.navigation.navigate("Change Password");
+  };
+
+  const handleChangeName = () => {
+    props.navigation.navigate("Change Name");
   };
 
   const handleLogout = () => {
@@ -55,7 +61,8 @@ const ProfileScreen = (props) => {
       },
       { icon: "cog", name: "Edit Restaurant", onPress: onEditRestaurant },
       { icon: "cog", name: "Edit Menu", onPress: onMenuList },
-      { icon: "cog", name: "Change Password", onPress: handleResetPassword },
+      { icon: "cog", name: "Change Password", onPress: handleChangePassword },
+      { icon: "cog", name: "Change Password", onPress: handleChangeName },
       { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
       { icon: "cog", name: "Manage tables", onPress: navAddTableScreen },
       { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
@@ -70,7 +77,8 @@ const ProfileScreen = (props) => {
         name: "Rewards",
         onPress: () => props.navigation.navigate("Rewards"),
       },
-      { icon: "cog", name: "Change Password", onPress: handleResetPassword },
+      { icon: "cog", name: "Change Password", onPress: handleChangePassword },
+      { icon: "cog", name: "Change Name", onPress: handleChangeName },
       { icon: "cog", name: "Change User Settings", onPress: () => ({}) },
       { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
     ];
