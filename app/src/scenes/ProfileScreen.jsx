@@ -28,14 +28,6 @@ const ProfileScreen = (props) => {
     props.navigation.navigate("Change User Settings");
   };
 
-  const handleChangePassword = () => {
-    props.navigation.navigate("Change Password");
-  };
-
-  const handleChangeName = () => {
-    props.navigation.navigate("Change Name");
-  };
-
   const handleLogout = () => {
     dispatch(logout());
   };

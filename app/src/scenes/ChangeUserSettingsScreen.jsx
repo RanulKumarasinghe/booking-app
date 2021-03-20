@@ -7,7 +7,6 @@ import {
   StatusBar,
   TouchableOpacity,
   Text,
-  Button,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -15,7 +14,11 @@ import { Avatar } from "react-native-elements";
 
 const ChangeUserSettingsScreen = (props) => {
   const dispatch = useDispatch();
+
+  const restaurant = useSelector((state) => state.staffRestaurant.restaurant);
   const auth = useSelector((state) => state.auth);
+
+  const [list, setList] = useState([]);
 
   const handleChangePassword = () => {
     props.navigation.navigate("Change Password");
@@ -29,18 +32,43 @@ const ChangeUserSettingsScreen = (props) => {
 
   //   };
 
-  const list = [
-    { icon: "key", name: "Change Password", onPress: handleChangePassword },
-    { icon: "cog", name: "Change Name", onPress: handleChangeName },
-    {
-      icon: "fas fa-grin-stars",
-      name: "Change Profile Picture",
-      onPress: () => ({}),
-    },
-  ];
-  useEffect(() => {
-    // setList(userList);
-  }, []);
+  const isManager = !!restaurant;
+
+  if (isManager) {
+    const managerList = [
+      { icon: "key", name: "Change Password", onPress: handleChangePassword },
+      {
+        icon: "file-signature",
+        name: "Change Name",
+        onPress: handleChangeName,
+      },
+      {
+        icon: "portrait",
+        name: "Change Profile Picture",
+        onPress: () => ({}),
+      },
+    ];
+    useEffect(() => {
+      setList(managerList);
+    }, []);
+  } else {
+    const userList = [
+      { icon: "key", name: "Change Password", onPress: handleChangePassword },
+      {
+        icon: "file-signature",
+        name: "Change Name",
+        onPress: handleChangeName,
+      },
+      {
+        icon: "portrait",
+        name: "   Change Profile Picture",
+        onPress: () => ({}),
+      },
+    ];
+    useEffect(() => {
+      setList(userList);
+    }, []);
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -55,8 +83,6 @@ const ChangeUserSettingsScreen = (props) => {
         />
         <View style={styles.nameBox}>
           <Text style={styles.userNameText}>{auth.name}</Text>
-
-          {/* <Text style={styles.tenantText}>{auth.uid}</Text> */}
         </View>
       </View>
       <FlatList
@@ -109,7 +135,6 @@ const styles = StyleSheet.create({
   },
   tenantText: {
     fontWeight: "bold",
-
     fontSize: 18,
   },
 
