@@ -11,22 +11,11 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { logout } from "@/store/actions/auth";
 import { Avatar } from "react-native-elements";
 
-const ProfileScreen = (props) => {
+const ChangeUserSettingsScreen = (props) => {
   const dispatch = useDispatch();
-
-  const restaurant = useSelector((state) => state.staffRestaurant.restaurant);
   const auth = useSelector((state) => state.auth);
-
-  const [list, setList] = useState([]);
-
-  const handleResetPassword = () => {};
-
-  const handleChangeUserSettings = () => {
-    props.navigation.navigate("Change User Settings");
-  };
 
   const handleChangePassword = () => {
     props.navigation.navigate("Change Password");
@@ -36,80 +25,22 @@ const ProfileScreen = (props) => {
     props.navigation.navigate("Change Name");
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+  //   handleImageChange = () => {
 
-  const navAddTableScreen = () => {
-    props.navigation.navigate("Add Table");
-  };
+  //   };
 
-  const isManager = !!restaurant;
-
-  if (isManager) {
-    const onEditRestaurant = () =>
-      props.navigation.navigate("Edit Restaurant", {
-        restaurantId: restaurant.id,
-      });
-
-    const onMenuList = () =>
-      props.navigation.navigate("Edit Menu", {
-        restaurantId: restaurant.id,
-      });
-
-    const managerList = [
-      {
-        icon: "award",
-        name: "Create Rewards",
-        onPress: () => props.navigation.navigate("Create Rewards"),
-      },
-      { icon: "cog", name: "Edit Restaurant", onPress: onEditRestaurant },
-      { icon: "cog", name: "Edit Menu", onPress: onMenuList },
-      {
-        icon: "cog",
-        name: "Change User Settings",
-        onPress: handleChangeUserSettings,
-      },
-      { icon: "cog", name: "Manage tables", onPress: navAddTableScreen },
-      { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
-    ];
-    useEffect(() => {
-      setList(managerList);
-    }, []);
-  } else {
-    const userList = [
-      {
-        icon: "award",
-        name: "Rewards",
-        onPress: () => props.navigation.navigate("Rewards"),
-      },
-      {
-        icon: "cog",
-        name: "Change User Settings",
-        onPress: handleChangeUserSettings,
-      },
-      { icon: "sign-out-alt", name: "Sign Out", onPress: handleLogout },
-    ];
-    useEffect(() => {
-      setList(userList);
-    }, []);
-  }
-
-  const test = () => {
-    db.collection("restaurants")
-      .where("staffIds", "array-contains", auth.uid)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          console.log(doc.id, " => ", doc.data());
-        });
-      });
-
-    // console.log(auth.uid)
-    // .get().then(e => {
-    //   console.log(e)
-    // }).catch(console.warn)
-  };
+  const list = [
+    { icon: "key", name: "Change Password", onPress: handleChangePassword },
+    { icon: "cog", name: "Change Name", onPress: handleChangeName },
+    {
+      icon: "fas fa-grin-stars",
+      name: "Change Profile Picture",
+      onPress: () => ({}),
+    },
+  ];
+  useEffect(() => {
+    // setList(userList);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -209,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+export default ChangeUserSettingsScreen;
