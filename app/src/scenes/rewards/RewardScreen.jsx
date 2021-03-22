@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { SafeAreaView, StyleSheet, Image, View, StatusBar } from "react-native";
 import { Icon, Button, Text, Input } from "@ui-kitten/components";
-
 import firebase, { db, FieldValue } from "src/utils/firebase";
 
 const RewardScreen = (props) => {
@@ -130,6 +129,13 @@ const RewardScreen = (props) => {
             onPress={redeemCode}
           >
             Redeem Points
+          </Button>
+          <Button
+            style={styles.button}
+            appearance="filled"
+            onPress={() => props.navigation.navigate("QR Scanner")}
+          >
+            QR Scanner
           </Button>
         </View>
       </View>

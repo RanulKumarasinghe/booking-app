@@ -14,6 +14,7 @@ import ChangePasswordScreen from '@/scenes/auth/ChangePasswordScreen';
 import ChangeNameScreen from '@/scenes/auth/ChangeNameScreen';
 import  ChangeUserSettingsScreen from '@/scenes/ChangeUserSettingsScreen'
 import { createStackNavigator } from '@react-navigation/stack';
+import QRCodeScannerScreen from '@/scenes/rewards/QRCodeScannerScreen';
 
 
 
@@ -93,6 +94,11 @@ const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen
         name='Change User Settings'
         component={ChangeUserSettingsScreen}
+      // options={authScreenOptions}
+      />
+      <ProfileStackNavigator.Screen
+        name='QR Scanner'
+        component={QRCodeScannerScreen}
       // options={authScreenOptions}
       />
     </ProfileStackNavigator.Navigator>
