@@ -98,6 +98,13 @@ const ManagerRewardScreen = (props) => {
         />
         <View style={styles.inputButton}>
           <Button onPress={generateCode}>Create Points Code</Button>
+          <Button
+            style={styles.button}
+            appearance="filled"
+            onPress={() => props.navigation.navigate("Generate QR Code")}
+          >
+            Generate QR code
+          </Button>
         </View>
       </View>
     </SafeAreaView>
@@ -154,7 +161,7 @@ const styles = StyleSheet.create({
   },
   userImage: {
     width: "100%",
-    height: "70%",
+    height: "60%",
     alignSelf: "center",
   },
   pointsEr: {},

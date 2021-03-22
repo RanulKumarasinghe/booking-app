@@ -15,7 +15,7 @@ import ChangeNameScreen from '@/scenes/auth/ChangeNameScreen';
 import  ChangeUserSettingsScreen from '@/scenes/ChangeUserSettingsScreen'
 import { createStackNavigator } from '@react-navigation/stack';
 import QRCodeScannerScreen from '@/scenes/rewards/QRCodeScannerScreen';
-
+import GenerateQRCodeScreen from '@/scenes/rewards/GenerateQRCodeScreen';
 
 
 const ProfileStackNavigator = createStackNavigator();
@@ -99,6 +99,11 @@ const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen
         name='QR Scanner'
         component={QRCodeScannerScreen}
+      // options={authScreenOptions}
+      />
+      <ProfileStackNavigator.Screen
+        name='Generate QR Code'
+        component={GenerateQRCodeScreen}
       // options={authScreenOptions}
       />
     </ProfileStackNavigator.Navigator>
