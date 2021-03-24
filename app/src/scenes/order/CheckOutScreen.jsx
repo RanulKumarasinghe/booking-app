@@ -53,13 +53,17 @@ const CheckOutScreen = (props) => {
       return Promise.all(cart.map(cartItem => fetchItems(restaurantId, cartItem)))
     }
     
-    // const userId = 1
+    const userId = 'glJhg6e6vYS9AtXRE40Eo0DL42y1'
     getItems(data.cart, data.restaurantId).then(cartItems => {
-      db.collection(`restaurants/${data.restaurantId}/orders`).add({
+      db.collection(`bookingOrders`).add({
         restaurantId: data.restaurantId,
         restaurantName: data.restaurantId,
-        status: 'pending',
-        type: 'ASAP',
+        orderStatus: 'pending',
+        // orderStatus: 'accepted',
+        // orderStatus: 'done',
+
+        // Schedule a Order / Booking
+        // No Booking - ASAP
         userId: userId,
         createdAt: new Date(),
         cart: cartItems
@@ -68,11 +72,11 @@ const CheckOutScreen = (props) => {
       })
     }).catch(err =>  {
       console.log('Something went wrong');
-      // console.log(err);
+      console.log(err);
     })
   }
+
   const test2 = async () => {
-    
     console.log(order)
   }
 

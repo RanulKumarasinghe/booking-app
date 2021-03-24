@@ -16,7 +16,7 @@ const OrderScreen = (props) => {
   }
 
   const mappedData = restaurantOrders.map((order) => {
-    return ({ order, isManager: !!restaurant, 
+    return ({ element: order, isManager: !!restaurant, 
       onAccept: onAcceptOrder
     })
   })
@@ -26,7 +26,7 @@ const OrderScreen = (props) => {
         <FlatList
         data={mappedData}
         renderItem={BookingOrderEntry}
-        keyExtractor={(item) => item.order.docId}
+        keyExtractor={(item) => item.element.docId}
       />  
       )
   }

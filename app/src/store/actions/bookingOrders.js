@@ -26,7 +26,7 @@ export const fetchBookingsByUserFiltered = (userid) => {
   return async (dispatch) => {
     db.collection('bookingOrders')
       .where('userId', '==', userid)
-      .where('date', '>', now)
+      // .where('date', '>', now)
       .get()
       .then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {

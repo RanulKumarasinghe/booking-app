@@ -39,11 +39,11 @@ export default BookingListScreen = ({ navigation }) => {
         if (!isOffline) {
             dispatch(clearUserBookings());
             setshowLoadingSpinner(true);
-            if (filterToggle) {
-                dispatch(fetchBookingsByUserFiltered(auth.uid));
-            } else {
-                dispatch(fetchBookingsByUser(auth.uid));
-            }
+            // if (filterToggle) {
+            //     dispatch(fetchBookingsByUserFiltered(auth.uid));
+            // } else {
+            dispatch(fetchBookingsByUser(auth.uid));
+            // }
             setTimeout(() => {
                 setshowLoadingSpinner(false);
             }, 2000);
@@ -73,8 +73,8 @@ export default BookingListScreen = ({ navigation }) => {
 
     const List = () => {
         if (!showLoadingSpinner && !isOffline) {
-            const sortedBookings = sortDates(bookingOrders);
-            return (<BookingsList payload={sortedBookings} callback={doRefresh} />);
+            // const sortedBookings = sortDates(bookingOrders);
+            return (<BookingsList payload={bookingOrders} callback={doRefresh} />);
         } else {
             return (<></>)
         }
