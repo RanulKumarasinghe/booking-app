@@ -68,15 +68,15 @@ const Restaurant = (props) => {
         justifyContent: 'space-between'
       }}>
         <View style={{ flex: 1 }}>
-          <View>
+          <View style={styles.buttonSpacing}>
             <View style={styles.listRow}>
               <Image
                 source={{ uri: restaurant?.imageUrl }}
                 style={styles.bgImage}
               />
-              <View style={styles.buttonSpacing}>
-              <Text style={styles.titleText}>{restaurant.name}</Text>
-              {restaurant.googleData?.rating && (
+              <Text style={styles.font1}>{restaurant.name}</Text>
+              <Text style={styles.font}>Restaurant Info:</Text>
+              <View style={styles.googleWarning}>
               <View style={styles.starrating}>
                 <StarRating
                   disabled={true}
@@ -85,7 +85,9 @@ const Restaurant = (props) => {
                   fullStarColor={'#c7c708'}
                   starSize={15}
                 />
-              </View> ) || null}
+              </View>
+              <Text style={styles.googleWarningFont}>Rating provided by Google</Text>
+              </View>
               <View style={styles.description}>
                 <Text>{restaurant.description}</Text>
                 <View style={styles.addressDetails}>
@@ -119,10 +121,10 @@ const Restaurant = (props) => {
               </View>
               {  !restaurantManager && (
                 <>
-                  <View style={styles.buttonSpacing}>
+                  <View style={styles.buttonSpace}>
                   <Button onPress={onBooking}>Make A Booking</Button>
                   </View>
-                  <View style={styles.buttonSpacing}>
+                  <View style={styles.buttonSpace}>
                   <Button onPress={onOrder}>Order</Button>
                   </View>
                 </>) || null}
@@ -137,7 +139,6 @@ const Restaurant = (props) => {
           <Button onPress={onMenuList}>Menu List</Button> */}
           <Divider />
 
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -168,7 +169,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 15
   },
-
+  googleWarning: {
+    flexDirection: 'column',
+    alignSelf: 'flex-end',
+    paddingTop: 15
+  },
+  googleWarningFont: {
+    fontSize: 8
+  },
   header: {
     marginTop: 25,
     flex: 1
@@ -182,7 +190,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   starrating: {
-    paddingTop: 10,
     position: 'absolute',
     alignSelf: 'flex-end'
   },
@@ -207,6 +214,9 @@ const styles = StyleSheet.create({
   },
   openSpacing: {
     marginBottom: 20
+  },
+  buttonSpace: {
+    marginTop: 15
   }
 
 });
