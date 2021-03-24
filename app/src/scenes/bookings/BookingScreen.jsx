@@ -132,6 +132,7 @@ const BookingScreen = (props) => {
           time: bookingTime,
           date: bookingDate,
           guests: bookingGuests,
+          // bookingOrderId: ,
           callback: refreshPage,
         });
 

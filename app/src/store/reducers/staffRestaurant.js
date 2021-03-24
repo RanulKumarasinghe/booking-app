@@ -48,7 +48,7 @@ const restaurantReducer = (state = initialState, action) => {
     case FETCH_BOOKINGS_BY_RESTAURANT: {
       const now = new Date();
       action.payload.forEach((element) => {
-        if (now.getTime() > element.date.toDate().getTime() && element.status === 'Ok') {
+        if (!element.cart && element.date && now.getTime() > element.date.toDate().getTime() && element.status === 'Ok') {
           //dispatch(postBookingExpiration(element.docId));
           element.status = 'expired';
         } else {

@@ -41,11 +41,7 @@ export default ReservationsScreen = ({ navigation }) => {
   useEffect(() => {
     if (!isLoggedIn) {
       setshowLoadingSpinner(true);
-      if (filterToggle) {
-        dispatch(fetchBookingsByRestaurantFiltered(resid));
-      } else {
-        dispatch(fetchBookingsByRestaurant(resid));
-      }
+      dispatch(fetchBookingsByRestaurant(resid));
       setTimeout(() => {
         setshowLoadingSpinner(false);
       }, 2000);
@@ -75,8 +71,8 @@ export default ReservationsScreen = ({ navigation }) => {
 
   const List = () => {
     if (!showLoadingSpinner && !isLoggedIn) {
-      const sortedBookings = sortDates(restaurant_bookings);
-      return (<BookingsList payload={sortedBookings} callback={onCheckedChange} />);
+      // const sortedBookings = sortDates(restaurant_bookings);
+      return (<BookingsList payload={restaurant_bookings} callback={onCheckedChange} />);
     } else {
       return (<></>)
     }

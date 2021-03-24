@@ -249,6 +249,7 @@ export const postReservation = (tableid, restaurantId, user, guests, date, resta
         restaurantName: restaurantName,
         tableNumber: tableNum,
       });
+      
       dispatch({ type: POST_BOOKING, payload: undefined });
     } catch (error) {
       console.error(error);
