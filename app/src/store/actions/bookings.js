@@ -16,15 +16,7 @@ const CLEAR_TABLES = 'CLEAR_TABLES';
 const REMOVE_TABLE = 'REMOVE_TABLE';
 const REMOVE_TABLE_FROM_DATABASE = 'REMOVE_TABLE_FROM_DATABASE';
 const UNAVAILABLE_TABLES = 'UNAVAILABLE_TABLES';
-
-//Down from here obsolete
-const FETCH_ALL_BOOKINGS = 'FETCH_ALL_BOOKINGS';
-const FETCH_MY_BOOKINGS = 'FETCH_MY_BOOKINGS';
-const FETCH_UNAVAILABLE_RESTAURANT_TIMES = 'FETCH_UNAVAILABLE_RESTAURANT_TIMES';
-const POST_BOOKING_TIME = 'POST_BOOKING_TIME';
 const POST_BOOKING = 'POST_BOOKING';
-const RESPOND_TO_BOOKING = 'RESPOND_TO_BOOKING';
-const ADD_NEW_BOOKING_TIME_DOCUMENT = 'ADD_NEW_BOOKING_TIME_DOCUMENT';
 
 //Internal actions (not involving the firestore databse)
 //
@@ -97,6 +89,14 @@ export const performSchedule = () => {
 
 export const checkTableAvailability = (size, restaurantId, date) => {
   return (dispatch) => {
+    
+    const unconfirmedBookingTimestampStart = date.getTime();
+    const unconfirmedBookingTimestampEnd = date.getTime() + 4*(1000 * 3600);
+
+    console.log(new Date(unconfirmedBookingTimestampStart))
+    console.log(new Date(unconfirmedBookingTimestampEnd))
+    
+    //Gets all tables of eligble size
     firebase.firestore().collection('reservations').where('restaurantId', '==', restaurantId).where('size', '>=', parseInt(size)).where('active', '==', true).get().then((querySnapshot) => {
       const tableResponse = querySnapshot.docs.map((doc) => {
         return { ...doc.data(), id: doc.id };
@@ -109,12 +109,21 @@ export const checkTableAvailability = (size, restaurantId, date) => {
             return { date: doc.data().date, tableref: table.id };
           });
 
-          //returns an array of 
+          //returns an array of unavailable tables 
           let bookedArray = bookingResponse.map((booking) => {
             const dateConv = booking.date.toDate();
             if (dateConv.getFullYear() === date.getFullYear() && dateConv.getMonth() === date.getMonth() && dateConv.getDate() === date.getDate()
             ) {
-              return booking.tableref;
+              
+              const bookingTimestampStart = dateConv.getTime();
+              const bookingTimestampEnd = dateConv.getTime() + 4*(1000 * 3600);
+              
+              //(StartA <= EndB) and (EndA >= StartB)
+              if (bookingTimestampStart <= unconfirmedBookingTimestampEnd && bookingTimestampEnd > unconfirmedBookingTimestampStart){
+                return booking.tableref;
+              }else{
+                return false;
+              }
             } else {
               return false
             }

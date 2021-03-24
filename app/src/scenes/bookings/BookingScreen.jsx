@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, View, TextInput } from "react-native";
-import { Divider, Icon, Button, Layout, Datepicker, List, ListItem, Spinner, Modal, Card, Text } from '@ui-kitten/components';
+import { SafeAreaView, StyleSheet, View} from "react-native";
+import { Divider, Icon, Button, List, ListItem, Spinner, Modal, Card, Text } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime, clearTables, checkTableAvailability } from '@/store/actions/bookings';
+import { postReservation, fetchTablesBySize, performSchedule, clearTables, checkTableAvailability } from '@/store/actions/bookings';
 import firebase from 'src/utils/firebase';
 import { TouchableOpacity } from "react-native";
 
