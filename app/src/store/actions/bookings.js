@@ -13,9 +13,7 @@ const FETCH_BOOKINGS_BY_USER_FILTERED = 'FETCH_BOOKINGS_BY_USER_FILTERED';
 const Clear_User_Bookings = 'Clear_User_Bookings';
 const CLEAR_TIME = 'CLEAR_TIME';
 const POST_RESERVATION_CANCELATION = 'POST_RESERVATION_CANCELATION';
-const FETCH_BOOKINGS_BY_RESTAURANT = 'FETCH_BOOKINGS_BY_RESTAURANT';
-const FETCH_BOOKINGS_BY_RESTAURANT_FILTERED =
-  'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED';
+
 const POST_BOOKING_EXPIRATION = 'POST_BOOKING_EXPIRATION';
 const CLEAR_TABLES = 'CLEAR_TABLES';
 const REMOVE_TABLE = 'REMOVE_TABLE';
@@ -206,49 +204,6 @@ export const fetchBookingsBySize = (size, restid) => {
           return { ...doc.data(), docId: doc.id };
         });
         dispatch({ type: FETCH_BOOKINGS_BY_SIZE, payload: response });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-};
-
-export const fetchBookingsByRestaurant = (restid) => {
-  return async (dispatch) => {
-    firebase
-      .firestore()
-      .collection('bookings2')
-      .where('restid', '==', restid)
-      .get()
-      .then((querySnapshot) => {
-        const response = querySnapshot.docs.map((doc) => {
-          return { ...doc.data(), docId: doc.id };
-        });
-        dispatch({ type: FETCH_BOOKINGS_BY_RESTAURANT, payload: response });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-};
-
-export const fetchBookingsByRestaurantFiltered = (restid) => {
-  const now = new Date();
-  return async (dispatch) => {
-    firebase
-      .firestore()
-      .collection('bookings2')
-      .where('restid', '==', restid)
-      .where('date', '>', now)
-      .get()
-      .then((querySnapshot) => {
-        const response = querySnapshot.docs.map((doc) => {
-          return { ...doc.data(), docId: doc.id };
-        });
-        dispatch({
-          type: FETCH_BOOKINGS_BY_RESTAURANT_FILTERED,
-          payload: response,
-        });
       })
       .catch((error) => {
         console.error(error);

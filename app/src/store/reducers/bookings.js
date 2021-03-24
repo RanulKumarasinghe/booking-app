@@ -3,7 +3,7 @@ export const initialState = {
   all_tables_of_size: [],
   all_bookings_of_size: [],
   all_scheduled_tables: [],
-  all_bookings_of_restaurant: [],
+  // all_bookings_of_restaurant: [],
   unavailable_tables: [],
   users_bookings: [],
   tables: [],
@@ -137,27 +137,6 @@ const bookingsReducer = (state = initialState, action) => {
       return {
         ...state,
         users_bookings: action.payload,
-      }
-    }
-    case 'FETCH_BOOKINGS_BY_RESTAURANT': {
-      const now = new Date();
-      action.payload.forEach((element) => {
-        if (now.getTime() > element.date.toDate().getTime() && element.status === 'Ok') {
-          //dispatch(postBookingExpiration(element.docId));
-          element.status = 'expired';
-        } else {
-
-        }
-      });
-      return {
-        ...state,
-        all_bookings_of_restaurant: action.payload,
-      }
-    }
-    case 'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED': {
-      return {
-        ...state,
-        all_bookings_of_restaurant: action.payload,
       }
     }
     case 'Clear_User_Bookings': {

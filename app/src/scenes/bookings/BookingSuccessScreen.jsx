@@ -22,6 +22,14 @@ export default BookingSuccessScreen = (props) => {
         props.navigation.goBack()
     }
 
+    
+    // const onOrder = () => {
+    //   dispatch(newOrder(restaurant.id));
+    //   props.navigation.navigate('Order Type', {
+    //     restaurantId: restaurant.id
+    //   })
+    // };
+
     const date = props.route.params.date;
     const time = props.route.params.time;
     const guests = props.route.params.guests;
@@ -69,13 +77,13 @@ export default BookingSuccessScreen = (props) => {
 
             <Text style={{ marginTop: 5 }} category='p1'>Your table has been booked</Text>
             <Text style={{ marginTop: 5 }} category='p1'>{"For " + formatDate(date.getDate()) + " of " + (monthNames[date.getMonth()]) + " " + date.getFullYear() + ' at ' + addTimePadding(time)}</Text>
-            <View>
+            {/* <View>
                 <Text style={{maxWidth:"80%", marginTop: 20, textAlign:'center' }} category='p1' appearance='hint'>{"You can add an order to your booking, to receive food on arrival"}</Text>
 
-            </View>
+            </View> */}
             <Divider />
             <View style={styles.buttonContainer}>
-                <Button style={styles.button} onPress={() => { }}> Add an order to my booking</Button>
+                {/* <Button style={styles.button} onPress={onOrder}> Add an order to my booking</Button> */}
                 <Text style={{margin: 10, textAlign:'center' }} category='p1' appearance='hint'>{"Or choose one of the options below"}</Text>
                 <Button style={styles.button} onPress={navBack}>Book another table</Button>
                 <Button style={styles.button} onPress={navToBookingList}>View my bookings</Button>

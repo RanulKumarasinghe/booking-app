@@ -93,3 +93,48 @@ export const acceptOrder = (restaurantId, orderId) => {
     console.log('Error updating Order')
   })
 }
+export const FETCH_BOOKINGS_BY_RESTAURANT_FILTERED =
+  'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED';
+export const fetchBookingsByRestaurantFiltered = (restid) => {
+  const now = new Date();
+  return async (dispatch) => {
+    db.collection('bookings2')
+      .where('restid', '==', restid)
+      .where('date', '>', now)
+      .get()
+      .then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id };
+        });
+        console.log(response)
+
+        dispatch({
+          type: FETCH_BOOKINGS_BY_RESTAURANT_FILTERED,
+          payload: response,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+};
+
+
+export const FETCH_BOOKINGS_BY_RESTAURANT = 'FETCH_BOOKINGS_BY_RESTAURANT';
+
+export const fetchBookingsByRestaurant = (restid) => {
+  return async (dispatch) => {
+    db.collection('bookings2')
+      .where('restid', '==', restid)
+      .get()
+      .then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id };
+        });
+        dispatch({ type: FETCH_BOOKINGS_BY_RESTAURANT, payload: response });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+};

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
 import { Toggle, Text, Divider, Spinner, Layout, Icon } from '@ui-kitten/components';
 import BookingsList from '@/components/BookingsList';
-import { fetchBookingsByRestaurant, fetchBookingsByRestaurantFiltered, clearUserBookings } from '@/store/actions/bookings'
+import { fetchBookingsByRestaurant, fetchBookingsByRestaurantFiltered } from '@/store/actions/staffRestaurant'
 import { useSelector, useDispatch } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native'
 
@@ -11,12 +11,12 @@ export default ReservationsScreen = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  const [showLoadingSpinner, setshowLoadingSpinner] = React.useState(true);
-  const [filterToggle, setfilterToggle] = React.useState(true);
-  const [refresh, setRefresh] = React.useState(false);
+  const [showLoadingSpinner, setshowLoadingSpinner] = useState(true);
+  const [filterToggle, setfilterToggle] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
-  let isOffline = auth.uid === undefined;
-  const restaurant_bookings = useSelector(state => state.bookings.all_bookings_of_restaurant);
+  let isLoggedIn = auth.uid === undefined;
+  const restaurant_bookings = useSelector(state => state.staffRestaurant.restaurantBookings);
   const resid = useSelector(state => state.staffRestaurant.restaurant.id);
 
 
@@ -39,8 +39,7 @@ export default ReservationsScreen = ({ navigation }) => {
   const isFocused = useIsFocused()
 
   useEffect(() => {
-    if (!isOffline) {
-      dispatch(clearUserBookings());
+    if (!isLoggedIn) {
       setshowLoadingSpinner(true);
       if (filterToggle) {
         dispatch(fetchBookingsByRestaurantFiltered(resid));
@@ -75,7 +74,7 @@ export default ReservationsScreen = ({ navigation }) => {
   }
 
   const List = () => {
-    if (!showLoadingSpinner && !isOffline) {
+    if (!showLoadingSpinner && !isLoggedIn) {
       const sortedBookings = sortDates(restaurant_bookings);
       return (<BookingsList payload={sortedBookings} callback={onCheckedChange} />);
     } else {
@@ -96,7 +95,7 @@ export default ReservationsScreen = ({ navigation }) => {
   }
 
   const LoginError = () => {
-    if (isOffline) {
+    if (isLoggedIn) {
       return (
         <TouchableOpacity style={styles.loginError} onPress={() => {
           navigation.navigate(
@@ -116,7 +115,7 @@ export default ReservationsScreen = ({ navigation }) => {
   }
 
   const EmptyError = () => {
-    if (!isOffline) {
+    if (!isLoggedIn) {
       return (
         <TouchableOpacity style={styles.loginError} onPress={() => {
           navigation.navigate("Restaurants");
@@ -135,7 +134,7 @@ export default ReservationsScreen = ({ navigation }) => {
 
   //Screen render code
 
-  if (isOffline) {
+  if (isLoggedIn) {
     return (
       <LoginError />
     )
@@ -143,7 +142,8 @@ export default ReservationsScreen = ({ navigation }) => {
     return (
       <LoadingScreen />
     )
-  } else if (restaurant_bookings.length < 1) {
+  } 
+  else if (restaurant_bookings.length < 1) {
     <EmptyError />
   }
   else {
