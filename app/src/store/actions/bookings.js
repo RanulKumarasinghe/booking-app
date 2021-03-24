@@ -8,9 +8,6 @@ const ADD_TABLE = 'ADD_TABLE';
 const ADD_TIME = 'ADD_TIME';
 const PERFORM_SCHEDULE = 'PERFORM_SCHEDULE';
 const POST_TABLE = 'POST_TABLE';
-const FETCH_BOOKINGS_BY_USER = 'FETCH_BOOKINGS_BY_USER';
-const FETCH_BOOKINGS_BY_USER_FILTERED = 'FETCH_BOOKINGS_BY_USER_FILTERED';
-const Clear_User_Bookings = 'Clear_User_Bookings';
 const CLEAR_TIME = 'CLEAR_TIME';
 const POST_RESERVATION_CANCELATION = 'POST_RESERVATION_CANCELATION';
 
@@ -33,15 +30,6 @@ const ADD_NEW_BOOKING_TIME_DOCUMENT = 'ADD_NEW_BOOKING_TIME_DOCUMENT';
 //
 //
 
-export const clearUserBookings = () => {
-  return async (dispatch) => {
-    try {
-      dispatch({ type: Clear_User_Bookings, payload: true });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-};
 
 export const clearTime = () => {
   return async (dispatch) => {
@@ -211,45 +199,7 @@ export const fetchBookingsBySize = (size, restid) => {
   };
 };
 
-export const fetchBookingsByUser = (userid) => {
-  return async (dispatch) => {
-    firebase
-      .firestore()
-      .collection('bookings2')
-      .where('cusid', '==', userid)
-      .get()
-      .then((querySnapshot) => {
-        const response = querySnapshot.docs.map((doc) => {
-          return { ...doc.data(), docId: doc.id };
-        });
-        dispatch({ type: FETCH_BOOKINGS_BY_USER, payload: response });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-};
 
-export const fetchBookingsByUserFiltered = (userid) => {
-  const now = new Date();
-  return async (dispatch) => {
-    firebase
-      .firestore()
-      .collection('bookings2')
-      .where('cusid', '==', userid)
-      .where('date', '>', now)
-      .get()
-      .then((querySnapshot) => {
-        const response = querySnapshot.docs.map((doc) => {
-          return { ...doc.data(), docId: doc.id };
-        });
-        dispatch({ type: FETCH_BOOKINGS_BY_USER_FILTERED, payload: response });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-};
 
 //External posting actions (involving the firestore database and changing it)
 //
