@@ -240,6 +240,7 @@ export const postReservation = (tableid, restaurantId, user, guests, date, resta
   return async (dispatch) => {
     try {
       const res = await firebase.firestore().collection('bookingOrders').add({
+        booking: true,
         userId: user,
         date: date,
         status: 'Ok',

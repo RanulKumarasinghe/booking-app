@@ -56,6 +56,7 @@ const CheckOutScreen = (props) => {
     const userId = 'glJhg6e6vYS9AtXRE40Eo0DL42y1'
     getItems(data.cart, data.restaurantId).then(cartItems => {
       db.collection(`bookingOrders`).add({
+        order: true,
         restaurantId: data.restaurantId,
         restaurantName: data.restaurantId,
         orderStatus: 'pending',
