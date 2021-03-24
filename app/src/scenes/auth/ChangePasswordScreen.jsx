@@ -10,7 +10,7 @@ import {
 } from "@ui-kitten/components";
 import firebase from "src/utils/firebase";
 
-const ResetPasswordScreen = (props) => {
+const ChangePasswordScreen = (props) => {
   const [newPassword, setNewPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [passwordChanged, setPasswordChanged] = useState(false);
@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResetPasswordScreen;
+export default ChangePasswordScreen;

@@ -68,7 +68,7 @@ const Restaurant = (props) => {
         justifyContent: 'space-between'
       }}>
         <View style={{ flex: 1 }}>
-          <View>
+          <View style={styles.buttonSpacing}>
             <View style={styles.listRow}>
               <Image
                 source={{ uri: restaurant?.imageUrl }}
@@ -76,7 +76,7 @@ const Restaurant = (props) => {
               />
               <Text style={styles.font1}>{restaurant.name}</Text>
               <Text style={styles.font}>Restaurant Info:</Text>
-              <View>
+              <View style={styles.googleWarning}>
               <View style={styles.starrating}>
                 <StarRating
                   disabled={true}
@@ -121,10 +121,10 @@ const Restaurant = (props) => {
               </View>
               {  !restaurantManager && (
                 <>
-                  <View style={styles.buttonSpacing}>
+                  <View style={styles.buttonSpace}>
                   <Button onPress={onBooking}>Make A Booking</Button>
                   </View>
-                  <View style={styles.buttonSpacing}>
+                  <View style={styles.buttonSpace}>
                   <Button onPress={onOrder}>Order</Button>
                   </View>
                 </>) || null}
@@ -133,12 +133,12 @@ const Restaurant = (props) => {
                   restaurantId={restaurant.id} />
               </View>
             </View>
+            </View>
           </View>
           {/* <Divider />
           <Button onPress={onMenuList}>Menu List</Button> */}
           <Divider />
 
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -159,9 +159,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10
   },
-  font1: {
+  titleText: {
     fontWeight: 'bold',
     fontSize: 24,
+    alignSelf: 'center',
     marginTop: 1
   },
   button: {
@@ -169,7 +170,9 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   googleWarning: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    alignSelf: 'flex-end',
+    paddingTop: 15
   },
   googleWarningFont: {
     fontSize: 8
@@ -179,7 +182,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   bgImage: {
-    width: 400,
+    width: '100%',
     height: 180,
     paddingTop: 10
   },
@@ -187,7 +190,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   starrating: {
-    alignSelf: 'flex-start'
+    position: 'absolute',
+    alignSelf: 'flex-end'
   },
   menu: {
     paddingTop: 15,
@@ -210,6 +214,9 @@ const styles = StyleSheet.create({
   },
   openSpacing: {
     marginBottom: 20
+  },
+  buttonSpace: {
+    marginTop: 15
   }
 
 });

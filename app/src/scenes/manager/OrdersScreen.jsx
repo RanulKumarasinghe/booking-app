@@ -5,13 +5,20 @@ import { logout } from '@/store/actions/auth'
 import LoginRequired from '@/components/LoginRequired'
 import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 import BookingOrderEntry from '@/components/BookingOrderEntry'
+import {acceptOrder} from '@/store/actions/staffRestaurant';
 
 const OrderScreen = (props) => {
   const restaurant = useSelector(state => state.staffRestaurant.restaurant);
   const restaurantOrders = useSelector(state => state.staffRestaurant.restaurantOrders);
 
+  const onAcceptOrder = (orderId) => {
+    useDispatch(acceptOrder(restaurantId, orderId))
+  }
+
   const mappedData = restaurantOrders.map((order) => {
-    return ({ order })
+    return ({ order, isManager: !!restaurant, 
+      onAccept: onAcceptOrder
+    })
   })
     
   const List = () => {

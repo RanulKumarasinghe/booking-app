@@ -14,6 +14,11 @@ export const fetchRewardPoints = () =>{
     } 
 };
 
+// export const orderPoint = () =>{
+//   return async dispatch => {
+    
+//   } 
+// };
 // firestore()
 //   .collection('Users')
 //   // Filter results
