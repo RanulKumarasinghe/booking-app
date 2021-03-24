@@ -95,9 +95,9 @@ export const performSchedule = () => {
 //
 //
 
-export const checkTableAvailability = (size, restid, date) => {
+export const checkTableAvailability = (size, restaurantId, date) => {
   return (dispatch) => {
-    firebase.firestore().collection('reservations').where('restid', '==', restid).where('size', '>=', parseInt(size)).where('active', '==', true).get().then((querySnapshot) => {
+    firebase.firestore().collection('reservations').where('restaurantId', '==', restaurantId).where('size', '>=', parseInt(size)).where('active', '==', true).get().then((querySnapshot) => {
       const tableResponse = querySnapshot.docs.map((doc) => {
         return { ...doc.data(), id: doc.id };
       });
@@ -137,12 +137,12 @@ export const checkTableAvailability = (size, restid, date) => {
   };
 };
 
-export const fetchTables = (restid) => {
+export const fetchTables = (restaurantId) => {
   return async (dispatch) => {
     firebase
       .firestore()
       .collection('reservations')
-      .where('restid', '==', restid)
+      .where('restaurantId', '==', restaurantId)
       .get()
       .then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
@@ -156,12 +156,12 @@ export const fetchTables = (restid) => {
   };
 };
 
-export const fetchTablesBySize = (size, restid) => {
+export const fetchTablesBySize = (size, restaurantId) => {
   return async (dispatch) => {
     firebase
       .firestore()
       .collection('reservations')
-      .where('restid', '==', restid)
+      .where('restaurantId', '==', restaurantId)
       .where('size', '>=', parseInt(size))
       .where('active', '==', true)
       .get()
@@ -177,14 +177,14 @@ export const fetchTablesBySize = (size, restid) => {
   };
 };
 
-export const fetchBookingsBySize = (size, restid) => {
+export const fetchBookingsBySize = (size, restaurantId) => {
   const now = new Date();
   return async (dispatch) => {
     firebase
       .firestore()
       .collection('bookingOrders')
       .where('guests', '==', size)
-      .where('restid', '==', restid)
+      .where('restaurantId', '==', restaurantId)
       .where('date', '>', now)
       .get()
       .then((querySnapshot) => {
@@ -204,14 +204,14 @@ export const fetchBookingsBySize = (size, restid) => {
 //External posting actions (involving the firestore database and changing it)
 //
 //
-export const postTable = (restid, table) => {
+export const postTable = (restaurantId, table) => {
   return async (dispatch) => {
     try {
       const res = await firebase.firestore().collection('reservations').add({
         size: table.size,
         number: table.number,
         attributeIndexes: table.attributeIndexes,
-        restid: restid,
+        restaurantId: restaurantId,
         active: false,
       });
       dispatch({ type: POST_TABLE, payload: undefined });
@@ -236,17 +236,17 @@ export const removeTableFromDatabase = (tableid) => {
   };
 };
 
-export const postReservation = (tableid, restid, user, guests, date, restname, tableNum) => {
+export const postReservation = (tableid, restaurantId, user, guests, date, restaurantName, tableNum) => {
   return async (dispatch) => {
     try {
       const res = await firebase.firestore().collection('bookingOrders').add({
-        cusid: user,
+        userId: user,
         date: date,
         status: 'Ok',
         tableref: tableid,
         guests: guests,
-        restid: restid,
-        restname: restname,
+        restaurantId: restaurantId,
+        restaurantName: restaurantName,
         tableNumber: tableNum,
       });
       dispatch({ type: POST_BOOKING, payload: undefined });
@@ -296,7 +296,7 @@ export const postActivatedTables = (restId, tables) => {
       const response = await firebase
         .firestore()
         .collection('reservations')
-        .where('restid', '==', restId)
+        .where('restaurantId', '==', restId)
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach(async function (doc) {

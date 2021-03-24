@@ -95,11 +95,11 @@ export const acceptOrder = (restaurantId, orderId) => {
 }
 export const FETCH_BOOKINGS_BY_RESTAURANT_FILTERED =
   'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED';
-export const fetchBookingsByRestaurantFiltered = (restid) => {
+export const fetchBookingsByRestaurantFiltered = (restaurantId) => {
   const now = new Date();
   return async (dispatch) => {
     db.collection('bookingOrders')
-      .where('restid', '==', restid)
+      .where('restaurantId', '==', restaurantId)
       .where('date', '>', now)
       .get()
       .then((querySnapshot) => {
@@ -122,10 +122,10 @@ export const fetchBookingsByRestaurantFiltered = (restid) => {
 
 export const FETCH_BOOKINGS_BY_RESTAURANT = 'FETCH_BOOKINGS_BY_RESTAURANT';
 
-export const fetchBookingsByRestaurant = (restid) => {
+export const fetchBookingsByRestaurant = (restaurantId) => {
   return async (dispatch) => {
     db.collection('bookingOrders')
-      .where('restid', '==', restid)
+      .where('restaurantId', '==', restaurantId)
       .get()
       .then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {

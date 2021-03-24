@@ -50,7 +50,7 @@ const BookingsListEntry = ({ item }) => {
     return (
       <>
         <View style={styles.headerTextContainer}>
-          <Text category='h3' style={styles.headerTitle}>{booking.restname}</Text>
+          <Text category='h3' style={styles.headerTitle}>{booking.restaurantName}</Text>
           <Text category='p1' style={styles.headerSubTitle}>{constructDate(booking.date.seconds)}</Text>
         </View>
         <View style={styles.headerTextContainer}>
