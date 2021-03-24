@@ -104,7 +104,7 @@ export const checkTableAvailability = (size, restid, date) => {
 
       let promiseArr = tableResponse.map(table => {
         //TODO: Add fetch booking on picked date
-        return firebase.firestore().collection('bookings2').where('tableref', '==', table.id).get().then((querySnapshot) => {
+        return firebase.firestore().collection('bookingOrders').where('tableref', '==', table.id).get().then((querySnapshot) => {
           const bookingResponse = querySnapshot.docs.map((doc) => {
             return { date: doc.data().date, tableref: table.id };
           });
@@ -182,7 +182,7 @@ export const fetchBookingsBySize = (size, restid) => {
   return async (dispatch) => {
     firebase
       .firestore()
-      .collection('bookings2')
+      .collection('bookingOrders')
       .where('guests', '==', size)
       .where('restid', '==', restid)
       .where('date', '>', now)
@@ -239,7 +239,7 @@ export const removeTableFromDatabase = (tableid) => {
 export const postReservation = (tableid, restid, user, guests, date, restname, tableNum) => {
   return async (dispatch) => {
     try {
-      const res = await firebase.firestore().collection('bookings2').add({
+      const res = await firebase.firestore().collection('bookingOrders').add({
         cusid: user,
         date: date,
         status: 'Ok',
@@ -261,7 +261,7 @@ export const postReservationCancelation = (bookingId) => {
     try {
       const res = await firebase
         .firestore()
-        .collection('bookings2')
+        .collection('bookingOrders')
         .doc(bookingId)
         .update({
           status: 'cancelled',
@@ -278,7 +278,7 @@ export const postBookingExpiration = (bookingId) => {
     try {
       const res = await firebase
         .firestore()
-        .collection('bookings2')
+        .collection('bookingOrders')
         .doc(bookingId)
         .update({
           status: 'expired',

@@ -4,7 +4,7 @@ export const FETCH_BOOKINGS_BY_USER = 'FETCH_BOOKINGS_BY_USER'
 
 export const fetchBookingsByUser = (userid) => {
   return async (dispatch) => {
-    db.collection('bookings2')
+    db.collection('bookingOrders')
       .where('cusid', '==', userid)
       .get()
       .then((querySnapshot) => {
@@ -24,7 +24,7 @@ export const FETCH_BOOKINGS_BY_USER_FILTERED = 'FETCH_BOOKINGS_BY_USER_FILTERED'
 export const fetchBookingsByUserFiltered = (userid) => {
   const now = new Date();
   return async (dispatch) => {
-    db.collection('bookings2')
+    db.collection('bookingOrders')
       .where('cusid', '==', userid)
       .where('date', '>', now)
       .get()
