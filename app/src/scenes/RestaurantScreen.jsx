@@ -76,6 +76,7 @@ const Restaurant = (props) => {
               />
               <Text style={styles.font1}>{restaurant.name}</Text>
               <Text style={styles.font}>Restaurant Info:</Text>
+              <View>
               <View style={styles.starrating}>
                 <StarRating
                   disabled={true}
@@ -84,6 +85,8 @@ const Restaurant = (props) => {
                   fullStarColor={'#c7c708'}
                   starSize={15}
                 />
+              </View>
+              <Text style={styles.googleWarningFont}>Rating provided by Google</Text>
               </View>
               <View style={styles.description}>
                 <Text>{restaurant.description}</Text>
@@ -165,7 +168,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 15
   },
-
+  googleWarning: {
+    flexDirection: 'column'
+  },
+  googleWarningFont: {
+    fontSize: 8
+  },
   header: {
     marginTop: 25,
     flex: 1
