@@ -6,17 +6,17 @@ export const initialState = {
   unavailable_tables: [],
   tables: [],
   time: {},
-
+  docId: undefined,
   users_bookings: [],
 }
 
 const bookingsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UNAVAILABLE_TABLES': {
-        return {
-          ...state,
-          unavailable_tables: action.payload
-        }
+      return {
+        ...state,
+        unavailable_tables: action.payload
+      }
     }
     case 'FETCH_TABLES':
       return {
@@ -105,6 +105,13 @@ const bookingsReducer = (state = initialState, action) => {
         ...state,
         all_scheduled_tables: table_availability,
       }
+
+    case 'POST_BOOKING': {
+      return {
+        ...state,
+        docId: action.payload,
+      }
+    }
 
     case 'FETCH_TABLES_BY_SIZE': {
       return {

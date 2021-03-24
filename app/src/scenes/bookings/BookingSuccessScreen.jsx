@@ -9,6 +9,7 @@ export default BookingSuccessScreen = (props) => {
   const date = props.route.params.date;
   const time = props.route.params.time;
   const guests = props.route.params.guests;
+  const docId = props.route.params.docId;
 
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -25,13 +26,13 @@ export default BookingSuccessScreen = (props) => {
     props.navigation.goBack();
   };
 
-  // const onOrder = () => {
-  //   dispatch(newOrder(restaurant.id));
-  //   props.navigation.navigate('Order Type', {
-  //     restaurantId: restaurant.id,
-  //     bookingOrderId: bookingOrderId
-  //   })
-  // };
+  const onOrder = () => {
+    //   dispatch(newOrder(restaurant.id));
+    //   props.navigation.navigate('Order Type', {
+    //     restaurantId: restaurant.id,
+    //     bookingOrderId: docId
+    //   })
+  };
 
   const monthNames = [
     'January',
@@ -108,7 +109,7 @@ export default BookingSuccessScreen = (props) => {
             </View> */}
       <Divider />
       <View style={styles.buttonContainer}>
-        {/* <Button style={styles.button} onPress={onOrder}> Add an order to my booking</Button> */}
+        {<Button style={styles.button} onPress={onOrder}> Add an order to my booking</Button>}
         <Text
           style={{ margin: 10, textAlign: 'center' }}
           category='p1'
