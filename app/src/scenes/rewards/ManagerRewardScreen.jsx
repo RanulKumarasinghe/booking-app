@@ -4,13 +4,13 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   Image,
   View,
   StatusBar,
 } from "react-native";
-import { Divider, Icon, Layout, Button, Input } from "@ui-kitten/components";
+import { Button, Input, Modal, Card } from "@ui-kitten/components";
 import firebase from "src/utils/firebase";
+import QRCode from "react-native-qrcode-svg";
 
 const ManagerRewardScreen = (props) => {
   //State holds the money input by user
@@ -19,6 +19,8 @@ const ManagerRewardScreen = (props) => {
   const [points, setPoints] = useState(0);
 
   const [code, setCode] = useState();
+
+  const [visible, setVisible] = useState(false);
 
   //This func generates the code
   function makeid() {
@@ -38,6 +40,16 @@ const ManagerRewardScreen = (props) => {
   const uid = auth.uid;
   const user = auth.name;
 
+  const generateQRCode = () => {
+    if (code) {
+      setVisible(true);
+      console.log("QR Code has been generated");
+    } else {
+      setVisible(false);
+      console.log("Code was empty");
+    }
+  };
+
   //Converts value from String to Int
   const onTextChange = (money) => {
     var number = parseInt(money);
@@ -50,22 +62,27 @@ const ManagerRewardScreen = (props) => {
 
   //The info sent to the DB
   async function generateCode() {
-    rewards
-      .add({
-        money: money,
-        points: points,
-        restrauntId: restaurant.id,
-        employeeId: uid,
-        createdAt: new Date(),
-        code: makeid(),
-        codeUsed: false,
-      })
-      .then(() => {
-        console.log("Points added!");
-      })
-      .catch(function (error) {
-        console.error("There was an error, please try again: ", error);
-      });
+    if (money) {
+      rewards
+        .add({
+          money: money,
+          points: points,
+          restrauntId: restaurant.id,
+          employeeId: uid,
+          createdAt: new Date(),
+          code: makeid(),
+          codeUsed: false,
+        })
+        .then(() => {
+          console.log("Points added!");
+          generateQRCode();
+        })
+        .catch(function (error) {
+          console.error("There was an error, please try again: ", error);
+        });
+    } else {
+      console.error("Money cannot be empty", error);
+    }
   }
 
   return (
@@ -97,8 +114,26 @@ const ManagerRewardScreen = (props) => {
           //maxLength={5} is based on the average cost of a meal being £15-25
         />
         <View style={styles.inputButton}>
-          <Button onPress={generateCode}>Create Points Code</Button>
+          <Button onPress={() => generateCode}>Create Points Code</Button>
+          <Button appearance="filled" onPress={() => setVisible(true)}>
+            View QR code
+          </Button>
         </View>
+        <Modal
+          visible={visible}
+          backdropStyle={styles.backdrop}
+          onBackdropPress={() => setVisible(false)}
+        >
+          <Card disabled={true}>
+            <QRCode
+              value={code}
+              logoSize={50}
+              size={250}
+              logoBackgroundColor="transparent"
+            />
+            <Button onPress={() => setVisible(false)}>DISMISS</Button>
+          </Card>
+        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -110,20 +145,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  userImage: {
-    // width: "10%",
-    // height: "10%",
-    // alignSelf: "center",
-  },
-
   lineThrough: {
     borderBottomColor: "black",
     borderBottomWidth: 1,
   },
 
-  container: {
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
+  container: {},
 
   font: {
     alignSelf: "center",
@@ -131,7 +158,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    marginBottom: 10,
+    margin: 10,
     borderRadius: 50,
     width: "80%",
     alignSelf: "center",
@@ -141,23 +168,24 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     width: "50%",
-    height: 25,
+    height: 300,
     paddingLeft: "10%",
   },
 
   inputButton: {
-    marginBottom: 10,
+    flex: 1,
     borderRadius: 50,
     width: "80%",
     alignSelf: "center",
     height: "50%",
+    margin: 10,
   },
   userImage: {
     width: "100%",
-    height: "70%",
+    height: "60%",
     alignSelf: "center",
   },
-  pointsEr: {},
+
   textInput: {
     height: 40,
     borderColor: "gray",
@@ -165,6 +193,9 @@ const styles = StyleSheet.create({
     width: "80%",
     alignSelf: "center",
     alignContent: "center",
+  },
+  backdrop: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });
 
