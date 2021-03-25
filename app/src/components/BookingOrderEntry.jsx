@@ -3,25 +3,17 @@ import { Toggle, Text, Divider, Button, Spinner, Layout, Icon } from '@ui-kitten
 import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 
 const BookingsListEntry = ({ item }) => {
-  // console.log(props)
-  let isBooking
-  if (item.element) {
-    isBooking = true
-  } else {
-    isBooking = false
-  }
+  const entry = item.element;
 
-  const booking = item.element;
-  const order = item.order;
-
+  // Checking  if entry has a booking
+  let haveBooking = entry.date ? true : false
+  let haveOrder = entry.cart ? true : false
 
   const test = () => {
     console.log(isManager)
-    // console.log(booking)
-    // console.log(order)
   }
 
-  const isCancelled = (booking ? booking.status == 'cancelled' : false) || (order ? order.status == 'cancelled' : false)
+  const isCancelled = (entry.status == 'cancelled') || (entry.orderStatus == 'cancelled')
 
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -50,13 +42,13 @@ const BookingsListEntry = ({ item }) => {
     return (
       <>
         <View style={styles.headerTextContainer}>
-          <Text category='h3' style={styles.headerTitle}>{booking.restname}</Text>
-          <Text category='p1' style={styles.headerSubTitle}>{constructDate(booking.date.seconds)}</Text>
+          <Text category='h3' style={styles.headerTitle}>{entry.restaurantName}</Text>
+          <Text category='p1' style={styles.headerSubTitle}>{constructDate(entry.date.seconds)}</Text>
         </View>
         <View style={styles.headerTextContainer}>
-          <Text category='h3' style={styles.headerTitle} >Table number: {booking.tableNumber}</Text>
+          <Text category='h3' style={styles.headerTitle} >Table number: {entry.tableNumber}</Text>
           <Text category='p1' style={styles.headerSubTitle}>
-            Status: {capitalize(booking.status)}
+            Status: {capitalize(entry.status)}
           </Text>
         </View>
       </>
@@ -64,15 +56,15 @@ const BookingsListEntry = ({ item }) => {
   }
 
   const BookingContent = () => {
-    if (booking) {
+    if (haveBooking) {
       return (
         <>
           <Divider />
           <Text style={styles.typeTitle}>{"Booking"}</Text>
           <Divider />
           <View style={{ flexDirection: 'row', margin: 5 }}>
-            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {booking.guests}</Text>
-            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(booking.date.seconds)}</Text>
+            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Guests: {entry.guests}</Text>
+            <Text category='p1' style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Time: {constructTime(entry.date.seconds)}</Text>
           </View>
         </>
       )
@@ -83,13 +75,16 @@ const BookingsListEntry = ({ item }) => {
     return (
       <>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.headerTitle}>{'Restaurant Name'}</Text>
-          <Text style={styles.headerSubTitle}>{order.type}</Text>
+          <Text style={styles.headerTitle}>{entry.restaurantName}</Text>
+          <Text style={styles.headerSubTitle}>ASAP</Text>
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.headerTitle}>
+          <Text category='h3' style={styles.headerTitle} >
+            {/* Table number: {entry.tableNumber} */}
+          </Text>
+          <Text style={styles.headerSubTitle}>
             Status:
-            {order.status ? capitalize(order.status) : null}
+            {entry.orderStatus ? capitalize(entry.orderStatus) : null}
           </Text>
         </View>
       </>
@@ -97,14 +92,14 @@ const BookingsListEntry = ({ item }) => {
   }
 
   const OrderContent = () => {
-    if (order) {
+    if (haveOrder) {
       return (
         <>
           <Divider />
           <Text style={styles.typeTitle}>{"Order"}</Text>
           <Divider />
           <FlatList
-            data={order.cart}
+            data={entry.cart}
             // keyExtractor={(item) => item}
             renderItem={({ item }) => (
               <View style={{ flexDirection: 'row', alignContent: 'space-between', margin: 5 }}>
@@ -124,7 +119,7 @@ const BookingsListEntry = ({ item }) => {
       {/* Header */}
       <ImageBackground source={image} style={styles.headerImg}>
         {/* <View style={styles.headerContainer}> */}
-        {isBooking && BookingHeader() || OrderHeader()}
+        {haveBooking && BookingHeader() || OrderHeader()}
       </ImageBackground>
       {/*Content */}
       <View style={styles.listContentContainer, (isCancelled ? styles.listEntryCanceled : {})}>
@@ -133,7 +128,7 @@ const BookingsListEntry = ({ item }) => {
       </View>
       {/* Buutons */}
       <View style={styles.buttonContainer}>
-        <Button style={styles.button} size='medium' status='basic' onPress={() => { item.onCancel(booking.docId) }}>
+        <Button style={styles.button} size='medium' status='basic' onPress={() => { item.onCancel(entry.docId) }}>
           Cancel
         </Button>
         {/* {item.isManager && order && (

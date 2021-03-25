@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, View, TextInput } from "react-native";
-import { Divider, Icon, Button, Layout, Datepicker, List, ListItem, Spinner, Modal, Card, Text } from '@ui-kitten/components';
+import { SafeAreaView, StyleSheet, View} from "react-native";
+import { Divider, Icon, Button, List, ListItem, Spinner, Modal, Card, Text } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { postReservation, fetchTablesBySize, fetchBookingsBySize, performSchedule, addTime, clearTables, checkTableAvailability } from '@/store/actions/bookings';
+import { postReservation, fetchTablesBySize, performSchedule, clearTables, checkTableAvailability } from '@/store/actions/bookings';
 import firebase from 'src/utils/firebase';
 import { TouchableOpacity } from "react-native";
 
@@ -11,6 +11,7 @@ const BookingScreen = (props) => {
   const all_tables_of_size = useSelector(state => state.bookings.all_tables_of_size);
   const all_scheduled_tables = useSelector(state => state.bookings.all_scheduled_tables);
   const unavailable_tables = useSelector(state => state.bookings.unavailable_tables);
+  const documentId = useSelector(state => state.bookings.docId);
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch()
 
@@ -132,6 +133,8 @@ const BookingScreen = (props) => {
           time: bookingTime,
           date: bookingDate,
           guests: bookingGuests,
+          docId:documentId,
+          // bookingOrderId: ,
           callback: refreshPage,
         });
 
