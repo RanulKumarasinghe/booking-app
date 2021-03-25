@@ -49,7 +49,8 @@ const getGoogleData = (googleId) => {
 }
  
 const getOrders = (restaurantId) => {
-  return db.collection(`restaurants/${restaurantId}/orders`).get()
+  return db.collection('bookingOrders')
+  .where('restaurantId', '==', restaurantId).get()
   .then((querySnapshot) => {
     const ordersArray = querySnapshot.docs.map((doc) => {
       return { ...doc.data(), id: doc.id }
@@ -93,3 +94,25 @@ export const acceptOrder = (restaurantId, orderId) => {
     console.log('Error updating Order')
   })
 }
+
+export const FETCH_BOOKINGS_BY_RESTAURANT_FILTERED =
+  'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED';
+
+export const FETCH_BOOKINGS_BY_RESTAURANT = 'FETCH_BOOKINGS_BY_RESTAURANT';
+
+export const fetchBookingsByRestaurant = (restaurantId) => {
+  return async (dispatch) => {
+    db.collection('bookingOrders')
+      .where('restaurantId', '==', restaurantId)
+      .get()
+      .then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), docId: doc.id };
+        });
+        dispatch({ type: FETCH_BOOKINGS_BY_RESTAURANT, payload: response });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+};

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
 import { Toggle, Text, Divider, Spinner, Layout, Icon } from '@ui-kitten/components';
 import BookingsList from '@/components/BookingsList';
-import { fetchBookingsByUser, fetchBookingsByUserFiltered, clearUserBookings, postBookingExpiration } from '@/store/actions/bookings'
+import { fetchBookingsByUser, fetchBookingsByUserFiltered, clearUserBookings } from '@/store/actions/bookingOrders'
 import { useSelector, useDispatch } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native'
 
@@ -16,7 +16,7 @@ export default BookingListScreen = ({ navigation }) => {
     const [refresh, setRefresh] = React.useState(false);
 
     let isOffline = auth.uid === undefined;
-    const users_bookings = useSelector(state => state.bookings.users_bookings);
+    const bookingOrders = useSelector(state => state.bookingOrders.bookingOrders);
 
     const sortDates = (array) => {
         array.sort((a, b) => {
@@ -39,11 +39,11 @@ export default BookingListScreen = ({ navigation }) => {
         if (!isOffline) {
             dispatch(clearUserBookings());
             setshowLoadingSpinner(true);
-            if (filterToggle) {
-                dispatch(fetchBookingsByUserFiltered(auth.uid));
-            } else {
-                dispatch(fetchBookingsByUser(auth.uid));
-            }
+            // if (filterToggle) {
+            //     dispatch(fetchBookingsByUserFiltered(auth.uid));
+            // } else {
+            dispatch(fetchBookingsByUser(auth.uid));
+            // }
             setTimeout(() => {
                 setshowLoadingSpinner(false);
             }, 2000);
@@ -73,8 +73,8 @@ export default BookingListScreen = ({ navigation }) => {
 
     const List = () => {
         if (!showLoadingSpinner && !isOffline) {
-            const sortedBookings = sortDates(users_bookings);
-            return (<BookingsList payload={sortedBookings} callback={doRefresh} />);
+            // const sortedBookings = sortDates(bookingOrders);
+            return (<BookingsList payload={bookingOrders} callback={doRefresh} />);
         } else {
             return (<></>)
         }
@@ -141,7 +141,7 @@ export default BookingListScreen = ({ navigation }) => {
         return (
             <LoadingScreen />
         )
-    } else if (users_bookings.length < 1) {
+    } else if (bookingOrders.length < 1) {
         return (
             <EmptyError />
         )

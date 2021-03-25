@@ -3,21 +3,20 @@ export const initialState = {
   all_tables_of_size: [],
   all_bookings_of_size: [],
   all_scheduled_tables: [],
-  all_bookings_of_restaurant: [],
   unavailable_tables: [],
-  users_bookings: [],
   tables: [],
   time: {},
-
+  docId: undefined,
+  users_bookings: [],
 }
 
 const bookingsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UNAVAILABLE_TABLES': {
-        return {
-          ...state,
-          unavailable_tables: action.payload
-        }
+      return {
+        ...state,
+        unavailable_tables: action.payload
+      }
     }
     case 'FETCH_TABLES':
       return {
@@ -107,6 +106,13 @@ const bookingsReducer = (state = initialState, action) => {
         all_scheduled_tables: table_availability,
       }
 
+    case 'POST_BOOKING': {
+      return {
+        ...state,
+        docId: action.payload,
+      }
+    }
+
     case 'FETCH_TABLES_BY_SIZE': {
       return {
         ...state,
@@ -119,53 +125,8 @@ const bookingsReducer = (state = initialState, action) => {
         all_bookings_of_size: action.payload,
       }
     }
-    case 'FETCH_BOOKINGS_BY_USER': {
-      const now = new Date();
-      action.payload.forEach((element) => {
-        if (now.getTime() > element.date.toDate().getTime() && element.status === 'Ok') {
-          //dispatch(postBookingExpiration(element.docId));
-          element.status = 'expired';
-        } else {
-        }
-      });
-      return {
-        ...state,
-        users_bookings: action.payload,
-      }
-    }
-    case 'FETCH_BOOKINGS_BY_USER_FILTERED': {
-      return {
-        ...state,
-        users_bookings: action.payload,
-      }
-    }
-    case 'FETCH_BOOKINGS_BY_RESTAURANT': {
-      const now = new Date();
-      action.payload.forEach((element) => {
-        if (now.getTime() > element.date.toDate().getTime() && element.status === 'Ok') {
-          //dispatch(postBookingExpiration(element.docId));
-          element.status = 'expired';
-        } else {
 
-        }
-      });
-      return {
-        ...state,
-        all_bookings_of_restaurant: action.payload,
-      }
-    }
-    case 'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED': {
-      return {
-        ...state,
-        all_bookings_of_restaurant: action.payload,
-      }
-    }
-    case 'Clear_User_Bookings': {
-      return {
-        ...state,
-        users_bookings: [],
-      }
-    } case 'CLEAR_TIME': {
+    case 'CLEAR_TIME': {
       return {
         ...state,
         time: undefined,
