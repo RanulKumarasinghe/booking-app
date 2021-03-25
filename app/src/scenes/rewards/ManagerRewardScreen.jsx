@@ -76,6 +76,7 @@ const ManagerRewardScreen = (props) => {
         })
         .then(() => {
           console.log("Points added!");
+          generateQRCode();
         })
         .catch(function (error) {
           console.error("There was an error, please try again: ", error);
@@ -115,8 +116,8 @@ const ManagerRewardScreen = (props) => {
         />
         <View style={styles.inputButton}>
           <Button onPress={generateCode}>Create Points Code</Button>
-          <Button appearance="filled" onPress={generateQRCode}>
-            Generate QR code
+          <Button appearance="filled" onPress={setVisible(true)}>
+            View QR code
           </Button>
         </View>
         <Modal
@@ -126,9 +127,9 @@ const ManagerRewardScreen = (props) => {
         >
           <Card disabled={true}>
             <QRCode
-              value="the 6 alpha-num code generated"
-              logo={{ uri: code, size: "70" }}
-              logoSize={10}
+              value={code}
+              logoSize={50}
+              size={250}
               logoBackgroundColor="transparent"
             />
             <Button onPress={() => setVisible(false)}>DISMISS</Button>
@@ -150,9 +151,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
 
-  container: {
-    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
+  container: {},
 
   font: {
     alignSelf: "center",
@@ -160,7 +159,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    marginBottom: 10,
+    margin: 10,
     borderRadius: 50,
     width: "80%",
     alignSelf: "center",
@@ -180,6 +179,7 @@ const styles = StyleSheet.create({
     width: "80%",
     alignSelf: "center",
     height: "50%",
+    margin: 10,
   },
   userImage: {
     width: "100%",
