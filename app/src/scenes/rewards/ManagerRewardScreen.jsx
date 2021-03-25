@@ -21,7 +21,6 @@ const ManagerRewardScreen = (props) => {
   const [code, setCode] = useState();
 
   const [visible, setVisible] = useState(false);
-  const [nameChanged, setNameChanged] = useState(false);
 
   //This func generates the code
   function makeid() {
@@ -115,8 +114,8 @@ const ManagerRewardScreen = (props) => {
           //maxLength={5} is based on the average cost of a meal being £15-25
         />
         <View style={styles.inputButton}>
-          <Button onPress={generateCode}>Create Points Code</Button>
-          <Button appearance="filled" onPress={setVisible(true)}>
+          <Button onPress={() => generateCode}>Create Points Code</Button>
+          <Button appearance="filled" onPress={() => setVisible(true)}>
             View QR code
           </Button>
         </View>
