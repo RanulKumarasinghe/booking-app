@@ -25,6 +25,8 @@ const Restaurant = (props) => {
     restaurant = restaurants.find(restaurant => restaurant.id === itemId);
   }
 
+  console.log(restaurantManager);
+  const test = () => {
   const testFunction = Firebase.functions().httpsCallable('getData')
     testFunction().then((result) => {
         console.log(result);
@@ -32,8 +34,7 @@ const Restaurant = (props) => {
       .catch(e=> {
         console.log(e)
       })
-
-
+    }
   // console.log(menu);
   // const [data, setData] = useState({});
   const [isLoading, setLoading] = useState(true);
@@ -50,7 +51,7 @@ const Restaurant = (props) => {
   });
 
   const onOrder = () => {
-    dispatch(newOrder(restaurant.id));
+    dispatch(newOrder(restaurant.id, null));
     props.navigation.navigate('Order Type', {
       restaurantId: restaurant.id
     })
@@ -134,6 +135,9 @@ const Restaurant = (props) => {
                   </View>
                   <View style={styles.buttonSpace}>
                   <Button onPress={onOrder}>Order</Button>
+                  {/* </View>
+                  <View style={styles.buttonSpace}>
+                  <Button onPress={test}>Test</Button> */}
                   </View>
                 </>) || null}
               <View style={styles.menu}>

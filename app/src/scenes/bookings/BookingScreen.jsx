@@ -11,7 +11,7 @@ const BookingScreen = (props) => {
   const all_tables_of_size = useSelector(state => state.bookings.all_tables_of_size);
   const all_scheduled_tables = useSelector(state => state.bookings.all_scheduled_tables);
   const unavailable_tables = useSelector(state => state.bookings.unavailable_tables);
-  const documentId = useSelector(state => state.bookings.docId);
+  const documentId = useSelector(state => state.bookings.id);
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch()
 
@@ -133,8 +133,8 @@ const BookingScreen = (props) => {
           time: bookingTime,
           date: bookingDate,
           guests: bookingGuests,
-          docId: documentId,
-          restaurantId: restId,
+          id: documentId,
+          restaurantId:restId,
           // bookingOrderId: ,
           callback: refreshPage,
         });

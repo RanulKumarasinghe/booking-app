@@ -283,7 +283,7 @@ const ListComponent = (data) => {
         setSelectedTables([...newTableArray]);
       }
       dispatch(removeTable(props.index));
-      dispatch(removeTableFromDatabase(props.item.docId))
+      dispatch(removeTableFromDatabase(props.item.id))
     }}>Remove</Button>
   );
 

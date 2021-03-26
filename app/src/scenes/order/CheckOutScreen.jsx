@@ -3,7 +3,7 @@ import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Text, Divider, Button, Layout } from '@ui-kitten/components';
 import Firebase, {db} from '@/utils/firebase'
 import { useDispatch, useSelector } from 'react-redux'
-import { login } from '@/store/actions/auth'
+import { proccessCheckout } from '@/store/actions/order'
 
 
 const CheckOutScreen = (props) => {
@@ -22,73 +22,31 @@ const CheckOutScreen = (props) => {
         console.log(e)
       })
   }
-
-
-  const checkout = async () => {
-    const data = {
-      cart: decorator(order.cart),
-      restaurantId: order.orderRestaurantId
-    }
-
-    proccessCheckout(data)
-
-    props.navigation.navigate('Order Completed')
-  }
-
-  const proccessCheckout = (data) => {
-    // console.log(data.restaurantId)
-
-    const fetchItems = (restaurantId, item) => {
-      return db.doc(`restaurants/${restaurantId}/menu/${item.itemId}`).get().then(doc => {
-        return {
-          item: doc.data(),
-          quantity: item.quantity,
-        }
-      }).catch(err =>{
-        console.log("err fetching files")
-      })
-    }
-    
-    const getItems = async (cart, restaurantId) => {
-      return Promise.all(cart.map(cartItem => fetchItems(restaurantId, cartItem)))
-    }
-    
-    const userId = 'glJhg6e6vYS9AtXRE40Eo0DL42y1'
-    getItems(data.cart, data.restaurantId).then(cartItems => {
-      db.collection(`bookingOrders`).add({
-        order: true,
-        restaurantId: data.restaurantId,
-        restaurantName: data.restaurantId,
-        orderStatus: 'pending',
-        // orderStatus: 'accepted',
-        // orderStatus: 'done',
-
-        // Schedule a Order / Booking
-        // No Booking - ASAP
-        userId: userId,
-        createdAt: new Date(),
-        cart: cartItems
-      }).then(() => {
-        console.log('Order Added!');
-      })
-    }).catch(err =>  {
-      console.log('Something went wrong');
-      console.log(err);
-    })
-  }
-
-  const test2 = async () => {
+  const test2 = () => {
     console.log(order)
   }
 
-  const decorator = (cart) => {
-    return cart.map(cartEntry => { 
-      return {
-        itemId: cartEntry.item.id,
-        quantity: cartEntry.quantity
-      }
-    })
-  }
+  const checkout = () => {
+    const data = {
+      cart: decorator(order.cart),
+      restaurantId: order.orderRestaurantId,
+      bookingId: order.bookingId,
+    };
+  
+    proccessCheckout(data);
+  
+    props.navigation.navigate('Order Completed');
+  };
+
+
+const decorator = (cart) => {
+  return cart.map((cartEntry) => {
+    return {
+      itemId: cartEntry.item.id,
+      quantity: cartEntry.quantity,
+    };
+  });
+};
 
   const calculateTotal = () => {
     let total = 0
@@ -121,12 +79,12 @@ const CheckOutScreen = (props) => {
         <Text style={[styles.itemName, {alignSelf: 'flex-end', paddingRight: 20}]}>Total: £{calculateTotal()}</Text>
         <View style={styles.buttonSpacing}>
           <Button onPress={checkout}>Order</Button>
+          <Button onPress={test2}>Order</Button>
         </View>
       </Layout>
     </SafeAreaView>
-  );
-
-};
+  )
+}
 
 
 const styles = StyleSheet.create({

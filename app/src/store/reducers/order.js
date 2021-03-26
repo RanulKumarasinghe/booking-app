@@ -9,7 +9,10 @@ const orderReducer = (state = initialState, action) => {
     switch (action.type) {
         case NEW_ORDER:
           //this action
-          return {...initialState, orderRestaurantId: action.restaurantId, cart: []};
+          if (action.bookingId)
+            return {...initialState, orderRestaurantId: action.restaurantId, bookingId: action.bookingId, cart: []};
+          else 
+            return {...initialState, orderRestaurantId: action.restaurantId, cart: []};
         case SET_ORDER_TYPE:
           console.log(action)
           return {...state, type: action.orderType};

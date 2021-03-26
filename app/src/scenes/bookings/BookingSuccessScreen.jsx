@@ -4,13 +4,14 @@ import { StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import { newOrder } from '@/store/actions/order'
 
 export default BookingSuccessScreen = (props) => {
   const date = props.route.params.date;
   const time = props.route.params.time;
   const guests = props.route.params.guests;
-  const docId = props.route.params.docId;
-  const restId = props.route.params.restaurantId;
+  const bookingId = props.route.params.id;
+  const restaurantId = props.route.params.restaurantId;
 
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -28,11 +29,10 @@ export default BookingSuccessScreen = (props) => {
   };
 
   const onOrder = () => {
-    //   dispatch(newOrder(restaurant.id));
-    //   props.navigation.navigate('Order Type', {
-    //     restaurantId: restaurant.id,
-    //     bookingOrderId: docId
-    //   })
+    dispatch(newOrder(restaurantId, bookingId));
+    props.navigation.navigate('Order Type', {
+      restaurantId: restaurantId,
+    })
   };
 
   const monthNames = [

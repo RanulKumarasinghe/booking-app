@@ -1,4 +1,5 @@
 const functions = require("firebase-functions");
+const axios = require('axios');
 
 // The Firebase Admin SDK to access Firestore.
 const admin = require('firebase-admin');
@@ -48,55 +49,71 @@ exports.placeOrder = functions.https.onCall(async (data, context) => {
   })
 });
 
-exports.getData = functions.https.onCall(async (data, context) => {
-  // pubsub.schedule('41 15 * * *').timeZone('Europe/London').onRun
-  const fetchGooglePlacesId = () => {
-    return admin.firestore().doc(`restaurants`).get().then(doc => {
-      return {
-        restaurants: doc.data(),
-        google_id: restaurants.google_id,
-      }
+exports.getData = functions.https.pubsub.schedule('00 00 * * *').timeZone('Europe/London').onRun((data) => {
+
+  // pubsub.schedule('00 00 * * *').timeZone('Europe/London').onRun
+
+    return admin.firestore().collection(`restaurants`).get().then((querySnapshot) => {
+      const menuArray = querySnapshot.docs.map((doc) => {
+        params = {
+          place_id: doc.data().google_id,
+          fields: "rating,formatted_phone_number,opening_hours,vicinity",
+          key: 'AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc',
+        }
+        return axios.get('https://maps.googleapis.com/maps/api/place/details/json', { params }).then(response => {
+          const newRestaurantValues = {
+            googleData: response.data.result
+          }
+        return admin.firestore().doc(`restaurants/${doc.id}`).update(newRestaurantValues).then(() => {
+          console.log('Restaurant Updated!');
+        }).catch(err =>{
+          console.log("err updating files")
+        })
+        }).catch(e => {
+          return { ...data}
+        })
+      })
     }).catch(err =>{
-      console.log("err fetching files")
+      console.log("err updating files")
     })
-  }
 
-  const getGooglePlacesData = async (places, restaurantId) => {
-    return Promise.all(places.map(googlePlace => fetchGooglePlacesId(restaurantId, googlePlace)))
-  }
 
-  getGooglePlacesData(data.places, restaurant.google_id).then(data => {
-    const axios = require('axios');
-    params = {
-      place_id: restaurant.google_id,
-      fields: "rating,formatted_phone_number,opening_hours,vicinity",
-      key: 'AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc',
-    }
-    return axios.get('https://maps.googleapis.com/maps/api/place/details/json', { params }).then(response => {
-      return { googleData: response.data.result }
-    }).catch(e => {
-      return { ...data}
-    })
-  })
+  // const getGooglePlacesData = async (places, restaurantId) => {
+  //   return Promise.all(places.map(googlePlace => fetchGooglePlacesId(restaurantId, googlePlace)))
+  // }
 
-  const updateRestaurant = async(places, googleId) => {
-    return Promise.all(places.map(restaurant => getGooglePlacesData(googleId, restaurant)))
-  }
+  // getGooglePlacesData(data.places, restaurant.google_id).then(data => {
+  //   const axios = require('axios');
+  //   params = {
+  //     place_id: restaurant.google_id,
+  //     fields: "rating,formatted_phone_number,opening_hours,vicinity",
+  //     key: 'AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc',
+  //   }
+  //   return axios.get('https://maps.googleapis.com/maps/api/place/details/json', { params }).then(response => {
+  //     return { googleData: response.data.result }
+  //   }).catch(e => {
+  //     return { ...data}
+  //   })
+  // })
 
-  updateRestaurant(data.places, restaurantId).then(data => {
+  // const updateRestaurant = async(places, googleId) => {
+  //   return Promise.all(places.map(restaurant => getGooglePlacesData(googleId, restaurant)))
+  // }
 
-      const newRestaurantValues = {
-        rating: googleData.rating,
-        phone_number: googleData.formatted_phone_number,
-        opening_hours: googleData.opening_hours,
-        address: googleData.vicinity
-      }
-    return admin.firestore().doc(`restaurants/${restaurantId}`).update(newRestaurantValues).then(() => {
-      console.log('Restaurant Updated!');
-    }).catch(err =>{
-      console.log("err fetching files")
-    })
-  })
+  // updateRestaurant(data.places, restaurantId).then(data => {
+
+  //     const newRestaurantValues = {
+  //       rating: googleData.rating,
+  //       phone_number: googleData.formatted_phone_number,
+  //       opening_hours: googleData.opening_hours,
+  //       address: googleData.vicinity
+  //     }
+  //   return admin.firestore().doc(`restaurants/${restaurantId}`).update(newRestaurantValues).then(() => {
+  //     console.log('Restaurant Updated!');
+  //   }).catch(err =>{
+  //     console.log("err fetching files")
+  //   })
+  // })
 
 });
 

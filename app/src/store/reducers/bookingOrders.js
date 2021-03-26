@@ -16,7 +16,7 @@ const bookingOrdersReducer = (state = initialState, action) => {
       const now = new Date();
       action.payload.forEach((element) => {
         if (!element.cart && now.getTime() > element.date.toDate().getTime() && element.status === 'Ok') {
-          //dispatch(postBookingExpiration(element.docId));
+          //dispatch(postBookingExpiration(element.id));
           element.status = 'Expired';
         }
       });

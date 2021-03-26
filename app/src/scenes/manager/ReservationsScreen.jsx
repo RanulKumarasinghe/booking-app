@@ -69,6 +69,8 @@ export default ReservationsScreen = ({ navigation }) => {
     );
   }
 
+  const restaurant_bookings_filtered = restaurant_bookings.filter((booking) => booking.booking)
+
   const List = () => {
     if (!showLoadingSpinner && !isLoggedIn) {
       let bookingList = restaurant_bookings;

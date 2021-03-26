@@ -28,7 +28,7 @@ export default BookingsList = (props) => {
     <FlatList
       data={mappedData}
       renderItem={BookingsListEntry}
-      keyExtractor={(item) => item.element.docId}
+      keyExtractor={(item) => item.element.id}
     />
   );
 }

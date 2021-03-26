@@ -15,7 +15,9 @@ const OrderScreen = (props) => {
     useDispatch(acceptOrder(restaurantId, orderId))
   }
 
-  const mappedData = restaurantOrders.map((order) => {
+  const orderCheck = (order) => order.order
+
+  const mappedData = restaurantOrders.filter(orderCheck).map((order) => {
     return ({ element: order, isManager: !!restaurant, 
       onAccept: onAcceptOrder
     })
@@ -26,7 +28,7 @@ const OrderScreen = (props) => {
         <FlatList
         data={mappedData}
         renderItem={BookingOrderEntry}
-        keyExtractor={(item) => item.element.docId}
+        keyExtractor={(item) => item.element.id}
       />  
       )
   }

@@ -20,11 +20,13 @@ const restaurantReducer = (state = initialState, action) => {
     //Filters restaurant by name
     case SET_RESTAURANT:
       return {
+        ...state,
         restaurant: action.restaurant,
         restaurantOrders: action.restaurantOrders,
       };
     case UPDATE_RESTAURANT:
       return {
+        ...state,
         restaurant: {...state.restaurant, ...action.newRestaurantValues},
         restaurantOrders: {...state.restaurantOrders},
       };
@@ -49,7 +51,7 @@ const restaurantReducer = (state = initialState, action) => {
       const now = new Date();
       action.payload.forEach((element) => {
         if (!element.cart && element.date && now.getTime() > element.date.toDate().getTime() && element.status === 'Ok') {
-          //dispatch(postBookingExpiration(element.docId));
+          //dispatch(postBookingExpiration(element.id));
           element.status = 'Expired';
         } else {
 

@@ -12,7 +12,7 @@ export default ExtendBookingScreen = (props) => {
 
     useEffect(() => {
         if (extendable) {
-            dispatch(extendReservation(entry.details.docId));
+            dispatch(extendReservation(entry.details.id));
         }
     }, [extendable]);
 

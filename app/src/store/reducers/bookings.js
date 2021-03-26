@@ -6,7 +6,7 @@ export const initialState = {
   unavailable_tables: [],
   tables: [],
   time: {},
-  docId: undefined,
+  id: undefined,
   extend: undefined,
   users_bookings: [],
 }
@@ -56,7 +56,7 @@ const bookingsReducer = (state = initialState, action) => {
     case 'POST_BOOKING': {
       return {
         ...state,
-        docId: action.payload,
+        id: action.payload,
       }
     }
 
