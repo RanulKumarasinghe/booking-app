@@ -29,7 +29,7 @@ const MenuItem = (props) => {
           </View>
           <View style={styles.listRow}>
           <Text style={{width: 300 }} category='p2'>{`£${props.price}`}</Text>
-          <Text style={{width: 300 }} category='p2'>{props.type}</Text>
+          <Text style={{textAlign: 'right', alignSelf: 'stretch' }} category='p2'>{props.type}</Text>
           </View>
         </View>
       </>
@@ -42,7 +42,9 @@ const MenuItem = (props) => {
 
 const styles = StyleSheet.create({
   item: {
-    padding: 10,
+    paddingTop: 10,
+    paddingBottom:10,
+    paddingHorizontal: 10,
     backgroundColor: '#dedede',
   },
   image: {
@@ -52,7 +54,8 @@ const styles = StyleSheet.create({
   },
   listRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    flexWrap: 'wrap'
   },
   bgImage: {
     width: 40,

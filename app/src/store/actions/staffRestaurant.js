@@ -12,7 +12,7 @@ export const fetchUserRestaurant = (userId) => {
         const restaurants = querySnapshot.docs
         if (restaurants.length > 0) {
           return { id: restaurants[0].id, ...restaurants[0].data() }
-        } 
+        }
       }).then(data => {
         //get Google Data
         return getGoogleData(data.google_id).then(googleData => {
@@ -38,16 +38,16 @@ const getGoogleData = (googleId) => {
   params = {
     place_id: googleId,
     fields: "name,rating,formatted_phone_number,opening_hours,vicinity",
-    key: 'AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc',
+    key: 'null',
   }
   return axios.get('https://maps.googleapis.com/maps/api/place/details/json', { params }).then(response => {
-    return { googleData: response.data.result }
+    return { googlePlacesData: response.data.result }
   }).catch(e => {
     console.log('No google data found')
     return { }
   })
 }
- 
+
 const getOrders = (restaurantId) => {
   return db.collection('bookingOrders')
   .where('restaurantId', '==', restaurantId).get()
