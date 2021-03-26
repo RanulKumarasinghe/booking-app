@@ -12,12 +12,12 @@ admin.initializeApp();
 //   response.send("Hello from Firebase!");
 // });
 
-// Take the text parameter passed to this HTTP endpoint and insert it into 
+// Take the text parameter passed to this HTTP endpoint and insert it into
 // Firestore under the path /messages/:documentId/original
 exports.placeOrder = functions.https.onCall(async (data, context) => {
   // Grab the text parameter.
   // Push the new message into Firestore using the Firebase Admin SDK.
-  
+
   const fetchItems = (restaurantId, item) => {
     return admin.firestore().doc(`restaurants/${restaurantId}/menu/${item.itemId}`).get().then(doc => {
       return {
@@ -28,11 +28,11 @@ exports.placeOrder = functions.https.onCall(async (data, context) => {
       console.log("err fetching files")
     })
   }
-  
+
   const getItems = async (cart, restaurantId) => {
     return Promise.all(cart.map(cartItem => fetchItems(restaurantId, cartItem)))
   }
-  
+
   const userId = 1
   getItems(data.cart, order.orderRestaurantId).then(data => {
     return {
@@ -48,8 +48,60 @@ exports.placeOrder = functions.https.onCall(async (data, context) => {
   })
 });
 
+exports.getData = functions.https.onCall(async (data, context) => {
+  // pubsub.schedule('41 15 * * *').timeZone('Europe/London').onRun
+  const fetchGooglePlacesId = () => {
+    return admin.firestore().doc(`restaurants`).get().then(doc => {
+      return {
+        restaurants: doc.data(),
+        google_id: restaurants.google_id,
+      }
+    }).catch(err =>{
+      console.log("err fetching files")
+    })
+  }
 
-// Take the text parameter passed to this HTTP endpoint and insert it into 
+  const getGooglePlacesData = async (places, restaurantId) => {
+    return Promise.all(places.map(googlePlace => fetchGooglePlacesId(restaurantId, googlePlace)))
+  }
+
+  getGooglePlacesData(data.places, restaurant.google_id).then(data => {
+    const axios = require('axios');
+    params = {
+      place_id: restaurant.google_id,
+      fields: "rating,formatted_phone_number,opening_hours,vicinity",
+      key: 'AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc',
+    }
+    return axios.get('https://maps.googleapis.com/maps/api/place/details/json', { params }).then(response => {
+      return { googleData: response.data.result }
+    }).catch(e => {
+      return { ...data}
+    })
+  })
+
+  const updateRestaurant = async(places, googleId) => {
+    return Promise.all(places.map(restaurant => getGooglePlacesData(googleId, restaurant)))
+  }
+
+  updateRestaurant(data.places, restaurantId).then(data => {
+
+      const newRestaurantValues = {
+        rating: googleData.rating,
+        phone_number: googleData.formatted_phone_number,
+        opening_hours: googleData.opening_hours,
+        address: googleData.vicinity
+      }
+    return admin.firestore().doc(`restaurants/${restaurantId}`).update(newRestaurantValues).then(() => {
+      console.log('Restaurant Updated!');
+    }).catch(err =>{
+      console.log("err fetching files")
+    })
+  })
+
+});
+
+
+// Take the text parameter passed to this HTTP endpoint and insert it into
 // Firestore under the path /messages/:documentId/original
 exports.returnObject = functions.https.onCall(async (data, context) => {
   // Grab the text parameter.

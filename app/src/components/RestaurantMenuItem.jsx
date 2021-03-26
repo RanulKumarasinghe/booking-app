@@ -20,44 +20,47 @@ const RestaurantMenuItem = (props) => {
   const [shouldShow, setShouldShow] = useState(false);
 
   return (
-    <View>
-    <View style={styles.listRow}>
+    <View style={{ backgroundColor: 'white'}}>
+      <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Name* </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={props.onName}
-          maxLength = {25}
-          value = {props.name}/>
-      </View>
-
+      <Input
+            style={styles.textInput}
+            value={props.name}
+            textStyle={{ textAlign: 'center' }}
+            maxLength = {25}
+            onChangeText={props.onName}
+          />
+          </View>
       <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Price* </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={props.onPrice}
-          maxLength = {25}
-          value = {props.price}/>
-      </View>
-
+      <Input
+            style={styles.textInput}
+            value={props.price}
+            textStyle={{ textAlign: 'center' }}
+            maxLength = {25}
+            onChangeText={props.onPrice}
+          />
+          </View>
 
       <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Description* </Text>
-      <MultiTextInput
-          multiline
-          numberOfLines={5}
-          style={styles.bigTextBox}
-          onChangeText={props.onDescription}
-          value = {props.description}
+      <Text style={styles.sizeFont}>Description*  </Text>
+      <Input
+            multiline={true}
+            style={styles.multilineInput}
+            textStyle={{ textAlign: 'center' }}
+            value={props.description}
+            onChangeText={props.onDescription}
           />
       </View>
       <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Image URL* </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={props.onImageUrl}
-          value = {props.imageUrl}
-         />
-      </View>
+      <Input
+            style={styles.multilineInput}
+            multiline={true}
+            value={props.imageUrl}
+            onChangeText={props.onImageUrl}
+          />
+          </View>
       <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Meal Type* </Text>
       <RadioGroup
@@ -130,6 +133,12 @@ const styles = StyleSheet.create({
     height: 1.5,
     backgroundColor: 'black',
     marginTop: 15
+  },
+  textInput: {
+    height: 25,
+  },
+  multilineInput: {
+    height: 50,
   }
 })
 

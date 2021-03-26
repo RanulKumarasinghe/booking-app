@@ -9,7 +9,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { useSelector, useDispatch } from 'react-redux';
 import { newOrder } from '@/store/actions/order'
 import { fetchAllMenu } from '@/store/actions/menu';
-
+import Firebase, {db} from '@/utils/firebase'
 
 
 const Restaurant = (props) => {
@@ -24,6 +24,14 @@ const Restaurant = (props) => {
     const itemId = props.route.params.itemID;
     restaurant = restaurants.find(restaurant => restaurant.id === itemId);
   }
+
+  const testFunction = Firebase.functions().httpsCallable('getData')
+    testFunction().then((result) => {
+        console.log(result);
+      })
+      .catch(e=> {
+        console.log(e)
+      })
 
 
   // console.log(menu);
