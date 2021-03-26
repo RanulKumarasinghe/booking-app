@@ -21,7 +21,7 @@ const RestaurantInput = (props) => {
   const [shouldShow, setShouldShow] = useState(false);
 
   return (
-    <View>
+    <View style={{ backgroundColor: 'white'}}>
     <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Name* </Text>
       <Input
