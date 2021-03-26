@@ -8,6 +8,7 @@ import RestaurantListScreen from '@/scenes/restaurants/RestaurantListScreen';
 import BookingScreen from '@/scenes/bookings/BookingScreen';
 import BookingListScreen from '@/scenes/bookings/BookingListScreen';
 import BookingSuccessScreen from '@/scenes/bookings/BookingSuccessScreen';
+import ExtendBookingScreen from '@/scenes/bookings/ExtendBookingScreen'
 
 import RestaurantListMenuScreen from '@/scenes/restaurants/RestaurantListMenuScreen';
 
@@ -28,6 +29,7 @@ const routes = (Screen) => (
     <Screen name='Add Restaurant' component={RestaurantAddScreen}/>
     <Screen name='BookingListScreen' component={BookingListScreen}/>
     <Screen name='Booking' component={BookingScreen}/>
+    <Screen name='Extend booking' component={ExtendBookingScreen}/>
     <Screen name='Booking successful' component={BookingSuccessScreen}/>
     <Screen name='EditMenuScreen' component={RestaurantEditMenuScreen}/>
     <Screen name='MenuList' component={RestaurantListMenuScreen}/>
