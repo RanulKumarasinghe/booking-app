@@ -302,6 +302,7 @@ export const postReservation = (tableid, restaurantId, user, guests, date, resta
         restaurantId: restaurantId,
         restaurantName: restaurantName,
         tableNumber: tableNum,
+        createdAt: new Date()
       });
       dispatch({ type: POST_BOOKING, payload: res.id });
     } catch (error) {

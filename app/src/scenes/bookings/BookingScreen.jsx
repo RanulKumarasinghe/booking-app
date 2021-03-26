@@ -91,12 +91,12 @@ const BookingScreen = (props) => {
     );
   }
 
-  const onChange = (event, selectedDate) => {
+  const onChange = (event, selected) => {
     setShow(false);
     if (mode === 'date') {
-      setDate(selectedDate);
+      setDate(selected);
     } else if (mode === 'time') {
-      setTime(selectedDate);
+      setTime(selected);
     }
   };
 
@@ -134,7 +134,7 @@ const BookingScreen = (props) => {
           date: bookingDate,
           guests: bookingGuests,
           docId: documentId,
-          restaurantId:restId,
+          restaurantId: restId,
           // bookingOrderId: ,
           callback: refreshPage,
         });
@@ -173,10 +173,10 @@ const BookingScreen = (props) => {
             <Card disabled={true} style={styles.modal}>
               <View style={{ alignItems: 'center' }}>
                 <Text category='h6' style={{ marginBottom: 5 }}>{`Please confirm the details`}</Text>
-                <Text category='p1' style={{ marginBottom: 5, marginTop:10 }}>{restaurant.name}</Text>
+                <Text category='p1' style={{ marginBottom: 5, marginTop: 10 }}>{restaurant.name}</Text>
                 <Text category='p1' style={{ marginBottom: 5 }}>{`Booking table #${all_scheduled_tables[selectedIndex].number}`}</Text>
                 <Text category='p1' style={{ marginBottom: 5 }}>{`On ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} at ${addTimePadding(time)}`}</Text>
-                <Text appearance='hint' category='p1' style={{ marginBottom: 5, marginTop:10 }}>{`Your reservation will be valid for up to 4 hours`}</Text>
+                <Text appearance='hint' category='p1' style={{ marginBottom: 5, marginTop: 10 }}>{`Your reservation will be valid for up to 4 hours`}</Text>
                 <View category='p1' style={styles.confirmModal}>
                   <Button style={styles.modalBtn} onPress={() => {
                     dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
@@ -228,10 +228,12 @@ const BookingScreen = (props) => {
           const newDate = date;
           newDate.setHours(time.getHours());
           newDate.setMinutes(time.getMinutes());
-          setDate(newDate);
 
-          dispatch(fetchTablesBySize(guests, restId));
-          dispatch(checkTableAvailability(guests, restId, date));
+          if (newDate.getTime() > new Date().getTime() + (2 * 3600 * 1000)) {
+            setDate(newDate);
+            dispatch(fetchTablesBySize(guests, restId));
+            dispatch(checkTableAvailability(guests, restId, date));
+          }
 
         }}>Search</Button>
       );
@@ -376,6 +378,7 @@ const BookingScreen = (props) => {
         <View style={{ flex: 1 }}>
           <View style={{ padding: '2%', alignItems: "center" }}>
             <Text category='h5' style={{ fontWeight: 'bold' }}>{restaurant.name}</Text>
+            <Text category='p2' appearance={'hint'} style={{marginTop:5}}>{`Bookings have to be made 2 hours before the start`}</Text>
             <Divider />
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>

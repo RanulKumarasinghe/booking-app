@@ -20,11 +20,11 @@ export default BookingListScreen = ({ navigation }) => {
 
     const sortDates = (array) => {
         array.sort((a, b) => {
-            return a.date.toDate() - b.date.toDate();
+            return b.createdAt.toDate() - a.createdAt.toDate();
         })
         return array;
     }
-
+    
     const onCheckedChange = () => {
         setfilterToggle(!filterToggle);
     };
@@ -39,11 +39,7 @@ export default BookingListScreen = ({ navigation }) => {
         if (!isOffline) {
             dispatch(clearUserBookings());
             setshowLoadingSpinner(true);
-            // if (filterToggle) {
-            //     dispatch(fetchBookingsByUserFiltered(auth.uid));
-            // } else {
             dispatch(fetchBookingsByUser(auth.uid));
-            // }
             setTimeout(() => {
                 setshowLoadingSpinner(false);
             }, 2000);
@@ -66,6 +62,7 @@ export default BookingListScreen = ({ navigation }) => {
                         <Text appearance='hint'>Filter Expired</Text>
                     </Toggle>
                 </View>
+                <Text style={{textAlign:'center', paddingBottom:5}} appearance='hint'>Reservations last 4 hours from the start time</Text>
                 <Divider />
             </View>
         );
@@ -73,8 +70,13 @@ export default BookingListScreen = ({ navigation }) => {
 
     const List = () => {
         if (!showLoadingSpinner && !isOffline) {
-            // const sortedBookings = sortDates(bookingOrders);
-            return (<BookingsList payload={bookingOrders} callback={doRefresh} />);
+            let bookingList = bookingOrders;
+            if(filterToggle){
+                const now = new Date();
+                bookingList = bookingList.filter((element) =>  element.date.toDate().getTime() > now.getTime());
+            }
+            const sortedBookings = sortDates(bookingList);
+            return (<BookingsList payload={sortedBookings} callback={doRefresh} />);
         } else {
             return (<></>)
         }

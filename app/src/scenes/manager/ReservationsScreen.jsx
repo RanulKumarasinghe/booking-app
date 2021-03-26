@@ -22,7 +22,7 @@ export default ReservationsScreen = ({ navigation }) => {
 
   const sortDates = (array) => {
     array.sort((a, b) => {
-      return a.date.toDate() - b.date.toDate();
+      return b.createdAt.toDate() - a.createdAt.toDate();
     })
     return array;
   }
@@ -71,8 +71,13 @@ export default ReservationsScreen = ({ navigation }) => {
 
   const List = () => {
     if (!showLoadingSpinner && !isLoggedIn) {
-      // const sortedBookings = sortDates(restaurant_bookings);
-      return (<BookingsList payload={restaurant_bookings} callback={onCheckedChange} />);
+      let bookingList = restaurant_bookings;
+      if (filterToggle) {
+        const now = new Date();
+        bookingList = bookingList.filter((element) => element.date.toDate().getTime() > now.getTime());
+      }
+      const sortedBookings = sortDates(bookingList);
+      return (<BookingsList payload={sortedBookings} callback={onCheckedChange} />);
     } else {
       return (<></>)
     }
@@ -138,7 +143,7 @@ export default ReservationsScreen = ({ navigation }) => {
     return (
       <LoadingScreen />
     )
-  } 
+  }
   else if (restaurant_bookings.length < 1) {
     <EmptyError />
   }

@@ -19,7 +19,7 @@ const BookingsListEntry = ({ item }) => {
       if (entry.date.toDate().getTime() < now) {
         return true;
       }
-      if (now + (3600 * 1000) >= entry.date.toDate().getTime() + (3600 * 1000 * 4)) {
+      if (now + 2 * (3600 * 1000) >= entry.date.toDate().getTime() + (3600 * 1000 * 4)) {
         return false;
       }
     }
