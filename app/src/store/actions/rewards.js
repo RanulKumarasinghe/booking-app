@@ -13,28 +13,3 @@ export const fetchRewardPoints = () =>{
         })
     } 
 };
-
-// export const orderPoint = () =>{
-//   return async dispatch => {
-    
-//   } 
-// };
-// firestore()
-//   .collection('Users')
-//   // Filter results
-//   .where('points', '>=', 10)
-//   .get()
-//   .then(querySnapshot => {
-//     /* ... */
-//   });
-
-// Update points
-// firestore()
-//   .collection('Users')
-//   .doc('ABC')
-//   .update({
-//     points: 200,
-//   })
-//   .then(() => {
-//     console.log('points updated!');
-//   });
