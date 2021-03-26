@@ -25,14 +25,13 @@ const Restaurant = (props) => {
     restaurant = restaurants.find(restaurant => restaurant.id === itemId);
   }
 
-  const testFunction = Firebase.functions().httpsCallable('getData')
-    testFunction().then((result) => {
-        console.log(result);
-      })
-      .catch(e=> {
-        console.log(e)
-      })
-
+  // const testFunction = Firebase.functions().httpsCallable('getData')
+  //   testFunction().then((result) => {
+  //       console.log(result);
+  //     })
+  //     .catch(e=> {
+  //       console.log(e)
+  //     })
 
   // console.log(menu);
   // const [data, setData] = useState({});
