@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, View} from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Divider, Icon, Button, List, ListItem, Spinner, Modal, Card, Text } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -133,7 +133,7 @@ const BookingScreen = (props) => {
           time: bookingTime,
           date: bookingDate,
           guests: bookingGuests,
-          docId:documentId,
+          docId: documentId,
           // bookingOrderId: ,
           callback: refreshPage,
         });
@@ -172,9 +172,10 @@ const BookingScreen = (props) => {
             <Card disabled={true} style={styles.modal}>
               <View style={{ alignItems: 'center' }}>
                 <Text category='h6' style={{ marginBottom: 5 }}>{`Please confirm the details`}</Text>
-                <Text category='p1' style={{ marginBottom: 5 }}>{restaurant.name}</Text>
+                <Text category='p1' style={{ marginBottom: 5, marginTop:10 }}>{restaurant.name}</Text>
                 <Text category='p1' style={{ marginBottom: 5 }}>{`Booking table #${all_scheduled_tables[selectedIndex].number}`}</Text>
                 <Text category='p1' style={{ marginBottom: 5 }}>{`On ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} at ${addTimePadding(time)}`}</Text>
+                <Text appearance='hint' category='p1' style={{ marginBottom: 5, marginTop:10 }}>{`Your reservation will be valid for up to 4 hours`}</Text>
                 <View category='p1' style={styles.confirmModal}>
                   <Button style={styles.modalBtn} onPress={() => {
                     dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
@@ -209,7 +210,7 @@ const BookingScreen = (props) => {
     } else {
       return (
         <Button style={styles.button} disabled={disableSearch} onPress={() => {
-          
+
           setSelectedIndex(undefined);
           setButtonGhost(true);
           setShowList(false);
@@ -382,7 +383,7 @@ const BookingScreen = (props) => {
               <Button size="small" style={styles.timeButton} onPress={showTimepicker}>{time !== undefined ? addTimePadding() : () => { return <View style={{ flexDirection: 'row' }}><TimeIcon /><Text category='s1' style={styles.text}>Pick a time</Text></View> }}</Button>
               {show && (
                 <DateTimePicker
-                  style={{width: 320, backgroundColor: "white"}}
+                  style={{ width: 320, backgroundColor: "white" }}
                   testID="dateTimePicker"
                   minimumDate={new Date()}
                   value={new Date()}
@@ -492,7 +493,7 @@ const styles = StyleSheet.create({
     width: 165,
     height: 50,
     margin: 4,
-    borderRadius:100,
+    borderRadius: 100,
   },
   dateTime: {
     borderWidth: 1,
