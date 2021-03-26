@@ -1,7 +1,7 @@
 import React, { useState, setState } from 'react';
 import { Switch, SafeAreaView, View, StyleSheet, TextInput, ScrollView, Button} from 'react-native';
 import { Divider } from 'react-native-elements';
-import { Text, TopNavigation } from '@ui-kitten/components';
+import { Text, TopNavigation, Input } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import RestaurantDayInput from '../scenes/restaurants/RestaurantDayInput';
 
@@ -24,21 +24,24 @@ const RestaurantInput = (props) => {
     <View>
     <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Name* </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={props.onName}
-          maxLength = {25}
-          value = {props.name}/>
-      </View>
-
-      <View style={styles.listRow}>
+      <Input
+            style={styles.textInput}
+            value={props.name}
+            textStyle={{ textAlign: 'center' }}
+            maxLength = {25}
+            onChangeText={props.onName}
+          />
+          </View>
+          <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Type* </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={props.onType}
-          maxLength = {25}
-          value = {props.type}/>
-      </View>
+      <Input
+            style={styles.textInput}
+            value={props.type}
+            textStyle={{ textAlign: 'center' }}
+            maxLength = {25}
+            onChangeText={props.onType}
+          />
+          </View>
 
       {/* <View style={styles.listRow}>
       <Text style={styles.sizeFont}>PostCode* </Text>
@@ -68,24 +71,25 @@ const RestaurantInput = (props) => {
           maxLength = {25}
           value = {props.phone}/>
       </View> */}
-      <View style={styles.listRow}>
-      <Text style={styles.sizeFont}>Description* </Text>
-      <MultiTextInput
-          multiline
-          numberOfLines={5}
-          style={styles.bigTextBox}
-          onChangeText={props.onDescription}
-          value = {props.description}
+       <View style={styles.listRow}>
+      <Text style={styles.sizeFont}>Description*  </Text>
+      <Input
+            multiline={true}
+            style={styles.multilineInput}
+            textStyle={{ textAlign: 'center' }}
+            value={props.description}
+            onChangeText={props.onDescription}
           />
       </View>
       <View style={styles.listRow}>
       <Text style={styles.sizeFont}>Image URL* </Text>
-      <TextInput
-          style={styles.textBox}
-          onChangeText={props.onImageUrl}
-          value = {props.imageUrl}
-         />
-      </View>
+      <Input
+            style={styles.multilineInput}
+            multiline={true}
+            value={props.imageUrl}
+            onChangeText={props.onImageUrl}
+          />
+          </View>
       {/* <View style={styles.buttonShow}>
       <Button
           title="Hide/Show Opening times"
@@ -230,6 +234,12 @@ const styles = StyleSheet.create({
     height: 1.5,
     backgroundColor: 'black',
     marginTop: 15
+  },
+  textInput: {
+    height: 25,
+  },
+  multilineInput: {
+    height: 50,
   }
 })
 

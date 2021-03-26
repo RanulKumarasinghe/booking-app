@@ -46,7 +46,7 @@ const RestaurantMenuItem = (props) => {
       <Text style={styles.sizeFont}>Description*  </Text>
       <Input
             multiline={true}
-            style={styles.textInput}
+            style={styles.multilineInput}
             textStyle={{ textAlign: 'center' }}
             value={props.description}
             onChangeText={props.onDescription}
