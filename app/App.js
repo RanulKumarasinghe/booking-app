@@ -13,6 +13,7 @@ import rewardsReducer from '@/store/reducers/rewards';
 import menuReducer from '@/store/reducers/menu';
 import orderReducer from '@/store/reducers/order';
 import foodTypeReducer from '@/store/reducers/foodtypes';
+import bookingOrders from '@/store/reducers/bookingOrders'
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import * as Font from 'expo-font';
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
   rewards: rewardsReducer,
   foodType: foodTypeReducer,
   menu: menuReducer,
-  order: orderReducer
+  order: orderReducer,
+  bookingOrders: bookingOrders
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

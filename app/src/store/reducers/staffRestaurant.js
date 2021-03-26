@@ -5,11 +5,14 @@ import {
   UPDATE_RESTAURANT,
   RESET,
   ACCEPT_ORDER,
+  FETCH_BOOKINGS_BY_RESTAURANT_FILTERED,
+  FETCH_BOOKINGS_BY_RESTAURANT,
 } from '@/store/actions/staffRestaurant';
 
 const initialState = {
   restaurant: null,
   restaurantOrders: [],
+  restaurantBookings: []
 };
 
 const restaurantReducer = (state = initialState, action) => {
@@ -42,6 +45,27 @@ const restaurantReducer = (state = initialState, action) => {
       return {...state, restaurantOrders: newOrders};
     case RESET:
       return initialState;
+    case FETCH_BOOKINGS_BY_RESTAURANT: {
+      const now = new Date();
+      action.payload.forEach((element) => {
+        if (!element.cart && element.date && now.getTime() > element.date.toDate().getTime() && element.status === 'Ok') {
+          //dispatch(postBookingExpiration(element.docId));
+          element.status = 'expired';
+        } else {
+
+        }
+      });
+      return {
+        ...state,
+        restaurantBookings: action.payload,
+      }
+    }
+    case FETCH_BOOKINGS_BY_RESTAURANT_FILTERED: {
+      return {
+        ...state,
+        restaurantBookings: action.payload,
+      }
+    }
     default:
       return state;
   }

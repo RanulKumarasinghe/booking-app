@@ -3,7 +3,7 @@ import React from 'react'
 
 import LoginScreen from 'src/scenes/auth/LoginScreen'
 import SignUpScreen from 'src/scenes/auth/SignUpScreen'
-import ResetPasswordScreen from 'src/scenes/auth/ResetPasswordScreen'
+import ResetPasswordScreen from '@/scenes/auth/ChangePasswordScreen'
 import { useSelector } from 'react-redux';
 import SettingsNavigator from 'src/navigators/SettingsNavigator';
 
