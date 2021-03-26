@@ -11,6 +11,7 @@ export default BookingSuccessScreen = (props) => {
   const time = props.route.params.time;
   const guests = props.route.params.guests;
   const docId = props.route.params.docId;
+  const restId = props.route.params.restaurantId;
 
   const dispatch = useDispatch();
   const isFocused = useIsFocused();

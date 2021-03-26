@@ -63,7 +63,7 @@ export default BookingListScreen = ({ navigation }) => {
             <View>
                 <View style={styles.toggleContainer}>
                     <Toggle style={styles.toggleElement} checked={filterToggle} onChange={onCheckedChange}>
-                        <Text appearance='hint'>Filter expired</Text>
+                        <Text appearance='hint'>Filter Expired</Text>
                     </Toggle>
                 </View>
                 <Divider />

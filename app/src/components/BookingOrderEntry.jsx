@@ -13,7 +13,20 @@ const BookingsListEntry = ({ item }) => {
     console.log(isManager)
   }
 
-  const isCancelled = (entry.status == 'cancelled') || (entry.orderStatus == 'cancelled')
+  const checkExtendable = () => {
+    if (entry.status === "Ok") {
+      const now = new Date().getTime();
+      if (entry.date.toDate().getTime() < now) {
+        return true;
+      }
+      if (now + (3600 * 1000) >= entry.date.toDate().getTime() + (3600 * 1000 * 4)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  const isCancelled = (entry.status == 'Cancelled') || (entry.orderStatus == 'Cancelled')
 
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -131,6 +144,10 @@ const BookingsListEntry = ({ item }) => {
         <Button style={styles.button} size='medium' status='basic' onPress={() => { item.onCancel(entry.docId) }}>
           Cancel
         </Button>
+        {haveBooking ?
+          <Button style={styles.button} size='medium' status='basic' disabled={checkExtendable()} onPress={() => { item.onExtend(entry) }}>
+            Extend
+        </Button> : <></>}
         {/* {item.isManager && order && (
           <Button style={styles.button} size='medium' status='basic' onPress={() => item.onAccept}>
             Accept
@@ -228,6 +245,5 @@ const styles = StyleSheet.create({
     width: '50%',
     borderRadius: 0,
     borderLeftWidth: 1,
-    borderColor: 'white',
   }
 });

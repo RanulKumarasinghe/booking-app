@@ -10,6 +10,7 @@ const PERFORM_SCHEDULE = 'PERFORM_SCHEDULE';
 const POST_TABLE = 'POST_TABLE';
 const CLEAR_TIME = 'CLEAR_TIME';
 const POST_RESERVATION_CANCELATION = 'POST_RESERVATION_CANCELATION';
+const EXTEND_BOOKING = 'EXTEND_BOOKING';
 
 const POST_BOOKING_EXPIRATION = 'POST_BOOKING_EXPIRATION';
 const CLEAR_TABLES = 'CLEAR_TABLES';
@@ -87,15 +88,43 @@ export const performSchedule = () => {
 //
 //
 
+export const extendBooking = (booking) => {
+
+  const tableReference = booking.details.tableref;
+  const bookingDate = booking.details.date;
+  const docId = booking.details.docId;
+  const bookingDatePlusHours = new Date(bookingDate.toDate().getTime() + 3600 * 1000 * 6);
+
+
+  return async (dispatch) => {
+    try {
+      firebase.firestore().collection('bookingOrders').where('tableref', '==', tableReference).where('date', '>', bookingDate).where('date', '<', bookingDatePlusHours).get().then((querySnapshot) => {
+        const response = querySnapshot.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        //If i find a booking that clashes with extra time, I dont extend
+        if (response.length > 0) {
+          dispatch({ type: EXTEND_BOOKING, payload: true });
+        } else {
+          dispatch({ type: EXTEND_BOOKING, payload: false });
+        }
+      });
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 export const checkTableAvailability = (size, restaurantId, date) => {
   return (dispatch) => {
-    
+
     const unconfirmedBookingTimestampStart = date.getTime();
-    const unconfirmedBookingTimestampEnd = date.getTime() + 4*(1000 * 3600);
+    const unconfirmedBookingTimestampEnd = date.getTime() + 4 * (1000 * 3600);
 
     console.log(new Date(unconfirmedBookingTimestampStart))
     console.log(new Date(unconfirmedBookingTimestampEnd))
-    
+
     //Gets all tables of eligble size
     firebase.firestore().collection('reservations').where('restaurantId', '==', restaurantId).where('size', '>=', parseInt(size)).where('active', '==', true).get().then((querySnapshot) => {
       const tableResponse = querySnapshot.docs.map((doc) => {
@@ -114,14 +143,14 @@ export const checkTableAvailability = (size, restaurantId, date) => {
             const dateConv = booking.date.toDate();
             if (dateConv.getFullYear() === date.getFullYear() && dateConv.getMonth() === date.getMonth() && dateConv.getDate() === date.getDate()
             ) {
-              
+
               const bookingTimestampStart = dateConv.getTime();
-              const bookingTimestampEnd = dateConv.getTime() + 4*(1000 * 3600);
-              
+              const bookingTimestampEnd = dateConv.getTime() + 4 * (1000 * 3600);
+
               //(StartA <= EndB) and (EndA >= StartB)
-              if (bookingTimestampStart <= unconfirmedBookingTimestampEnd && bookingTimestampEnd > unconfirmedBookingTimestampStart){
+              if (bookingTimestampStart <= unconfirmedBookingTimestampEnd && bookingTimestampEnd > unconfirmedBookingTimestampStart) {
                 return booking.tableref;
-              }else{
+              } else {
                 return false;
               }
             } else {
@@ -145,6 +174,8 @@ export const checkTableAvailability = (size, restaurantId, date) => {
       });
   };
 };
+
+
 
 export const fetchTables = (restaurantId) => {
   return async (dispatch) => {
@@ -245,6 +276,19 @@ export const removeTableFromDatabase = (tableid) => {
   };
 };
 
+export const extendReservation = (docId) => {
+  return async (dispatch) => {
+    try {
+      const res = await firebase.firestore().collection('bookingOrders').doc(docId).update({
+        status: 'Extended',
+      });
+      dispatch({ type: POST_BOOKING, payload: undefined });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 export const postReservation = (tableid, restaurantId, user, guests, date, restaurantName, tableNum) => {
   return async (dispatch) => {
     try {
@@ -274,7 +318,7 @@ export const postReservationCancelation = (bookingId) => {
         .collection('bookingOrders')
         .doc(bookingId)
         .update({
-          status: 'cancelled',
+          status: 'Cancelled',
         });
       dispatch({ type: POST_RESERVATION_CANCELATION, payload: undefined });
     } catch (error) {

@@ -4,9 +4,15 @@ import { Divider, Text, Button, Icon } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { postReservationCancelation } from '@/store/actions/bookings'
 import BookingsListEntry from './BookingOrderEntry'
+import { useNavigation } from '@react-navigation/native'
 
 export default BookingsList = (props) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const goToExtendScreen = (bookingDetails) => {
+    navigation.navigate('Extend booking', { details: bookingDetails });
+  }
 
   const cancelBooking = (bookingid) => {
     dispatch(postReservationCancelation(bookingid));
@@ -14,7 +20,7 @@ export default BookingsList = (props) => {
   }
 
   const mappedData = props.payload.map((element) => {
-    return ({ element, onCancel: cancelBooking })
+    return ({ element, onCancel: cancelBooking, onExtend: goToExtendScreen })
   })
 
   return (
