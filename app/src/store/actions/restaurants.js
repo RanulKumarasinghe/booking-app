@@ -17,11 +17,11 @@ export const fetchAllRestaurant = () => {
         params = {
           place_id: restaurantData.google_id,
           fields: "name,rating,formatted_phone_number,opening_hours,vicinity",
-          key: 'AIzaSyAP5rJS__ryEAgiFKsZMtMFDfsltB_1Vyc',
+          key: 'null',
         }
 
         return axios.get('https://maps.googleapis.com/maps/api/place/details/json', { params }).then(response => {
-          return { ...restaurantData, id: doc.id, googleData: response.data.result }
+          return { ...restaurantData, id: doc.id, googlePlacesData: response.data.result }
         }).catch(e => {
           return { ...data, id: doc.id }
         })
