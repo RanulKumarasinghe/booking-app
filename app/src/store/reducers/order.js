@@ -13,7 +13,6 @@ const orderReducer = (state = initialState, action) => {
             return {...initialState, orderRestaurantId: action.restaurantId, bookingId: action.bookingId, cart: []};
           else 
             return {...initialState, orderRestaurantId: action.restaurantId, cart: []};
-
         case SET_ORDER_TYPE:
           console.log(action)
           return {...state, type: action.orderType};

@@ -10,8 +10,8 @@ export default BookingSuccessScreen = (props) => {
   const date = props.route.params.date;
   const time = props.route.params.time;
   const guests = props.route.params.guests;
-  const docId = props.route.params.docId;
-  const restId = props.route.params.restaurantId;
+  const bookingId = props.route.params.docId;
+  const restaurantId = props.route.params.restaurantId;
 
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -29,9 +29,9 @@ export default BookingSuccessScreen = (props) => {
   };
 
   const onOrder = () => {
-    dispatch(newOrder(restaurant.id, docId));
+    dispatch(newOrder(restaurantId, bookingId));
     props.navigation.navigate('Order Type', {
-      restaurantId: restaurant.id,
+      restaurantId: restaurantId,
     })
   };
 

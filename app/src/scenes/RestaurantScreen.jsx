@@ -50,12 +50,9 @@ const Restaurant = (props) => {
   });
 
   const onOrder = () => {
-    dispatch(newOrder(restaurant.id, docId));
+    dispatch(newOrder(restaurant.id, null));
     props.navigation.navigate('Order Type', {
       restaurantId: restaurant.id
-    })
-    props.navigation.navigate('Order Type', {
-      restaurantId: restaurant.id,
     })
   };
 

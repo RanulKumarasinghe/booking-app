@@ -3,7 +3,7 @@ import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Input, Text, Divider, Button, Layout } from '@ui-kitten/components';
 import Firebase, {db} from '@/utils/firebase'
 import { useDispatch, useSelector } from 'react-redux'
-import { checkout } from '@/store/actions/order'
+import { proccessCheckout } from '@/store/actions/order'
 
 
 const CheckOutScreen = (props) => {
@@ -22,10 +22,31 @@ const CheckOutScreen = (props) => {
         console.log(e)
       })
   }
+  const test2 = () => {
+    console.log(order)
+  }
 
   const checkout = () => {
-    dispatch(checkout(order))
-  }
+    const data = {
+      cart: decorator(order.cart),
+      restaurantId: order.orderRestaurantId,
+      bookingId: order.bookingId,
+    };
+  
+    proccessCheckout(data);
+  
+    props.navigation.navigate('Order Completed');
+  };
+
+
+const decorator = (cart) => {
+  return cart.map((cartEntry) => {
+    return {
+      itemId: cartEntry.item.id,
+      quantity: cartEntry.quantity,
+    };
+  });
+};
 
   const calculateTotal = () => {
     let total = 0
@@ -58,6 +79,7 @@ const CheckOutScreen = (props) => {
         <Text style={[styles.itemName, {alignSelf: 'flex-end', paddingRight: 20}]}>Total: £{calculateTotal()}</Text>
         <View style={styles.buttonSpacing}>
           <Button onPress={checkout}>Order</Button>
+          <Button onPress={test2}>Order</Button>
         </View>
       </Layout>
     </SafeAreaView>
