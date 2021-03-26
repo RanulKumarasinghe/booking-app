@@ -107,7 +107,7 @@ export const fetchBookingsByRestaurant = (restaurantId) => {
       .get()
       .then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
-          return { ...doc.data(), docId: doc.id };
+          return { ...doc.data(), id: doc.id };
         });
         dispatch({ type: FETCH_BOOKINGS_BY_RESTAURANT, payload: response });
       })

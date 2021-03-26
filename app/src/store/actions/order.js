@@ -76,8 +76,7 @@ export const proccessCheckout = (data) => {
         createdAt: new Date(),
         cart: cartItems,
       };
-      console.log('BookingID')
-      console.log(data.bookingId)
+
       if (data.bookingId)
         bookingOrders
           .doc(data.bookingId)

@@ -69,10 +69,12 @@ export default ReservationsScreen = ({ navigation }) => {
     );
   }
 
+  const restaurant_bookings_filtered = restaurant_bookings.filter((booking) => booking.booking)
+
   const List = () => {
     if (!showLoadingSpinner && !isLoggedIn) {
       // const sortedBookings = sortDates(restaurant_bookings);
-      return (<BookingsList payload={restaurant_bookings} callback={onCheckedChange} />);
+      return (<BookingsList payload={restaurant_bookings_filtered} callback={onCheckedChange} />);
     } else {
       return (<></>)
     }

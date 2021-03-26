@@ -10,7 +10,7 @@ export default BookingSuccessScreen = (props) => {
   const date = props.route.params.date;
   const time = props.route.params.time;
   const guests = props.route.params.guests;
-  const bookingId = props.route.params.docId;
+  const bookingId = props.route.params.id;
   const restaurantId = props.route.params.restaurantId;
 
   const dispatch = useDispatch();

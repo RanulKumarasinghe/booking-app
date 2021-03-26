@@ -92,7 +92,7 @@ export const extendBooking = (booking) => {
 
   const tableReference = booking.details.tableref;
   const bookingDate = booking.details.date;
-  const docId = booking.details.docId;
+  const id = booking.details.id;
   const bookingDatePlusHours = new Date(bookingDate.toDate().getTime() + 3600 * 1000 * 6);
 
 
@@ -186,7 +186,7 @@ export const fetchTables = (restaurantId) => {
       .get()
       .then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
-          return { ...doc.data(), docId: doc.id };
+          return { ...doc.data(), id: doc.id };
         });
         dispatch({ type: FETCH_TABLES, payload: response });
       })
@@ -229,7 +229,7 @@ export const fetchBookingsBySize = (size, restaurantId) => {
       .get()
       .then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
-          return { ...doc.data(), docId: doc.id };
+          return { ...doc.data(), id: doc.id };
         });
         dispatch({ type: FETCH_BOOKINGS_BY_SIZE, payload: response });
       })
@@ -276,10 +276,10 @@ export const removeTableFromDatabase = (tableid) => {
   };
 };
 
-export const extendReservation = (docId) => {
+export const extendReservation = (id) => {
   return async (dispatch) => {
     try {
-      const res = await firebase.firestore().collection('bookingOrders').doc(docId).update({
+      const res = await firebase.firestore().collection('bookingOrders').doc(id).update({
         status: 'Extended',
       });
       dispatch({ type: POST_BOOKING, payload: undefined });
@@ -368,7 +368,7 @@ export const postActivatedTables = (restId, tables) => {
         const res = await firebase
           .firestore()
           .collection('reservations')
-          .doc(element.docId)
+          .doc(element.id)
           .update({
             active: true,
           });
