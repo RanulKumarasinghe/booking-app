@@ -113,8 +113,10 @@ const ManagerRewardScreen = (props) => {
           maxLength={5}
           //maxLength={5} is based on the average cost of a meal being £15-25
         />
-        <View style={styles.inputButton}>
-          <Button onPress={() => generateCode}>Create Points Code</Button>
+        <View style={styles.button}>
+          <Button onPress={generateCode}>Create Points Code</Button>
+        </View>
+        <View style={styles.button}>
           <Button appearance="filled" onPress={() => setVisible(true)}>
             View QR code
           </Button>
