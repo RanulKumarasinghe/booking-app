@@ -94,7 +94,7 @@ const RedeemRewardsScreen = () => {
     <Button size="medium">Redeem Prize</Button>
   );
 
-  const renderItemIcon = (props) => <Icon {...props} name="person" />;
+  const renderItemIcon = (props) => <Icon {...props} name="award" />;
 
   const renderItem = ({ item, index }) => (
     <ListItem
