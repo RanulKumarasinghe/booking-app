@@ -86,12 +86,12 @@ const RedeemRewardsScreen = () => {
       });
   }
 
-  const data = new Array(5).fill({
+  const data = new Array(4).fill({
     title: "Title for Item",
     description: "Description for Item",
   });
   const renderItemAccessory = (props) => (
-    <Button size="tiny">Redeem Prize</Button>
+    <Button size="medium">Redeem Prize</Button>
   );
 
   const renderItemIcon = (props) => <Icon {...props} name="person" />;
