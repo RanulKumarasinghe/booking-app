@@ -76,6 +76,11 @@ const ProfileScreen = (props) => {
         onPress: () => props.navigation.navigate("Rewards"),
       },
       {
+        icon: "award",
+        name: "Redeem Rewards",
+        onPress: () => props.navigation.navigate("Redeem Rewards"),
+      },
+      {
         icon: "cog",
         name: "Change User Settings",
         onPress: handleChangeUserSettings,

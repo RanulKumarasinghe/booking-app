@@ -9,6 +9,7 @@ import ListMenu from '@/scenes/restaurants/RestaurantListMenuScreen'
 import AddMenuItem from '@/scenes/manager/AddMenuItemScreen'
 import ManagerRewards from '@/scenes/rewards/ManagerRewardScreen'
 import Rewards from '@/scenes/rewards/RewardScreen'
+import RedeemRewardsScreen from '@/scenes/rewards/RedeemRewardsScreen'
 import RestaurantEditMenuScreen from '@/scenes/manager/EditMenuItemScreen';
 import ChangePasswordScreen from '@/scenes/auth/ChangePasswordScreen';
 import ChangeNameScreen from '@/scenes/auth/ChangeNameScreen';
@@ -104,6 +105,11 @@ const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen
         name='Generate QR Code'
         component={GenerateQRCodeScreen}
+      // options={authScreenOptions}
+      />
+      <ProfileStackNavigator.Screen
+        name='Redeem Rewards'
+        component={RedeemRewardsScreen}
       // options={authScreenOptions}
       />
     </ProfileStackNavigator.Navigator>
