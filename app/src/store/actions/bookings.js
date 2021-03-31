@@ -133,7 +133,7 @@ export const checkTableAvailability = (size, restaurantId, date) => {
 
       let promiseArr = tableResponse.map(table => {
         //TODO: Add fetch booking on picked date
-        return firebase.firestore().collection('bookingOrders').where('tableref', '==', table.id).get().then((querySnapshot) => {
+        return firebase.firestore().collection('bookingOrders').where('tableref', '==', table.id).where('status', '==', 'Ok').get().then((querySnapshot) => {
           const bookingResponse = querySnapshot.docs.map((doc) => {
             return { date: doc.data().date, tableref: table.id };
           });
@@ -246,6 +246,8 @@ export const fetchBookingsBySize = (size, restaurantId) => {
 //
 export const postTable = (restaurantId, table) => {
   return async (dispatch) => {
+    table.restaurantId = restaurantId;
+    table.active = false;
     try {
       const res = await firebase.firestore().collection('reservations').add({
         size: table.size,
@@ -253,7 +255,10 @@ export const postTable = (restaurantId, table) => {
         attributeIndexes: table.attributeIndexes,
         restaurantId: restaurantId,
         active: false,
+      }).then((docRef) => {
+        table.id = docRef.id
       });
+      dispatch(addTable(table));
       dispatch({ type: POST_TABLE, payload: undefined });
     } catch (error) {
       console.error(error);

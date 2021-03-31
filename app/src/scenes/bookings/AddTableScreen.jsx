@@ -140,12 +140,14 @@ const AddTableScreen = (props) => {
   }
 
   const ActivateButton = () => {
+    
     return (
       <Button style={styles.button} onPress={() => {
         const tableArray = [];
         selectedTables.forEach((tableIndex) => {
           tableArray.push(store[tableIndex]);
         });
+        console.log(tableArray);
         dispatch(postActivatedTables(resid, tableArray));
       }}
         onLongPress={() => {
@@ -165,7 +167,6 @@ const AddTableScreen = (props) => {
             table_num = store.length;
           }
           const newTable = { number:table_num ,size: guestNumber, attributeIndexes: [...selectedAttributes] };
-          dispatch(addTable(newTable));
           dispatch(postTable(resid, newTable));
           setNewTables([...newTables, newTable]);
         }
