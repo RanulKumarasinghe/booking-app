@@ -59,11 +59,11 @@ const ChangeUserSettingsScreen = (props) => {
         name: "Change Name",
         onPress: handleChangeName,
       },
-      {
-        icon: "portrait",
-        name: "   Change Profile Picture",
-        onPress: () => ({}),
-      },
+      // {
+      //   icon: "portrait",
+      //   name: "   Change Profile Picture",
+      //   onPress: () => ({}),
+      // },
     ];
     useEffect(() => {
       setList(userList);
