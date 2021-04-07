@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
-import { SafeAreaView, StyleSheet, Image, View, StatusBar } from "react-native";
-import { Icon, Button, Text, List, ListItem } from "@ui-kitten/components";
-import firebase, { db, FieldValue } from "src/utils/firebase";
+import { SafeAreaView, StyleSheet, Image, View } from "react-native";
+import {
+  Icon,
+  Button,
+  Text,
+  List,
+  ListItem,
+  Modal,
+  Card,
+} from "@ui-kitten/components";
+import { db } from "src/utils/firebase";
 
 const RedeemRewardsScreen = () => {
-  //Contains the user input code
-  const [code, setCode] = useState("");
+  //Modal state
+  const [visible, setVisible] = useState(false);
 
   //State holds points returned from firebase
   const [pointsFromUser, setPointsFromUser] = useState(0);
@@ -27,6 +35,7 @@ const RedeemRewardsScreen = () => {
     if (pointsFromUser >= prizeOne) {
       var number = pointsFromUser - prizeOne;
       setPointsFromUser(number);
+      setVisible(true);
     }
   };
 
@@ -65,7 +74,7 @@ const RedeemRewardsScreen = () => {
   const renderItem = ({ item, index }) => (
     <ListItem
       title={`${item.title} ${index + 1}`}
-      description={`${item.description} ${index + 1}`}
+      //description={`${item.description} ${index + 1}`}
       accessoryLeft={renderItemIcon}
       accessoryRight={renderItemAccessory}
     />
@@ -91,7 +100,16 @@ const RedeemRewardsScreen = () => {
         </View>
       </View>
       <View>
-        <View></View>
+        <Modal
+          visible={visible}
+          backdropStyle={styles.backdrop}
+          onBackdropPress={() => setVisible(false)}
+        >
+          <Card disabled={true}>
+            <Text>"Congratulations on your Prize"</Text>
+            <Button onPress={() => setVisible(false)}>DISMISS</Button>
+          </Card>
+        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -109,8 +127,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
 
-  container: {},
-
   font: {
     alignSelf: "center",
     fontSize: 18,
@@ -120,6 +136,10 @@ const styles = StyleSheet.create({
     margin: 2,
     width: "80%",
     alignSelf: "center",
+  },
+
+  backdrop: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });
 
