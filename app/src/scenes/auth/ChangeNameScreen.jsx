@@ -21,7 +21,7 @@ const ChangeNameScreen = (props) => {
   const user = firebase.firestore().collection("users").doc(uid);
 
   const handleChangeName = () => {
-    if (newName && newName.length > 5) {
+    if (newName && newName.length > 2) {
       return user
         .update({ name: newName })
         .then(() => {
@@ -57,6 +57,7 @@ const ChangeNameScreen = (props) => {
         />
 
         <Text>Enter an new name and press "Change Name" to update</Text>
+        <Text>(Note: Name refresh may not be immediate)</Text>
 
         <Button onPress={() => handleChangeName()}>Change Name</Button>
         <Modal
