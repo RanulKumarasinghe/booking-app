@@ -12,12 +12,6 @@ const RedeemRewardsScreen = () => {
   //State holds points returned from firebase
   const [pointsFromUser, setPointsFromUser] = useState(0);
 
-  //removes spaces from code, just in case it's copy & pasted
-  const onTextChange = (code) => {
-    var formatCode = code.replace(/\s/g, "");
-    setCode(formatCode);
-  };
-
   //Redux to get user
   const auth = useSelector((state) => state.auth);
   //Current users uid taken from the redux state
@@ -26,8 +20,15 @@ const RedeemRewardsScreen = () => {
   const name = auth.name;
 
   //The connection to the DB on firestore
-  const rewards = db.collection("rewards");
   const user = db.collection("users");
+
+  var prizeOne = 10;
+  const decrement = () => {
+    if (pointsFromUser >= prizeOne) {
+      var number = pointsFromUser - prizeOne;
+      setPointsFromUser(number);
+    }
+  };
 
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -49,49 +50,14 @@ const RedeemRewardsScreen = () => {
       });
   }
 
-  //Needs to search DB for Code. If the code is usd return invalid code message
-  function redeemCode() {
-    //Check if the code is in firebase
-    rewards
-      .where("code", "==", code)
-      .where("codeUsed", "==", false)
-      .get()
-      .then((querySnapshot) => {
-        const rewardsDocs = querySnapshot.docs;
-        if (rewardsDocs.length > 0) {
-          rewardsDocs.forEach((doc, index) => {
-            //(If a record is returned) the index start at 0
-            if (index == 0) {
-              rewards
-                .doc(doc.id)
-                .update({
-                  codeUsed: true,
-                  customerId: uid,
-                })
-                .then(() => {
-                  console.log(doc.data().points);
-                  return user.doc(uid).update({
-                    points: FieldValue.increment(doc.data().points),
-                  });
-                })
-                .then(() => fetchPoints())
-                .catch((error) => {
-                  console.log("Error getting documents: ", error);
-                });
-            } else {
-              console.log("Code not found");
-            }
-          });
-        }
-      });
-  }
-
   const data = new Array(4).fill({
     title: "Title for Item",
     description: "Description for Item",
   });
   const renderItemAccessory = (props) => (
-    <Button size="medium">Redeem Prize</Button>
+    <Button size="medium" onPress={decrement}>
+      Redeem Prize
+    </Button>
   );
 
   const renderItemIcon = (props) => <Icon {...props} name="award" />;
