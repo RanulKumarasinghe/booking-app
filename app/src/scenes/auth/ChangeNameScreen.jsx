@@ -57,6 +57,7 @@ const ChangeNameScreen = (props) => {
         />
 
         <Text>Enter an new name and press "Change Name" to update</Text>
+        <Text>(Note: Name refresh may not be immediate)</Text>
 
         <Button onPress={() => handleChangeName()}>Change Name</Button>
         <Modal
