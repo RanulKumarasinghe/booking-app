@@ -10,26 +10,17 @@ const CheckOutScreen = (props) => {
   const order = useSelector(state => state.order);
   const userId = useSelector(state => state.auth.uid);
 
-  const dispatch = useDispatch()
+  const restaurants = useSelector(state => state.restaurants.restaurants);
+  const restaurant = restaurants.find(restaurant => restaurant.id === order.orderRestaurantId);
 
-  const test = () => {
-    const testFunction = Firebase.functions().httpsCallable('placeOrder')
-    
-    testFunction(decorator(order.cart)).then((result) => {
-        console.log(result);
-      })
-      .catch(e=> {
-        console.log(e)
-      })
-  }
-  const test2 = () => {
-    console.log(order)
-  }
+  const dispatch = useDispatch()
 
   const checkout = () => {
     const data = {
+      userId: userId,
       cart: decorator(order.cart),
       restaurantId: order.orderRestaurantId,
+      restaurantName: restaurant.name,
       bookingId: order.bookingId,
     };
   
@@ -79,7 +70,6 @@ const decorator = (cart) => {
         <Text style={[styles.itemName, {alignSelf: 'flex-end', paddingRight: 20}]}>Total: £{calculateTotal()}</Text>
         <View style={styles.buttonSpacing}>
           <Button onPress={checkout}>Order</Button>
-          <Button onPress={test2}>Order</Button>
         </View>
       </Layout>
     </SafeAreaView>

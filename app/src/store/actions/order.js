@@ -61,7 +61,7 @@ export const proccessCheckout = (data) => {
     );
   };
 
-  const userId = 'glJhg6e6vYS9AtXRE40Eo0DL42y1';
+  const userId = data.userId;
 
   getItems(data.cart, data.restaurantId)
     .then((cartItems) => {

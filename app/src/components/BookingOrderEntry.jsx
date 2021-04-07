@@ -104,6 +104,14 @@ const BookingsListEntry = ({ item }) => {
     )
   }
 
+  const calculateTotal = () => {
+    let total = 0
+    entry.cart.forEach(item => {
+      total = total + (item.item.price * item.quantity)
+    });
+    return total
+  }
+
   const OrderContent = () => {
     if (haveOrder) {
       return (
@@ -121,7 +129,9 @@ const BookingsListEntry = ({ item }) => {
               </View>
             )}
           />
-
+          <View style={{ flexDirection: 'row', alignContent: 'space-between', margin: 5 }}>
+            <Text style={{ flex: 1, textAlign: 'center', fontWeight: "bold" }}>Total: £{calculateTotal()}</Text>
+          </View>
         </>
       )
     }
