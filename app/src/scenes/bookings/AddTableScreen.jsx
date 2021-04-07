@@ -76,7 +76,9 @@ const AddTableScreen = (props) => {
               setSelectedAttributes([...newAttributeArray]);
             }
           } else {
-            setSelectedAttributes([...selectedAttributes, index]);
+            if(selectedAttributes.length < 3){
+              setSelectedAttributes([...selectedAttributes, index]);
+            }
           }
         }} />
     );
