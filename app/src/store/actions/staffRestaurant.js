@@ -104,8 +104,8 @@ export const DONE_ORDER = "DONE_ORDER"
 
 export const doneOrder = (orderId) => {
   return async (dispatch) => {
-    console.log(orderId)
     return db.doc(`bookingOrders/${orderId}`).update({orderStatus: 'done'}).then(() => {
+      // Rewards Funstion
       dispatch({ type: DONE_ORDER, orderId: orderId })
     }).catch(e => {
       console.log(e)
