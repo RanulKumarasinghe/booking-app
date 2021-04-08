@@ -114,6 +114,21 @@ export const doneOrder = (orderId) => {
   }
 };
 
+
+export const FETCH_ORDER_BY_RESTAURANT_FILTERED =
+  'FETCH_ORDER_BY_RESTAURANT_FILTERED';
+
+
+export const fetchOrderByRestaurant = (restaurantId) => {
+  return async (dispatch) => {
+    getOrders(restaurantId).then(data => {
+      console.log(data.restaurantOrders)
+      // dispatch({ type: FETCH_ORDER_BY_RESTAURANT_FILTERED, payload: data });
+    }).catch(console.log)
+  }
+}
+
+
 export const FETCH_BOOKINGS_BY_RESTAURANT_FILTERED =
   'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED';
 

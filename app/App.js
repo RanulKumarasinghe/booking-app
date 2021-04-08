@@ -18,6 +18,9 @@ import bookingOrders from '@/store/reducers/bookingOrders'
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import * as Font from 'expo-font';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 import LoadingScreen from 'src/scenes/LoadingScreen'
 

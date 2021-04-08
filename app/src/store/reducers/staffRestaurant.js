@@ -8,6 +8,7 @@ import {
   DONE_ORDER,
   FETCH_BOOKINGS_BY_RESTAURANT_FILTERED,
   FETCH_BOOKINGS_BY_RESTAURANT,
+  FETCH_ORDER_BY_RESTAURANT_FILTERED,
 } from '@/store/actions/staffRestaurant';
 
 const initialState = {
@@ -80,6 +81,12 @@ const restaurantReducer = (state = initialState, action) => {
       return {
         ...state,
         restaurantBookings: action.payload,
+      }
+    }
+    case FETCH_ORDER_BY_RESTAURANT_FILTERED: {
+      return {
+        ...state,
+        restaurantOrders: action.payload,
       }
     }
     default:

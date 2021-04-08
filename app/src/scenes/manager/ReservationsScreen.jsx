@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
-import { Toggle, Text, Divider, Spinner, Layout, Icon } from '@ui-kitten/components';
+import { Toggle, Text, Divider, Layout, Icon } from '@ui-kitten/components';
 import BookingsList from '@/components/BookingsList';
 import { fetchBookingsByRestaurant, fetchBookingsByRestaurantFiltered } from '@/store/actions/staffRestaurant'
 import { useSelector, useDispatch } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native'
-
+import Loading from '@/components/Loading'
 
 export default ReservationsScreen = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
@@ -85,18 +85,6 @@ export default ReservationsScreen = ({ navigation }) => {
     }
   }
 
-  const LoadingScreen = () => {
-    if (showLoadingSpinner) {
-      return (
-        <View style={styles.datePicker}>
-          <Spinner />
-        </View>
-      );
-    } else {
-      return (<></>)
-    }
-  }
-
   const LoginError = () => {
     if (isLoggedIn) {
       return (
@@ -143,7 +131,7 @@ export default ReservationsScreen = ({ navigation }) => {
     )
   } else if (showLoadingSpinner) {
     return (
-      <LoadingScreen />
+      <Loading visible={showLoadingSpinner}/>
     )
   }
   else if (restaurant_bookings.length < 1) {

@@ -294,12 +294,12 @@ export const extendReservation = (id) => {
   };
 };
 
-export const postReservation = (tableid, restaurantId, user, guests, date, restaurantName, tableNum) => {
+export const postReservation = (tableid, restaurantId, userId, guests, date, restaurantName, tableNum) => {
   return async (dispatch) => {
     try {
       const res = await firebase.firestore().collection('bookingOrders').add({
         booking: true,
-        userId: user,
+        userId: userId,
         date: date,
         status: 'Ok',
         tableref: tableid,

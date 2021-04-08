@@ -5,14 +5,20 @@ import { acceptOrder, doneOrder } from '@/store/actions/staffRestaurant'
 import LoginRequired from '@/components/LoginRequired'
 import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 import BookingOrderEntry from '@/components/BookingOrderEntry'
+import { fetchOrderByRestaurant } from '@/store/actions/staffRestaurant'
+import Loading from '@/components/Loading'
+import { useIsFocused } from '@react-navigation/native'
+
 
 const OrderScreen = (props) => {
   const restaurantss = useSelector(state => state.staffRestaurant);
 
   const restaurant = useSelector(state => state.staffRestaurant.restaurant);
   const restaurantOrders = useSelector(state => state.staffRestaurant.restaurantOrders);
+  const isFocused = useIsFocused()
 
   const dispatch = useDispatch();
+  const [showLoadingSpinner, setshowLoadingSpinner] = useState(true);
 
   const onAcceptOrder = (orderId) => {
     dispatch(acceptOrder(orderId))
@@ -22,6 +28,13 @@ const OrderScreen = (props) => {
     dispatch(doneOrder(orderId))
   }
 
+  useEffect(() => {
+    setshowLoadingSpinner(true);
+    dispatch(fetchOrderByRestaurant(restaurant.id));
+    setTimeout(() => {
+      setshowLoadingSpinner(false);
+    }, 2000);
+  }, [isFocused]);
 
   const mappedData = restaurantOrders.map((order) => {
     return ({ element: order, 
@@ -44,6 +57,10 @@ const OrderScreen = (props) => {
   if (!restaurant) {
     return (
       <LoginRequired />
+    )
+  } else if (showLoadingSpinner) {
+    return (
+      <Loading visible={showLoadingSpinner}/>
     )
   } else {
     return (

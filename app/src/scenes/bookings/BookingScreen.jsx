@@ -30,8 +30,9 @@ const BookingScreen = (props) => {
   const [showModalSpinner, setShowModalSpinner] = React.useState(false);
   const [showList, setShowList] = React.useState(false);
 
-  const user = firebase.auth().currentUser.uid;
-  let isOffline = auth.uid === undefined;
+  const userId = useSelector(state => state.auth.uid);
+
+  let isOffline = userId === undefined;
 
   const restaurants = useSelector(state => state.restaurants.restaurants);
   const restId = props.route.params.restaurantId;
@@ -179,7 +180,7 @@ const BookingScreen = (props) => {
                 <Text appearance='hint' category='p1' style={{ marginBottom: 5, marginTop: 10 }}>{`Your reservation will be valid for up to 4 hours`}</Text>
                 <View category='p1' style={styles.confirmModal}>
                   <Button style={styles.modalBtn} onPress={() => {
-                    dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, user, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
+                    dispatch(postReservation(all_tables_of_size[selectedIndex].id, restId, userId, guests, date, restaurant.name, all_tables_of_size[selectedIndex].number));
                     setShowModalSpinner(true);
                     setShowConfirmationModal(false);
                   }

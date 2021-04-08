@@ -164,10 +164,10 @@ const BookingsListEntry = ({ item }) => {
           <Button style={styles.button} size='medium' status='basic' onPress={() => { item.doneOrder(entry.id) }}>
             Done
         </Button> ) || null}
-        {haveBooking ?
+        {haveBooking && !isManager && (
           <Button style={styles.button} size='medium' status='basic' disabled={checkExtendable()} onPress={() => { item.onExtend(entry) }}>
             Extend Booking
-        </Button> : null}
+        </Button>) || null}
         {/* {item.isManager && order && (
           <Button style={styles.button} size='medium' status='basic' onPress={() => item.onAccept}>
             Accept
