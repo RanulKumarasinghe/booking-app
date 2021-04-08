@@ -153,7 +153,7 @@ const BookingsListEntry = ({ item }) => {
       </View>
       {/* Buutons */}
       <View style={styles.buttonContainer}>
-        <Button style={styles.button} size='medium' status='basic' onPress={() => { item.onCancel(entry.id) }}>
+        <Button style={styles.button} size='medium' status='basic' disabled={isCancelled} onPress={() => { item.onCancel(entry.id) }}>
           Cancel
         </Button>
         {haveOrder && entry.orderStatus == 'pending' && isManager && (

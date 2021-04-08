@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
-import { Divider, Text, Button, Icon } from '@ui-kitten/components';
+import { Divider, Text, Button, Icon, Modal, Card } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { postReservationCancelation } from '@/store/actions/bookings'
 import BookingsListEntry from './BookingOrderEntry'
@@ -10,14 +10,16 @@ export default BookingsList = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isManager = useSelector(state => !!state.staffRestaurant.restaurant);
+  const [showConfirmationModal, setShowConfirmationModal] = React.useState(false);
+  const [cancelBookingId, setCancelBookingId] = React.useState(undefined);
 
   const goToExtendScreen = (bookingDetails) => {
     navigation.navigate('Extend booking', { details: bookingDetails });
   }
 
   const cancelBooking = (bookingid) => {
-    dispatch(postReservationCancelation(bookingid));
-    props.callback();
+    setCancelBookingId(bookingid);
+    setShowConfirmationModal(true);
   }
 
 
@@ -26,13 +28,50 @@ export default BookingsList = (props) => {
     return ({ element, onCancel: cancelBooking, onExtend: goToExtendScreen, isManager})
   })
 
+  const RenderConfirmationModal = () => {
+    if (showConfirmationModal) {
+      return (
+        <View style={{ minHeight: 0 }}>
+          <Modal
+            visible={showConfirmationModal}
+            backdropStyle={styles.backdrop}
+            onBackdropPress={() => setShowConfirmationModal(false)}>
+            <Card disabled={true} style={styles.modal}>
+              <View style={{ alignItems: 'center' }}>
+                <Text>Are you sure you wish to cancel this booking?</Text>
+                <View category='p1' style={styles.confirmModal}>
+                  <Button style={styles.modalBtn} onPress={() => {
+                    dispatch(postReservationCancelation(cancelBookingId));
+                    setShowConfirmationModal(false);
+                    props.callback();
+                  }}>
+                    Yes
+                  </Button>
+                  <Button style={styles.modalBtn} onPress={() => {
+                    setShowConfirmationModal(false);
+                  }}>
+                    No
+                  </Button>
+                </View>
+              </View>
+            </Card>
+          </Modal>
+        </View>
+      );
+    } else {
+      return (<></>)
+    }
+  };
+
   return (
-    //<View style={styles.container}>
-    <FlatList
-      data={mappedData}
-      renderItem={BookingsListEntry}
-      keyExtractor={(item) => item.element.id}
-    />
+    <View>
+      <FlatList
+        data={mappedData}
+        renderItem={BookingsListEntry}
+        keyExtractor={(item) => item.element.id}
+      />
+      <RenderConfirmationModal />
+    </View>
   );
 }
 
@@ -70,6 +109,9 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     justifyContent: "center",
     opacity: 0.75,
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   headerTitleCanceled: {
     color: "#e5383b",
@@ -136,5 +178,20 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     borderLeftWidth: 1,
     borderColor: 'white',
-  }
+  },
+  modal: {
+    flex: 1,
+    justifyContent: 'center',
+    minHeight: 200,
+  },
+  confirmModal: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20
+  },
+  modalBtn: {
+    minWidth: '40%',
+    marginLeft: 10,
+  },
 });
