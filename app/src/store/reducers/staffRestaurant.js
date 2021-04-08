@@ -5,6 +5,7 @@ import {
   UPDATE_RESTAURANT,
   RESET,
   ACCEPT_ORDER,
+  DONE_ORDER,
   FETCH_BOOKINGS_BY_RESTAURANT_FILTERED,
   FETCH_BOOKINGS_BY_RESTAURANT,
 } from '@/store/actions/staffRestaurant';
@@ -14,6 +15,17 @@ const initialState = {
   restaurantOrders: [],
   restaurantBookings: []
 };
+
+const findOrder = (orders, orderId) => {
+  let index = -1
+  orders.forEach((order, i) => {
+    if (order.id == orderId) {
+      index = i
+      return i
+    }
+  });
+  return index
+}
 
 const restaurantReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -27,24 +39,28 @@ const restaurantReducer = (state = initialState, action) => {
     case UPDATE_RESTAURANT:
       return {
         ...state,
-        restaurant: {...state.restaurant, ...action.newRestaurantValues},
-        restaurantOrders: {...state.restaurantOrders},
+        restaurant: { ...state.restaurant, ...action.newRestaurantValues },
+        restaurantOrders: { ...state.restaurantOrders },
       };
     case ACCEPT_ORDER:
-      let index = 0
       //Get cart without the item about to be added.
-
       let newOrders = [...state.restaurantOrders]
 
-      newOrders.forEach((order, i) => {
-        if (order.id == action.orderId) {
-          index == i
-          return 
-        }
-      });
-      newOrders[index]['status'] = 'accepted'
+      let index = findOrder(newOrders, action.orderId)
+
+      newOrders[index]['orderStatus'] = 'accepted'
       console.log(newOrders[index])
-      return {...state, restaurantOrders: newOrders};
+      return { ...state, restaurantOrders: newOrders };
+    case DONE_ORDER:
+      //Get cart without the item about to be added.
+
+      let newOrderss = [...state.restaurantOrders]
+
+      let indexx = findOrder(newOrderss, action.orderId)
+     
+      newOrderss[indexx]['orderStatus'] = 'done'
+      console.log(newOrderss[indexx])
+      return { ...state, restaurantOrders: newOrderss };
     case RESET:
       return initialState;
     case FETCH_BOOKINGS_BY_RESTAURANT: {
@@ -53,8 +69,6 @@ const restaurantReducer = (state = initialState, action) => {
         if (!element.cart && element.date && now.getTime() > element.date.toDate().getTime() && element.status === 'Ok') {
           //dispatch(postBookingExpiration(element.id));
           element.status = 'Expired';
-        } else {
-
         }
       });
       return {
@@ -72,5 +86,6 @@ const restaurantReducer = (state = initialState, action) => {
       return state;
   }
 };
+
 
 export default restaurantReducer;

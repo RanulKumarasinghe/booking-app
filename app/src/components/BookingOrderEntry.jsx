@@ -5,13 +5,11 @@ import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 const BookingsListEntry = ({ item }) => {
   const entry = item.element;
 
+  const isManager = item.isManager
   // Checking  if entry has a booking
   let haveBooking = entry.date ? true : false
   let haveOrder = entry.cart ? true : false
 
-  const test = () => {
-    console.log(isManager)
-  }
 
   const checkExtendable = () => {
     if (entry.status === "Ok") {
@@ -24,6 +22,10 @@ const BookingsListEntry = ({ item }) => {
       }
     }
     return true;
+  }
+
+  const acceptOrder = () => {
+
   }
 
   const isCancelled = (entry.status == 'Cancelled') || (entry.orderStatus == 'Cancelled')
@@ -154,10 +156,18 @@ const BookingsListEntry = ({ item }) => {
         <Button style={styles.button} size='medium' status='basic' onPress={() => { item.onCancel(entry.id) }}>
           Cancel
         </Button>
+        {haveOrder && entry.orderStatus == 'pending' && isManager && (
+          <Button style={styles.button} size='medium' status='basic' onPress={() => { item.acceptOrder(entry.id) }}>
+            Accept Order
+        </Button> ) || null}
+        {haveOrder && entry.orderStatus == 'accepted' && isManager && (
+          <Button style={styles.button} size='medium' status='basic' onPress={() => { item.doneOrder(entry.id) }}>
+            Done
+        </Button> ) || null}
         {haveBooking ?
           <Button style={styles.button} size='medium' status='basic' disabled={checkExtendable()} onPress={() => { item.onExtend(entry) }}>
-            Extend
-        </Button> : <></>}
+            Extend Booking
+        </Button> : null}
         {/* {item.isManager && order && (
           <Button style={styles.button} size='medium' status='basic' onPress={() => item.onAccept}>
             Accept

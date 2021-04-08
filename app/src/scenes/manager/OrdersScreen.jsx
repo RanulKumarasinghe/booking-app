@@ -1,25 +1,33 @@
 import React, {useState, useEffect} from 'react';
 import { Input, Text, Button, Layout } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '@/store/actions/auth'
+import { acceptOrder, doneOrder } from '@/store/actions/staffRestaurant'
 import LoginRequired from '@/components/LoginRequired'
 import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 import BookingOrderEntry from '@/components/BookingOrderEntry'
-import {acceptOrder} from '@/store/actions/staffRestaurant';
 
 const OrderScreen = (props) => {
+  const restaurantss = useSelector(state => state.staffRestaurant);
+
   const restaurant = useSelector(state => state.staffRestaurant.restaurant);
   const restaurantOrders = useSelector(state => state.staffRestaurant.restaurantOrders);
 
+  const dispatch = useDispatch();
+
   const onAcceptOrder = (orderId) => {
-    useDispatch(acceptOrder(restaurantId, orderId))
+    dispatch(acceptOrder(orderId))
   }
 
-  const orderCheck = (order) => order.order
+  const onDoneOrder = (orderId) => {
+    dispatch(doneOrder(orderId))
+  }
 
-  const mappedData = restaurantOrders.filter(orderCheck).map((order) => {
-    return ({ element: order, isManager: !!restaurant, 
-      onAccept: onAcceptOrder
+
+  const mappedData = restaurantOrders.map((order) => {
+    return ({ element: order, 
+      isManager: !!restaurant, 
+      acceptOrder: onAcceptOrder,
+      doneOrder: onDoneOrder
     })
   })
     
@@ -40,7 +48,7 @@ const OrderScreen = (props) => {
   } else {
     return (
       <Layout style={styles.container}>
-        <Button onPress={() => console.log(restaurantOrders)} />
+        <Button onPress={() => console.log(restaurantss)} />
         <List />
       </Layout>
     );

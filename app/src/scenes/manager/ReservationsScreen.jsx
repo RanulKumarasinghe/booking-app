@@ -76,7 +76,7 @@ export default ReservationsScreen = ({ navigation }) => {
       let bookingList = restaurant_bookings;
       if (filterToggle) {
         const now = new Date();
-        bookingList = bookingList.filter((element) => element.date.toDate().getTime() > now.getTime());
+        bookingList = bookingList.filter((element) => (element.date ? false : true) ? true : element.date.toDate().getTime() > now.getTime());
       }
       const sortedBookings = sortDates(bookingList);
       return (<BookingsList payload={sortedBookings} callback={onCheckedChange} />);

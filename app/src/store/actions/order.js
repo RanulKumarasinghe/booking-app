@@ -70,7 +70,7 @@ export const proccessCheckout = (data) => {
       const order = {
         order: true,
         restaurantId: data.restaurantId,
-        restaurantName: data.restaurantId,
+        restaurantName: data.restaurantName,
         orderStatus: 'pending',
         userId: userId,
         createdAt: new Date(),

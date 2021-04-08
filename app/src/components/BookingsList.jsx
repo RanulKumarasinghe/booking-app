@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 export default BookingsList = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const isManager = useSelector(state => !!state.staffRestaurant.restaurant);
 
   const goToExtendScreen = (bookingDetails) => {
     navigation.navigate('Extend booking', { details: bookingDetails });
@@ -19,8 +20,10 @@ export default BookingsList = (props) => {
     props.callback();
   }
 
+
+
   const mappedData = props.payload.map((element) => {
-    return ({ element, onCancel: cancelBooking, onExtend: goToExtendScreen })
+    return ({ element, onCancel: cancelBooking, onExtend: goToExtendScreen, isManager})
   })
 
   return (

@@ -50,7 +50,8 @@ const getGoogleData = (googleId) => {
 
 const getOrders = (restaurantId) => {
   return db.collection('bookingOrders')
-  .where('restaurantId', '==', restaurantId).get()
+  .where('restaurantId', '==', restaurantId)
+  .where('order', '==', true).get()
   .then((querySnapshot) => {
     const ordersArray = querySnapshot.docs.map((doc) => {
       return { ...doc.data(), id: doc.id }
@@ -87,13 +88,31 @@ export const updateRestaurant = (restaurantId, saveRestaurant) => {
 
 export const ACCEPT_ORDER = "ACCEPT_ORDER"
 
-export const acceptOrder = (restaurantId, orderId) => {
-  return db.doc(`restaurants/${restaurantId}/orders/${orderId}`).update({status: 'accepted'}).then(() => {
-    dispatch({ type: ACCEPT_ORDER, orderId: orderId })
-  }).catch(e => {
-    console.log('Error updating Order')
-  })
-}
+export const acceptOrder = (orderId) => {
+  return async (dispatch) => {
+    console.log(orderId)
+    return db.doc(`bookingOrders/${orderId}`).update({orderStatus: 'accepted'}).then(() => {
+      dispatch({ type: ACCEPT_ORDER, orderId: orderId })
+    }).catch(e => {
+      console.log(e)
+      console.log('Error updating Order')
+    })
+  }
+};
+
+export const DONE_ORDER = "DONE_ORDER"
+
+export const doneOrder = (orderId) => {
+  return async (dispatch) => {
+    console.log(orderId)
+    return db.doc(`bookingOrders/${orderId}`).update({orderStatus: 'done'}).then(() => {
+      dispatch({ type: DONE_ORDER, orderId: orderId })
+    }).catch(e => {
+      console.log(e)
+      console.log('Error updating Order')
+    })
+  }
+};
 
 export const FETCH_BOOKINGS_BY_RESTAURANT_FILTERED =
   'FETCH_BOOKINGS_BY_RESTAURANT_FILTERED';
@@ -104,6 +123,7 @@ export const fetchBookingsByRestaurant = (restaurantId) => {
   return async (dispatch) => {
     db.collection('bookingOrders')
       .where('restaurantId', '==', restaurantId)
+      .where('booking', '==', true)
       .get()
       .then((querySnapshot) => {
         const response = querySnapshot.docs.map((doc) => {
