@@ -76,7 +76,7 @@ exports.getData = functions.https.pubsub.schedule('00 00 * * *').timeZone('Europ
     }).catch(err =>{
       console.log("err updating files")
     })
-
+  });
 
   // const getGooglePlacesData = async (places, restaurantId) => {
   //   return Promise.all(places.map(googlePlace => fetchGooglePlacesId(restaurantId, googlePlace)))
@@ -114,8 +114,6 @@ exports.getData = functions.https.pubsub.schedule('00 00 * * *').timeZone('Europ
   //     console.log("err fetching files")
   //   })
   // })
-
-});
 
 
 // Take the text parameter passed to this HTTP endpoint and insert it into
